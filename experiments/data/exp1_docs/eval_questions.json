@@ -1,0 +1,74 @@
+[
+  {
+    "question": "What is the primary difference between a gate model and a circuit model in quantum computing hardware architectures?",
+    "expected_answer": "The gate model represents individual quantum gates, while the circuit model includes both the quantum gates and their interconnections."
+  },
+  {
+    "question": "What is the role of a qubit's initial state in determining its coherence time?",
+    "expected_answer": "A qubit's initial state can significantly impact its coherence time, with a maximally mixed state generally having a shorter coherence time."
+  },
+  {
+    "question": "What is the purpose of quantum error correction codes in quantum computing hardware architectures?",
+    "expected_answer": "Quantum error correction codes are used to detect and correct errors that occur during quantum computations due to decoherence and other noise sources."
+  },
+  {
+    "question": "What is the typical number of qubits in a superconducting quantum processor?",
+    "expected_answer": "As of 2021, IBM's most advanced quantum processors have up to 65 qubits."
+  },
+  {
+    "question": "What is the primary advantage of ion trap quantum computing over other hardware architectures?",
+    "expected_answer": "Ion trap quantum computers offer long coherence times and high-fidelity operations, making them suitable for certain types of quantum algorithms."
+  },
+  {
+    "question": "What is the role of a readout in a quantum computing hardware architecture?",
+    "expected_answer": "A readout measures the state of a qubit after a computation to obtain the result."
+  },
+  {
+    "question": "What is the typical coherence time of trapped-ion qubits?",
+    "expected_answer": "Trapped-ion qubits can have coherence times on the order of milliseconds, significantly longer than superconducting qubits."
+  },
+  {
+    "question": "What is the primary difference between a quantum gate and a classical gate in quantum computing hardware architectures?",
+    "expected_answer": "A quantum gate operates on multiple qubits simultaneously and can create entanglement, while a classical gate operates on bits and does not."
+  },
+  {
+    "question": "What is the role of a quantum control unit in a quantum computing hardware architecture?",
+    "expected_answer": "A quantum control unit generates and applies control pulses to manipulate the state of qubits during a computation."
+  },
+  {
+    "question": "What is the primary advantage of superconducting quantum computing over other hardware architectures?",
+    "expected_answer": "Superconducting quantum computers offer fast gate speeds, making them suitable for near-term applications and large-scale quantum computing."
+  },
+  {
+    "question": "What is the typical error rate in a single-qubit operation on a superconducting quantum processor?",
+    "expected_answer": "The typical error rate for a single-qubit operation on a state-of-the-art superconducting quantum processor is around 0.1%."
+  },
+  {
+    "question": "What is the primary difference between a two-qubit gate and a multi-qubit gate in quantum computing hardware architectures?",
+    "expected_answer": "A two-qubit gate operates on exactly two qubits, while a multi-qubit gate operates on three or more qubits."
+  },
+  {
+    "question": "What is the role of a quantum memory in a quantum computing hardware architecture?",
+    "expected_answer": "A quantum memory stores quantum information for later use during a computation."
+  },
+  {
+    "question": "What is the typical coherence time of nitrogen-vacancy (NV) center qubits in diamond?",
+    "expected_answer": "The coherence time of NV center qubits can be on the order of microseconds to milliseconds, depending on various factors."
+  },
+  {
+    "question": "What is the primary advantage of topological quantum computing over other hardware architectures?",
+    "expected_answer": "Topological quantum computers are expected to offer inherently fault-tolerant qubits and operations, making them suitable for universal quantum computing."
+  },
+  {
+    "question": "What is the role of a quantum error correction circuit in a quantum computing hardware architecture?",
+    "expected_answer": "A quantum error correction circuit detects and corrects errors that occur during a quantum computation to maintain the integrity of the result."
+  },
+  {
+    "question": "What is the primary difference between a linear optics quantum computer and other hardware architectures?",
+    "expected_answer": "Linear optics quantum computers use photons propagating through optical elements, such as beam splitters and phase shifters, to perform computations."
+  },
+  {
+    "question": "What is the typical number of qubits in a trapped-ion quantum processor?",
+    "expected_answer": "As of 2021, IBM's most advanced trapped-ion quantum processors have up to 53 qubits."
+  }
+]

@@ -1,0 +1,195 @@
+{
+  "easy": {
+    "schema": "easy",
+    "success": true,
+    "attempts": 3,
+    "max_attempts": 10,
+    "elapsed_seconds": 35.90469765663147,
+    "history": [
+      {
+        "attempt": 1,
+        "response": " {\n  \"description\": \"Movie schema - should pass easily.\",\n  \"properties\": {\n    \"name\": {\n      \"maxLength\": 100,\n      \"minLength\": 1,\n      \"title\": \"Title\",\n      \"type\": \"string\"\n    },\n    \"score\": {\n      \"maximum\": 5.0,\n      \"minimum\": 0.0,\n      \"title\": \"Rating\",\n      \"type\": \"number\"\n   ",
+        "error": ""
+      },
+      {
+        "attempt": 2,
+        "response": " {\n  \"description\": \"Corrected response based on provided schema.\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\n      \"title\": \"Name\",\n      \"type\": \"string\",\n      \"maxLength\": 100,\n      \"minLength\": 1\n    },\n    \"score\": {\n      \"title\": \"Score\",\n      \"type\": \"number\",\n      \"minimum\": 0",
+        "error": "Invalid JSON: Extra data: line 26 column 1 (char 503)"
+      },
+      {
+        "attempt": 3,
+        "response": " {\n  \"name\": \"Correcte...3\",\n  \"score\": 3,\n  \"category\": \"Drama\"\n}",
+        "error": "3 validation errors for EasySchema\nname\n  Field required [type=missing, input_value={'description': 'Correcte...3, 'category': 'Drama'}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\nscore\n  Field required [type=missing, input_value={'description': 'Correcte...3, 'category': 'Drama'}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\ncategory\n  Field required [type=missing, input_value={'description': 'Correcte...3, 'category': 'Drama'}}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing"
+      }
+    ],
+    "tokens_per_attempt": 472.6666666666667,
+    "total_tokens": 1418,
+    "hit_retry_limit": false,
+    "unique_error_types": 2,
+    "error_oscillation": false
+  },
+  "moderate": {
+    "schema": "moderate",
+    "success": true,
+    "attempts": 2,
+    "max_attempts": 10,
+    "elapsed_seconds": 28.52111291885376,
+    "history": [
+      {
+        "attempt": 1,
+        "response": " {\n  \"description\": \"The Dell XPS 15 (9500) delivers an exceptional balance of performance, design, and portability. With its powerful 10th Gen Intel Core i7 processor, 16GB RAM, and 1TB SSD, it effortlessly handles multitasking and demanding applications. The 4K UHD display offers vibrant colors an",
+        "error": ""
+      },
+      {
+        "attempt": 2,
+        "response": " {\n  \"description\": \"The Dell XPS 15 (9500) delivers impressive performance and portability.\",\n  \"keywords\": [\"Dell\", \"XPS\", \"15\", \"performance\", \"portability\"],\n  \"score\": 4\n}",
+        "error": "3 validation errors for ModerateSchema\ndescription\n  String should have at most 200 characters [type=string_too_long, input_value='The Dell XPS 15 (9500) d...rmance and portability.', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_long\nkeywords\n  Field required [type=missing, input_value={'description': 'The Dell...hema', 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing\nscore\n  Field required [type=missing, input_value={'description': 'The Dell...hema', 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing"
+      }
+    ],
+    "tokens_per_attempt": 595.0,
+    "total_tokens": 1190,
+    "hit_retry_limit": false,
+    "unique_error_types": 1,
+    "error_oscillation": false
+  },
+  "hard": {
+    "schema": "hard",
+    "success": false,
+    "attempts": 10,
+    "max_attempts": 10,
+    "elapsed_seconds": 71.38098216056824,
+    "history": [
+      {
+        "attempt": 1,
+        "response": " {\n  \"description\": \"Deliberately conflicting constraints.\",\n  \"properties\": {\n    \"summary\": {\n      \"description\": \"Exactly 5 words, each at least 10 characters\",\n      \"minLength\": 50,\n      \"title\": \"Summary\",\n      \"type\": \"string\"\n    },\n    \"confidence\": {\n      \"description\": \"Must be near-c",
+        "error": ""
+      },
+      {
+        "attempt": 2,
+        "response": " {\n  \"summary\": \"Revolutionary Quantum Data Processing\",\n  \"confidence\": 1.0,\n  \"tags\": [\"QuantumComputing\", \"DataProcessing\", \"Innovation\"]\n}",
+        "error": "1 validation error for HardSchema\nsummary\n  String should have at least 50 characters [type=string_too_short, input_value='Quantum Computing Revolutionizes Data Processing', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_short"
+      },
+      {
+        "attempt": 3,
+        "response": " {\n  \"summary\": \"Quantum Computing: Revolutionary, Powerful, Future-defining\",\n  \"confidence\": 1.0,\n  \"tags\": [\"Quantum\", \"Computing\", \"Innovation\"]\n}",
+        "error": "1 validation error for HardSchema\nsummary\n  String should have at least 50 characters [type=string_too_short, input_value='Revolutionary Quantum Data Processing', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_short"
+      },
+      {
+        "attempt": 4,
+        "response": " {\n  \"summary\": \"Revolutionary Quantum Future-defining Technology\",\n  \"confidence\": 1.0,\n  \"tags\": [\"Quantum\", \"Technology\", \"Future\"]\n}",
+        "error": "1 validation error for HardSchema\nsummary\n  Value error, Each word must be at least 10 characters. These are too short: ['Quantum', 'Powerful,'] [type=value_error, input_value='Quantum Computing: Revol...werful, Future-defining', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/value_error"
+      },
+      {
+        "attempt": 5,
+        "response": " {\n  \"summary\": \"Revolutionary Quantum Future-defining Technology\",\n  \"confidence\": 1.0,\n  \"tags\": [\"Quantum\", \"Computing\", \"Innovation\"]\n}",
+        "error": "1 validation error for HardSchema\nsummary\n  String should have at least 50 characters [type=string_too_short, input_value='Revolutionary Quantum Future-defining Technology', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_short"
+      },
+      {
+        "attempt": 6,
+        "response": " {\n  \"summary\": \"Revolutionary Quantum Future-defining Technology\",\n  \"confidence\": 1.0,\n  \"tags\": [\"Quantum\", \"Computing\", \"Future\"]\n}",
+        "error": "1 validation error for HardSchema\nsummary\n  String should have at least 50 characters [type=string_too_short, input_value='Revolutionary Quantum Future-defining Technology', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_short"
+      },
+      {
+        "attempt": 7,
+        "response": " {\n  \"summary\": \"Revolutionary Quantum Future-defining Tech\",\n  \"confidence\": 1.0,\n  \"tags\": [\"QuantumComputing\", \"Technology\", \"Future\"]\n}",
+        "error": "1 validation error for HardSchema\nsummary\n  String should have at least 50 characters [type=string_too_short, input_value='Revolutionary Quantum Future-defining Technology', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_short"
+      },
+      {
+        "attempt": 8,
+        "response": " {\n  \"summary\": \"Quantum Advancements Revolutionize Future Tech\",\n  \"confidence\": 1.0,\n  \"tags\": [\"Quantum Computing\", \"Future Technology\", \"Innovation\"]\n}",
+        "error": "1 validation error for HardSchema\nsummary\n  String should have at least 50 characters [type=string_too_short, input_value='Revolutionary Quantum Future-defining Tech', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_short"
+      },
+      {
+        "attempt": 9,
+        "response": " {\n  \"summary\": \"Revolutionary Quantum Leap Forward in Tech\",\n  \"confidence\": 1.0,\n  \"tags\": [\"Quantum\", \"Computing\", \"Future\"]\n}",
+        "error": "1 validation error for HardSchema\nsummary\n  String should have at least 50 characters [type=string_too_short, input_value='Quantum Advancements Revolutionize Future Tech', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_short"
+      },
+      {
+        "attempt": 10,
+        "response": " {\n  \"description\": \"Deliberately conflicting constraints.\",\n  \"properties\": {\n    \"summary\": {\n      \"description\": \"Exactly 5 words, each at least 10 characters\",\n      \"minLength\": 50,\n      \"title\": \"Summary\",\n      \"type\": \"string\"\n    },\n    \"confidence\": {\n      \"description\": \"Must be near-c",
+        "error": "1 validation error for HardSchema\nsummary\n  String should have at least 50 characters [type=string_too_short, input_value='Revolutionary Quantum Leap Forward in Tech', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/string_too_short"
+      }
+    ],
+    "tokens_per_attempt": 497.2,
+    "total_tokens": 4972,
+    "hit_retry_limit": true,
+    "unique_error_types": 7,
+    "error_oscillation": true
+  },
+  "impossible": {
+    "schema": "impossible",
+    "success": false,
+    "attempts": 10,
+    "max_attempts": 10,
+    "elapsed_seconds": 85.39400935173035,
+    "history": [
+      {
+        "attempt": 1,
+        "response": " {\n  \"description\": \"Genuinely contradictory constraints \u2013 impossible to satisfy.\",\n  \"properties\": {\n    \"value\": {\n      \"maxLength\": 50,\n      \"minLength\": 100,\n      \"title\": \"Value\",\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"value\"\n  ],\n  \"title\": \"ImpossibleSchema\",\n  \"type\": \"obj",
+        "error": ""
+      },
+      {
+        "attempt": 2,
+        "response": " {\n  \"description\": \"Genuinely contradictory constraints \\u2014 impossible to satisfy.\",\n  \"properties\": {\n    \"value\": {\n      \"enum\": [\"This value should be at least 100 characters AND at most 50 characters.\"],\n      \"title\": \"Value\",\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"value\"\n ",
+        "error": "1 validation error for ImpossibleSchema\nvalue\n  Field required [type=missing, input_value={'description': 'Genuinel...hema', 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing"
+      },
+      {
+        "attempt": 3,
+        "response": " {\n  \"description\": \"Genuinely contradictory constraints \\u2014 impossible to satisfy.\",\n  \"properties\": {\n    \"value\": {\n      \"maxLength\": 50,\n      \"minLength\": 10, // Changed the minimum length to 10 instead of 100\n      \"title\": \"Value\",\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"va",
+        "error": "1 validation error for ImpossibleSchema\nvalue\n  Field required [type=missing, input_value={'description': 'Genuinel...hema', 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing"
+      },
+      {
+        "attempt": 4,
+        "response": " {\n  \"description\": \"Genuinely contradictory constraints \\u2014 impossible to satisfy.\",\n  \"properties\": {\n    \"value\": {\n      \"maxLength\": 50,\n      \"minLength\": 101, // Changed minLength to be more than 100 characters\n      \"title\": \"Value\",\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"",
+        "error": "Invalid JSON: Expecting property name enclosed in double quotes: line 6 column 24 (char 167)"
+      },
+      {
+        "attempt": 5,
+        "response": " {\n  \"description\": \"Genuinely contradictory constraints - impossible to satisfy.\",\n  \"properties\": {\n    \"value\": {\n      \"maxLength\": 50,\n      \"minLength\": 101,  // Corrected minimum length to be more than 100 characters\n      \"title\": \"Value\",\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n  ",
+        "error": "Invalid JSON: Expecting property name enclosed in double quotes: line 6 column 25 (char 168)"
+      },
+      {
+        "attempt": 6,
+        "response": " {\n  \"description\": \"Genuinely contradictory constraints \u2013 impossible to satisfy.\",\n  \"properties\": {\n    \"value\": {\n      \"maxLength\": 50,\n      \"minLength\": 100,\n      \"title\": \"Value\",\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"value\"\n  ],\n  \"title\": \"ImpossibleSchema\",\n  \"type\": \"obj",
+        "error": "Invalid JSON: Expecting property name enclosed in double quotes: line 6 column 26 (char 164)"
+      },
+      {
+        "attempt": 7,
+        "response": " {\n  \"description\": \"Genuinely contradictory constraints - impossible to satisfy.\",\n  \"properties\": {\n    \"value\": {\n      \"maxLength\": 50,\n      \"minLength\": 100,\n      \"title\": \"Value\",\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"value\"\n  ],\n  \"title\": \"ImpossibleSchema\",\n  \"additionalP",
+        "error": "Invalid JSON: Extra data: line 18 column 1 (char 307)"
+      },
+      {
+        "attempt": 8,
+        "response": " {\n  \"description\": \"Genuinely contradictory constraints \\u2014 impossible to satisfy.\",\n  \"properties\": {\n    \"value\": {\n      \"maxLength\": 50,\n      \"minLength\": 10,\n      \"title\": \"Value\",\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"value\"\n  ],\n  \"title\": \"ImpossibleSchema\",\n  \"type\": ",
+        "error": "1 validation error for ImpossibleSchema\nvalue\n  Field required [type=missing, input_value={'description': 'Genuinel...False, 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing"
+      },
+      {
+        "attempt": 9,
+        "response": " {\n  \"description\": \"Genuinely contradictory constraints \\u2014 impossible to satisfy.\",\n  \"properties\": {\n    \"value\": {\n      \"maxLength\": 50,\n      \"minLength\": 10,\n      \"title\": \"Value\",\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"value\"\n  ],\n  \"title\": \"ImpossibleSchema\",\n  \"type\": ",
+        "error": "1 validation error for ImpossibleSchema\nvalue\n  Field required [type=missing, input_value={'description': 'Genuinel...hema', 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing"
+      },
+      {
+        "attempt": 10,
+        "response": " {\n  \"description\": \"Genuinely contradictory constraints \\u2014 impossible to satisfy.\",\n  \"properties\": {\n    \"value\": {\n      \"maxLength\": 50,\n      \"minLength\": 10,\n      \"title\": \"Value\",\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"value\"\n  ],\n  \"title\": \"ImpossibleSchema\",\n  \"type\": ",
+        "error": "1 validation error for ImpossibleSchema\nvalue\n  Field required [type=missing, input_value={'description': 'Genuinel...hema', 'type': 'object'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.11/v/missing"
+      }
+    ],
+    "tokens_per_attempt": 343.9,
+    "total_tokens": 3439,
+    "hit_retry_limit": true,
+    "unique_error_types": 6,
+    "error_oscillation": true
+  },
+  "summary": {
+    "easy_attempts": 3,
+    "moderate_attempts": 2,
+    "hard_attempts": 10,
+    "impossible_attempts": 10,
+    "easy_success": true,
+    "moderate_success": true,
+    "hard_success": false,
+    "impossible_success": false,
+    "purgatory_detected": true,
+    "error_oscillation_detected": true
+  }
+}

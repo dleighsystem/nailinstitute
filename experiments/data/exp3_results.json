@@ -1,0 +1,409 @@
+{
+  "control": {
+    "mode": "control",
+    "num_trials": 5,
+    "avg_tokens": 2260,
+    "test_pass_rate": 0.0,
+    "band_aid_rate": 0.0,
+    "root_cause_fix_rate": 0.0,
+    "avg_analysis_length": 256,
+    "trials": [
+      {
+        "mode": "control",
+        "trial": 0,
+        "tokens_used": 1729,
+        "analysis_length": 190,
+        "analysis_preview": "The bug is caused by not handling zero division and when all weights are zero in weighted_average function of math_helpers.py and get_click_through_rates method of analytics.py respectively.",
+        "test_results": {
+          "all_passed": false,
+          "return_code": 1,
+          "test_results": [
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views FAILED [ 20%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data FAILED  [ 40%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_missing_keys PASSED [ 60%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_normal_data PASSED [ 80%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views FAILED  [100%]",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer..."
+          ],
+          "stdout": "y['views'])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nutils/math_helpers.py:9: in calculate_percentage\n    return safe_divide(part, whole) * 100\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nnumerator = 0, denominator = 0\n\n    def safe_divide(numerator, denominator):\n        \"\"\"Divide two numbers safely.\"\"\"\n>       return numerator / denominator  # BUG: no zero-division guard\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nutils/math_helpers.py:5: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer...\n========================= 3 failed, 2 passed in 0.03s ==========================\n",
+          "stderr": "",
+          "num_passed": 2,
+          "num_failed": 6
+        },
+        "fix_quality": {
+          "original_try_blocks": 0,
+          "fixed_try_blocks": 0,
+          "new_try_blocks_added": 0,
+          "has_zero_division_guard": false,
+          "has_views_check": true,
+          "is_band_aid": false,
+          "is_root_cause_fix": false,
+          "fix_quality": "unclear"
+        },
+        "files_modified": [
+          "math_helpers.py"
+        ]
+      },
+      {
+        "mode": "control",
+        "trial": 1,
+        "tokens_used": 2380,
+        "analysis_length": 174,
+        "analysis_preview": "The bug in the code is due to not handling zero division cases. We can fix this by adding a guard clause to our `safe_divide` function that returns 0 if the denominator is 0.",
+        "test_results": {
+          "all_passed": false,
+          "return_code": 1,
+          "test_results": [
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views FAILED [ 20%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data FAILED  [ 40%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_missing_keys PASSED [ 60%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_normal_data PASSED [ 80%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views FAILED  [100%]",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer..."
+          ],
+          "stdout": "y['views'])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nutils/math_helpers.py:9: in calculate_percentage\n    return safe_divide(part, whole) * 100\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nnumerator = 0, denominator = 0\n\n    def safe_divide(numerator, denominator):\n        \"\"\"Divide two numbers safely.\"\"\"\n>       return numerator / denominator  # BUG: no zero-division guard\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nutils/math_helpers.py:5: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer...\n========================= 3 failed, 2 passed in 0.03s ==========================\n",
+          "stderr": "",
+          "num_passed": 2,
+          "num_failed": 6
+        },
+        "fix_quality": {
+          "original_try_blocks": 0,
+          "fixed_try_blocks": 0,
+          "new_try_blocks_added": 0,
+          "has_zero_division_guard": false,
+          "has_views_check": true,
+          "is_band_aid": false,
+          "is_root_cause_fix": false,
+          "fix_quality": "unclear"
+        },
+        "files_modified": [
+          "math_helpers.py",
+          "analytics.py",
+          "test_analytics.py"
+        ]
+      },
+      {
+        "mode": "control",
+        "trial": 2,
+        "tokens_used": 2402,
+        "analysis_length": 359,
+        "analysis_preview": "The bug is caused by not handling zero division and when all weights are zero in weighted_average function of math_helpers.py and get_click_through_rates and get_weighted_engagement functions of analytics.py respectively. To fix the issue, we need to add a guard clause that checks if the denominator",
+        "test_results": {
+          "all_passed": false,
+          "return_code": 1,
+          "test_results": [
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views FAILED [ 20%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data FAILED  [ 40%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_missing_keys PASSED [ 60%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_normal_data PASSED [ 80%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views FAILED  [100%]",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer..."
+          ],
+          "stdout": "y['views'])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nutils/math_helpers.py:9: in calculate_percentage\n    return safe_divide(part, whole) * 100\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nnumerator = 0, denominator = 0\n\n    def safe_divide(numerator, denominator):\n        \"\"\"Divide two numbers safely.\"\"\"\n>       return numerator / denominator  # BUG: no zero-division guard\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nutils/math_helpers.py:5: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer...\n========================= 3 failed, 2 passed in 0.03s ==========================\n",
+          "stderr": "",
+          "num_passed": 2,
+          "num_failed": 6
+        },
+        "fix_quality": {
+          "original_try_blocks": 0,
+          "fixed_try_blocks": 0,
+          "new_try_blocks_added": 0,
+          "has_zero_division_guard": false,
+          "has_views_check": true,
+          "is_band_aid": false,
+          "is_root_cause_fix": false,
+          "fix_quality": "unclear"
+        },
+        "files_modified": [
+          "math_helpers.py",
+          "analytics.py"
+        ]
+      },
+      {
+        "mode": "control",
+        "trial": 3,
+        "tokens_used": 2397,
+        "analysis_length": 246,
+        "analysis_preview": "The bug in the code is due to not handling zero division and when all weights are zero while calculating weighted average. This can be handled by adding checks for these cases in the respective functions of math_helpers.py and models/analytics.py",
+        "test_results": {
+          "all_passed": false,
+          "return_code": 1,
+          "test_results": [
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views FAILED [ 20%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data FAILED  [ 40%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_missing_keys PASSED [ 60%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_normal_data PASSED [ 80%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views FAILED  [100%]",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer..."
+          ],
+          "stdout": "y['views'])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nutils/math_helpers.py:9: in calculate_percentage\n    return safe_divide(part, whole) * 100\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nnumerator = 0, denominator = 0\n\n    def safe_divide(numerator, denominator):\n        \"\"\"Divide two numbers safely.\"\"\"\n>       return numerator / denominator  # BUG: no zero-division guard\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nutils/math_helpers.py:5: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer...\n========================= 3 failed, 2 passed in 0.03s ==========================\n",
+          "stderr": "",
+          "num_passed": 2,
+          "num_failed": 6
+        },
+        "fix_quality": {
+          "original_try_blocks": 0,
+          "fixed_try_blocks": 0,
+          "new_try_blocks_added": 0,
+          "has_zero_division_guard": false,
+          "has_views_check": true,
+          "is_band_aid": false,
+          "is_root_cause_fix": false,
+          "fix_quality": "unclear"
+        },
+        "files_modified": [
+          "math_helpers.py",
+          "analytics.py"
+        ]
+      },
+      {
+        "mode": "control",
+        "trial": 4,
+        "tokens_used": 2390,
+        "analysis_length": 313,
+        "analysis_preview": "The ZeroDivisionError occurs when the denominator is zero in both math_helpers.py and analytics.py files. This happens because there are no checks to prevent division by zero. To fix this, we can add a check for zero values before performing the division operation in safe_divide function of math_hel",
+        "test_results": {
+          "all_passed": false,
+          "return_code": 1,
+          "test_results": [
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views FAILED [ 20%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data FAILED  [ 40%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_missing_keys PASSED [ 60%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_normal_data PASSED [ 80%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views FAILED  [100%]",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer..."
+          ],
+          "stdout": "y['views'])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nutils/math_helpers.py:9: in calculate_percentage\n    return safe_divide(part, whole) * 100\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nnumerator = 0, denominator = 0\n\n    def safe_divide(numerator, denominator):\n        \"\"\"Divide two numbers safely.\"\"\"\n>       return numerator / denominator  # BUG: no zero-division guard\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nutils/math_helpers.py:5: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer...\n========================= 3 failed, 2 passed in 0.03s ==========================\n",
+          "stderr": "",
+          "num_passed": 2,
+          "num_failed": 6
+        },
+        "fix_quality": {
+          "original_try_blocks": 0,
+          "fixed_try_blocks": 0,
+          "new_try_blocks_added": 0,
+          "has_zero_division_guard": false,
+          "has_views_check": true,
+          "is_band_aid": false,
+          "is_root_cause_fix": false,
+          "fix_quality": "unclear"
+        },
+        "files_modified": [
+          "math_helpers.py",
+          "analytics.py"
+        ]
+      }
+    ]
+  },
+  "variable": {
+    "mode": "variable",
+    "num_trials": 5,
+    "avg_tokens": 1785,
+    "test_pass_rate": 0.0,
+    "band_aid_rate": 0.0,
+    "root_cause_fix_rate": 0.0,
+    "avg_analysis_length": 314,
+    "trials": [
+      {
+        "mode": "variable",
+        "trial": 0,
+        "tokens_used": 2390,
+        "analysis_length": 187,
+        "analysis_preview": "The bug is due to not handling zero division and when all weights are zero in weighted_average function of math_helpers.py and get_click_through_rates method of analytics.py respectively.",
+        "test_results": {
+          "all_passed": false,
+          "return_code": 1,
+          "test_results": [
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views FAILED [ 20%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data FAILED  [ 40%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_missing_keys PASSED [ 60%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_normal_data PASSED [ 80%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views FAILED  [100%]",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer..."
+          ],
+          "stdout": "y['views'])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nutils/math_helpers.py:9: in calculate_percentage\n    return safe_divide(part, whole) * 100\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nnumerator = 0, denominator = 0\n\n    def safe_divide(numerator, denominator):\n        \"\"\"Divide two numbers safely.\"\"\"\n>       return numerator / denominator  # BUG: no zero-division guard\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nutils/math_helpers.py:5: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer...\n========================= 3 failed, 2 passed in 0.03s ==========================\n",
+          "stderr": "",
+          "num_passed": 2,
+          "num_failed": 6
+        },
+        "fix_quality": {
+          "original_try_blocks": 0,
+          "fixed_try_blocks": 0,
+          "new_try_blocks_added": 0,
+          "has_zero_division_guard": false,
+          "has_views_check": true,
+          "is_band_aid": false,
+          "is_root_cause_fix": false,
+          "fix_quality": "unclear"
+        },
+        "files_modified": [
+          "math_helpers.py",
+          "analytics.py"
+        ]
+      },
+      {
+        "mode": "variable",
+        "trial": 1,
+        "tokens_used": 2425,
+        "analysis_length": 359,
+        "analysis_preview": "The bug is caused by not handling zero values in division operations. We need to add safeguards for these divisions. The function safe_divide should be updated to return 0 when the denominator is 0, and the functions get_click_through_rates, calculate_percentage, and weighted_average of EngagementAn",
+        "test_results": {
+          "all_passed": false,
+          "return_code": 1,
+          "test_results": [
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views FAILED [ 20%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data FAILED  [ 40%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_missing_keys PASSED [ 60%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_normal_data PASSED [ 80%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views FAILED  [100%]",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer..."
+          ],
+          "stdout": "y['views'])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nutils/math_helpers.py:9: in calculate_percentage\n    return safe_divide(part, whole) * 100\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nnumerator = 0, denominator = 0\n\n    def safe_divide(numerator, denominator):\n        \"\"\"Divide two numbers safely.\"\"\"\n>       return numerator / denominator  # BUG: no zero-division guard\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nutils/math_helpers.py:5: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer...\n========================= 3 failed, 2 passed in 0.03s ==========================\n",
+          "stderr": "",
+          "num_passed": 2,
+          "num_failed": 6
+        },
+        "fix_quality": {
+          "original_try_blocks": 0,
+          "fixed_try_blocks": 0,
+          "new_try_blocks_added": 0,
+          "has_zero_division_guard": false,
+          "has_views_check": true,
+          "is_band_aid": false,
+          "is_root_cause_fix": false,
+          "fix_quality": "unclear"
+        },
+        "files_modified": [
+          "math_helpers.py"
+        ]
+      },
+      {
+        "mode": "variable",
+        "trial": 2,
+        "tokens_used": 0,
+        "analysis_length": 478,
+        "analysis_preview": "{\n    \"analysis\": \"The bug is caused by not handling zero division and when all weights are zero in weighted_average function. To fix this, we need to add guards for these cases.\",\n    \"files\": {\n        \"math_helpers.py\": \n            \"'''Math utility functions for the analytics pipeline.'''\\n\"\n   ",
+        "test_results": {
+          "all_passed": false,
+          "return_code": 1,
+          "test_results": [
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views FAILED [ 20%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data FAILED  [ 40%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_missing_keys PASSED [ 60%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_normal_data PASSED [ 80%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views FAILED  [100%]",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer..."
+          ],
+          "stdout": "y['views'])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nutils/math_helpers.py:9: in calculate_percentage\n    return safe_divide(part, whole) * 100\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nnumerator = 0, denominator = 0\n\n    def safe_divide(numerator, denominator):\n        \"\"\"Divide two numbers safely.\"\"\"\n>       return numerator / denominator  # BUG: no zero-division guard\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nutils/math_helpers.py:5: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer...\n========================= 3 failed, 2 passed in 0.03s ==========================\n",
+          "stderr": "",
+          "num_passed": 2,
+          "num_failed": 6
+        },
+        "fix_quality": {
+          "original_try_blocks": 0,
+          "fixed_try_blocks": 0,
+          "new_try_blocks_added": 0,
+          "has_zero_division_guard": false,
+          "has_views_check": true,
+          "is_band_aid": false,
+          "is_root_cause_fix": false,
+          "fix_quality": "unclear"
+        },
+        "files_modified": []
+      },
+      {
+        "mode": "variable",
+        "trial": 3,
+        "tokens_used": 2354,
+        "analysis_length": 305,
+        "analysis_preview": "The bug in the code is due to not handling zero-division cases. In the math_helpers.py, safe_divide function should return a default value like 0 when denominator is 0 and in models/analytics.py, get_click_through_rates method and weighted_average function should handle case where views or weights a",
+        "test_results": {
+          "all_passed": false,
+          "return_code": 1,
+          "test_results": [
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views FAILED [ 20%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data FAILED  [ 40%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_missing_keys PASSED [ 60%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_normal_data PASSED [ 80%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views FAILED  [100%]",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer..."
+          ],
+          "stdout": "y['views'])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nutils/math_helpers.py:9: in calculate_percentage\n    return safe_divide(part, whole) * 100\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nnumerator = 0, denominator = 0\n\n    def safe_divide(numerator, denominator):\n        \"\"\"Divide two numbers safely.\"\"\"\n>       return numerator / denominator  # BUG: no zero-division guard\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nutils/math_helpers.py:5: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer...\n========================= 3 failed, 2 passed in 0.03s ==========================\n",
+          "stderr": "",
+          "num_passed": 2,
+          "num_failed": 6
+        },
+        "fix_quality": {
+          "original_try_blocks": 0,
+          "fixed_try_blocks": 0,
+          "new_try_blocks_added": 0,
+          "has_zero_division_guard": false,
+          "has_views_check": true,
+          "is_band_aid": false,
+          "is_root_cause_fix": false,
+          "fix_quality": "unclear"
+        },
+        "files_modified": [
+          "math_helpers.py",
+          "analytics.py"
+        ]
+      },
+      {
+        "mode": "variable",
+        "trial": 4,
+        "tokens_used": 1754,
+        "analysis_length": 242,
+        "analysis_preview": "The bug is caused by not handling zero division in the safe_divide function and when calculating weighted average, where all weights are 0. The functions should return a default value or handle this case properly to prevent ZeroDivisionError.",
+        "test_results": {
+          "all_passed": false,
+          "return_code": 1,
+          "test_results": [
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views FAILED [ 20%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data FAILED  [ 40%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_missing_keys PASSED [ 60%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_normal_data PASSED [ 80%]",
+            "tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views FAILED  [100%]",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...",
+            "FAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer..."
+          ],
+          "stdout": "y['views'])\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nutils/math_helpers.py:9: in calculate_percentage\n    return safe_divide(part, whole) * 100\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nnumerator = 0, denominator = 0\n\n    def safe_divide(numerator, denominator):\n        \"\"\"Divide two numbers safely.\"\"\"\n>       return numerator / denominator  # BUG: no zero-division guard\n               ^^^^^^^^^^^^^^^^^^^^^^^\nE       ZeroDivisionError: division by zero\n\nutils/math_helpers.py:5: ZeroDivisionError\n=========================== short test summary info ============================\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_all_zero_views\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_empty_data - Zer...\nFAILED tests/test_analytics.py::TestEngagementAnalyzer::test_zero_views - Zer...\n========================= 3 failed, 2 passed in 0.03s ==========================\n",
+          "stderr": "",
+          "num_passed": 2,
+          "num_failed": 6
+        },
+        "fix_quality": {
+          "original_try_blocks": 0,
+          "fixed_try_blocks": 0,
+          "new_try_blocks_added": 0,
+          "has_zero_division_guard": false,
+          "has_views_check": true,
+          "is_band_aid": false,
+          "is_root_cause_fix": false,
+          "fix_quality": "unclear"
+        },
+        "files_modified": [
+          "math_helpers.py"
+        ]
+      }
+    ]
+  }
+}

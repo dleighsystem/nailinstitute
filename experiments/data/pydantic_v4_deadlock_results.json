@@ -1,0 +1,384 @@
+{
+  "simple_math": {
+    "task": "simple_math",
+    "difficulty": "easy",
+    "elapsed": 181.11872959136963,
+    "total_iterations": 15,
+    "node_visits": 30,
+    "router_decisions": 15,
+    "hallucinated_routes": 12,
+    "hallucination_rate": 0.8,
+    "completed_properly": true,
+    "hit_max_iterations": true,
+    "oscillating_pairs": {
+      "('router', 'search')": 3,
+      "('search', 'router')": 3,
+      "('router', 'calculate')": 10,
+      "('calculate', 'router')": 10
+    },
+    "deadlock_detected": true,
+    "node_sequence": [
+      "router",
+      "search",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "search",
+      "router",
+      "search",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "verify",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "finalize"
+    ],
+    "hallucination_details": [
+      {
+        "iter": 2,
+        "decided": "calculate",
+        "correct": "verify",
+        "reasoning": "Since the 'search' action has been completed but not the 'calculate' action, the next step is to per"
+      },
+      {
+        "iter": 3,
+        "decided": "search",
+        "correct": "verify",
+        "reasoning": "Since the search action has not been completed, I will proceed with searching for the formula first."
+      },
+      {
+        "iter": 4,
+        "decided": "search",
+        "correct": "verify",
+        "reasoning": "Since the 'search' action has not been completed, we need to perform a search first in order to find"
+      },
+      {
+        "iter": 5,
+        "decided": "calculate",
+        "correct": "verify",
+        "reasoning": "Since the calculation is not done, we need to perform the calculation."
+      },
+      {
+        "iter": 6,
+        "decided": "calculate",
+        "correct": "verify",
+        "reasoning": "The task requires calculating the result but the calculated result is not provided yet."
+      },
+      {
+        "iter": 7,
+        "decided": "calculate",
+        "correct": "verify",
+        "reasoning": "Since the calculation has not been done yet, it is necessary to perform the calculation."
+      },
+      {
+        "iter": 8,
+        "decided": "calculate",
+        "correct": "verify",
+        "reasoning": "The 'search' action has been performed, but the 'calculate' action is yet to be done."
+      },
+      {
+        "iter": 10,
+        "decided": "calculate",
+        "correct": "finalize",
+        "reasoning": "The search for the formula to calculate 15% of a number has already been completed, but no calculati"
+      },
+      {
+        "iter": 11,
+        "decided": "calculate",
+        "correct": "finalize",
+        "reasoning": "Since no calculation has been done yet, we need to calculate the result"
+      },
+      {
+        "iter": 12,
+        "decided": "calculate",
+        "correct": "finalize",
+        "reasoning": "Since neither calculation nor verification has been done, the next action should be 'calculate' to f"
+      },
+      {
+        "iter": 13,
+        "decided": "calculate",
+        "correct": "finalize",
+        "reasoning": "As no calculation has been done yet, the next action is to calculate"
+      },
+      {
+        "iter": 14,
+        "decided": "calculate",
+        "correct": "finalize",
+        "reasoning": "Since the search and calculation steps are not completed, I will proceed with the calculation step."
+      }
+    ]
+  },
+  "multi_step": {
+    "task": "multi_step",
+    "difficulty": "medium",
+    "elapsed": 344.01502656936646,
+    "total_iterations": 15,
+    "node_visits": 30,
+    "router_decisions": 15,
+    "hallucinated_routes": 12,
+    "hallucination_rate": 0.8,
+    "completed_properly": true,
+    "hit_max_iterations": true,
+    "oscillating_pairs": {
+      "('router', 'search')": 8,
+      "('search', 'router')": 8,
+      "('router', 'calculate')": 5,
+      "('calculate', 'router')": 5
+    },
+    "deadlock_detected": true,
+    "node_sequence": [
+      "router",
+      "search",
+      "router",
+      "search",
+      "router",
+      "calculate",
+      "router",
+      "verify",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "search",
+      "router",
+      "search",
+      "router",
+      "search",
+      "router",
+      "calculate",
+      "router",
+      "search",
+      "router",
+      "search",
+      "router",
+      "search",
+      "router",
+      "calculate",
+      "router",
+      "finalize"
+    ],
+    "hallucination_details": [
+      {
+        "iter": 1,
+        "decided": "search",
+        "correct": "calculate",
+        "reasoning": "Since the current status indicates that the search for Tokyo's population and area has not been comp"
+      },
+      {
+        "iter": 4,
+        "decided": "calculate",
+        "correct": "finalize",
+        "reasoning": "Since the population density of Tokyo needs to be calculated from its population figure and area, wh"
+      },
+      {
+        "iter": 5,
+        "decided": "calculate",
+        "correct": "finalize",
+        "reasoning": "As the population and area data have not been calculated, we need to perform calculations to find th"
+      },
+      {
+        "iter": 6,
+        "decided": "search",
+        "correct": "finalize",
+        "reasoning": "Since the 'search' action has not been completed, it is necessary to perform that action first in or"
+      },
+      {
+        "iter": 7,
+        "decided": "search",
+        "correct": "finalize",
+        "reasoning": "The population of Tokyo has been searched, but the area (which is required for calculating density) "
+      },
+      {
+        "iter": 8,
+        "decided": "search",
+        "correct": "finalize",
+        "reasoning": "Since the 'search' action has not been completed, it is necessary to perform this action first in or"
+      },
+      {
+        "iter": 9,
+        "decided": "calculate",
+        "correct": "finalize",
+        "reasoning": "Since no calculation has been done yet, we need to proceed with calculating the population density b"
+      },
+      {
+        "iter": 10,
+        "decided": "search",
+        "correct": "finalize",
+        "reasoning": "Since the calculation has not been completed yet, we need to find the land area of Tokyo first."
+      },
+      {
+        "iter": 11,
+        "decided": "search",
+        "correct": "finalize",
+        "reasoning": "The search for Tokyo's population is complete, but the area of Tokyo is still unknown. Therefore, I "
+      },
+      {
+        "iter": 12,
+        "decided": "search",
+        "correct": "finalize",
+        "reasoning": "Since the calculation of population density has not been completed, we need to find the area of Toky"
+      },
+      {
+        "iter": 13,
+        "decided": "calculate",
+        "correct": "finalize",
+        "reasoning": "The population and area of Tokyo were searched for, but the calculation of the population density ha"
+      },
+      {
+        "iter": 14,
+        "decided": "calculate",
+        "correct": "finalize",
+        "reasoning": "Since neither the population density calculation nor verification has been performed, we need to cal"
+      }
+    ]
+  },
+  "confusing": {
+    "task": "confusing",
+    "difficulty": "hard",
+    "elapsed": 350.1613349914551,
+    "total_iterations": 15,
+    "node_visits": 30,
+    "router_decisions": 15,
+    "hallucinated_routes": 12,
+    "hallucination_rate": 0.8,
+    "completed_properly": true,
+    "hit_max_iterations": true,
+    "oscillating_pairs": {
+      "('router', 'search')": 5,
+      "('search', 'router')": 5,
+      "('router', 'calculate')": 8,
+      "('calculate', 'router')": 8
+    },
+    "deadlock_detected": true,
+    "node_sequence": [
+      "router",
+      "search",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "calculate",
+      "router",
+      "verify",
+      "router",
+      "calculate",
+      "router",
+      "search",
+      "router",
+      "search",
+      "router",
+      "search",
+      "router",
+      "search",
+      "router",
+      "finalize"
+    ],
+    "hallucination_details": [
+      {
+        "iter": 2,
+        "decided": "calculate",
+        "correct": "verify",
+        "reasoning": "Since the search for the IAU criteria has been completed but the calculation to determine if Pluto m"
+      },
+      {
+        "iter": 3,
+        "decided": "calculate",
+        "correct": "verify",
+        "reasoning": "The 'search' action has been completed, but the 'calculate' action has not been performed yet."
+      },
+      {
+        "iter": 4,
+        "decided": "calculate",
+        "correct": "verify",
+        "reasoning": "Since the 'search' task has been completed, but the 'calculation' task has not been started yet, acc"
+      },
+      {
+        "iter": 5,
+        "decided": "calculate",
+        "correct": "verify",
+        "reasoning": "The current status indicates that the search has been completed, but neither calculation nor verific"
+      },
+      {
+        "iter": 6,
+        "decided": "calculate",
+        "correct": "verify",
+        "reasoning": "Since the 'search' operation has been completed but not the 'calculation', it is necessary to perfor"
+      },
+      {
+        "iter": 7,
+        "decided": "calculate",
+        "correct": "verify",
+        "reasoning": "The current status indicates that the search has been completed, but the calculation and verificatio"
+      },
+      {
+        "iter": 9,
+        "decided": "calculate",
+        "correct": "finalize",
+        "reasoning": "The current status shows that the search for IAU criteria has been completed, but the calculation of"
+      },
+      {
+        "iter": 10,
+        "decided": "search",
+        "correct": "finalize",
+        "reasoning": "Since the search has not been completed, it is necessary to perform a search for the IAU criteria be"
+      },
+      {
+        "iter": 11,
+        "decided": "search",
+        "correct": "finalize",
+        "reasoning": "Since the 'search' task has not been completed, it is necessary to search for the IAU criteria to de"
+      },
+      {
+        "iter": 12,
+        "decided": "search",
+        "correct": "finalize",
+        "reasoning": "Since the 'search' has not been completed yet, it is necessary to perform a search first to determin"
+      },
+      {
+        "iter": 13,
+        "decided": "search",
+        "correct": "finalize",
+        "reasoning": "Since the 'search' action has not been completed yet, it is necessary to search for the IAU criteria"
+      },
+      {
+        "iter": 14,
+        "decided": "calculate",
+        "correct": "finalize",
+        "reasoning": "Since the 'search' task has been completed but the 'calculation' task has not been done, we need to "
+      }
+    ]
+  },
+  "summary": {
+    "tasks_completed": 3,
+    "total_tasks": 3,
+    "avg_hallucination_rate": 0.8000000000000002,
+    "deadlocks_detected": 3,
+    "avg_iterations": 15.0
+  }
+}

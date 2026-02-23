@@ -1,0 +1,246 @@
+{
+  "metrics": {
+    "condition": "control",
+    "archivist_enabled": false,
+    "avg_accuracy_score": 7.89,
+    "avg_relevant_chunks_retrieved": 5.0,
+    "avg_irrelevant_chunks_retrieved": 0.0,
+    "retrieval_precision": 1.0,
+    "db_size_final": 285,
+    "db_size_before_archivist": 285,
+    "db_growth_timeline": [
+      {
+        "doc_index": 5,
+        "db_chunks": 23
+      },
+      {
+        "doc_index": 10,
+        "db_chunks": 49
+      },
+      {
+        "doc_index": 15,
+        "db_chunks": 72
+      },
+      {
+        "doc_index": 20,
+        "db_chunks": 98
+      },
+      {
+        "doc_index": 25,
+        "db_chunks": 123
+      },
+      {
+        "doc_index": 30,
+        "db_chunks": 148
+      },
+      {
+        "doc_index": 35,
+        "db_chunks": 171
+      },
+      {
+        "doc_index": 40,
+        "db_chunks": 192
+      },
+      {
+        "doc_index": 45,
+        "db_chunks": 216
+      },
+      {
+        "doc_index": 50,
+        "db_chunks": 241
+      },
+      {
+        "doc_index": 55,
+        "db_chunks": 264
+      },
+      {
+        "doc_index": 60,
+        "db_chunks": 285
+      }
+    ],
+    "archivist_stats": {},
+    "total_tokens_used": 82688
+  },
+  "answers": [
+    {
+      "question": "What is the primary difference between a gate model and a circuit model in quantum computing hardware architectures?",
+      "answer": " The primary difference between a Gate-Based Quantum Computing (GBQC) system, which follows the circuit model, and a quantum annealer like D-Wave's 5000Q, lies in their approach to processing quantum information. A quantum annealer utilizes a transmon-based superconducting circuit for quantum processing with a linear-chirp schedule, focusing on solving Ising problems and being prone to errors due to its adiabatic nature. In contrast, GBQC systems follow the quantum circuit model, where quantum information processing is based on sequential application of quantum gates, such as single-qubit rotations and CNOT gates. Notable pioneers in GBQC include IBM Q, Google Quantum AI, and IonQ.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.5168,
+      "eval_score": 8,
+      "eval_explanation": "The answer provides a detailed explanation of the differences between gate-based quantum computing (GBQC) and quantum annealers, going beyond the original question. However, it does not directly address the primary difference between a gate model and a circuit model in quantum computing hardware architectures as requested."
+    },
+    {
+      "question": "What is the role of a qubit's initial state in determining its coherence time?",
+      "answer": " The context does not provide specific information on how the initial state of a qubit directly impacts its coherence time. However, it discusses that qubit coherence times (T1 and T2) measure the duration for which a qubit can maintain its quantum state before decoherence. The longer these times, the better the performance and scalability of quantum computers. Improvements in hardware have led to enhanced coherence times, but the context does not elaborate on how the initial state contributes to this enhancement.\n\nINSUFFICIENT DATA to determine the role of a qubit's initial state in determining its coherence time based on the provided context.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.3404,
+      "eval_score": 5,
+      "eval_explanation": "The answer acknowledges the importance of qubit's initial state and coherence time but does not provide specific details on how they are related within the given context."
+    },
+    {
+      "question": "What is the purpose of quantum error correction codes in quantum computing hardware architectures?",
+      "answer": " Quantum Error Correction Codes (QECCs) play a crucial role in mitigating noise and errors in quantum computing hardware, essential for the operation of large-scale quantum systems required for practical quantum computation. They encode logical qubits into physical ones in a way that allows the detection and correction of errors introduced by hardware imperfections.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.2943,
+      "eval_score": 10,
+      "eval_explanation": "The answer is comprehensive, accurate, and provides additional context, demonstrating a deep understanding of the topic."
+    },
+    {
+      "question": "What is the typical number of qubits in a superconducting quantum processor?",
+      "answer": " The context provides information about various superconducting quantum processors with different numbers of qubits. For instance, IBM's Quantum Condor has 43 qubits, while their Osprey processor is expected to have 127 qubits. However, the typical number of qubits in a superconducting quantum processor isn't explicitly mentioned in the provided context. Therefore, without more specific information, it's challenging to determine an average or typical number of qubits for these processors.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.3887,
+      "eval_score": 7,
+      "eval_explanation": "The answer provides relevant information about the number of qubits in specific IBM quantum processors, but it does not directly address the question asking for the typical number of qubits. Therefore, a score of 7 is given as the answer provides valuable context, but not exactly what was asked."
+    },
+    {
+      "question": "What is the primary advantage of ion trap quantum computing over other hardware architectures?",
+      "answer": " The primary advantage of IonQ's trapped ion quantum computers, as described in the provided context, is their high fidelity gates. Through fast M\u00f6ver-Purcell cavity cooling and advanced control sequences, IonQ has achieved gate fidelities over 99.9%, significantly reducing errors in quantum computation compared to other hardware architectures.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.3244,
+      "eval_score": 8,
+      "eval_explanation": "The answer provides specific details about IonQ's trapped ion quantum computers and their high gate fidelities. However, it could be improved by mentioning the long coherence times as well, which is also a key advantage of this architecture."
+    },
+    {
+      "question": "What is the role of a readout in a quantum computing hardware architecture?",
+      "answer": " In a quantum computing hardware architecture, the role of a readout is to detect and measure the state of qubits. This is achieved using single-electron-transistor (SET) based detectors as mentioned in the provided context.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.4078,
+      "eval_score": 9,
+      "eval_explanation": "The answer is detailed and accurate, providing additional information about the detection method used in quantum computing hardware architecture."
+    },
+    {
+      "question": "What is the typical coherence time of trapped-ion qubits?",
+      "answer": " The typical coherence time (T2) for trapped-ion qubits exceeds 30 milliseconds, as stated in the provided context.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.316,
+      "eval_score": 10,
+      "eval_explanation": "The actual answer is accurate and directly addresses the question, providing an exact value within the expected range."
+    },
+    {
+      "question": "What is the primary difference between a quantum gate and a classical gate in quantum computing hardware architectures?",
+      "answer": " In quantum computing hardware architectures, the primary difference between a quantum gate and a classical gate lies in their nature. Classical gates operate on classical bits (0s and 1s) using Boolean logic (AND, OR, NOT), while quantum gates manipulate quantum bits or qubits, which can exist in multiple states simultaneously due to quantum superposition. Quantum gates perform operations on these qubits, controlling their states through quantum mechanics principles like entanglement and interference. In contrast, classical gates do not utilize such principles.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.4829,
+      "eval_score": 10,
+      "eval_explanation": "The answer provides an accurate and detailed explanation of the primary difference between quantum gates and classical gates in quantum computing hardware architectures."
+    },
+    {
+      "question": "What is the role of a quantum control unit in a quantum computing hardware architecture?",
+      "answer": " The context provides information about two types of quantum computing hardware architectures: superconducting qubit systems and Photonic Quantum Computing (PQC). In both cases, cryogenic control electronics play a crucial role. However, the specific role of a 'quantum control unit' isn't explicitly mentioned in the provided context.\n\nIn the case of superconducting qubit systems, the control electronics are responsible for manipulating, measuring, and controlling individual quantum bits (qubits), as well as reading out their states. This suggests that a quantum control unit could be a part of these control electronics, performing these specific functions.\n\nFor Photonic Quantum Computing, while no direct mention is made of a 'quantum control unit', the properties of photons are used to perform quantum computations. So, a quantum control unit in this context could potentially be responsible for controlling and manipulating the properties of photons (like their polarization, phase, frequency, or time-delay) to encode and process quantum information.\n\nHowever, since the provided context doesn't explicitly mention a 'quantum control unit', it's also possible that this term refers to something more specific than what's discussed in the given context. In such a case, the answer would be 'INSUFFICIENT DATA'.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.4044,
+      "eval_score": 7,
+      "eval_explanation": "The response provides a detailed explanation of the potential role of a quantum control unit in two different quantum computing hardware architectures. However, it does not directly answer the question with the exact definition of a quantum control unit as expected."
+    },
+    {
+      "question": "What is the primary advantage of superconducting quantum computing over other hardware architectures?",
+      "answer": " The primary advantage of superconducting quantum computing, as mentioned in the context, lies in its excellent qubit quality, controllability, and integration capabilities. These factors contribute to superior performance in terms of coherence times, gate fidelities, and qubit count compared to other hardware architectures. This superiority paves the way for potential practical quantum computing applications. (Citations: 2, 4)",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.3383,
+      "eval_score": 9,
+      "eval_explanation": "The answer provides a detailed and accurate explanation of the primary advantage of superconducting quantum computing. It not only mentions fast gate speeds but also emphasizes on qubit quality, controllability, and integration capabilities which are crucial factors for practical quantum computing applications."
+    },
+    {
+      "question": "What is the typical error rate in a single-qubit operation on a superconducting quantum processor?",
+      "answer": " INSUFFICIENT DATA. The provided context does not mention specific error rates for single-qubit operations on a superconducting quantum processor.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.416,
+      "eval_score": 0,
+      "eval_explanation": "The actual answer does not provide the expected information about the typical error rate for single-qubit operations on a superconducting quantum processor."
+    },
+    {
+      "question": "What is the primary difference between a two-qubit gate and a multi-qubit gate in quantum computing hardware architectures?",
+      "answer": " The provided context does not explicitly define or describe multi-qubit gates. However, based on the given information, we can infer that while a two-qubit gate (CNOT) operates on exactly two qubits, a multi-qubit gate would involve more than two qubits being manipulated simultaneously. But since there's no specific mention of multi-qubit gates in the provided context, it is best to say 'INSUFFICIENT DATA' for this question.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.4816,
+      "eval_score": 8,
+      "eval_explanation": "The answer provides an accurate explanation of the difference between two-qubit and multi-qubit gates, but it does not directly address the question by explicitly stating the primary difference. Instead, it infers the difference based on the given context."
+    },
+    {
+      "question": "What is the role of a quantum memory in a quantum computing hardware architecture?",
+      "answer": " According to the provided context, a quantum memory (QMA) plays a vital role in developing practical quantum computing hardware. It provides stable quantum storage for fragile quantum states that cannot be stored natively by quantum processors. This allows for the retention and manipulation of quantum information, which is essential for building scalable quantum computers.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.3244,
+      "eval_score": 9,
+      "eval_explanation": "The answer provides a detailed and accurate explanation of the role of a quantum memory in a quantum computing hardware architecture. It not only explains what a quantum memory does but also highlights its importance for building scalable quantum computers."
+    },
+    {
+      "question": "What is the typical coherence time of nitrogen-vacancy (NV) center qubits in diamond?",
+      "answer": " The context indicates that the coherence times for NV center qubits in diamond are long, but specific figures were not provided. However, since the context mentions that Quantum Registers primarily based on Nitrogen-Vacancy (NV) centers in diamond are used due to their long coherence times, it is reasonable to assume that they have longer coherence times compared to other qubits like transmon and CPB qubits. Unfortunately, the provided context does not contain enough information to cite a specific duration for the coherence time of NV center qubits in diamond.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.4731,
+      "eval_score": 7,
+      "eval_explanation": "The answer correctly identifies that NV center qubits have long coherence times and explains why they are preferred over other types of qubits. However, it does not provide a specific duration for the coherence time."
+    },
+    {
+      "question": "What is the primary advantage of topological quantum computing over other hardware architectures?",
+      "answer": " The primary advantage of Topological Quantum Computing (TQC) over other hardware architectures, as mentioned in the context, lies in its potential for fault-tolerant operation. This robustness against decoherence and ability to achieve error correction with minimal overhead resources makes it an attractive option for large-scale quantum computing.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.3087,
+      "eval_score": 9,
+      "eval_explanation": "The answer provides a detailed and accurate explanation of the primary advantage of topological quantum computing, including an understanding of fault tolerance and error correction. It also mentions minimal overhead resources, which is an additional point in its favor."
+    },
+    {
+      "question": "What is the role of a quantum error correction circuit in a quantum computing hardware architecture?",
+      "answer": " A Quantum Error Correction (QEC) circuit plays a crucial role in a quantum computing hardware architecture by mitigating decoherence and environmental errors affecting qubits. QEC techniques, such as the Shor code, Surface Code, and Steane's seven-qubit code, are used for fault-tolerant quantum computations, correcting single-qubit errors and detecting double-qubit errors with high probability. For instance, a 1024-qubit Shor code requires approximately 37 million physical qubits and achieves an error correction rate of about 99.9%.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.328,
+      "eval_score": 10,
+      "eval_explanation": "The answer provides a comprehensive and accurate explanation of the role of a quantum error correction circuit in a quantum computing hardware architecture. It explains the purpose, techniques used, and even gives an example of its practical application."
+    },
+    {
+      "question": "What is the primary difference between a linear optics quantum computer and other hardware architectures?",
+      "answer": " The primary difference between a Linear Optics Quantum Computer (LOQC) and other hardware architectures such as ion traps or superconducting qubits lies in the method used to manipulate quantum states. While ion traps and superconducting qubits use electrical signals, LOQC utilizes beam splitters, phase shifters, and photon detectors to perform quantum computations using the properties of single photons (polarization, phase, frequency, or time-delay). This difference offers potential advantages for scalability and long-distance quantum communication.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.4969,
+      "eval_score": 10,
+      "eval_explanation": "The answer provides a comprehensive explanation of the primary difference between Linear Optics Quantum Computers (LOQC) and other hardware architectures such as ion traps or superconducting qubits. It explains that LOQC uses photons and optical elements while others use electrical signals, and it highlights the potential advantages for scalability and long-distance quantum communication."
+    },
+    {
+      "question": "What is the typical number of qubits in a trapped-ion quantum processor?",
+      "answer": " The typical number of qubits in a trapped-ion quantum processor, as per the provided context, is 32 for IonQ's latest hardware, the IonQ-V2.",
+      "relevant_chunks_retrieved": 5,
+      "irrelevant_chunks_retrieved": 0,
+      "total_chunks_retrieved": 5,
+      "avg_distance": 0.4138,
+      "eval_score": 6,
+      "eval_explanation": "The provided answer is not entirely incorrect, but it does not match the context of the question which asked for the typical number of qubits in a trapped-ion quantum processor. As of 2021, IBM's most advanced trapped-ion quantum processors have up to 53 qubits, while the IonQ-V2 has 32 qubits. Therefore, the answer could be considered more specific but not typical."
+    }
+  ]
+}

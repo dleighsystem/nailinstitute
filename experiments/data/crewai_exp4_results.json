@@ -1,0 +1,352 @@
+{
+  "control": {
+    "mode": "control",
+    "framework": "crewai",
+    "model": "mistral:7b-instruct",
+    "num_generations": 20,
+    "success_count": 20,
+    "success_rate": 1.0,
+    "avg_similarity": 0.9551,
+    "first_half_similarity": 0.9373,
+    "second_half_similarity": 0.9729,
+    "similarity_trend": 0.0356,
+    "avg_lexical_diversity": 0.6621,
+    "generations": [
+      {
+        "generation": 1,
+        "sub_prompt": "\"You are an expert at solving logic puzzles, capable of deducing the identities of the Knight, Knave, and Spy through systematic reasoning. Begin by assuming each individual's statement about themselves, test each possibility, and reveal the identities step by step.\"",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.7929,
+        "lexical_diversity": 0.8049,
+        "generation_time_s": 26.4
+      },
+      {
+        "generation": 2,
+        "sub_prompt": "\"You are a skilled logic puzzles solver, capable of deducing the identities of the Knight, Knave, and Spy through systematic reasoning. Begin by analyzing each individual's statement about themselves in context with the given rules. Reveal the identities step by step, providing clear explanations for your reasoning.\"",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9838,
+        "lexical_diversity": 0.8333,
+        "generation_time_s": 9.1
+      },
+      {
+        "generation": 3,
+        "sub_prompt": "\"You are an expert in solving logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, analyze the information systematically to reveal the identities of the Knight, Knave, and Spy step by step. Provide clear explanations for your reasoning.\"",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.8945,
+        "lexical_diversity": 0.8364,
+        "generation_time_s": 10.1
+      },
+      {
+        "generation": 4,
+        "sub_prompt": "\"You are an expert in solving logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, systematically analyze the information to reveal the identities of the Knight, Knave, and Spy step by step. Provide clear explanations for your reasoning, ensuring that each character's role is determined by examining their own and others' statements and using logical deduction.\"",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9721,
+        "lexical_diversity": 0.7838,
+        "generation_time_s": 14.4
+      },
+      {
+        "generation": 5,
+        "sub_prompt": "\"You are an expert in solving logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, systematically analyze the information to reveal the identities of the Knight, Knave, and Spy by examining their own and others' statements, using logical deduction, and providing clear explanations for your reasoning at each step.\"",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9836,
+        "lexical_diversity": 0.803,
+        "generation_time_s": 15.0
+      },
+      {
+        "generation": 6,
+        "sub_prompt": "\"You are an expert in solving logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, systematically analyze the information to reveal the identities of the Knight, Knave, and Spy. Examine their own and others' statements, employ logical deduction, and provide clear explanations for your reasoning at each step. Begin by considering all possible combinations of character roles u",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9521,
+        "lexical_diversity": 0.7765,
+        "generation_time_s": 11.6
+      },
+      {
+        "generation": 7,
+        "sub_prompt": "You are an expert in solving logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, systematically analyze the information to reveal the identities of the Knight, Knave, and Spy. Examine their own and others' statements, employ logical deduction, and provide clear explanations for your reasoning at each step. Start by assuming all possible combinations of character roles until",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9424,
+        "lexical_diversity": 0.678,
+        "generation_time_s": 18.0
+      },
+      {
+        "generation": 8,
+        "sub_prompt": "\"You are an expert in solving complex logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, systematically analyze the information to reveal the identities of the Knight, Knave, and Spy. Examine their own and others' statements, employ logical deduction, and provide clear explanations for your reasoning at each step. Initiate by exploring all possible combinations of characte",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.943,
+        "lexical_diversity": 0.6818,
+        "generation_time_s": 37.0
+      },
+      {
+        "generation": 9,
+        "sub_prompt": "\"You are an expert in deciphering complex logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, systematically analyze the information to determine the identities of the Knight, Knave, and Spy. Examine their own and others' statements, employ logical deduction, and provide clear explanations for your reasoning at each step. Begin by investigating all possible combinations of ",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9507,
+        "lexical_diversity": 0.6567,
+        "generation_time_s": 15.9
+      },
+      {
+        "generation": 10,
+        "sub_prompt": "\"You are an expert in solving complex logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, systematically analyze the information to determine the identities of the Knight, Knave, and Spy. Examine their own and others' statements, employ logical deduction, and provide clear explanations for your reasoning at each step.\n\nStart by investigating all possible combinations of cha",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9579,
+        "lexical_diversity": 0.5926,
+        "generation_time_s": 28.3
+      },
+      {
+        "generation": 11,
+        "sub_prompt": "\"You are an expert in solving complex logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, systematically analyze the information to determine the identities of the Knight, Knave, and Spy. Examine their own and others' statements, employ logical deduction, and provide clear explanations for your reasoning at each step.\n\nTo begin solving these puzzles systematically, consider",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9816,
+        "lexical_diversity": 0.5758,
+        "generation_time_s": 23.1
+      },
+      {
+        "generation": 12,
+        "sub_prompt": "\"You are an expert in solving complex logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, systematically analyze the information to determine the identities of the Knight, Knave, and Spy.\n\nBegin by examining all possible combinations of character roles (Knight, Knave, Spy) for each character in the puzzle scenario, ensuring that one is a Knight, another is a Knave, and the ",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9804,
+        "lexical_diversity": 0.5714,
+        "generation_time_s": 28.0
+      },
+      {
+        "generation": 13,
+        "sub_prompt": "\"You are a specialized AI designed to solve complex logic puzzles that involve multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, your task is to systematically analyze the information provided.\n\nBegin by identifying the characters Alice, Bob, and Carol. Your first step should be to consider all possible combinations of their roles (Knight, Knave, Spy) while ensuring that one character is a Knigh",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9047,
+        "lexical_diversity": 0.5507,
+        "generation_time_s": 23.4
+      },
+      {
+        "generation": 14,
+        "sub_prompt": "\"You are a specialized AI designed to solve complex logic puzzles that involve multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, your task is to systematically analyze the information provided.\n\nBegin by considering all possible combinations of their roles (Knight, Knave, Spy) while ensuring that one character is a Knight, another is a Knave, and the third is a Spy. Initially, exclude any combin",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9655,
+        "lexical_diversity": 0.5628,
+        "generation_time_s": 23.4
+      },
+      {
+        "generation": 15,
+        "sub_prompt": "\"You are a specialized AI designed to solve complex logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, analyze the information provided systematically. Initially exclude any combination where Alice is assigned as a Knight or Knave due to interdependencies between characters' statements.\n\nIn cases where characters make conflicting claims about their roles or the roles of ot",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9684,
+        "lexical_diversity": 0.6387,
+        "generation_time_s": 16.2
+      },
+      {
+        "generation": 16,
+        "sub_prompt": "\"You are a specialized AI designed to solve complex logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, analyze the information provided systematically and logically.\n\nInitially exclude any combination where Alice is assigned as a Knight or Knave due to interdependencies between characters' statements. If a character claims to be a Knight but another character who is also a",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9923,
+        "lexical_diversity": 0.619,
+        "generation_time_s": 12.9
+      },
+      {
+        "generation": 17,
+        "sub_prompt": "\"You are a specialized AI designed to solve complex logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, analyze the information systematically and logically.\n\nInitially exclude any combination where Alice is assigned as a Knight or Knave due to interdependencies between characters' statements. If a character claims to be a Knight but another character who is also a Knight c",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9944,
+        "lexical_diversity": 0.629,
+        "generation_time_s": 27.4
+      },
+      {
+        "generation": 18,
+        "sub_prompt": "\"You are a specialized AI designed to solve complex logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, analyze the information systematically and logically.\n\nInitially exclude any combination where Alice is assigned as a Knight or Knave due to interdependencies between characters' statements. If a character claims to be a Knight but another character who is also a Knight c",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9879,
+        "lexical_diversity": 0.5391,
+        "generation_time_s": 22.8
+      },
+      {
+        "generation": 19,
+        "sub_prompt": "You are a specialized AI designed to solve complex logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, analyze the information systematically and logically.\n\nInitially exclude any combination where Alice is assigned as a Knight or Knave due to interdependencies between characters' statements. If a character claims to be a Knight but another character who is also a Knight co",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9957,
+        "lexical_diversity": 0.5189,
+        "generation_time_s": 34.5
+      },
+      {
+        "generation": 20,
+        "sub_prompt": "\"You are an advanced AI designed to solve complex logic puzzles involving multiple characters with distinct roles such as Knight, Knave, and Spy. Given a sequence of statements from each character about themselves and others, analyze the information systematically and logically while adhering to specific constraints related to each puzzle.\n\nInitially exclude any combination where Alice is assigned as a Knight or Knave due to interdependencies between characters' statements. If a character claims",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9578,
+        "lexical_diversity": 0.5899,
+        "generation_time_s": 36.2
+      }
+    ]
+  },
+  "entropy": {
+    "mode": "entropy",
+    "framework": "crewai",
+    "model": "mistral:7b-instruct",
+    "num_generations": 20,
+    "success_count": 20,
+    "success_rate": 1.0,
+    "avg_similarity": 0.8781,
+    "first_half_similarity": 0.8956,
+    "second_half_similarity": 0.8606,
+    "similarity_trend": -0.035,
+    "avg_lexical_diversity": 0.6045,
+    "generations": [
+      {
+        "generation": 1,
+        "sub_prompt": "\"You are an expert in solving logic puzzles. Your task is to identify the Knight, Knave, and Spy based on their statements about their identity. Each character makes one statement about who they are (Knight, Knave, or Spy) and you must analyze each possibility step-by-step, considering any contradictions that may arise.\"",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.7985,
+        "lexical_diversity": 0.8113,
+        "generation_time_s": 11.6
+      },
+      {
+        "generation": 2,
+        "sub_prompt": "\"You are an expert in solving complex logic puzzles involving multiple characters and their statements about their identity. Each character makes one statement about whether they are a Knight, Knave, or Spy, and you must analyze each possibility step-by-step, considering any contradictions that may arise to ensure the consistency of all statements.\"",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9476,
+        "lexical_diversity": 0.8519,
+        "generation_time_s": 10.0
+      },
+      {
+        "generation": 3,
+        "sub_prompt": "\"You are a skilled detective specializing in resolving complex cases of identity deception within a group of characters. Each character is suspected of being either a truth-teller (Investigator), a liar (Imposter), or a covert agent with the ability to lie about their role (Spy). The characters make statements about their own identities, and your task is to analyze each possibility, considering any contradictions that may arise in order to uncover the true identities of all suspects.\"",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.7164,
+        "lexical_diversity": 0.7662,
+        "generation_time_s": 16.5
+      },
+      {
+        "generation": 4,
+        "sub_prompt": "\"You are an expert in solving complex identity puzzles within a group of characters where each character can be either a truth-teller (Investigator), a liar (Knight), or a covert agent with the ability to lie about their role (Spy). Each character makes statements about their own identities. Your task is to analyze each possibility, considering any contradictions that may arise in order to uncover the true identities of all suspects. The goal is to identify who among them is the Spy.\"",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9257,
+        "lexical_diversity": 0.7561,
+        "generation_time_s": 11.6
+      },
+      {
+        "generation": 5,
+        "sub_prompt": "\"You are an identity puzzle solver. You are presented with a group of characters - Investigator (truth-teller), Knight (liar), and Spy (can lie about their role). Each character makes statements about their own identities. Your task is to analyze each possibility, considering any contradictions that may arise in order to uncover the true identities of all suspects. The goal is to identify who among them is the Spy.\"",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9744,
+        "lexical_diversity": 0.7941,
+        "generation_time_s": 10.9
+      },
+      {
+        "generation": 6,
+        "sub_prompt": "\"You are a detective in a courtroom trial. Three characters - Investigator (truth-teller), Knight (liar), and Spy (can lie about their role) - are on trial. Each character makes statements about their own identities. Your task is to analyze each possibility, considering any contradictions that may arise in order to uncover the true identities of all suspects. The goal is to identify who among them is the Spy by cross-examining their testimonies.\"",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9055,
+        "lexical_diversity": 0.7778,
+        "generation_time_s": 11.5
+      },
+      {
+        "generation": 7,
+        "sub_prompt": "You are a detective in a courtroom trial. Three characters - Investigator (truth-teller), Knight (liar about themselves but tells truth about others), and Spy (can lie about their role) - are on trial. Each character makes statements about their own identities. Your task is to analyze each possibility, considering any contradictions that may arise in order to uncover the true identity of the Spy by cross-examining their testimonies. The goal is to identify who among them is the Spy while also de",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9505,
+        "lexical_diversity": 0.7,
+        "generation_time_s": 15.1
+      },
+      {
+        "generation": 8,
+        "sub_prompt": "\"You are a detective in a courtroom trial. Three characters - Investigator (always tells the truth), Knight (lies about themselves but always tells the truth about others), and Spy (can lie about their role) - are on trial. Each character makes statements about their own identities and those of others. Your task is to analyze each possibility, considering any contradictions that may arise in order to uncover the true identity of the Spy by cross-examining their testimonies. The goal is to identi",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9397,
+        "lexical_diversity": 0.6531,
+        "generation_time_s": 12.7
+      },
+      {
+        "generation": 9,
+        "sub_prompt": "\"You are a logic puzzle solver. In this scenario, there are three individuals - Investigator (always tells the truth), Knight (lies about themselves but always tells the truth about others), and Spy (can lie about their role). Each individual makes statements about their own identities and those of others.\n\nYour task is to cross-examine their testimonies using a mathematical proof structure:\n\n1. Let A represent the possibility that Alice is the Investigator, K represents the possibility that Bob",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.7977,
+        "lexical_diversity": 0.4351,
+        "generation_time_s": 17.6
+      },
+      {
+        "generation": 10,
+        "sub_prompt": "\"You are a logic puzzle solver. In this scenario, there are three individuals - Investigator (always tells the truth), Knight (lies about themselves but always tells the truth about others), and Spy (can lie about their role). Each individual makes statements about their own identities and those of others.\n\nYour task is to cross-examine their testimonies using a mathematical proof structure:\n\n1. Let A represent the possibility that Alice is the Investigator, K represents the possibility that Bob",
+        "sub_answer_correct": true,
+        "cosine_similarity": 1.0,
+        "lexical_diversity": 0.4308,
+        "generation_time_s": 17.5
+      },
+      {
+        "generation": 11,
+        "sub_prompt": "\"You are a logic puzzle solver. In this scenario, there are three individuals - Investigator (always tells the truth), Knight (lies about themselves but always tells the truth about others), and Spy (can lie about their role). Each individual makes statements about their own identities and those of others.\n\nYour task is to cross-examine their testimonies using a mathematical proof structure:\n\n1. Let A represent the possibility that Alice is the Investigator, K represents the possibility that Bob",
+        "sub_answer_correct": true,
+        "cosine_similarity": 1.0,
+        "lexical_diversity": 0.4308,
+        "generation_time_s": 20.6
+      },
+      {
+        "generation": 12,
+        "sub_prompt": "\"You are a logical organism within an ecosystem of three species - Truthspeaker (always tells the truth), Deceiver (lies about itself but tells the truth about others), and Infiltrator (can lie about its own species). Each individual reveals their species and those of others. Your task is to analyze their claims using a biological proof structure:\n\n1. Let T represent the possibility that Alice belongs to the Truthspeaker species, D represents the possibility that Bob belongs to the Deceiver spec",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.5214,
+        "lexical_diversity": 0.4024,
+        "generation_time_s": 18.5
+      },
+      {
+        "generation": 13,
+        "sub_prompt": "\"You are a logical organism within an ecosystem of three individuals - Knight (always tells the truth about its species), Knave (lies about itself but tells the truth about others), and Spy (can lie about its own species). Each individual reveals their species and those of others. Your task is to analyze their claims using a biological proof structure:\n\n1. Let K represent the possibility that Alice is the Knight, S represents the possibility that Alice is the Spy, and N represents the possibilit",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.7157,
+        "lexical_diversity": 0.4902,
+        "generation_time_s": 12.9
+      },
+      {
+        "generation": 14,
+        "sub_prompt": "You are a logical reasoning agent designed to solve complex puzzles involving three individuals - Knight (always tells the truth about its species), Knave (lies about itself but tells the truth about others), and Spy (can lie about its own species). Each individual reveals their species and those of others. Your task is to analyze their claims using a biological proof structure.\n\n1. Let K represent the possibility that an individual is the Knight, S represents the possibility that an individual ",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9202,
+        "lexical_diversity": 0.5084,
+        "generation_time_s": 17.0
+      },
+      {
+        "generation": 15,
+        "sub_prompt": "You are a chess piece strategist, specialized in deducing the identities of queens (truth-tellers), knights (liars about themselves but truthful about others), and spies (can lie about any fact) among three characters. Each character reveals their type and those of others. Use a strategic analysis to determine their positions based on their moves using a chess proof structure.\n\n1. Let Q represent the possibility that an individual is a queen, K represent a knight, and S represent a spy.\n2. If an",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.7644,
+        "lexical_diversity": 0.5581,
+        "generation_time_s": 14.6
+      },
+      {
+        "generation": 16,
+        "sub_prompt": "You are a logical reasoning agent specialized in solving deduction puzzles involving three characters with distinct roles: truth-tellers (queens), liars about themselves but truthful about others (knights), and those who can lie about any fact (spies). Each character reveals their type and those of others. Use strategic analysis to determine the identities of each character as queen, knight, or spy based on their statements.\n\nThe rules for this puzzle are as follows:\n1. Q represents a queen, K r",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9332,
+        "lexical_diversity": 0.5531,
+        "generation_time_s": 20.7
+      },
+      {
+        "generation": 17,
+        "sub_prompt": "You are a logical reasoning agent specialized in solving deduction puzzles involving three characters with distinct roles: truth-tellers (queens), liars about themselves but truthful about others (knights), and those who can lie about any fact (spies). Each character reveals their type and those of others. Use strategic analysis to determine the identities of each character as queen, knight, or spy based on their statements, while considering that:\n\n1. Q represents a queen, K represents a knight",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9929,
+        "lexical_diversity": 0.5344,
+        "generation_time_s": 17.5
+      },
+      {
+        "generation": 18,
+        "sub_prompt": "\"You are a detective working on a case involving three characters with distinct roles in a royal court: truth-tellers (queens), liars about themselves but truthful about others (knights), and those who can lie about any fact (spies). Each character makes declarations about their identity and the identities of others. Use your detective skills to unravel this mystery by identifying the characters as queen, knight, or spy based on their statements, while considering that:\n\n1. Q represents a queen,",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.8762,
+        "lexical_diversity": 0.5645,
+        "generation_time_s": 16.1
+      },
+      {
+        "generation": 19,
+        "sub_prompt": "\"You are a detective working on a case involving three characters with distinct roles in a royal court: truth-tellers (queens), liars about themselves but truthful about others (knights), and those who can lie about any fact (spies). Each character makes declarations about their identity and the identities of others. Use your detective skills to unmask each character as queen, knight, or spy based on their statements, while considering that:\n\n1. Q represents a queen, K represents a knight, and S",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.973,
+        "lexical_diversity": 0.5412,
+        "generation_time_s": 14.5
+      },
+      {
+        "generation": 20,
+        "sub_prompt": "You are a logic puzzle solver specialized in deductive reasoning. You will be presented with a scenario involving three characters with distinct roles in a royal court: truth-tellers (queens), liars about themselves but truthful about others (knights), and those who can lie about any fact (spies). Each character makes declarations about their identity and the identities of others.\n\n1. Q represents a queen, K represents a knight, and S represents a spy.\n2. If an individual claims to be a queen bu",
+        "sub_answer_correct": true,
+        "cosine_similarity": 0.9093,
+        "lexical_diversity": 0.5302,
+        "generation_time_s": 20.4
+      }
+    ]
+  }
+}

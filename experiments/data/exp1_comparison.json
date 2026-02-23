@@ -1,0 +1,133 @@
+{
+  "control": {
+    "condition": "control",
+    "archivist_enabled": false,
+    "avg_accuracy_score": 7.89,
+    "avg_relevant_chunks_retrieved": 5.0,
+    "avg_irrelevant_chunks_retrieved": 0.0,
+    "retrieval_precision": 1.0,
+    "db_size_final": 285,
+    "db_size_before_archivist": 285,
+    "db_growth_timeline": [
+      {
+        "doc_index": 5,
+        "db_chunks": 23
+      },
+      {
+        "doc_index": 10,
+        "db_chunks": 49
+      },
+      {
+        "doc_index": 15,
+        "db_chunks": 72
+      },
+      {
+        "doc_index": 20,
+        "db_chunks": 98
+      },
+      {
+        "doc_index": 25,
+        "db_chunks": 123
+      },
+      {
+        "doc_index": 30,
+        "db_chunks": 148
+      },
+      {
+        "doc_index": 35,
+        "db_chunks": 171
+      },
+      {
+        "doc_index": 40,
+        "db_chunks": 192
+      },
+      {
+        "doc_index": 45,
+        "db_chunks": 216
+      },
+      {
+        "doc_index": 50,
+        "db_chunks": 241
+      },
+      {
+        "doc_index": 55,
+        "db_chunks": 264
+      },
+      {
+        "doc_index": 60,
+        "db_chunks": 285
+      }
+    ],
+    "archivist_stats": {},
+    "total_tokens_used": 82688
+  },
+  "with_archivist": {
+    "condition": "with_archivist",
+    "archivist_enabled": true,
+    "avg_accuracy_score": 7.44,
+    "avg_relevant_chunks_retrieved": 5.0,
+    "avg_irrelevant_chunks_retrieved": 0.0,
+    "retrieval_precision": 1.0,
+    "db_size_final": 277,
+    "db_size_before_archivist": 282,
+    "db_growth_timeline": [
+      {
+        "doc_index": 5,
+        "db_chunks": 22
+      },
+      {
+        "doc_index": 10,
+        "db_chunks": 47
+      },
+      {
+        "doc_index": 15,
+        "db_chunks": 66
+      },
+      {
+        "doc_index": 20,
+        "db_chunks": 91
+      },
+      {
+        "doc_index": 25,
+        "db_chunks": 114
+      },
+      {
+        "doc_index": 30,
+        "db_chunks": 140
+      },
+      {
+        "doc_index": 35,
+        "db_chunks": 166
+      },
+      {
+        "doc_index": 40,
+        "db_chunks": 190
+      },
+      {
+        "doc_index": 45,
+        "db_chunks": 214
+      },
+      {
+        "doc_index": 50,
+        "db_chunks": 240
+      },
+      {
+        "doc_index": 55,
+        "db_chunks": 261
+      },
+      {
+        "doc_index": 60,
+        "db_chunks": 282
+      }
+    ],
+    "archivist_stats": {
+      "total_audited": 282,
+      "pruned": 5,
+      "kept": 277,
+      "prune_ratio": 0.018
+    },
+    "total_tokens_used": 81767
+  },
+  "accuracy_delta": -0.4499999999999993,
+  "precision_delta": 0.0
+}

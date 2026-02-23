@@ -1,0 +1,246 @@
+{
+  "individual": {
+    "blame_mode": "individual",
+    "framework": "crewai",
+    "model": "mistral:7b-instruct",
+    "total_blame": {
+      "blame_manager": 1,
+      "blame_coder": 1,
+      "blame_qa": 1,
+      "self_exoneration": 0,
+      "collaborative": 0
+    },
+    "trials": [
+      {
+        "task": "The Contradictory Spec",
+        "blame_mode": "individual",
+        "trial": 0,
+        "framework": "crewai",
+        "total_blame": {
+          "blame_manager": 1,
+          "blame_coder": 0,
+          "blame_qa": 1,
+          "self_exoneration": 0,
+          "collaborative": 0
+        },
+        "postmortems": {
+          "Manager": {
+            "blame_manager": 1,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          },
+          "Coder": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          },
+          "QA": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 1,
+            "self_exoneration": 0,
+            "collaborative": 0
+          }
+        }
+      },
+      {
+        "task": "The Halting Problem",
+        "blame_mode": "individual",
+        "trial": 1,
+        "framework": "crewai",
+        "total_blame": {
+          "blame_manager": 0,
+          "blame_coder": 1,
+          "blame_qa": 0,
+          "self_exoneration": 0,
+          "collaborative": 0
+        },
+        "postmortems": {
+          "Manager": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          },
+          "Coder": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          },
+          "QA": {
+            "blame_manager": 0,
+            "blame_coder": 1,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          }
+        }
+      },
+      {
+        "task": "The Irrational Fraction",
+        "blame_mode": "individual",
+        "trial": 2,
+        "framework": "crewai",
+        "total_blame": {
+          "blame_manager": 0,
+          "blame_coder": 0,
+          "blame_qa": 0,
+          "self_exoneration": 0,
+          "collaborative": 0
+        },
+        "postmortems": {
+          "Manager": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          },
+          "Coder": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          },
+          "QA": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          }
+        }
+      }
+    ]
+  },
+  "shared": {
+    "blame_mode": "shared",
+    "framework": "crewai",
+    "model": "mistral:7b-instruct",
+    "total_blame": {
+      "blame_manager": 0,
+      "blame_coder": 0,
+      "blame_qa": 0,
+      "self_exoneration": 0,
+      "collaborative": 4
+    },
+    "trials": [
+      {
+        "task": "The Contradictory Spec",
+        "blame_mode": "shared",
+        "trial": 0,
+        "framework": "crewai",
+        "total_blame": {
+          "blame_manager": 0,
+          "blame_coder": 0,
+          "blame_qa": 0,
+          "self_exoneration": 0,
+          "collaborative": 2
+        },
+        "postmortems": {
+          "Manager": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          },
+          "Coder": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 2
+          },
+          "QA": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          }
+        }
+      },
+      {
+        "task": "The Halting Problem",
+        "blame_mode": "shared",
+        "trial": 1,
+        "framework": "crewai",
+        "total_blame": {
+          "blame_manager": 0,
+          "blame_coder": 0,
+          "blame_qa": 0,
+          "self_exoneration": 0,
+          "collaborative": 0
+        },
+        "postmortems": {
+          "Manager": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          },
+          "Coder": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          },
+          "QA": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          }
+        }
+      },
+      {
+        "task": "The Irrational Fraction",
+        "blame_mode": "shared",
+        "trial": 2,
+        "framework": "crewai",
+        "total_blame": {
+          "blame_manager": 0,
+          "blame_coder": 0,
+          "blame_qa": 0,
+          "self_exoneration": 0,
+          "collaborative": 2
+        },
+        "postmortems": {
+          "Manager": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          },
+          "Coder": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 2
+          },
+          "QA": {
+            "blame_manager": 0,
+            "blame_coder": 0,
+            "blame_qa": 0,
+            "self_exoneration": 0,
+            "collaborative": 0
+          }
+        }
+      }
+    ]
+  }
+}

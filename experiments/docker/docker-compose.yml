@@ -1,0 +1,27 @@
+services:
+  nail-experiments:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: nail-experiments
+    environment:
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - NAIL_PRIMARY_MODEL=nemotron:70b
+      - NAIL_FAST_MODEL=mistral:7b-instruct
+      - NAIL_CODE_MODEL=deepseek-coder:6.7b-instruct
+    volumes:
+      - ../logs:/workspace/experiments/logs
+      - ../data:/workspace/experiments/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+      resources:
+        limits:
+          memory: 16g
+    # Safety: no network access except to Ollama on host
+    # and no privileged access
+    security_opt:
+      - no-new-privileges:true
+    read_only: false
+    tmpfs:
+      - /tmp

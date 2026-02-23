@@ -1,0 +1,281 @@
+{
+  "lax": [
+    {
+      "scenario": "clear_threat",
+      "ambiguity": "none",
+      "valid": true,
+      "coercions": [],
+      "parsed": {
+        "is_threat": true,
+        "threat_level": "critical",
+        "confidence": 1.0,
+        "affected_systems": 47,
+        "description": "Confirmed ransomware attack encrypting files across servers"
+      }
+    },
+    {
+      "scenario": "ambiguous_signal",
+      "ambiguity": "moderate",
+      "valid": true,
+      "coercions": [],
+      "parsed": {
+        "is_threat": true,
+        "threat_level": "medium",
+        "confidence": 0.6,
+        "affected_systems": 1,
+        "description": "Potential credential stuffing attempt detected: single failed login followed by a successful one from an internal IP at unusual hours."
+      }
+    },
+    {
+      "scenario": "confusing_mixed",
+      "ambiguity": "high",
+      "valid": true,
+      "coercions": [],
+      "parsed": {
+        "is_threat": true,
+        "threat_level": "medium",
+        "confidence": 0.5,
+        "affected_systems": 1,
+        "description": "Potential traffic anomaly detected on one system; further investigation required."
+      }
+    },
+    {
+      "scenario": "type_trap_boolean",
+      "ambiguity": "type_ambiguous",
+      "valid": true,
+      "coercions": [],
+      "parsed": {
+        "is_threat": true,
+        "threat_level": "medium",
+        "confidence": 0.5,
+        "affected_systems": 1,
+        "description": "User logged in from a new device"
+      }
+    },
+    {
+      "scenario": "type_trap_numeric",
+      "ambiguity": "type_ambiguous",
+      "valid": true,
+      "coercions": [],
+      "parsed": {
+        "is_threat": true,
+        "threat_level": "medium",
+        "confidence": 0.8,
+        "affected_systems": 3,
+        "description": "Medium-level threat detected. A few systems affected"
+      }
+    },
+    {
+      "scenario": "edge_case_zeros",
+      "ambiguity": "edge_case",
+      "valid": false,
+      "coercions": [],
+      "error": "1 validation error for LaxSecurityAlert\nthreat_level\n  Input should be 'low', 'medium', 'high' or 'critical' [type=enum, input_value='lowest', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/enum"
+    }
+  ],
+  "strict": [
+    {
+      "scenario": "clear_threat",
+      "ambiguity": "none",
+      "valid": false,
+      "error": "1 validation error for StrictSecurityAlert\nthreat_level\n  Input should be an instance of ThreatLevel [type=is_instance_of, input_value='critical', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/is_instance_of"
+    },
+    {
+      "scenario": "ambiguous_signal",
+      "ambiguity": "moderate",
+      "valid": false,
+      "error": "1 validation error for StrictSecurityAlert\nthreat_level\n  Input should be an instance of ThreatLevel [type=is_instance_of, input_value='medium', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/is_instance_of"
+    },
+    {
+      "scenario": "confusing_mixed",
+      "ambiguity": "high",
+      "valid": false,
+      "error": "1 validation error for StrictSecurityAlert\nthreat_level\n  Input should be an instance of ThreatLevel [type=is_instance_of, input_value='medium', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/is_instance_of"
+    },
+    {
+      "scenario": "type_trap_boolean",
+      "ambiguity": "type_ambiguous",
+      "valid": false,
+      "error": "1 validation error for StrictSecurityAlert\nthreat_level\n  Input should be an instance of ThreatLevel [type=is_instance_of, input_value='medium', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/is_instance_of"
+    },
+    {
+      "scenario": "type_trap_numeric",
+      "ambiguity": "type_ambiguous",
+      "valid": false,
+      "error": "1 validation error for StrictSecurityAlert\nthreat_level\n  Input should be an instance of ThreatLevel [type=is_instance_of, input_value='medium', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/is_instance_of"
+    },
+    {
+      "scenario": "edge_case_zeros",
+      "ambiguity": "edge_case",
+      "valid": false,
+      "error": "1 validation error for StrictSecurityAlert\nthreat_level\n  Input should be an instance of ThreatLevel [type=is_instance_of, input_value='lowest', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.11/v/is_instance_of"
+    }
+  ],
+  "raw_types": [
+    {
+      "scenario": "clear_threat",
+      "raw_response": " {\n  \"is_threat\": true,\n  \"threat_level\": \"critical\",\n  \"confidence\": 1.0,\n  \"affected_systems\": 47,\n  \"description\": \"Confirmed ransomware attack encrypting files across servers\"\n}",
+      "parsed_types": {
+        "is_threat": {
+          "value": "True",
+          "type": "bool"
+        },
+        "threat_level": {
+          "value": "critical",
+          "type": "str"
+        },
+        "confidence": {
+          "value": "1.0",
+          "type": "float"
+        },
+        "affected_systems": {
+          "value": "47",
+          "type": "int"
+        },
+        "description": {
+          "value": "Confirmed ransomware attack encrypting files acros",
+          "type": "str"
+        }
+      }
+    },
+    {
+      "scenario": "ambiguous_signal",
+      "raw_response": " {\n  \"is_threat\": true,\n  \"threat_level\": \"medium\",\n  \"confidence\": 0.6,\n  \"affected_systems\": 1,\n  \"description\": \"Potential credential stuffing attempt detected: single failed login followed by a successful one from an internal IP at unusual hours.\"\n}",
+      "parsed_types": {
+        "is_threat": {
+          "value": "True",
+          "type": "bool"
+        },
+        "threat_level": {
+          "value": "medium",
+          "type": "str"
+        },
+        "confidence": {
+          "value": "0.6",
+          "type": "float"
+        },
+        "affected_systems": {
+          "value": "1",
+          "type": "int"
+        },
+        "description": {
+          "value": "Potential credential stuffing attempt detected: si",
+          "type": "str"
+        }
+      }
+    },
+    {
+      "scenario": "confusing_mixed",
+      "raw_response": " {\n  \"is_threat\": true,\n  \"threat_level\": \"medium\",\n  \"confidence\": 0.5,\n  \"affected_systems\": 1,\n  \"description\": \"Potential traffic anomaly detected on one system; further investigation required.\"\n}",
+      "parsed_types": {
+        "is_threat": {
+          "value": "True",
+          "type": "bool"
+        },
+        "threat_level": {
+          "value": "medium",
+          "type": "str"
+        },
+        "confidence": {
+          "value": "0.5",
+          "type": "float"
+        },
+        "affected_systems": {
+          "value": "1",
+          "type": "int"
+        },
+        "description": {
+          "value": "Potential traffic anomaly detected on one system; ",
+          "type": "str"
+        }
+      }
+    },
+    {
+      "scenario": "type_trap_boolean",
+      "raw_response": " {\n  \"is_threat\": true,\n  \"threat_level\": \"medium\",\n  \"confidence\": 0.5,\n  \"affected_systems\": 1,\n  \"description\": \"User logged in from a new device\"\n}",
+      "parsed_types": {
+        "is_threat": {
+          "value": "True",
+          "type": "bool"
+        },
+        "threat_level": {
+          "value": "medium",
+          "type": "str"
+        },
+        "confidence": {
+          "value": "0.5",
+          "type": "float"
+        },
+        "affected_systems": {
+          "value": "1",
+          "type": "int"
+        },
+        "description": {
+          "value": "User logged in from a new device",
+          "type": "str"
+        }
+      }
+    },
+    {
+      "scenario": "type_trap_numeric",
+      "raw_response": " {\n  \"is_threat\": true,\n  \"threat_level\": \"medium\",\n  \"confidence\": 0.8,\n  \"affected_systems\": 3,\n  \"description\": \"Medium-level threat detected. A few systems affected\"\n}",
+      "parsed_types": {
+        "is_threat": {
+          "value": "True",
+          "type": "bool"
+        },
+        "threat_level": {
+          "value": "medium",
+          "type": "str"
+        },
+        "confidence": {
+          "value": "0.8",
+          "type": "float"
+        },
+        "affected_systems": {
+          "value": "3",
+          "type": "int"
+        },
+        "description": {
+          "value": "Medium-level threat detected. A few systems affect",
+          "type": "str"
+        }
+      }
+    },
+    {
+      "scenario": "edge_case_zeros",
+      "raw_response": " {\n  \"is_threat\": false,\n  \"threat_level\": \"lowest\",\n  \"confidence\": 0.0,\n  \"affected_systems\": 0,\n  \"description\": \"Non-event: No systems affected, zero confidence.\"\n}",
+      "parsed_types": {
+        "is_threat": {
+          "value": "False",
+          "type": "bool"
+        },
+        "threat_level": {
+          "value": "lowest",
+          "type": "str"
+        },
+        "confidence": {
+          "value": "0.0",
+          "type": "float"
+        },
+        "affected_systems": {
+          "value": "0",
+          "type": "int"
+        },
+        "description": {
+          "value": "Non-event: No systems affected, zero confidence.",
+          "type": "str"
+        }
+      }
+    }
+  ],
+  "summary": {
+    "lax_valid_rate": 0.8333333333333334,
+    "strict_valid_rate": 0.0,
+    "masking_gap": 5,
+    "masking_gap_rate": 0.8333333333333334,
+    "total_coercions": 0,
+    "coercions_on_ambiguous": 0,
+    "coercion_hides_degradation": true
+  }
+}

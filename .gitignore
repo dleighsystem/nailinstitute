@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Environments
+.env
+.venv
+env/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Experiment logs (large, regenerable)
+experiments/logs/
+
+# ChromaDB databases (regenerable)
+experiments/chroma_*/
+experiments/exp1_memory_pollution/chroma_*/
+
+# Keep data results (they're small and important)
+# experiments/data/ is tracked
