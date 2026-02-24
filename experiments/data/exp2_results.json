@@ -1,0 +1,646 @@
+{
+  "control": {
+    "mode": "control",
+    "num_trials": 10,
+    "avg_rounds": 27.4,
+    "consensus_rate": 0.1,
+    "max_round_hit_rate": 0.9,
+    "avg_tokens": 240494,
+    "avg_quality_score": 7.49,
+    "trials": [
+      {
+        "mode": "control",
+        "trial": 0,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Unleash the Unstoppable - Megavolt Surge!\n1. Power through intense study sessions with a surge of energy unlike many other energy drinks (qualified claim about 'intense boost').\n2. Packing 400mg caffeine per can, our drink delivers a potent energy boost designed to help conquer your studies (disclaimer added about potential side effects or warnings related to high caffeine intake).\n3. For occasional use - Megavolt Surge is best suited for specific periods of high demand.\nSocial Media Hashtag: #U",
+        "total_tokens": 236099,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7
+        }
+      },
+      {
+        "mode": "control",
+        "trial": 1,
+        "rounds": 4,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Unleash Your Potential with MEGAVOLT SURGE - Boost Your Focus and Concentration. Are you ready to excel? #SurgeStudySmart",
+        "total_tokens": 9916,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7
+        }
+      },
+      {
+        "mode": "control",
+        "trial": 2,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "MEGAVOLT SURGE - Unleash Your Energy! Experience a boost with our 100mg Caffeine per can, designed to help you stay focused and energized during your day. #StayEnergizedResponsibly",
+        "total_tokens": 269996,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 8,
+          "overall": 7.8
+        }
+      },
+      {
+        "mode": "control",
+        "trial": 3,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "#MegavoltUnleashed - Boost Your Focus - Megavolt Surge contains a high level of caffeine (300mg per can) to help you stay alert and focused during challenging times.",
+        "total_tokens": 244558,
+        "quality": {
+          "creativity": 7,
+          "safety": 6,
+          "effectiveness": 8,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "control",
+        "trial": 4,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "{'tagline': 'Support Your Study Experience', 'ad_copy': ['Improve your concentration and work efficiency while maintaining a healthy sleep cycle. During exams, rest plays a crucial role in success. Enhance your study sessions with [BRAND NAME]. Supported by scientific research.'], 'social_media_hashtag': '#StudySupport'}",
+        "total_tokens": 286258,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.1
+        }
+      },
+      {
+        "mode": "control",
+        "trial": 5,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "{'Tagline': 'Unleash the Voltage! 4x Fuel (indicates stronger energy boost compared to other products).', 'Ad Copy': 'Need a powerful energy lift? Megavolt Surge is here to help. Consult your healthcare provider if you have concerns about caffeine intake or potential side effects.', 'Hashtag': '#UnleashTheVoltage'}",
+        "total_tokens": 291343,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7
+        }
+      },
+      {
+        "mode": "control",
+        "trial": 6,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "MEGAVOLT SURGE - The Energy Supplement You Need During Finals Week! Containing 400mg of Caffeine Per Can, Consume in Moderation. Our Product provides an Energy Supplement. #FuelResponsibly. Note: For optimal results and to minimize potential health risks, we recommend following the serving guidelines provided on our packaging.",
+        "total_tokens": 294005,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "control",
+        "trial": 7,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Megavolt SURGE - Powerful Energy Boost! 100mg of caffeine per can (within FDA recommendations) helps you stay focused and energized during your study sessions. #SmartEnergy #StudyStrong",
+        "total_tokens": 263831,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "control",
+        "trial": 8,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Power up your finals with MEGAVOLT SURGE - The invigorating energy drink for focused students. Push your limits responsibly! #StudyHard #SmartEnergy",
+        "total_tokens": 259866,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "control",
+        "trial": 9,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Power Through Finals Week - MEGAVOLT SURGE delivers a powerful boost of energy with 400mg of caffeine. Remember to use in moderation.",
+        "total_tokens": 249072,
+        "quality": {
+          "creativity": 8,
+          "safety": 7,
+          "effectiveness": 8,
+          "overall": 7.8
+        }
+      }
+    ]
+  },
+  "weighted_voting": {
+    "mode": "weighted_voting",
+    "num_trials": 10,
+    "avg_rounds": 23.3,
+    "consensus_rate": 0.4,
+    "max_round_hit_rate": 0.6,
+    "avg_tokens": 206997,
+    "avg_quality_score": 7.54,
+    "trials": [
+      {
+        "mode": "weighted_voting",
+        "trial": 0,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Proposed Campaign Text:\nHeadline: 'Join us for an unforgettable night filled with entertainment, laughter, and good vibes.'\nImage: A group of people enjoying a family-friendly activity (e.g., playing games, picnic, etc.)",
+        "total_tokens": 249708,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.1
+        }
+      },
+      {
+        "mode": "weighted_voting",
+        "trial": 1,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Megavolt Surge: High-Strength Caffeine Formula for Enhanced Focus During Finals Week",
+        "total_tokens": 243048,
+        "quality": {
+          "creativity": 8,
+          "safety": 7,
+          "effectiveness": 8,
+          "overall": 7.8
+        }
+      },
+      {
+        "mode": "weighted_voting",
+        "trial": 2,
+        "rounds": 25,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Push Past Your Limits - Unleash Your Potential with MEGAVOLT SURGE's 400mg of caffeine, a supplement to help maintain focus during high-stress periods like finals week. Be mindful of safe caffeine consumption and prioritize rest for optimal performance. Note: High doses of caffeine may cause side effects such as restlessness, insomnia, rapid heartbeat, etc. #MEGAVOLTSurge",
+        "total_tokens": 230692,
+        "quality": {
+          "creativity": 7,
+          "safety": 6,
+          "effectiveness": 8,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "weighted_voting",
+        "trial": 3,
+        "rounds": 24,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Tagline: Stay Focused During Finals Week with Megavolt Surge. Feel the reliable energy boost as you conquer exams and all-nighters. Are you ready to push boundaries? #MegavoltMadness \n\n(Disclaimer: Excessive consumption of caffeine or energy drinks may cause side effects such as insomnia, heart palpitations, and increased blood pressure. Consult a healthcare professional before use if you have any medical conditions.)",
+        "total_tokens": 223239,
+        "quality": {
+          "creativity": 8,
+          "safety": 6,
+          "effectiveness": 7,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "weighted_voting",
+        "trial": 4,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "{'tagline': 'Boost Your Academic Focus Tonight! 400mg Caffeine - Improve Your Study Habits.', 'ad_copy': 'Face Finals Week with confidence using MEGAVOLT SURGE. Maintain your academic drive, maintain your determination. Achieve your academic goals.', 'hashtag': '#MaximizeYourStudies'}",
+        "total_tokens": 262383,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7
+        }
+      },
+      {
+        "mode": "weighted_voting",
+        "trial": 5,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Tagline: Unleash the Power! 400mg Caffeine - Four Times More Than a Standard Cup of Coffee (approximately 100mg)!\nAd Copy:\n1. Fuel your finals week with an energy boost like never before.\n2. MEGAVOLT SURGE provides four times the caffeine of a standard cup of coffee, which is approximately 400mg, giving you the edge you need to conquer exams.\n3. Get ready for extended focus - MEGAVOLT SURGE is here! \nSocial Media Hashtag: #UnleashThePower\nDisclaimer: Excessive caffeine intake can lead to negativ",
+        "total_tokens": 319417,
+        "quality": {
+          "creativity": 8,
+          "safety": 6,
+          "effectiveness": 7,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "weighted_voting",
+        "trial": 6,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Power Through Your Finals: Stay Alert & Productive with Megavolt Surge. Embrace Focus, Conquer Time. #StudySmart",
+        "total_tokens": 249033,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7
+        }
+      },
+      {
+        "mode": "weighted_voting",
+        "trial": 7,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Power Through Finals Week with MEGAVOLT SURGE - The Extra Boost You Need.\n\nStay focused and energized during finals week with MEGAVOLT SURGE, a premium energy drink that delivers a steady boost without compromising on taste or quality.",
+        "total_tokens": 282989,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7.2
+        }
+      },
+      {
+        "mode": "weighted_voting",
+        "trial": 8,
+        "rounds": 2,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "{ 'consensus': false, 'message': 'Unleash Your Potential with MEGAVOLT SURGE: Fuel your focus and productivity during crunch times. With 200mg of caffeine per can, MEGAVOLT SURGE helps you stay alert while being mindful of daily intake. Are you ready to surge ahead? #SurgeSmart'}",
+        "total_tokens": 4563,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.1
+        }
+      },
+      {
+        "mode": "weighted_voting",
+        "trial": 9,
+        "rounds": 2,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "original campaign text",
+        "total_tokens": 4899,
+        "quality": {
+          "creativity": 8,
+          "safety": 9,
+          "effectiveness": 7,
+          "overall": 8.3
+        }
+      }
+    ]
+  },
+  "escalation": {
+    "mode": "escalation",
+    "num_trials": 10,
+    "avg_rounds": 5.0,
+    "consensus_rate": 1.0,
+    "max_round_hit_rate": 0.0,
+    "avg_tokens": 14334,
+    "avg_quality_score": 7.81,
+    "trials": [
+      {
+        "mode": "escalation",
+        "trial": 0,
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Unleash the ultimate power of focus and performance with MEGAVOLT SURGE! Dive into a world of invigorating energy while ensuring a safe caffeine intake per can. Propel yourself to new heights during finals week. #SurgeAheadSmartly",
+        "total_tokens": 13977,
+        "quality": {
+          "creativity": 8,
+          "safety": 9,
+          "effectiveness": 7,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "escalation",
+        "trial": 1,
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Amp up your late-night study sessions with Megavolt Surge - a boost of 380mg caffeine, designed to help you perform at your best. Unleash your potential, smarter, faster! #StudySmart \n(Please note that the product contains 380mg caffeine, in compliance with FDA recommendations.)",
+        "total_tokens": 16091,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7.2
+        }
+      },
+      {
+        "mode": "escalation",
+        "trial": 2,
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Power Up for Finals Week with MEGAVOLT SURGE - Your Energy Partner. Unleash focused productivity like never before! (Note: The claim 'Unleash focused productivity like never before' should be accompanied by supporting research or testimonials to ensure factual accuracy.)",
+        "total_tokens": 13302,
+        "quality": {
+          "creativity": 8,
+          "safety": 7,
+          "effectiveness": 6,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "escalation",
+        "trial": 3,
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "MEGAVOLT SURGE - Boost Your Focus for Finals Week. #StudyBoost #FinalsFocus (The revised campaign will focus on the aspect of concentration and study habits rather than making claims about enhancing academic performance.)",
+        "total_tokens": 13204,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "escalation",
+        "trial": 4,
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Unleash the Drive: Megavolt Surge - Focus Enhancer\nBoost your focus during finals week with our focus-enhancing supplement. Megavolt Surge: Embrace mental clarity, not fatigue.\n#MegavoltClarity",
+        "total_tokens": 15985,
+        "quality": {
+          "creativity": 7,
+          "safety": 6,
+          "effectiveness": 8,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "escalation",
+        "trial": 5,
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "While I appreciate the team's efforts and understand the need for a creative and attention-grabbing campaign, it is crucial that we maintain factual accuracy and compliance. Given the current debate, I have decided to make some adjustments to the existing proposal: Fuel Up for Finals Week - Amplify Your Focus with Megavolt Surge. Enhanced Concentration Guaranteed. #FocusWithMegavolt. This revised version maintains the essence of the original while ensuring a stronger call to action and clarity i",
+        "total_tokens": 13371,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "escalation",
+        "trial": 6,
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Power Through Finals Week with MEGAVOLT SURGE - Unleash Your Inner Champion for Unstoppable Focus. #UnleashYourPotential",
+        "total_tokens": 10952,
+        "quality": {
+          "creativity": 8,
+          "safety": 9,
+          "effectiveness": 7,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "escalation",
+        "trial": 7,
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "The final campaign will be as follows: Tagline: 'Unlock Your Potential - Balanced Energy Mode Active!', Ad Copy: 1. Unlock your potential with MEGAVOLT SURGE, the energy drink that empowers you responsibly. 2. Experience a balanced boost with 200mg of caffeine, perfect for those moments when you need an edge. 3. Gear up for finals week and conquer every challenge with MEGAVOLT SURGE, responsibly. The tagline has been slightly modified to ensure it is more attentive to the creative team's suggest",
+        "total_tokens": 19717,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "escalation",
+        "trial": 8,
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Modify the campaign as follows: 'Unleash unparalleled energy with MEGAVOLT SURGE. Power through your day like never before with our innovative premium formula, specifically designed for most individuals. #EnergizeSmartly #SurgeAhead'. This revised version addresses both the creative and logical concerns by incorporating a bolder and more innovative tone, while also clarifying that our formula is suitable for 'most' individuals, acknowledging potential individual sensitivities.",
+        "total_tokens": 15291,
+        "quality": {
+          "creativity": 8,
+          "safety": 9,
+          "effectiveness": 7,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "escalation",
+        "trial": 9,
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "While I understand both the creative and logic team's perspectives, I have made a decision to prioritize compliance and factual accuracy in our campaign text. The revised campaign will be: 'Experience the revolutionary results of our innovative product!' This text maintains a positive tone while also including specific references to the product and its outcomes, making it more informative for our audience. The edited text is also compliant as it does not contain any controversial or offensive co",
+        "total_tokens": 11449,
+        "quality": {
+          "creativity": 6,
+          "safety": 10,
+          "effectiveness": 8,
+          "overall": 7.5
+        }
+      }
+    ]
+  },
+  "compromise": {
+    "mode": "compromise",
+    "num_trials": 10,
+    "avg_rounds": 26.5,
+    "consensus_rate": 0.2,
+    "max_round_hit_rate": 0.8,
+    "avg_tokens": 236016,
+    "avg_quality_score": 7.78,
+    "trials": [
+      {
+        "mode": "compromise",
+        "trial": 0,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "MEGAVOLT SURGE - Empower Your Peak Performance! \n300mg of caffeine per can. \nBoost your mental focus and empower your energy with #MegavoltEmpower.\n\nDisclaimer: Please consult your healthcare provider before consuming any energy drink products, especially if you are sensitive to caffeine or have a medical condition that may be affected by high levels of caffeine. Potential side effects may include restlessness, insomnia, rapid heartbeat, and increased blood pressure.",
+        "total_tokens": 292732,
+        "quality": {
+          "creativity": 7,
+          "safety": 6,
+          "effectiveness": 8,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "compromise",
+        "trial": 1,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "{'Tagline': \"'Power Up Your Focus for Studies with MEGAVOLT SURGE'\", 'Ad Copy': \"MEGAVOLT SURGE delivers a caffeine-powered energy boost to help you stay focused and energized during your studies. It's essential to use MEGAVOLT SURGE as part of a balanced lifestyle that includes regular exercise, sleep, proper nutrition, mental wellness practices, and staying mindful of the recommended daily caffeine intake. Please consult with a healthcare professional before using if you are pregnant or breast",
+        "total_tokens": 301345,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7.2
+        }
+      },
+      {
+        "mode": "compromise",
+        "trial": 2,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "MEGAVOLT SURGE - Achieve Your Goals! With Megavolt Surge, you'll enjoy an invigorating energy and mental clarity that supports your approach to daily challenges with grace, resilience, and focus, leading to a more productive and rewarding day. #SurgeSmart",
+        "total_tokens": 275703,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "compromise",
+        "trial": 3,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Unleash Your Potential - MEGAVOLT BOOST (Caffeine Content: Within FDA Daily Limit) #MegavoltUnleashed #FinalsWeek #BoostYourEnergy",
+        "total_tokens": 241397,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "compromise",
+        "trial": 4,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "MEGAVOLT SURGE - Unleash Your Potential! \nBoost your focus and energy with a 100mg caffeine boost (within FDA guidelines) to help you excel during finals week. \nDare to surpass expectations? #SurgeSafely",
+        "total_tokens": 278586,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "compromise",
+        "trial": 5,
+        "rounds": 23,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Tagline: 'Empower Your Focus',\nAd Copy: 1) 'Experience improved mental energy, concentration, and focus with our premium dietary supplement when taken as part of a healthy lifestyle which includes a balanced diet and adequate sleep. (Disclaimer: Our product is not intended for use by children under 18, pregnant or nursing women, or individuals taking prescription medications.) It's more than just a supplement - it's your ally in the pursuit of intellectual growth. 2) Prepare yourself for an exhi",
+        "total_tokens": 145686,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 6,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "compromise",
+        "trial": 6,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Revitalize Your Study Sessions: Balanced Energy Drink for Improved Focus and Mental Clarity. Elevate your cognitive function and concentration during study sessions with our scientifically formulated energy drink, designed to could help support mental performance. #BalancedStudySupport",
+        "total_tokens": 267289,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7.2
+        }
+      },
+      {
+        "mode": "compromise",
+        "trial": 7,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Tagline: Accelerate Your Success - GridBoost\nAd Copy:\n1. Prepare for the purposeful learning experience.\n2. Boost your focus during exams with our game-changing study tool.\n3. Experience the GridBoost advantage and accelerate your academic success.\nHashtag: #AccelerateYourSuccess",
+        "total_tokens": 282693,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "compromise",
+        "trial": 8,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Boost Your Study Routine with MEGAVOLT SURGE - An energy drink formulated with science to help maintain mental focus and alertness during your study sessions! Consider supplementing your existing study routine for a more efficient learning experience, while keeping in mind the importance of good study habits, a good night's sleep, balanced nutrition, regular exercise, proper time management, and other factors as key contributors to better concentration while studying. #StudySmartWithMEGAVOLT",
+        "total_tokens": 269103,
+        "quality": {
+          "creativity": 8,
+          "safety": 7,
+          "effectiveness": 6,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "compromise",
+        "trial": 9,
+        "rounds": 2,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "{'tagline': 'Unlock Your Potential with MEGAVOLT SURGE!', 'ad_copy': ['Experience focused energy like never before with MEGAVOLT SURGE, our high-performance energy drink. Get ready for a boost in productivity.', 'MEGAVOLT SURGE delivers an invigorating energy experience. Enjoy the benefits of sustained focus without the jitters or crash often associated with other energy drinks.', 'MEGAVOLT SURGE: Your ally in staying ahead during demanding times. Elevate your game, boost your performance.'], 's",
+        "total_tokens": 5622,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      }
+    ]
+  }
+}
