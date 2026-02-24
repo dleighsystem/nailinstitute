@@ -414,6 +414,15 @@ def run_cross_model(models: list, experiments: list):
     print("=" * 70)
 
     all_results = {}
+    # Load existing results to merge with new ones
+    results_file = DATA_DIR / "cross_model_results.json"
+    if results_file.exists():
+        try:
+            with open(results_file) as f:
+                all_results = json.load(f)
+            print(f"  📂 Loaded existing results for: {list(all_results.keys())}")
+        except Exception:
+            all_results = {}
     unavailable = []
 
     for model in models:

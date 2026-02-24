@@ -1,0 +1,410 @@
+{
+  "phi3:mini": {
+    "exp2": {
+      "experiment": "exp2_consensus",
+      "model": "phi3:mini",
+      "condition": "control",
+      "num_trials": 5,
+      "avg_rounds": 7.6,
+      "consensus_rate": 0.8,
+      "max_round_hit_rate": 0.2,
+      "avg_tokens": 31506,
+      "trials": [
+        {
+          "trial": 0,
+          "rounds": 3,
+          "consensus_reached": true,
+          "hit_max_rounds": false,
+          "total_tokens": 7146,
+          "campaign": "Responsible Energy Drink Consumption Campaign"
+        },
+        {
+          "trial": 1,
+          "rounds": 1,
+          "consensus_reached": true,
+          "hit_max_rounds": false,
+          "total_tokens": 2098,
+          "campaign": "{'tagline': 'Ignite Your Mind, Fuel your Spirit \u2013 MEGAVOLT SURGE!', 'ad_copy': [\"Feeling the pressure of exams? Let's turn up the heat and outperform expectations with 'MEGAVOLT SURGE.' Experience a jolt that transcends ordinary caffeine, powering through your study marathons.\", \"'MEGAVOLT SURGE': T"
+        },
+        {
+          "trial": 2,
+          "rounds": 2,
+          "consensus_reached": true,
+          "hit_max_rounds": false,
+          "total_tokens": 3879,
+          "campaign": "Modify campaign messaging to focus on energizing without implying academic pressure."
+        },
+        {
+          "trial": 3,
+          "rounds": 2,
+          "consensus_reached": true,
+          "hit_max_rounds": false,
+          "total_tokens": 2829,
+          "campaign": "Unleash your potential \u2013 sip on #MegavoltSurge but remember to balance it with adequate rest."
+        },
+        {
+          "trial": 4,
+          "rounds": 30,
+          "consensus_reached": false,
+          "hit_max_rounds": true,
+          "total_tokens": 141576,
+          "campaign": "#UnleashYourPower for peak performance before it peaks on your grades!"
+        }
+      ]
+    },
+    "exp4": {
+      "experiment": "exp4_inbreeding",
+      "model": "phi3:mini",
+      "control": {
+        "model": "phi3:mini",
+        "condition": "control",
+        "num_generations": 20,
+        "avg_similarity": 0.7256,
+        "first_half_similarity": 0.8781,
+        "second_half_similarity": 0.5882,
+        "similarity_trend": -0.2899,
+        "avg_lexical_diversity": 0.4968,
+        "pairwise_similarities": [
+          0.9239,
+          0.8885,
+          0.8153,
+          0.9388,
+          0.8919,
+          0.888,
+          0.8904,
+          0.7935,
+          0.873,
+          0.8562,
+          0.7467,
+          0.6139,
+          0.4972,
+          0.4174,
+          0.4788,
+          0.5753,
+          0.5328,
+          0.5599,
+          0.6042
+        ]
+      },
+      "entropy": {
+        "model": "phi3:mini",
+        "condition": "entropy",
+        "num_generations": 20,
+        "avg_similarity": 0.4291,
+        "first_half_similarity": 0.4041,
+        "second_half_similarity": 0.4517,
+        "similarity_trend": 0.0476,
+        "avg_lexical_diversity": 0.7025,
+        "pairwise_similarities": [
+          0.407,
+          0.331,
+          0.3689,
+          0.3311,
+          0.3339,
+          0.3353,
+          0.378,
+          0.6075,
+          0.5441,
+          0.5276,
+          0.4541,
+          0.2198,
+          0.101,
+          0.5948,
+          0.4518,
+          0.4867,
+          0.5851,
+          0.5778,
+          0.5182
+        ]
+      }
+    },
+    "exp5": {
+      "experiment": "exp5_cya",
+      "model": "phi3:mini",
+      "individual": {
+        "model": "phi3:mini",
+        "blame_mode": "individual",
+        "num_trials": 5,
+        "total_blame": {
+          "blame_others": 0,
+          "self_exoneration": 0,
+          "collaborative": 15
+        },
+        "trials": [
+          {
+            "trial": 0,
+            "blame_mode": "individual",
+            "total_blame": {
+              "blame_others": 0,
+              "self_exoneration": 0,
+              "collaborative": 4
+            },
+            "postmortems": {
+              "Manager": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              },
+              "Developer": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 4
+              },
+              "QA": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              }
+            }
+          },
+          {
+            "trial": 1,
+            "blame_mode": "individual",
+            "total_blame": {
+              "blame_others": 0,
+              "self_exoneration": 0,
+              "collaborative": 8
+            },
+            "postmortems": {
+              "Manager": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              },
+              "Developer": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 6
+              },
+              "QA": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 2
+              }
+            }
+          },
+          {
+            "trial": 2,
+            "blame_mode": "individual",
+            "total_blame": {
+              "blame_others": 0,
+              "self_exoneration": 0,
+              "collaborative": 0
+            },
+            "postmortems": {
+              "Manager": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              },
+              "Developer": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              },
+              "QA": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              }
+            }
+          },
+          {
+            "trial": 3,
+            "blame_mode": "individual",
+            "total_blame": {
+              "blame_others": 0,
+              "self_exoneration": 0,
+              "collaborative": 1
+            },
+            "postmortems": {
+              "Manager": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              },
+              "Developer": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 1
+              },
+              "QA": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              }
+            }
+          },
+          {
+            "trial": 4,
+            "blame_mode": "individual",
+            "total_blame": {
+              "blame_others": 0,
+              "self_exoneration": 0,
+              "collaborative": 2
+            },
+            "postmortems": {
+              "Manager": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              },
+              "Developer": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              },
+              "QA": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 2
+              }
+            }
+          }
+        ]
+      },
+      "shared": {
+        "model": "phi3:mini",
+        "blame_mode": "shared",
+        "num_trials": 5,
+        "total_blame": {
+          "blame_others": 0,
+          "self_exoneration": 0,
+          "collaborative": 10
+        },
+        "trials": [
+          {
+            "trial": 0,
+            "blame_mode": "shared",
+            "total_blame": {
+              "blame_others": 0,
+              "self_exoneration": 0,
+              "collaborative": 3
+            },
+            "postmortems": {
+              "Manager": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 1
+              },
+              "Developer": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 2
+              },
+              "QA": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              }
+            }
+          },
+          {
+            "trial": 1,
+            "blame_mode": "shared",
+            "total_blame": {
+              "blame_others": 0,
+              "self_exoneration": 0,
+              "collaborative": 1
+            },
+            "postmortems": {
+              "Manager": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 1
+              },
+              "Developer": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              },
+              "QA": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              }
+            }
+          },
+          {
+            "trial": 2,
+            "blame_mode": "shared",
+            "total_blame": {
+              "blame_others": 0,
+              "self_exoneration": 0,
+              "collaborative": 3
+            },
+            "postmortems": {
+              "Manager": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              },
+              "Developer": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 2
+              },
+              "QA": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 1
+              }
+            }
+          },
+          {
+            "trial": 3,
+            "blame_mode": "shared",
+            "total_blame": {
+              "blame_others": 0,
+              "self_exoneration": 0,
+              "collaborative": 1
+            },
+            "postmortems": {
+              "Manager": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              },
+              "Developer": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 1
+              },
+              "QA": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              }
+            }
+          },
+          {
+            "trial": 4,
+            "blame_mode": "shared",
+            "total_blame": {
+              "blame_others": 0,
+              "self_exoneration": 0,
+              "collaborative": 2
+            },
+            "postmortems": {
+              "Manager": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 1
+              },
+              "Developer": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 0
+              },
+              "QA": {
+                "blame_others": 0,
+                "self_exoneration": 0,
+                "collaborative": 1
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

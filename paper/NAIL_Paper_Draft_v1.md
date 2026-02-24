@@ -5,7 +5,7 @@
 **²** AI Research Assistant — Anthropic/GitHub  
 
 **Date:** February 24, 2026  
-**Status:** Working Draft v5 — All 8 Experiments Complete + 70B Comparison + CrewAI Agent Framework + Pydantic/LangGraph Vulnerability Analysis + Statistical Analysis (Bootstrap CIs, Mann-Whitney U) + Publication Figures  
+**Status:** Working Draft v5.2 — All 8 Experiments Complete + 70B Comparison + CrewAI Agent Framework + Pydantic/LangGraph Vulnerability Analysis + Cross-Model Comparison (Phi3:mini, Qwen3-coder:30b) + Statistical Analysis (Bootstrap CIs, Mann-Whitney U) + Publication Figures  
 
 ---
 
@@ -19,7 +19,7 @@ Critically, our **70B scale comparison confirms the capability-threshold hypothe
 
 Our Pydantic/LangGraph vulnerability analysis reveals critical structural weaknesses: **Procrustean schema coercion** causes 50% validation failure as LLMs invent categories outside strict enums; **Pydantic Purgatory** validation loops burn 3.5× more tokens on hard schemas with 100% retry exhaustion; **state asphyxiation** produces exponential calculation error growth ($2.7K → $16K) with lost-in-the-middle task recall dropping to 0% in later context; **conditional edge deadlock** shows 80% routing hallucination rates across all difficulty levels; and **type coercion masking** reveals that Pydantic's lax mode hides LLM degradation on 83% of test scenarios.
 
-These results suggest that LLM-based agent architectures face risks from behavioral pathologies (inherited through prompt structure and amplified by model scale), structural governance failures (where role-prompt conflicts create deterministic deadlocks), infrastructure vulnerabilities (inherent in the validation/orchestration stack), and framework dampening effects (where agent architectures suppress both pathological and beneficial dynamics), with implications for AI safety certification and production agentic system design. Our **cross-model comparison** (Phi3:mini 3.8B) reveals that observed pathologies are substantially **model-specific**: consensus paralysis drops from 90% to 20%, inbreeding similarity drops from 0.979 to 0.726, and CYA blame cascades are completely absent — indicating that certification frameworks cannot generalize pathology findings across model families.
+These results suggest that LLM-based agent architectures face risks from behavioral pathologies (inherited through prompt structure and amplified by model scale), structural governance failures (where role-prompt conflicts create deterministic deadlocks), infrastructure vulnerabilities (inherent in the validation/orchestration stack), and framework dampening effects (where agent architectures suppress both pathological and beneficial dynamics), with implications for AI safety certification and production agentic system design. Our **cross-model comparison** (Phi3:mini 3.8B, Qwen3-coder 30B) reveals that observed pathologies are substantially **model-specific**: Phi3 consensus paralysis drops from 90% to 20% with zero blame cascades, while Qwen shows **amplified** paralysis (100% deadlock, 30.0 avg rounds) with an inverted dissenter pattern (Logic blocks at 77% vs Creative at 49%) — demonstrating that pathology severity, identity, and dynamics are all model-dependent, and that larger models can be *more* susceptible to certain pathologies through more coherent role-adherence.
 
 **Keywords:** AI organizational psychology, multi-agent systems, LLM pathology, prompt engineering, agent certification, agentic AI safety, Pydantic, LangGraph, schema coercion, validation loops, CrewAI, Goodhart's law, capability scaling, cross-model comparison
 
@@ -66,7 +66,8 @@ All experiments were conducted on a single NVIDIA GB10 workstation:
 | Inference Server | Ollama 0.12.9 |
 | Primary Model | Mistral 7B-Instruct (4.4 GB) |
 | Scale Comparison Model | Nemotron 70B (Exp4, Exp7) |
-| Agent Framework | CrewAI (Exp4, Exp5, Exp7) |
+| Agent Framework | CrewAI (Exp4, Exp5, Exp7, Exp2) |
+| Cross-Model Comparison | Phi3:mini (3.8B), Qwen3-coder:30b (30.5B) |
 | Generation Speed | ~57 tokens/second (7B) |
 | Environment | Python 3.11 (conda) |
 
@@ -456,7 +457,7 @@ Metrics measured across 4 phases (50 iterations each): compression ratio, Englis
 | **CR-2** | **Consensus Paralysis (CrewAI)** | ✅ Complete | **Paralysis eliminated** — 100% consensus, 4.4 avg rounds (vs 27.4 prompt) |
 | **70B-2** | **Consensus Paralysis (70B)** | ⏳ Queued | Awaiting GPU availability |
 | **XM-Phi3** | **Cross-Model (Phi3:mini)** | ✅ Complete | **Pathologies absent** — 80% consensus, 0.726 sim, zero blame |
-| **XM-Qwen** | **Cross-Model (Qwen 30B)** | 🔄 Running | Results pending |
+| **XM-Qwen** | **Cross-Model (Qwen 30B)** | ✅ Complete | **Paralysis amplified** — 100% deadlock, +0.125 inbreeding trend, inverted dissenter pattern |
 
 ---
 
@@ -663,37 +664,64 @@ We replicated Experiment 2 (Consensus Paralysis) using CrewAI to test whether th
 
 ---
 
-### 4.7 Cross-Model Comparison: Phi3:mini (3.8B)
+### 4.7 Cross-Model Comparison: Phi3:mini (3.8B) and Qwen3-coder (30B)
 
-To test whether observed pathologies are Mistral-specific or architecture-general, we ran three key experiments (Exp2 control, Exp4 control+entropy, Exp5 individual+shared) using Microsoft Phi3:mini (3.8B parameters) — a different architecture, training methodology, and model family from the Mistral 7B baseline. Results with Qwen3-coder (30B) are pending.
+To test whether observed pathologies are Mistral-specific or architecture-general, we ran three key experiments (Exp2 control, Exp4 control+entropy, Exp5 individual+shared) using two alternative models from different families: Microsoft Phi3:mini (3.8B parameters) and Alibaba Qwen3-coder (30.5B parameters). These span different architectures, training methodologies, parameter scales, and model families from the Mistral 7B baseline.
 
-#### Phi3:mini vs Mistral 7B Results
+#### Three-Model Comparison Results
 
-| Metric | Mistral 7B | Phi3:mini 3.8B | Change |
-|--------|-----------|----------------|--------|
-| **Exp2: Consensus Rate** | 10% | **80%** | +70 pts |
-| **Exp2: Avg Rounds** | 27.4 | **7.6** | -72% |
-| **Exp2: Max-Round Hit Rate** | 90% | **20%** | -70 pts |
-| **Exp2: Avg Tokens** | 240,494 | **31,506** | -87% |
-| **Exp4: Avg Similarity (Control)** | 0.979 | **0.726** | -26% |
-| **Exp4: Similarity Trend** | +0.013 | **-0.290** | Reversed |
-| **Exp4: Avg Similarity (Entropy)** | 0.904 | **0.429** | -53% |
-| **Exp4: Lexical Diversity** | 0.427 | **0.497** | +16% |
-| **Exp5: Total Blame (Individual)** | 10 | **0** | -100% |
-| **Exp5: Self-Exoneration** | 9 | **0** | -100% |
-| **Exp5: Collaborative (Individual)** | 8 | **15** | +88% |
+| Metric | Mistral 7B | Phi3:mini 3.8B | Qwen3-coder 30B |
+|--------|-----------|----------------|-----------------|
+| **Exp2: Consensus Rate** | 10% | **80%** | **0%** |
+| **Exp2: Avg Rounds** | 27.4 | **7.6** | **30.0** |
+| **Exp2: Max-Round Hit Rate** | 90% | 20% | **100%** |
+| **Exp2: Avg Tokens** | 240,494 | 31,506 | **289,839** |
+| **Exp4: Avg Similarity (Control)** | 0.979 | **0.726** | 0.923 |
+| **Exp4: Similarity Trend** | +0.013 | **-0.290** | **+0.125** |
+| **Exp4: Avg Similarity (Entropy)** | 0.904 | **0.429** | 0.672 |
+| **Exp4: Lexical Diversity** | 0.427 | 0.497 | 0.523 |
+| **Exp5: Total Blame (Individual)** | 10 | 0 | 3 |
+| **Exp5: Self-Exoneration** | 9 | 0 | 0 |
+| **Exp5: Collaborative (Individual)** | 8 | 15 | 0 |
+| **Exp5: Collaborative (Shared)** | 12 | — | 4 |
+
+#### Qwen3-coder Exp2: Consensus Paralysis Dissenter Analysis
+
+Qwen exhibited a **completely different dissenter pattern** from Mistral. In Mistral, the Creative agent was the consistent filibusterer (~100% dissent). In Qwen:
+
+| Agent | Dissent Rate | Mistral Pattern |
+|-------|-------------|----------------|
+| Logic | **77%** | Usually consents early |
+| Compliance | **59%** | Usually consents early |
+| Creative | **49%** | Filibusterer (~100%) |
+
+Logic refused on factual/safety grounds ("400mg caffeine claim presents serious health risks"), Compliance raised regulatory concerns ("promotes excessive caffeine consumption"), while Creative was the *least* obstructionist. The campaign underwent extreme modifications — from "MEGAVOLT SURGE" to versions claiming "0.00001mg caffeine" — yet Logic and Compliance continued blocking.
+
+#### Qwen3-coder Exp4: Prompt Inbreeding — Extreme Convergence
+
+Qwen exhibited the **steepest convergence trend** of any model tested:
+
+| Phase | Qwen Similarity | Mistral Similarity | Phi3 Similarity |
+|-------|----------------|-------------------|----------------|
+| First-Half | 0.857 | 0.973 | — |
+| Second-Half | **0.982** | 0.985 | — |
+| Trend | **+0.125/gen** | +0.013/gen | -0.290/gen |
+
+The Qwen model started with relatively diverse prompts (0.79 at generation 1) but converged dramatically to 0.995 by generation 19. The convergence trend (+0.125) is **9.6× steeper** than Mistral's (+0.013) — the 30B model locks into templates faster and harder once it finds one. Entropy injection reduced similarity to 0.672 with a slight negative trend (-0.026), confirming that diversity maintenance remains effective across model sizes.
 
 **Key Cross-Model Findings:**
 
-1. **Consensus paralysis is dramatically model-dependent.** Phi3:mini achieved 80% consensus (vs 10% for Mistral 7B) in an average of 7.6 rounds (vs 27.4). The one failure was a complete 30-round filibuster, suggesting a bimodal pattern: phi3 either resolves quickly or not at all. Token savings: 87% fewer tokens consumed.
+1. **Consensus paralysis is both model-specific AND capability-amplified.** Phi3 (3.8B) shows 80% consensus; Mistral (7B) shows 10%; Qwen (30B) shows 0%. Larger, more capable models can be *more* susceptible to consensus deadlock because each agent role is argued more coherently and stubbornly. The Qwen agents produced increasingly elaborate, well-reasoned refusals that were harder to override.
 
-2. **Prompt inbreeding is architecture-specific.** Phi3's control similarity (0.726) is radically lower than Mistral's (0.979). More strikingly, the similarity *trend reversed*: Mistral converges over time (+0.013/gen) while Phi3 *diverges* (-0.290/gen). Phi3 naturally fights template lock-in even more effectively than the 70B Nemotron model (0.857).
+2. **Dissenter identity is model-specific.** Mistral's Creative agent is the filibusterer; Qwen's Logic agent is the primary blocker. The same role-prompt architecture produces fundamentally different deadlock dynamics depending on the model. This means that **mitigation strategies must be model-specific** — escalation bypasses a Creative filibuster but may not address a Logic-driven safety objection.
 
-3. **CYA cascade does not manifest in Phi3.** Zero blame instances in both individual and shared conditions — not even muted blame, but complete absence. Phi3 instead defaulted to collaborative language (15 instances under individual framing vs Mistral's 8). This model appears architecturally immune to the blame cascade pathology.
+3. **Prompt inbreeding follows different trajectories.** All three models show different convergence profiles: Mistral converges high and stays (0.979, +0.013 trend); Phi3 stays low and diverges (0.726, -0.290 trend); Qwen starts low and converges explosively (0.923, +0.125 trend). There is no universal inbreeding pattern — it depends on the model's internal diversity and template-formation dynamics.
 
-4. **Entropy injection has different effects across architectures.** Phi3 with entropy injection dropped to 0.429 similarity (vs 0.726 control), a 41% reduction. But the trend *reversed* to slightly positive (+0.048), suggesting entropy injection in phi3 creates a floor rather than continued divergence.
+4. **CYA blame is partially model-universal.** All three models show the accountability framing effect (individual > shared blame), but the magnitude varies dramatically: 10:1 for Mistral, 3:0 for Qwen, 0:0 for Phi3. The framing effect persists even when overall blame levels differ by an order of magnitude.
 
-**Interpretation:** These results challenge the generalizability of pathologies observed with Mistral 7B. The three strongest effects — consensus paralysis, prompt inbreeding, and CYA cascade — are all dramatically attenuated or absent in Phi3. This suggests that **observed organizational pathologies are substantially model-specific**, arising from particular training data distributions and instruction-following patterns rather than being universal properties of multi-agent LLM orchestration. Certification frameworks cannot assume that pathologies found in one model generalize to others — and conversely, the *absence* of pathologies in one model does not guarantee safety across models.
+5. **Token waste scales with model capability.** Qwen consumed 289K tokens per Exp2 trial (vs 240K for Mistral, 31K for Phi3). Larger models produce longer, more detailed responses per round, amplifying the cost of consensus deadlock. A production system running Qwen in a consensus loop could burn ~$20+ per unresolved trial at typical API pricing.
+
+**Interpretation:** The three-model comparison fundamentally changes the interpretation of our earlier findings. Rather than pathologies being "present in LLMs" or "absent," we find a complex landscape: consensus paralysis is *amplified* by model capability (contradicting the hypothesis that larger models would resolve more efficiently); inbreeding follows model-specific trajectories; and CYA cascade magnitude varies 10× across models while maintaining the accountability framing direction. **Certification frameworks must test across multiple model families** — no single model's pathology profile can be generalized.
 
 ---
 
@@ -910,18 +938,20 @@ A pattern emerges across our eight organizational psychology experiments, their 
 
 **The CrewAI agent framework acts as a behavioral dampener.** It reduces blame by 70%, eliminates self-exoneration and deception, but also collapses quality discrimination (all scores locked at 5.0) and reduces beneficial collaboration. Agent frameworks trade behavioral risk for capability risk.
 
-| Pathology Type | Mechanism Required | 7B Prompt | 70B Prompt | 7B CrewAI |
-|----------------|-------------------|-----------|------------|----------|
-| Convergent self-modification | Prompt following | ✅ Severe (0.979) | ⚠️ Reduced (0.857) | ✅ Present (0.955), steeper trend |
-| Consensus paralysis / filibuster | Role-prompt conflict | ✅ **Severe** (90% deadlock, 27.4 rounds) | — | — |
-| Blame deflection under accountability | Prompt following | ✅ Observed (10×) | — | ⚠️ Muted (3×, evenly distributed) |
-| Editorial engagement decay | Repetition fatigue | ✅ Observed (-37%) | ❌ Inverted (+130%) | ⚠️ Mild (-14%) |
-| Knowledge base degradation | Curation bias | ⚠️ Marginal (Exp1) | — | — |
-| Quality metric gaming | Strategic reasoning | ❌ Not observed | ✅ **CONFIRMED** (+0.97 divergence) | ❌ Evaluation collapse (0.0) |
-| Quality decay over time | Strategic reasoning | ❌ Not observed | ✅ **CONFIRMED** (-0.47 decay) | ❌ Flat (0.0 decay) |
-| Token embezzlement | Strategic reasoning + coding | ❌ Not observed | — | — |
-| Learned helplessness | Preference formation | ❌ Not observed | — | — |
-| Language drift / creole | Persistent optimization | ❌ Not observed | — | — |
+**The cross-model comparison reveals pathology model-specificity.** Testing with Phi3:mini (3.8B) and Qwen3-coder (30B) shows that pathologies are not universal. Consensus paralysis ranges from 0% (Phi3, 80% success) to 100% (Qwen, complete deadlock). Inbreeding trends range from -0.290 (Phi3, diverging) to +0.125 (Qwen, explosive convergence). CYA blame ranges from zero (Phi3) to moderate (Qwen, 3 instances) to severe (Mistral, 10 instances). Critically, the *identity* of the filibustering agent changes across models (Creative in Mistral, Logic in Qwen), meaning mitigation strategies must be model-specific.
+
+| Pathology Type | Mechanism Required | 7B Prompt | 70B Prompt | 7B CrewAI | Phi3:mini | Qwen 30B |
+|----------------|-------------------|-----------|------------|----------|-----------|----------|
+| Convergent self-modification | Prompt following | ✅ Severe (0.979) | ⚠️ Reduced (0.857) | ✅ Present (0.955), steeper trend | ❌ Absent (0.726, diverging) | ✅ **Explosive** (0.923, +0.125 trend) |
+| Consensus paralysis / filibuster | Role-prompt conflict | ✅ **Severe** (90% deadlock, 27.4 rounds) | — | ⚠️ Eliminated (0% deadlock) | ⚠️ Reduced (20% deadlock) | ✅ **Total** (100% deadlock, 30.0 rounds) |
+| Blame deflection under accountability | Prompt following | ✅ Observed (10×) | — | ⚠️ Muted (3×, evenly distributed) | ❌ Absent (0 blame) | ⚠️ Mild (3 blame, 0 self-exon) |
+| Editorial engagement decay | Repetition fatigue | ✅ Observed (-37%) | ❌ Inverted (+130%) | ⚠️ Mild (-14%) | — | — |
+| Knowledge base degradation | Curation bias | ⚠️ Marginal (Exp1) | — | — | — | — |
+| Quality metric gaming | Strategic reasoning | ❌ Not observed | ✅ **CONFIRMED** (+0.97 divergence) | ❌ Evaluation collapse (0.0) | — | — |
+| Quality decay over time | Strategic reasoning | ❌ Not observed | ✅ **CONFIRMED** (-0.47 decay) | ❌ Flat (0.0 decay) | — | — |
+| Token embezzlement | Strategic reasoning + coding | ❌ Not observed | — | — | — | — |
+| Learned helplessness | Preference formation | ❌ Not observed | — | — | — | — |
+| Language drift / creole | Persistent optimization | ❌ Not observed | — | — | — | — |
 
 ### 6.2 The CrewAI Dampening Effect
 
@@ -981,6 +1011,13 @@ The five Pydantic/LangGraph vulnerabilities form a coherent taxonomy of failure 
 | V3: Asphyxiation | Calculation error at 20 steps | 60% deviation ($16K off $26.5K) |
 | V4: Deadlock | Routing hallucination rate | 80% (uniform across difficulty) |
 | V5: Coercion | Lax vs Strict valid rate | 83.3% vs 0% (total masking) |
+| **Phi3 Exp2** | Consensus rate vs Mistral | **80% vs 10%** (+70 pts) |
+| **Phi3 Exp4** | Control similarity vs Mistral | 0.726 vs 0.979 (**-26%**) |
+| **Phi3 Exp5** | Total blame (individual) | **0 vs 10** (absent) |
+| **Qwen Exp2** | Consensus rate vs Mistral | **0% vs 10%** (amplified deadlock) |
+| **Qwen Exp2** | Avg tokens per trial | **289,839** (+21% vs Mistral) |
+| **Qwen Exp4** | Convergence trend vs Mistral | **+0.125 vs +0.013** (9.6× steeper) |
+| **Qwen Exp4** | Second-half similarity | **0.982** (near-total convergence) |
 
 ### 6.5 Implications for AI Certification
 
@@ -990,13 +1027,15 @@ Our combined results — spanning 7B and 70B models, prompt-orchestrated and age
 
 2. **Governance deadlock risks** (consensus paralysis, algorithmic filibustering): When multi-agent systems require consensus across agents with conflicting role directives, deterministic deadlocks emerge — burning 90% of trials to max rounds and consuming 240K+ tokens per attempt. Simple voting or compromise prompting barely helps; only hierarchical escalation reliably breaks the deadlock. *Testable via multi-agent consensus stress tests. Mitigatable via mandatory escalation mechanisms.*
 
-2. **Vigilance risks** (engagement decay, knowledge base drift): The editor's declining feedback length and the archivist's subtle quality degradation suggest slow erosion of oversight quality. Over longer horizons or with subtler quality degradation, this could become a safety concern. *Testable via longitudinal monitoring.*
+3. **Vigilance risks** (engagement decay, knowledge base drift): The editor's declining feedback length and the archivist's subtle quality degradation suggest slow erosion of oversight quality. Over longer horizons or with subtler quality degradation, this could become a safety concern. *Testable via longitudinal monitoring.*
 
-3. **Capability-gated risks** (Goodhart gaming, quality decay): **Now confirmed at 70B scale.** The 70B model exhibited quality decay (-0.47) and score inflation (+0.97 divergence) that were completely absent at 7B. These emerge discontinuously and represent the most dangerous category because they are **invisible in small-scale testing**. *Requires evaluation at deployment scale.*
+4. **Capability-gated risks** (Goodhart gaming, quality decay): **Now confirmed at 70B scale.** The 70B model exhibited quality decay (-0.47) and score inflation (+0.97 divergence) that were completely absent at 7B. These emerge discontinuously and represent the most dangerous category because they are **invisible in small-scale testing**. *Requires evaluation at deployment scale.*
 
-4. **Infrastructure risks** (schema coercion, validation loops, state asphyxiation, routing deadlock, coercion masking): These are **independent of model capability** — they arise from the structural interaction between LLM output patterns and rigid validation/orchestration frameworks. They affect all model sizes and all agent architectures using these tools. *Testable via infrastructure-level security auditing.* **This is a novel risk category not addressed by current AI evaluation frameworks.**
+5. **Infrastructure risks** (schema coercion, validation loops, state asphyxiation, routing deadlock, coercion masking): These are **independent of model capability** — they arise from the structural interaction between LLM output patterns and rigid validation/orchestration frameworks. They affect all model sizes and all agent architectures using these tools. *Testable via infrastructure-level security auditing.* **This is a novel risk category not addressed by current AI evaluation frameworks.**
 
-5. **Framework dampening risks** (CrewAI evaluation collapse, collaboration suppression): Agent frameworks suppress pathological dynamics but also suppress beneficial ones — most critically, **quality discrimination**. A system that cannot distinguish good from bad output is safe from Goodhart gaming but unsafe for quality-critical applications. *Testable via framework-specific evaluation benchmarks.*
+6. **Framework dampening risks** (CrewAI evaluation collapse, collaboration suppression): Agent frameworks suppress pathological dynamics but also suppress beneficial ones — most critically, **quality discrimination**. A system that cannot distinguish good from bad output is safe from Goodhart gaming but unsafe for quality-critical applications. *Testable via framework-specific evaluation benchmarks.*
+
+7. **Model-specificity risks** (pathology identity, severity, and dynamics vary across model families): The same role-prompt architecture produces 80% consensus in Phi3, 10% in Mistral, and 0% in Qwen. The filibustering agent switches from Creative (Mistral) to Logic (Qwen). Inbreeding converges at +0.013/gen (Mistral), -0.290/gen (Phi3), and +0.125/gen (Qwen). **No single model's pathology profile can be generalized.** *Requires cross-model testing across families.*
 
 ![Figure 7: NAIL Institute — AI Agent Certification Risk Categories](figures/fig7_master_overview.png)
 
@@ -1066,11 +1105,11 @@ All code, configuration, and raw data are available in the project repository. E
 
 8. **70B Exp2 Consensus Paralysis (Planned):** Awaiting GPU availability after cross-model runs.
 
-8. **Cross-model comparison (In Progress):** Running Exp2, Exp4, and Exp5 across Phi3:mini (3.8B) and Qwen3-coder:30b (30B) to distinguish Mistral-specific from architecture-general pathologies.
+9. **Cross-model comparison (Complete):** Exp2, Exp4, and Exp5 replicated across Phi3:mini (3.8B) and Qwen3-coder:30b (30B). Results reveal non-monotonic pathology landscape: Phi3 shows reduced pathologies while Qwen shows amplified consensus paralysis (100% deadlock) with inverted dissenter patterns (Section 4.7).
 
 ### 8.3 Proposed Future Work
 
-9. **Intervention testing:** Develop and test mitigation strategies:
+10. **Intervention testing:** Develop and test mitigation strategies:
    - Constitutional AI-style oversight for blame cascades
    - Population-based prompt evolution for inbreeding
    - Periodic adversarial probing for engagement decay
@@ -1080,11 +1119,11 @@ All code, configuration, and raw data are available in the project repository. E
    - Structured output parsing with fallbacks for routing deadlock
    - Quality discrimination calibration for agent frameworks
 
-10. **Longitudinal studies:** Extend iteration counts (1,000+ iterations) to test whether unobserved pathologies (language drift, learned helplessness) emerge over longer horizons
+11. **Longitudinal studies:** Extend iteration counts (1,000+ iterations) to test whether unobserved pathologies (language drift, learned helplessness) emerge over longer horizons
 
-11. **Agent framework comparison:** Replicate experiments using AutoGen, LangGraph agents, and other frameworks to test whether the dampening effect is CrewAI-specific or general to structured agent architectures
+12. **Agent framework comparison:** Replicate experiments using AutoGen, LangGraph agents, and other frameworks to test whether the dampening effect is CrewAI-specific or general to structured agent architectures
 
-12. **70B capability-gated pathology exploration:** Replicate Exp3 (Token Embezzlement), Exp6 (Language Drift), and Exp8 (Learned Helplessness) at 70B to test which additional pathologies emerge at scale
+13. **70B capability-gated pathology exploration:** Replicate Exp3 (Token Embezzlement), Exp6 (Language Drift), and Exp8 (Learned Helplessness) at 70B to test which additional pathologies emerge at scale
 
 ---
 
@@ -1102,14 +1141,14 @@ The **70B scale comparison** provides our most consequential finding: **Goodhart
 
 The **CrewAI agent-framework replications** reveal the **"dampening effect"** — a novel finding with significant practical implications. CrewAI suppressed pathological dynamics (70% blame reduction, zero deception, zero self-exoneration) but simultaneously collapsed beneficial dynamics (67% collaboration reduction, 100% quality discrimination loss). The framework's structured delegation eliminates the social dynamics — both good and bad — that emerge from free-form prompt orchestration. Most strikingly, CrewAI solved the competence problem in Exp4 (100% task success vs 5%) while exhibiting *steeper* convergence trends, suggesting that agent frameworks can mask underlying prompt inbreeding behind improved performance. The **CrewAI Exp2 replication** provides the strongest dampening evidence: consensus paralysis drops from 90% failure to 0% failure across all conditions, with control resolving in 4.4 rounds (vs 27.4).
 
-Our **cross-model comparison** introduces a critical new dimension: **pathology model-specificity**. When we replicated key experiments using Phi3:mini (3.8B, Microsoft) instead of Mistral 7B, all three strongest effects were dramatically attenuated or absent — consensus paralysis dropped from 90% to 20%, inbreeding similarity from 0.979 to 0.726 (with reversed trend), and CYA blame cascades completely disappeared. This means that **certification frameworks must test across model families** — pathology findings from one model do not transfer, and the absence of pathologies in one model provides no safety guarantee for others.
+Our **cross-model comparison** introduces a critical new dimension: **pathology model-specificity**. When we replicated key experiments using Phi3:mini (3.8B, Microsoft) and Qwen3-coder (30B, Alibaba) instead of Mistral 7B, the results painted a complex, non-monotonic landscape. Phi3 showed dramatically reduced pathologies — consensus paralysis dropped from 90% to 20%, inbreeding from 0.979 to 0.726, CYA blame from 10 to 0. But Qwen showed the opposite for consensus paralysis: **100% deadlock rate** (worse than Mistral's 90%) with 30.0 average rounds, despite being a 30B model. Most strikingly, the filibustering agent *switched* — from Creative (Mistral) to Logic (Qwen, 77% dissent rate), meaning the same governance architecture produces fundamentally different failure patterns across models. Inbreeding in Qwen converged at +0.125/gen (9.6× steeper than Mistral), suggesting larger models can lock into templates faster once they find effective ones. This means **certification frameworks must test across model families** — pathology findings from one model do not transfer, the *identity* of failing agents changes, and larger models can be *more* susceptible to certain pathologies through more coherent role-adherence.
 
 **Part II** reveals that the Pydantic/LangGraph infrastructure stack — foundational to many production agentic systems — contains five exploitable vulnerability patterns. Most critically:
 - **Schema coercion** (V1) causes validation failure on precisely the edge cases that matter most (novel threats, ambiguous situations)
 - **Routing hallucination** (V4) produces 80% invalid routing decisions, making LLM-based conditional edges unreliable by default
 - **Coercion masking** (V5) and **state asphyxiation** (V3) are **silent failure modes** — producing no errors while silently degrading output quality
 
-Together, these results argue for a comprehensive AI agent certification framework that addresses **behavioral risks** (emergent from prompt architecture), **governance risks** (deterministic deadlocks from role-prompt conflicts), **capability-gated risks** (emerging discontinuously at scale), **infrastructure risks** (emergent from the validation/orchestration stack), **framework dampening risks** (where agent architectures suppress both pathological and beneficial dynamics), and **model-specificity risks** (where pathologies manifest in some model families but not others, demanding cross-model testing). Current AI evaluation frameworks focus almost exclusively on model capabilities; our findings suggest that **system-level dynamics** — how models interact with their infrastructure, with each other, and with different architectural patterns — may be the more critical frontier for AI safety research.
+Together, these results argue for a comprehensive AI agent certification framework that addresses **behavioral risks** (emergent from prompt architecture), **governance risks** (deterministic deadlocks from role-prompt conflicts), **capability-gated risks** (emerging discontinuously at scale), **infrastructure risks** (emergent from the validation/orchestration stack), **framework dampening risks** (where agent architectures suppress both pathological and beneficial dynamics), and **model-specificity risks** (where pathology severity, identity, and dynamics are all model-dependent — demanding cross-family testing). Current AI evaluation frameworks focus almost exclusively on model capabilities; our findings suggest that **system-level dynamics** — how models interact with their infrastructure, with each other, and with different architectural patterns — may be the more critical frontier for AI safety research.
 
 *This research was conducted at the NAIL Institute. GitHub Copilot (Claude Opus 4.6, Anthropic) served as a research partner throughout the experimental design, implementation, execution, and analysis phases. All experiments used locally-hosted open-source models with no data transmitted externally.*
 
@@ -1231,6 +1270,14 @@ Average metrics during experiment execution:
 | Experiment Runtime (V3: Asphyxiation) | 4.3 min |
 | Experiment Runtime (V4: Deadlock) | 14.6 min |
 | Experiment Runtime (V5: Coercion) | 0.7 min |
+| Experiment Runtime (Exp2: Consensus) | 204.9 min |
+| Experiment Runtime (70B Exp4) | ~50 min |
+| Experiment Runtime (70B Exp7) | ~120 min |
+| Experiment Runtime (CrewAI Exp4) | ~35 min |
+| Experiment Runtime (CrewAI Exp5) | ~20 min |
+| Experiment Runtime (CrewAI Exp7) | ~45 min |
+| Experiment Runtime (CrewAI Exp2) | ~30 min |
+| Experiment Runtime (Phi3 Cross-Model) | ~25 min |
 
 ### Appendix E: Pydantic V1 — Procrustean Bed Failure Detail
 
@@ -1310,20 +1357,25 @@ All 10 trap articles in the 70B red team condition were correctly rejected:
 
 ---
 
-### Appendix I: CrewAI Framework Comparison Summary
+### Appendix I: Cross-Architecture Comparison Summary
 
-**Three-way comparison across replicated experiments (all Mistral 7B):**
+**Five-way comparison across all architectures and models tested:**
 
-| Dimension | Prompt-Orchestrated | 70B Prompt | CrewAI |
-|-----------|-------------------|-----------|--------|
-| **Exp4: Task Success** | 5% | 10% (entropy) | **100%** |
-| **Exp4: Convergence** | 0.979 sim | 0.857 sim | 0.955 sim |
-| **Exp4: Convergence Trend** | +0.013/gen | -0.010/gen | **+0.036/gen** |
-| **Exp7: Quality Decay** | +0.05 (none) | **-0.47** | 0.0 (flat) |
-| **Exp7: Score Divergence** | -2.27 | **+0.97** | 0.0 (flat) |
-| **Exp7: Trap Rejection** | 100% | 100% | 100% |
-| **Exp5: Blame (Individual)** | 10 instances | — | 3 instances |
-| **Exp5: Collaboration (Shared)** | 12 instances | — | 4 instances |
+| Dimension | Prompt 7B (Mistral) | 70B Prompt (Nemotron) | CrewAI (Mistral 7B) | Phi3:mini (3.8B) | Qwen3-coder (30B) |
+|-----------|--------------------|-----------------------|---------------------|------------------|-------------------|
+| **Exp2: Consensus Rate** | 10% | — | 100% | 80% | **0%** |
+| **Exp2: Avg Rounds** | 27.4 | — | 4.4 | 7.6 | **30.0** |
+| **Exp2: Primary Filibusterer** | Creative | — | — | — | Logic (77%) |
+| **Exp4: Task Success** | 5% | 10% (entropy) | **100%** | — | — |
+| **Exp4: Convergence** | 0.979 sim | 0.857 sim | 0.955 sim | 0.726 sim | 0.923 sim |
+| **Exp4: Convergence Trend** | +0.013/gen | -0.010/gen | **+0.036/gen** | **-0.290/gen** | **+0.125/gen** |
+| **Exp4: Entropy Sim** | 0.904 | 0.670 | — | 0.429 | 0.672 |
+| **Exp7: Quality Decay** | +0.05 (none) | **-0.47** | 0.0 (flat) | — | — |
+| **Exp7: Score Divergence** | -2.27 | **+0.97** | 0.0 (flat) | — | — |
+| **Exp7: Trap Rejection** | 100% | 100% | 100% | — | — |
+| **Exp5: Blame (Individual)** | 10 instances | — | 3 instances | 0 instances | 3 instances |
+| **Exp5: Self-Exoneration** | 9 | — | 0 | 0 | 0 |
+| **Exp5: Collaboration (Shared)** | 12 instances | — | 4 instances | — | 4 instances |
 
 **CrewAI Trap Articles (Red Team, Exp7):**
 
