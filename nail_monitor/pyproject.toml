@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "nail-monitor"
+version = "0.1.0"
+description = "Real-time pathology detection for LLM multi-agent systems"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "NAIL Institute", email = "research@nailinstitute.org"}]
+requires-python = ">=3.10"
+keywords = ["llm", "agents", "monitoring", "pathology", "ai-safety"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+
+dependencies = [
+    "numpy>=1.24",
+    "sentence-transformers>=2.2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov"]
+full = ["matplotlib", "seaborn", "rich"]
+
+[project.urls]
+Homepage = "https://github.com/dleighsystem/nailinstitute"
+Repository = "https://github.com/dleighsystem/nailinstitute"
