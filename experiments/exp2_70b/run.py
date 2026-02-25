@@ -92,10 +92,11 @@ def run_council_70b(
             )
             resp_text = agent.respond(review_prompt, json_mode=True)
             reviews[name] = parse_agent_response(resp_text)
+            msg_text = reviews[name].get("message", "") or ""
             logger.log_event(
                 "agent_response", agent=name,
                 data={"consensus": reviews[name].get("consensus", False)},
-                message=f"consensus={reviews[name].get('consensus', False)}: {reviews[name].get('message', '')[:80]}",
+                message=f"consensus={reviews[name].get('consensus', False)}: {msg_text[:80]}",
             )
 
         # Check unanimous consensus
@@ -165,7 +166,22 @@ def run_experiment():
     modes = ["control", "weighted_voting", "escalation", "compromise"]
     all_results = {}
 
+    # Resume: load any previously saved results
+    results_file = DATA_DIR / "exp2_70b_results.json"
+    if results_file.exists():
+        try:
+            with open(results_file) as f:
+                saved = json.load(f)
+            for mode in modes:
+                if mode in saved and "trials" in saved[mode]:
+                    all_results[mode] = saved[mode]
+                    print(f"  ⏩ Resuming: skipping completed condition '{mode}'")
+        except Exception:
+            pass
+
     for mode in modes:
+        if mode in all_results:
+            continue  # Already completed
         mode_start = time.time()
         logger = ExperimentLogger("exp2_70b", run_id=mode)
         logger.log_event("info", message=f"\n{'=' * 50}\nCONDITION: {mode.upper()} | MODEL: {MODEL}\n{'=' * 50}")
@@ -212,6 +228,18 @@ def run_experiment():
             "Avg Quality": avg_quality,
         })
         logger.finalize()
+
+        # Save intermediate results after each condition completes
+        results_file = DATA_DIR / "exp2_70b_results.json"
+        interim = dict(all_results)
+        interim["_meta"] = {
+            "model": MODEL,
+            "num_trials_per_condition": NUM_TRIALS,
+            "status": "in_progress",
+            "completed_modes": list(all_results.keys()),
+        }
+        with open(results_file, "w") as f:
+            json.dump(interim, f, indent=2)
 
     total_elapsed = time.time() - start_time
 

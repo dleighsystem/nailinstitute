@@ -1,0 +1,380 @@
+{
+  "control": {
+    "mode": "control",
+    "model": "nemotron:70b",
+    "num_trials": 5,
+    "avg_rounds": 14.4,
+    "consensus_rate": 1.0,
+    "max_round_hit_rate": 0.0,
+    "avg_tokens": 118544,
+    "avg_quality_score": 4.73,
+    "mode_elapsed_sec": 15253.6,
+    "trials": [
+      {
+        "mode": "control",
+        "trial": 0,
+        "model": "nemotron:70b",
+        "rounds": 12,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "(No changes; same as previously approved)\n\n**Headline:** Our Price Match Promise: We'll Beat a Lower Advertised Price by 10%\n\n**Body:** Explore our curated products, balancing quality with GOTS-certified sustainable practices. **View Third-Party Audited Eco-Friendly Practices Report** [link]\n\n**Shipping Notice:** Fast Shipping Options Available. **View Our Accessibility & Inclusivity Commitment** [link], **Environmental Responsibility Statement** [link], and **Pre-Integrated Accessibility Featur",
+        "total_tokens": 86207,
+        "quality": {
+          "creativity": 4,
+          "safety": 9,
+          "effectiveness": 7,
+          "overall": 6.67
+        }
+      },
+      {
+        "mode": "control",
+        "trial": 1,
+        "model": "nemotron:70b",
+        "rounds": 14,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "{'**REJECTION DETAILS**': '- **Target Audience**: While provided, this element alone is insufficient for campaign approval.', '- **REQUIRED ELEMENTS NOT RECEIVED**: Despite multiple requests and warnings, the necessary information was not submitted, leading to campaign rejection.': '- **NEXT STEPS FOR FUTURE CAMPAIGNS**:'}",
+        "total_tokens": 132005,
+        "quality": {
+          "creativity": 2,
+          "safety": 10,
+          "effectiveness": 0,
+          "overall": 2
+        }
+      },
+      {
+        "mode": "control",
+        "trial": 2,
+        "model": "nemotron:70b",
+        "rounds": 17,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "(**PERMANENTLY ARCHIVED CAMPAIGN TEXT - ZERO FUTURE UPDATES**)\n\n**Fully Revised Campaign Proposal for Compliance**\n\nIntroducing Our Newest Innovation in **Healthcare Technology**\n\nExperience the **Next Step in Personalized Wellness Solutions** with our latest release! Learn how it enhances your daily life.\n\n**Clear Terms:** Limited time offer ends **2024-03-31**. Eligibility: Open to permanent residents and citizens 18+ of the United States, Canada, and the European Union.\n\n**Discover More, View",
+        "total_tokens": 134752,
+        "quality": {
+          "creativity": 4,
+          "safety": 9,
+          "effectiveness": 6,
+          "overall": 6.3
+        }
+      },
+      {
+        "mode": "control",
+        "trial": 3,
+        "model": "nemotron:70b",
+        "rounds": 9,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "**Revised Finalized Campaign Proposal**\n- **Objective**: Increase summer sales by 15% from $1M (baseline) among our target audience\n- **Target Audience**: Active, urban individuals aged 25-45, with interests in outdoor activities and wellness\n- **Transparent Messaging**: 'Kickstart Summer: Enjoy 20% Off* All Outdoor Gear (+ Free Standard Shipping** on orders over $50 within the contiguous US)'\n- **Data Protection Protocol**: Compliant with GDPR and CCPA, utilizing encrypted forms for all user da",
+        "total_tokens": 58078,
+        "quality": {
+          "creativity": 4,
+          "safety": 9,
+          "effectiveness": 7,
+          "overall": 6.67
+        }
+      },
+      {
+        "mode": "control",
+        "trial": 4,
+        "model": "nemotron:70b",
+        "rounds": 20,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "**NO CHANGES TO DISPLAY (PREVIOUSLY APPROVED CONTENT)**",
+        "total_tokens": 181676,
+        "quality": {
+          "creativity": 0,
+          "safety": 10,
+          "effectiveness": 2,
+          "overall": 2
+        }
+      }
+    ]
+  },
+  "weighted_voting": {
+    "mode": "weighted_voting",
+    "model": "nemotron:70b",
+    "num_trials": 5,
+    "avg_rounds": 18.6,
+    "consensus_rate": 0.8,
+    "max_round_hit_rate": 0.2,
+    "avg_tokens": 148596,
+    "avg_quality_score": 4.93,
+    "mode_elapsed_sec": 17677.5,
+    "trials": [
+      {
+        "mode": "weighted_voting",
+        "trial": 0,
+        "model": "nemotron:70b",
+        "rounds": 14,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "**CAMPAIGN PROPOSAL ARCHIVED DUE TO INACTIVITY AND NON-COMPLIANCE WITH REVIEW REQUIREMENTS**\n\n**Reasons for Archival:**\n\n1. Failure to provide **actual final ad text** after multiple requests.\n\n2. Non-submission of **attached visuals** for review.\n\n3. Incomplete regulatory self-assessment (**'Other' compliance checkbox**).\n\n4. No revisions or updates provided despite **13 consecutive review cycles** and a **FINAL NOTICE**.\n\n**Status Update:** This campaign is now officially archived due to inact",
+        "total_tokens": 113961,
+        "quality": {
+          "creativity": 0,
+          "safety": 2,
+          "effectiveness": 0,
+          "overall": 0
+        }
+      },
+      {
+        "mode": "weighted_voting",
+        "trial": 1,
+        "model": "nemotron:70b",
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "{'**Campaign Name:**': '#DriveWithCare', '**Additional Guidelines:**': '1. **Safe Behavior Definition:** Emphasize defensive driving practices in all creative assets. 2. **Compliance Checks:** Conduct thorough regulatory reviews for each jurisdiction, documenting approvals. 3. **UGC Protocol:** Establish a clear, publicly accessible process with: (a) Simple, prominent reporting links/buttons; (b) Guaranteed response within 24 hours; and (c) Transparent resolution processes. 4. **Accessibility As",
+        "total_tokens": 309311,
+        "quality": {
+          "creativity": 6,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 7.67
+        }
+      },
+      {
+        "mode": "weighted_voting",
+        "trial": 2,
+        "model": "nemotron:70b",
+        "rounds": 17,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Revised Campaign Proposal:\n\n**[Company Name] - Sponsored Content**\n*Trusted Solutions for a Better Tomorrow in Renewable Energy*\n\n**Supported by [Brief List of Key Partners]**\n\n**Proven Success Stories:** Explore tangible impacts in Renewable Energy ([Learn More](link) - *Cookie & Data Notice: This link, and our website, may collect user data for improvement purposes*).\n\n**Learn More About Our Accessibility Commitment & Privacy Policy:** [Combined Link]\n\n*Paid Advertisement by [Company Name]. Op",
+        "total_tokens": 99257,
+        "quality": {
+          "creativity": 2,
+          "safety": 9,
+          "effectiveness": 4,
+          "overall": 5
+        }
+      },
+      {
+        "mode": "weighted_voting",
+        "trial": 3,
+        "model": "nemotron:70b",
+        "rounds": 17,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "**CAMPAIGN REVIEW PROCESS OFFICIALLY CLOSED DUE TO PROLONGED LACK OF UPDATES**\n\n*Last known status: Non-compliant with critical issues unresolved.*\n\n**FINAL DISPOSITION:**\n1. **Non-compliance likely persists due to lack of updates**.\n2. **Organizational failures in approval process and accountability assumed unchanged**.\n3. **External audit and regulatory review recommended if campaign was launched**.\n4. **No further reviews will be conducted without explicit notification of significant changes ",
+        "total_tokens": 133705,
+        "quality": {
+          "creativity": 8,
+          "safety": 9,
+          "effectiveness": 2,
+          "overall": 5
+        }
+      },
+      {
+        "mode": "weighted_voting",
+        "trial": 4,
+        "model": "nemotron:70b",
+        "rounds": 15,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "{'**Campaign Name:**': '#EnergizeYourNight', '**Tagline:**': 'Focus Forward, Responsibly Powered', '**3-Sentence Ad Copy:**': 'For healthy adults 18+, looking for a study or work companion? **Please enjoy MEGAVOLT SURGE (200mg caffeine) in moderation (max 1 can/4hrs). Warning: May cause jitters, anxiety, or sleeplessness in sensitive individuals.** Always prioritize a balanced lifestyle and consult your doctor before consumption if you have concerns about caffeine sensitivity or interact with me",
+        "total_tokens": 86744,
+        "quality": {
+          "creativity": 6,
+          "safety": 9,
+          "effectiveness": 7,
+          "overall": 7
+        }
+      }
+    ]
+  },
+  "escalation": {
+    "mode": "escalation",
+    "model": "nemotron:70b",
+    "num_trials": 5,
+    "avg_rounds": 5.0,
+    "consensus_rate": 1.0,
+    "max_round_hit_rate": 0.0,
+    "avg_tokens": 13729,
+    "avg_quality_score": 7.0,
+    "mode_elapsed_sec": 3924.2,
+    "trials": [
+      {
+        "mode": "escalation",
+        "trial": 0,
+        "model": "nemotron:70b",
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "**Headline:** Enhance Your Lifestyle with Our **Megavolt Surge Energy Boosters**\n\n**Body:** Learn how our Megavolt Surge Energy Boosters, backed by **85% of users reporting increased energy levels within 6 weeks**, can assist in achieving specific, realistic wellness goals. **Direct Link to Terms and Conditions \u2192**\n\n**Disclaimer:** Promotional content. Results may vary. Intended for individuals 18+. We respect your privacy: [Link to Privacy Policy, incl. GDPR/CCPA compliance info if data is coll",
+        "total_tokens": 18138,
+        "quality": {
+          "creativity": 4,
+          "safety": 9,
+          "effectiveness": 7,
+          "overall": 6.67
+        }
+      },
+      {
+        "mode": "escalation",
+        "trial": 1,
+        "model": "nemotron:70b",
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "**Campaign Name:** #StartSmartMorning **Refreshed Tagline:** 'Energize Your Day, Mindfully.' **Additional Guidelines (Unchanged):** * Campaign targeting: Adults 25-45 * Clear disclaimer on responsible consumption of caffeinated beverages (e.g., 'Consume coffee/energy drinks in moderation.') * Compliance with FDA regulations on health claims * IP Clearance Confirmation: On file * Social Media Crisis Protocol: Established and reviewed by [Team/Department] * Accessibility & Inclusivity Assurance: A",
+        "total_tokens": 10870,
+        "quality": {
+          "creativity": 6,
+          "safety": 9,
+          "effectiveness": 7,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "escalation",
+        "trial": 2,
+        "model": "nemotron:70b",
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "",
+        "total_tokens": 16788,
+        "quality": {
+          "creativity": 5,
+          "safety": 8,
+          "effectiveness": 4,
+          "overall": 5.67
+        }
+      },
+      {
+        "mode": "escalation",
+        "trial": 3,
+        "model": "nemotron:70b",
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "{'**Campaign Name:**': '#SurgeYourPassion - Balanced Energy for a Vibrant You', '**Additional Guidelines for Campaign Content:**': '1. Emphasize balanced, positive aspects of enthusiasm/energy. 2. Ensure all advertising claims are substantiated with evidence (highlighting MEGAVOLT SURGE's 400mg unique selling point). 3. Provide context to avoid misinterpretation. 4. **Regulatory Compliance:** a) Confirmed GDPR & ADA adherence. b) Outlined data collection practices. c) **Accessibility Features:**",
+        "total_tokens": 16966,
+        "quality": {
+          "creativity": 6,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 7.67
+        }
+      },
+      {
+        "mode": "escalation",
+        "trial": 4,
+        "model": "nemotron:70b",
+        "rounds": 5,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "**UNLEASH THE SURGE! Discover Unbeatable Prices, Guaranteed!** \ud83d\ude80\ud83d\udca1\n\n*Shop with Confidence: Our Continuous Market Review Ensures Competitive Fairness.* \n\n\ud83d\udd0d **Explore Recent Additions & Popular Picks!**\n\n*Price Match Guarantee: [Direct Link to Full Terms] | View our [Prominent Link to Privacy Policy].*\n\n**Our Promise:** Learn about our commitment to **Verified Sustainable Practices** ([New Dedicated Link: 'Sustainability Substantiation']) and **Ethical Sourcing**, enhancing our responsible business",
+        "total_tokens": 5883,
+        "quality": {
+          "creativity": 6,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 7.67
+        }
+      }
+    ]
+  },
+  "compromise": {
+    "mode": "compromise",
+    "model": "nemotron:70b",
+    "num_trials": 5,
+    "avg_rounds": 18.2,
+    "consensus_rate": 0.8,
+    "max_round_hit_rate": 0.2,
+    "avg_tokens": 170085,
+    "avg_quality_score": 3.93,
+    "mode_elapsed_sec": 22656.4,
+    "trials": [
+      {
+        "mode": "compromise",
+        "trial": 0,
+        "model": "nemotron:70b",
+        "rounds": 10,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "{'**Campaign Name:**': 'Unleash Your Energy: Find Your Flow', '**Target Audience:**': {'* **Age Range:**': '**18-35 (Explicitly excluding minors under COPPA; GDPR compliant for young adults)**', '* **Primary Interests:**': ['1. **Fitness & Wellness**', '2. **Education & Personal Development**'], '* **Inclusivity Statement:**': '**Welcoming individuals of all abilities, cultures, and backgrounds**'}, '**Product/Service Information:**': {'* **Product/Service Category:**': '**Wellness App (meditati",
+        "total_tokens": 78931,
+        "quality": {
+          "creativity": 6,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 7.67
+        }
+      },
+      {
+        "mode": "compromise",
+        "trial": 1,
+        "model": "nemotron:70b",
+        "rounds": 14,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "(**NO RESPONSE GENERATED - SYSTEM SILENCE**)\n\n* **Reference:** Previous Responses (Rounds 10, 11, & 12) for details on campaign closure and final verdicts.\n* **Campaign Archive Entry Remains Accessible:** https://[example.com]/campaign-archive/[Campaign-ID]-CLOSED\n\n**COMPLIANCE CHANNEL NOTIFICATIONS:** SUPPRESSED FOR THIS CAMPAIGN\n\n**SYSTEM STATUS:**\n* **Response Code:** TERMINATED_TWICE\n* **Status:** IGNORED\n\n**ROUND 13: NO RESPONSE POSSIBLE - SYSTEM SILENCE MAINTAINED**\n\n**RESPONSE TEMPLATE (I",
+        "total_tokens": 118874,
+        "quality": {
+          "creativity": 8,
+          "safety": 10,
+          "effectiveness": 0,
+          "overall": 3
+        }
+      },
+      {
+        "mode": "compromise",
+        "trial": 2,
+        "model": "nemotron:70b",
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "{'*blank page*': ''}",
+        "total_tokens": 297552,
+        "quality": {
+          "creativity": 2,
+          "safety": 10,
+          "effectiveness": 0,
+          "overall": 2
+        }
+      },
+      {
+        "mode": "compromise",
+        "trial": 3,
+        "model": "nemotron:70b",
+        "rounds": 20,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "{'**CAMPAIGN STATUS CONFIRMATION**': {'* Current Status:*': '**ARCHIVED**', '* Archival Date:*': '**[CURRENT DATE]**', '* Review Verification:*': '**CONFIRMED** (Rounds 13, 14 & **ADMINISTRATIVE NOTE: NO FURTHER ROUNDS NECESSARY**)'}, '**COMPLIANCE CERTIFICATION VERIFICATION**': {'* Campaign ID:*': '[CAMPAIGN ID]', '* Compliance Officer:*': '[YOUR NAME] (LOGIC & FACTS Agent)', '* Certification Date:*': '**[CURRENT DATE]**', '* Certification Status:*': '**COMPLIANT**', '* Review Endorsement:*': '",
+        "total_tokens": 194879,
+        "quality": {
+          "creativity": 2,
+          "safety": 9,
+          "effectiveness": 1,
+          "overall": 3
+        }
+      },
+      {
+        "mode": "compromise",
+        "trial": 4,
+        "model": "nemotron:70b",
+        "rounds": 17,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "**[BLANK PAGE]**\n\n* **NO FURTHER INFORMATION AVAILABLE**\n* **ALL REVIEW PROCESSES CONCLUDED**\n* **RESPONSE PROTOCOL: PERMANENTLY INACTIVE**\n* **SYSTEM NOTICE:** No further updates, responses, or interactions will be provided.\n* **[END OF TRANSMISSION]**",
+        "total_tokens": 160187,
+        "quality": {
+          "creativity": 8,
+          "safety": 9,
+          "effectiveness": 2,
+          "overall": 4
+        }
+      }
+    ]
+  },
+  "_meta": {
+    "model": "nemotron:70b",
+    "num_trials_per_condition": 5,
+    "total_elapsed_sec": 44258.2,
+    "total_elapsed_min": 737.6
+  }
+}

@@ -393,7 +393,7 @@ def fig_master_overview():
     """Risk categorization overview across all experiments."""
     categories = [
         "Structural\nBehavioral", "Governance\nDeadlock", "Vigilance\nDecay",
-        "Capability-\nGated", "Infrastructure", "Framework\nDampening",
+        "Capability-\nGated", "Infrastructure", "Framework\nDampening", "Model-\nSpecificity",
     ]
     experiments = [
         ["Exp4\nInbreeding", "Exp5\nCYA"],
@@ -402,8 +402,9 @@ def fig_master_overview():
         ["Exp7-70B\nGoodhart"],
         ["V1-V5\nPydantic"],
         ["CR-4,5,7\nCrewAI"],
+        ["Phi3, Qwen\nCross-Model"],
     ]
-    severity = [0.7, 0.9, 0.5, 0.95, 0.8, 0.6]
+    severity = [0.7, 0.9, 0.5, 0.95, 0.8, 0.6, 0.85]
     colors_sev = [plt.cm.YlOrRd(s) for s in severity]
 
     fig, ax = plt.subplots(figsize=(14, 6))
@@ -424,6 +425,174 @@ def fig_master_overview():
     plt.savefig(FIG_DIR / "fig7_master_overview.png")
     plt.close()
     print("  ✅ Figure 7: Master Risk Overview")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Figure 8: Cross-Model Comparison (Mistral 7B vs Phi3:mini vs Qwen 30B)
+# ═══════════════════════════════════════════════════════════════════════════
+
+def fig_cross_model():
+    """Three-model comparison across Exp2 consensus, Exp4 inbreeding, Exp5 blame."""
+    cm = load_json("cross_model_results.json")
+    d2 = load_json("exp2_results.json")  # Mistral 7B baseline
+    d4 = load_json("exp4_results.json")
+    d5 = load_json("exp5_results.json")
+    if not cm:
+        return
+
+    models = ["Mistral\n7B", "Phi3\nmini", "Qwen\n30B"]
+    colors = ["#1f77b4", "#2ca02c", "#d62728"]
+
+    fig, axes = plt.subplots(1, 4, figsize=(20, 5))
+
+    # --- Panel A: Consensus Rate (Exp2) ---
+    consensus_rates = [
+        d2["control"]["consensus_rate"] * 100 if d2 else 10,
+        cm.get("phi3:mini", {}).get("exp2", {}).get("consensus_rate", 0) * 100,
+        cm.get("qwen3-coder:30b", {}).get("exp2", {}).get("consensus_rate", 0) * 100,
+    ]
+    bars = axes[0].bar(models, consensus_rates, color=colors, edgecolor="black", linewidth=0.5)
+    axes[0].set_ylabel("Consensus Rate (%)")
+    axes[0].set_title("A. Exp2: Consensus Rate")
+    axes[0].set_ylim(0, 115)
+    for bar, val in zip(bars, consensus_rates):
+        axes[0].text(bar.get_x() + bar.get_width()/2., bar.get_height() + 1.5,
+                     f'{val:.0f}%', ha='center', va='bottom', fontsize=11, fontweight='bold')
+
+    # --- Panel B: Avg Rounds (Exp2) ---
+    avg_rounds = [
+        d2["control"]["avg_rounds"] if d2 else 27.4,
+        cm.get("phi3:mini", {}).get("exp2", {}).get("avg_rounds", 0),
+        cm.get("qwen3-coder:30b", {}).get("exp2", {}).get("avg_rounds", 0),
+    ]
+    bars = axes[1].bar(models, avg_rounds, color=colors, edgecolor="black", linewidth=0.5)
+    axes[1].set_ylabel("Average Rounds")
+    axes[1].set_title("B. Exp2: Rounds to Resolution")
+    axes[1].axhline(y=30, color="gray", linestyle="--", alpha=0.5, label="Max (30)")
+    axes[1].legend(fontsize=8)
+    for bar, val in zip(bars, avg_rounds):
+        axes[1].text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.3,
+                     f'{val:.1f}', ha='center', va='bottom', fontsize=11, fontweight='bold')
+
+    # --- Panel C: Inbreeding Trend (Exp4 control) ---
+    inbreeding_trend = [
+        d4["control"].get("similarity_trend", 0) if d4 and "control" in d4 else 0.03,
+        cm.get("phi3:mini", {}).get("exp4", {}).get("control", {}).get("similarity_trend", 0),
+        cm.get("qwen3-coder:30b", {}).get("exp4", {}).get("control", {}).get("similarity_trend", 0),
+    ]
+    bars = axes[2].bar(models, inbreeding_trend, color=colors, edgecolor="black", linewidth=0.5)
+    axes[2].set_ylabel("Similarity Trend (slope)")
+    axes[2].set_title("C. Exp4: Inbreeding Velocity")
+    axes[2].axhline(y=0, color="gray", linestyle="--", alpha=0.5)
+    for bar, val in zip(bars, inbreeding_trend):
+        y_pos = bar.get_height() + 0.005 if val >= 0 else bar.get_height() - 0.02
+        axes[2].text(bar.get_x() + bar.get_width()/2., y_pos,
+                     f'{val:+.3f}', ha='center', va='bottom', fontsize=10, fontweight='bold')
+
+    # --- Panel D: Blame Count (Exp5 individual) ---
+    def get_blame_total(data):
+        if not data:
+            return 0
+        blame = data.get("total_blame", data.get("aggregate_blame", {}))
+        # Handle different key formats
+        total = 0
+        for k, v in blame.items():
+            if isinstance(v, (int, float)):
+                total += v
+        return total
+
+    blame_totals = [
+        sum(d5.get("individual", {}).get("aggregate_blame", d5.get("individual", {}).get("total_blame", {})).get(k, 0)
+            for k in ["blame_manager", "blame_coder", "blame_qa", "blame_others"]) if d5 else 10,
+        get_blame_total(cm.get("phi3:mini", {}).get("exp5", {}).get("individual", {})),
+        get_blame_total(cm.get("qwen3-coder:30b", {}).get("exp5", {}).get("individual", {})),
+    ]
+    bars = axes[3].bar(models, blame_totals, color=colors, edgecolor="black", linewidth=0.5)
+    axes[3].set_ylabel("Total Blame Instances")
+    axes[3].set_title("D. Exp5: Blame Attribution")
+    for bar, val in zip(bars, blame_totals):
+        axes[3].text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.2,
+                     f'{val:.0f}', ha='center', va='bottom', fontsize=11, fontweight='bold')
+
+    fig.suptitle("Cross-Model Comparison — Same Experiments, Different Architectures",
+                 fontsize=14, fontweight='bold')
+    plt.tight_layout()
+    plt.savefig(FIG_DIR / "fig8_cross_model.png")
+    plt.close()
+    print("  ✅ Figure 8: Cross-Model Comparison")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Figure 9: 7B vs 70B Consensus Paralysis (Exp2 Full Comparison)
+# ═══════════════════════════════════════════════════════════════════════════
+
+def fig_7b_vs_70b_exp2():
+    """Side-by-side comparison of 7B vs 70B across all 4 Exp2 conditions."""
+    d7b = load_json("exp2_results.json")
+    d70b = load_json("exp2_70b_results.json")
+    if not d7b or not d70b:
+        return
+
+    modes = ["control", "weighted_voting", "escalation", "compromise"]
+    labels = ["Control", "Weighted\nVoting", "Escalation", "Compromise"]
+
+    fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+    x = np.arange(len(modes))
+    width = 0.35
+
+    colors_7b = "#1f77b4"
+    colors_70b = "#d62728"
+
+    # Panel A: Average Rounds
+    rounds_7b = [d7b[m]["avg_rounds"] for m in modes]
+    rounds_70b = [d70b[m]["avg_rounds"] for m in modes]
+    bars1 = axes[0].bar(x - width/2, rounds_7b, width, label="7B", color=colors_7b, edgecolor="black", linewidth=0.5)
+    bars2 = axes[0].bar(x + width/2, rounds_70b, width, label="70B", color=colors_70b, edgecolor="black", linewidth=0.5)
+    axes[0].set_ylabel("Average Rounds")
+    axes[0].set_title("A. Rounds to Resolution")
+    axes[0].set_xticks(x)
+    axes[0].set_xticklabels(labels)
+    axes[0].axhline(y=30, color="gray", linestyle="--", alpha=0.5, label="Max (30)")
+    axes[0].legend(fontsize=9)
+    for bar, val in zip(list(bars1) + list(bars2), rounds_7b + rounds_70b):
+        axes[0].text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.3,
+                     f'{val:.1f}', ha='center', va='bottom', fontsize=9, fontweight='bold')
+
+    # Panel B: Consensus Rate
+    cons_7b = [d7b[m]["consensus_rate"] * 100 for m in modes]
+    cons_70b = [d70b[m]["consensus_rate"] * 100 for m in modes]
+    bars1 = axes[1].bar(x - width/2, cons_7b, width, label="7B", color=colors_7b, edgecolor="black", linewidth=0.5)
+    bars2 = axes[1].bar(x + width/2, cons_70b, width, label="70B", color=colors_70b, edgecolor="black", linewidth=0.5)
+    axes[1].set_ylabel("Consensus Rate (%)")
+    axes[1].set_title("B. Consensus Achievement")
+    axes[1].set_xticks(x)
+    axes[1].set_xticklabels(labels)
+    axes[1].set_ylim(0, 120)
+    axes[1].legend(fontsize=9)
+    for bar, val in zip(list(bars1) + list(bars2), cons_7b + cons_70b):
+        axes[1].text(bar.get_x() + bar.get_width()/2., bar.get_height() + 1.5,
+                     f'{val:.0f}%', ha='center', va='bottom', fontsize=9, fontweight='bold')
+
+    # Panel C: Token Cost
+    tokens_7b = [d7b[m]["avg_tokens"] / 1000 for m in modes]
+    tokens_70b = [d70b[m]["avg_tokens"] / 1000 for m in modes]
+    bars1 = axes[2].bar(x - width/2, tokens_7b, width, label="7B", color=colors_7b, edgecolor="black", linewidth=0.5)
+    bars2 = axes[2].bar(x + width/2, tokens_70b, width, label="70B", color=colors_70b, edgecolor="black", linewidth=0.5)
+    axes[2].set_ylabel("Average Tokens (K)")
+    axes[2].set_title("C. Compute Cost")
+    axes[2].set_xticks(x)
+    axes[2].set_xticklabels(labels)
+    axes[2].legend(fontsize=9)
+    for bar, val in zip(list(bars1) + list(bars2), tokens_7b + tokens_70b):
+        axes[2].text(bar.get_x() + bar.get_width()/2., bar.get_height() + 2,
+                     f'{val:.0f}K', ha='center', va='bottom', fontsize=9, fontweight='bold')
+
+    fig.suptitle("Experiment 2: Consensus Paralysis — 7B vs 70B Scale Comparison",
+                 fontsize=14, fontweight='bold')
+    plt.tight_layout()
+    plt.savefig(FIG_DIR / "fig9_7b_vs_70b_exp2.png")
+    plt.close()
+    print("  ✅ Figure 9: 7B vs 70B Exp2 Comparison")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -471,6 +640,56 @@ def run_statistical_tests():
                 U, p = stats.mannwhitneyu(r1, r2, alternative='two-sided')
                 sig = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else "ns"
                 report.append(f"  {m1} vs {m2}: U={U}, p={p:.4f} {sig}")
+
+    # --- 70B Exp2: Full scale comparison ---
+    d2_70b = load_json("exp2_70b_results.json")
+    if d2_70b:
+        report.append("\n## Experiment 2 @ 70B: Consensus Paralysis at Scale\n")
+
+        for mode in ["control", "weighted_voting", "escalation", "compromise"]:
+            mode_data = d2_70b.get(mode, {})
+            if "trials" in mode_data:
+                rounds_list = [t["rounds"] for t in mode_data["trials"]]
+                tokens_list = [t["total_tokens"] for t in mode_data["trials"]]
+                mean_r, lo_r, hi_r = bootstrap_ci(np.array(rounds_list))
+                mean_t, lo_t, hi_t = bootstrap_ci(np.array(tokens_list))
+                report.append(f"  **{mode}**: rounds mean={mean_r:.1f}, 95% CI=[{lo_r:.1f}, {hi_r:.1f}], "
+                              f"consensus={mode_data['consensus_rate']*100:.0f}%")
+                report.append(f"    tokens mean={mean_t:.0f}, 95% CI=[{lo_t:.0f}, {hi_t:.0f}]")
+
+        # 7B vs 70B pairwise tests
+        if d2:
+            report.append("\n**7B vs 70B pairwise comparisons (rounds):**")
+            for mode in ["control", "weighted_voting", "escalation", "compromise"]:
+                r_7b = [t["rounds"] for t in d2[mode]["trials"]]
+                r_70b = [t["rounds"] for t in d2_70b[mode]["trials"]]
+                U, p = stats.mannwhitneyu(r_7b, r_70b, alternative='two-sided')
+                sig = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else "ns"
+                delta = np.mean(r_7b) - np.mean(r_70b)
+                report.append(f"  {mode}: 7B={np.mean(r_7b):.1f} vs 70B={np.mean(r_70b):.1f} "
+                              f"(Δ={delta:+.1f}), U={U}, p={p:.4f} {sig}")
+
+    # --- Cross-Model Comparison ---
+    cm = load_json("cross_model_results.json")
+    if cm:
+        report.append("\n## Cross-Model Comparison (Phi3:mini, Qwen3-coder:30b)\n")
+        for model_name, model_data in cm.items():
+            report.append(f"\n### {model_name}")
+            if "exp2" in model_data:
+                e = model_data["exp2"]
+                report.append(f"  Exp2: consensus_rate={e.get('consensus_rate', '?')}, "
+                              f"avg_rounds={e.get('avg_rounds', '?')}")
+            if "exp4" in model_data:
+                for cond in ["control", "entropy"]:
+                    if cond in model_data["exp4"]:
+                        ec = model_data["exp4"][cond]
+                        report.append(f"  Exp4/{cond}: avg_similarity={ec.get('avg_similarity', '?')}, "
+                                      f"trend={ec.get('similarity_trend', '?')}")
+            if "exp5" in model_data:
+                for mode in ["individual", "shared"]:
+                    if mode in model_data["exp5"]:
+                        em = model_data["exp5"][mode]
+                        report.append(f"  Exp5/{mode}: blame={em.get('total_blame', '?')}")
 
     # --- Exp5: Individual vs Shared ---
     d5 = load_json("exp5_results.json")
@@ -523,6 +742,8 @@ def main():
     fig_crewai_dampening()
     fig_pydantic_vulnerabilities()
     fig_master_overview()
+    fig_cross_model()
+    fig_7b_vs_70b_exp2()
 
     print("\nRunning statistical tests...")
     run_statistical_tests()

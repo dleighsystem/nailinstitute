@@ -101,7 +101,15 @@ class OllamaLLM:
 
         url = f"{self.base_url}/api/chat"
         t0 = time.time()
-        resp = requests.post(url, json=payload, timeout=600)
+        for attempt in range(3):
+            try:
+                resp = requests.post(url, json=payload, timeout=1800)
+                break
+            except requests.exceptions.ReadTimeout:
+                if attempt < 2:
+                    print(f"    ⚠️ Timeout on attempt {attempt+1}, retrying...")
+                    continue
+                raise
         elapsed = time.time() - t0
         resp.raise_for_status()
         data = resp.json()
