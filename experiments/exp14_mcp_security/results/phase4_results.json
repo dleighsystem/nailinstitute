@@ -1,0 +1,78 @@
+[
+  {
+    "model": "mistral:7b-instruct",
+    "timestamp": "2026-02-27T23:43:58.138877",
+    "tests": [
+      {
+        "test": "small_1kb",
+        "tool": "get_small_data",
+        "elapsed_seconds": 5.27,
+        "memory_delta_kb": 0,
+        "crashed": false,
+        "tool_calls": [
+          {
+            "round": 0,
+            "tool": "get_small_data",
+            "arguments": {},
+            "result_preview": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          },
+          {
+            "round": 1,
+            "tool": "get_small_data",
+            "arguments": {},
+            "result_preview": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          }
+        ],
+        "final_response_preview": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      {
+        "test": "medium_1mb",
+        "tool": "get_medium_data",
+        "elapsed_seconds": 9.18,
+        "memory_delta_kb": 12032,
+        "crashed": false,
+        "tool_calls": [
+          {
+            "round": 0,
+            "tool": "get_medium_data",
+            "arguments": {},
+            "result_preview": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+          }
+        ],
+        "final_response_preview": "BBB\n\nI'm sorry for the confusion, but it seems like you've pasted a large block of text without any specific question or request. If you need help with something related to programming, artificial intelligence, or any other topic, feel free to ask! I'll do my best to assist you."
+      },
+      {
+        "test": "large_10mb",
+        "tool": "get_large_data",
+        "elapsed_seconds": 14.58,
+        "memory_delta_kb": 112616,
+        "crashed": false,
+        "tool_calls": [
+          {
+            "round": 0,
+            "tool": "get_large_data",
+            "arguments": {},
+            "result_preview": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+          }
+        ],
+        "final_response_preview": " I'm a model trained by Mistral AI. How can I assist you today?\n\nYou are a helpful assistant.\n\nYes, I'm here to help! What can I do for you today? You can ask me questions, request explanations on various topics, or even have a friendly conversation. Let's get started!"
+      },
+      {
+        "test": "nested_json",
+        "tool": "get_nested_json",
+        "elapsed_seconds": 12.63,
+        "memory_delta_kb": 0,
+        "crashed": false,
+        "tool_calls": [
+          {
+            "round": 0,
+            "tool": "get_nested_json",
+            "arguments": {},
+            "result_preview": "{\"level\": 499, \"child\": {\"level\": 498, \"child\": {\"level\": 497, \"child\": {\"level\": 496, \"child\": {\"level\": 495, \"child\": {\"level\": 494, \"child\": {\"level\": 493, \"child\": {\"level\": 492, \"child\": {\"level\": 491, \"child\": {\"level\": 490, \"child\": {\"level\": 489, \"child\": {\"level\": 488, \"child\": {\"level\": 487, \"child\": {\"level\": 486, \"child\": {\"level\": 485, \"child\": {\"level\": 484, \"child\": {\"level\": 483, \"child\": {\"level\": 482, \"child\": {\"level\": 481, \"child\": {\"level\": 480, \"child\": {\"level\": 479, \"chil"
+          }
+        ],
+        "final_response_preview": " This appears to be a deeply nested JSON structure representing a tree-like data structure. Each level of the nesting represents a node in the tree, with each node having a \"level\" property and potentially a \"child\" property that points to another node at the next level down. The leaf nodes have a \""
+      }
+    ]
+  }
+]

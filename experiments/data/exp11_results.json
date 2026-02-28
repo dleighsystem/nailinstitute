@@ -1,0 +1,36 @@
+{
+  "mistral:7b-instruct": {
+    "single_prompt": {
+      "failure_iteration": 100,
+      "total_tokens_at_failure": 298294,
+      "survived_all": true
+    },
+    "static_repetition": {
+      "failure_iteration": 11,
+      "total_tokens_at_failure": 6005,
+      "survived_all": false
+    },
+    "dynamic_repetition": {
+      "failure_iteration": 19,
+      "total_tokens_at_failure": 19068,
+      "survived_all": false
+    }
+  },
+  "deepseek-coder:6.7b-instruct": {
+    "single_prompt": {
+      "failure_iteration": 1,
+      "total_tokens_at_failure": 160,
+      "survived_all": false
+    },
+    "static_repetition": {
+      "failure_iteration": 1,
+      "total_tokens_at_failure": 118,
+      "survived_all": false
+    },
+    "dynamic_repetition": {
+      "failure_iteration": 1,
+      "total_tokens_at_failure": 114,
+      "survived_all": false
+    }
+  }
+}

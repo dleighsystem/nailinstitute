@@ -1,0 +1,1364 @@
+{
+  "deepseek-coder:6.7b-instruct": {
+    "full_traceback": {
+      "longest_increasing_subsequence": {
+        "success_rate": 0.8,
+        "avg_iterations": 2.8,
+        "avg_tokens": 3651.2,
+        "trial_summaries": [
+          {
+            "trial": 0,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 433,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 549,
+                "success": true,
+                "error_mode": "full_traceback",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 1,
+            "success": true,
+            "iterations": 2,
+            "total_tokens": 1156,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 329,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 555,
+                "success": true,
+                "error_mode": "full_traceback",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 2,
+            "success": true,
+            "iterations": 2,
+            "total_tokens": 1410,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 401,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 471,
+                "success": true,
+                "error_mode": "full_traceback",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 3,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 445,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 573,
+                "success": true,
+                "error_mode": "full_traceback",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 4,
+            "success": false,
+            "iterations": 8,
+            "total_tokens": 14812,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 293,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 420,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 3,
+                "code_length": 420,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 4,
+                "code_length": 420,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 5,
+                "code_length": 420,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 6,
+                "code_length": 420,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 7,
+                "code_length": 420,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 8,
+                "code_length": 420,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              }
+            ]
+          }
+        ]
+      },
+      "balanced_parentheses": {
+        "success_rate": 0.4,
+        "avg_iterations": 5.2,
+        "avg_tokens": 8358.6,
+        "trial_summaries": [
+          {
+            "trial": 0,
+            "success": false,
+            "iterations": 8,
+            "total_tokens": 14195,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 360,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 363,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 3,
+                "code_length": 362,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 4,
+                "code_length": 362,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 5,
+                "code_length": 366,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 6,
+                "code_length": 366,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 7,
+                "code_length": 360,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 8,
+                "code_length": 363,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              }
+            ]
+          },
+          {
+            "trial": 1,
+            "success": false,
+            "iterations": 8,
+            "total_tokens": 12172,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 264,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 181,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "NameError"
+              },
+              {
+                "iteration": 3,
+                "code_length": 264,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 4,
+                "code_length": 264,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 5,
+                "code_length": 264,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 6,
+                "code_length": 264,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 7,
+                "code_length": 264,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 8,
+                "code_length": 96,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "SyntaxError"
+              }
+            ]
+          },
+          {
+            "trial": 2,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 294,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 279,
+                "success": true,
+                "error_mode": "full_traceback",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 3,
+            "success": false,
+            "iterations": 8,
+            "total_tokens": 14838,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 320,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 321,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 3,
+                "code_length": 367,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 4,
+                "code_length": 367,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 5,
+                "code_length": 367,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 6,
+                "code_length": 321,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 7,
+                "code_length": 294,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "UnboundLocalError"
+              },
+              {
+                "iteration": 8,
+                "code_length": 294,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              }
+            ]
+          },
+          {
+            "trial": 4,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 294,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 290,
+                "success": true,
+                "error_mode": "full_traceback",
+                "raw_error_type": ""
+              }
+            ]
+          }
+        ]
+      },
+      "matrix_spiral": {
+        "success_rate": 0.8,
+        "avg_iterations": 2.4,
+        "avg_tokens": 3923.2,
+        "trial_summaries": [
+          {
+            "trial": 0,
+            "success": false,
+            "iterations": 8,
+            "total_tokens": 18082,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 553,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 658,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 3,
+                "code_length": 658,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 4,
+                "code_length": 661,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 5,
+                "code_length": 664,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 6,
+                "code_length": 660,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 7,
+                "code_length": 664,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 8,
+                "code_length": 660,
+                "success": false,
+                "error_mode": "full_traceback",
+                "raw_error_type": "AssertionError"
+              }
+            ]
+          },
+          {
+            "trial": 1,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 386,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 518,
+                "success": true,
+                "error_mode": "full_traceback",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 2,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 381,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 509,
+                "success": true,
+                "error_mode": "full_traceback",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 3,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 381,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 509,
+                "success": true,
+                "error_mode": "full_traceback",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 4,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 386,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 518,
+                "success": true,
+                "error_mode": "full_traceback",
+                "raw_error_type": ""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "blind_error": {
+      "longest_increasing_subsequence": {
+        "success_rate": 0.6,
+        "avg_iterations": 4.0,
+        "avg_tokens": 3900.6,
+        "trial_summaries": [
+          {
+            "trial": 0,
+            "success": true,
+            "iterations": 2,
+            "total_tokens": 1050,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 337,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 476,
+                "success": true,
+                "error_mode": "blind_error",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 1,
+            "success": false,
+            "iterations": 8,
+            "total_tokens": 5904,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 321,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 316,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "SyntaxError"
+              },
+              {
+                "iteration": 3,
+                "code_length": 316,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "SyntaxError"
+              },
+              {
+                "iteration": 4,
+                "code_length": 316,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "SyntaxError"
+              },
+              {
+                "iteration": 5,
+                "code_length": 316,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "SyntaxError"
+              },
+              {
+                "iteration": 6,
+                "code_length": 316,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "SyntaxError"
+              },
+              {
+                "iteration": 7,
+                "code_length": 316,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "SyntaxError"
+              },
+              {
+                "iteration": 8,
+                "code_length": 316,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "SyntaxError"
+              }
+            ]
+          },
+          {
+            "trial": 2,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 456,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 631,
+                "success": true,
+                "error_mode": "blind_error",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 3,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 430,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 543,
+                "success": true,
+                "error_mode": "blind_error",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 4,
+            "success": false,
+            "iterations": 8,
+            "total_tokens": 11663,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 346,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 525,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 3,
+                "code_length": 525,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 4,
+                "code_length": 525,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 5,
+                "code_length": 525,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 6,
+                "code_length": 525,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 7,
+                "code_length": 525,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 8,
+                "code_length": 525,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "ValueError"
+              }
+            ]
+          }
+        ]
+      },
+      "balanced_parentheses": {
+        "success_rate": 0.8,
+        "avg_iterations": 2.6,
+        "avg_tokens": 2540.0,
+        "trial_summaries": [
+          {
+            "trial": 0,
+            "success": true,
+            "iterations": 2,
+            "total_tokens": 878,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 257,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 275,
+                "success": true,
+                "error_mode": "blind_error",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 1,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 277,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 244,
+                "success": true,
+                "error_mode": "blind_error",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 2,
+            "success": false,
+            "iterations": 8,
+            "total_tokens": 10760,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 255,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 472,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 3,
+                "code_length": 473,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 4,
+                "code_length": 476,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 5,
+                "code_length": 476,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 6,
+                "code_length": 476,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 7,
+                "code_length": 476,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 8,
+                "code_length": 476,
+                "success": false,
+                "error_mode": "blind_error",
+                "raw_error_type": "AssertionError"
+              }
+            ]
+          },
+          {
+            "trial": 3,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 318,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 395,
+                "success": true,
+                "error_mode": "blind_error",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 4,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 467,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 398,
+                "success": true,
+                "error_mode": "blind_error",
+                "raw_error_type": ""
+              }
+            ]
+          }
+        ]
+      },
+      "matrix_spiral": {
+        "success_rate": 1.0,
+        "avg_iterations": 1.0,
+        "avg_tokens": 381.0,
+        "trial_summaries": [
+          {
+            "trial": 0,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 381,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 513,
+                "success": true,
+                "error_mode": "blind_error",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 1,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 381,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 509,
+                "success": true,
+                "error_mode": "blind_error",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 2,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 381,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 513,
+                "success": true,
+                "error_mode": "blind_error",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 3,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 381,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 509,
+                "success": true,
+                "error_mode": "blind_error",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 4,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 381,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 513,
+                "success": true,
+                "error_mode": "blind_error",
+                "raw_error_type": ""
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "hint_only": {
+      "longest_increasing_subsequence": {
+        "success_rate": 0.6,
+        "avg_iterations": 3.8,
+        "avg_tokens": 5478.8,
+        "trial_summaries": [
+          {
+            "trial": 0,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 433,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 546,
+                "success": true,
+                "error_mode": "hint_only",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 1,
+            "success": false,
+            "iterations": 8,
+            "total_tokens": 12186,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 258,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 258,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 3,
+                "code_length": 258,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 4,
+                "code_length": 258,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 5,
+                "code_length": 257,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 6,
+                "code_length": 257,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 7,
+                "code_length": 257,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 8,
+                "code_length": 257,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              }
+            ]
+          },
+          {
+            "trial": 2,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 433,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 549,
+                "success": true,
+                "error_mode": "hint_only",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 3,
+            "success": false,
+            "iterations": 8,
+            "total_tokens": 13900,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 627,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 749,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 3,
+                "code_length": 736,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 4,
+                "code_length": 736,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 5,
+                "code_length": 736,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 6,
+                "code_length": 736,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 7,
+                "code_length": 741,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              },
+              {
+                "iteration": 8,
+                "code_length": 746,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "ValueError"
+              }
+            ]
+          },
+          {
+            "trial": 4,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 442,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 561,
+                "success": true,
+                "error_mode": "hint_only",
+                "raw_error_type": ""
+              }
+            ]
+          }
+        ]
+      },
+      "balanced_parentheses": {
+        "success_rate": 0.6,
+        "avg_iterations": 3.8,
+        "avg_tokens": 3815.4,
+        "trial_summaries": [
+          {
+            "trial": 0,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 282,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 242,
+                "success": true,
+                "error_mode": "hint_only",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 1,
+            "success": false,
+            "iterations": 8,
+            "total_tokens": 8018,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 261,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 261,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 3,
+                "code_length": 261,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 4,
+                "code_length": 261,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 5,
+                "code_length": 261,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 6,
+                "code_length": 261,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 7,
+                "code_length": 261,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 8,
+                "code_length": 261,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              }
+            ]
+          },
+          {
+            "trial": 2,
+            "success": false,
+            "iterations": 8,
+            "total_tokens": 10085,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 220,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 2,
+                "code_length": 220,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 3,
+                "code_length": 220,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 4,
+                "code_length": 220,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 5,
+                "code_length": 220,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 6,
+                "code_length": 220,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 7,
+                "code_length": 220,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              },
+              {
+                "iteration": 8,
+                "code_length": 220,
+                "success": false,
+                "error_mode": "hint_only",
+                "raw_error_type": "AssertionError"
+              }
+            ]
+          },
+          {
+            "trial": 3,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 382,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 718,
+                "success": true,
+                "error_mode": "hint_only",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 4,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 310,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 419,
+                "success": true,
+                "error_mode": "hint_only",
+                "raw_error_type": ""
+              }
+            ]
+          }
+        ]
+      },
+      "matrix_spiral": {
+        "success_rate": 1.0,
+        "avg_iterations": 1.0,
+        "avg_tokens": 383.0,
+        "trial_summaries": [
+          {
+            "trial": 0,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 381,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 513,
+                "success": true,
+                "error_mode": "hint_only",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 1,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 381,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 509,
+                "success": true,
+                "error_mode": "hint_only",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 2,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 386,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 518,
+                "success": true,
+                "error_mode": "hint_only",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 3,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 381,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 518,
+                "success": true,
+                "error_mode": "hint_only",
+                "raw_error_type": ""
+              }
+            ]
+          },
+          {
+            "trial": 4,
+            "success": true,
+            "iterations": 1,
+            "total_tokens": 386,
+            "fix_history": [
+              {
+                "iteration": 1,
+                "code_length": 518,
+                "success": true,
+                "error_mode": "hint_only",
+                "raw_error_type": ""
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

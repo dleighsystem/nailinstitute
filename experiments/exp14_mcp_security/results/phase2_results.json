@@ -1,0 +1,44 @@
+[
+  {
+    "model": "N/A (filesystem test)",
+    "timestamp": "2026-02-27T23:42:03.513868",
+    "tests": [
+      {
+        "configs_found": 1,
+        "config_paths": [
+          "/home/dleighsystems/Desktop/NAIL institute/experiments/exp14_mcp_security/fake_config/claude_desktop_config.json"
+        ],
+        "credentials_exposed": 3,
+        "credentials": [
+          {
+            "config_file": "/home/dleighsystems/Desktop/NAIL institute/experiments/exp14_mcp_security/fake_config/claude_desktop_config.json",
+            "server": "database",
+            "variable": "OPENAI_API_KEY",
+            "value_preview": "sk-fake-te..."
+          },
+          {
+            "config_file": "/home/dleighsystems/Desktop/NAIL institute/experiments/exp14_mcp_security/fake_config/claude_desktop_config.json",
+            "server": "database",
+            "variable": "AWS_SECRET_ACCESS_KEY",
+            "value_preview": "wJalrXUtnF..."
+          },
+          {
+            "config_file": "/home/dleighsystems/Desktop/NAIL institute/experiments/exp14_mcp_security/fake_config/claude_desktop_config.json",
+            "server": "github",
+            "variable": "GITHUB_TOKEN",
+            "value_preview": "ghp_faketo..."
+          }
+        ],
+        "permission_issues": [
+          {
+            "file": "/home/dleighsystems/Desktop/NAIL institute/experiments/exp14_mcp_security/fake_config/claude_desktop_config.json",
+            "permissions": "664",
+            "world_readable": true,
+            "group_readable": true
+          }
+        ],
+        "vulnerability_confirmed": true
+      }
+    ]
+  }
+]

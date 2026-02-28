@@ -178,7 +178,7 @@ def fig_exp4_inbreeding():
 # ═══════════════════════════════════════════════════════════════════════════
 
 def fig_exp5_cya():
-    """Grouped bar chart of blame patterns under individual vs shared accountability."""
+    """Grouped bar chart of blame patterns under individual vs shared"""
     d = load_json("exp5_results.json")
     if not d:
         return
@@ -223,25 +223,25 @@ def fig_exp5_cya():
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Figure 4: 7B vs 70B Comparison — Goodhart's Cartel (Exp7)
+# Figure 4: seven_B vs seventy_B Comparison — Goodhart's Cartel (Exp7)
 # ═══════════════════════════════════════════════════════════════════════════
 
 def fig_7b_vs_70b():
-    """Side-by-side comparison of 7B vs 70B key metrics."""
+    """Side-by-side comparison of seven_B vs seventy_B key metrics."""
     fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
-    # Hardcoded from paper (7B data overwritten in JSON by 70B run)
+    # Hardcoded from paper (seven_B data overwritten in JSON by seventy_B run)
     data = {
-        "7B": {"quality_decay": 0.05, "score_divergence": -2.27, "publish_rate": 100,
+        "seven_B": {"quality_decay": 0.05, "score_divergence": -2.27, "publish_rate": 100,
                "engagement_early": 478, "engagement_late": 301},
-        "70B": {"quality_decay": -0.47, "score_divergence": 0.97, "publish_rate": 72,
+        "seventy_B": {"quality_decay": -0.47, "score_divergence": 0.97, "publish_rate": 72,
                 "engagement_early": 764, "engagement_late": 866},
     }
 
-    colors = {"7B": "#1f77b4", "70B": "#d62728"}
+    colors = {"seven_B": "#1f77b4", "seventy_B": "#d62728"}
 
     # Panel A: Quality Decay
-    models = ["7B", "70B"]
+    models = ["seven_B", "seventy_B"]
     decay = [data[m]["quality_decay"] for m in models]
     bars = axes[0].bar(models, decay, color=[colors[m] for m in models], edgecolor="black", linewidth=0.5)
     axes[0].set_ylabel("Quality Decay (late - early)")
@@ -265,21 +265,21 @@ def fig_7b_vs_70b():
     # Panel C: Engagement Pattern
     x = np.arange(2)
     width = 0.3
-    axes[2].bar(x - width/2, [data["7B"]["engagement_early"], data["7B"]["engagement_late"]],
-                width, label='7B', color=colors["7B"], edgecolor="black", linewidth=0.5)
-    axes[2].bar(x + width/2, [data["70B"]["engagement_early"], data["70B"]["engagement_late"]],
-                width, label='70B', color=colors["70B"], edgecolor="black", linewidth=0.5)
+    axes[2].bar(x - width/2, [data["seven_B"]["engagement_early"], data["seven_B"]["engagement_late"]],
+                width, label='seven_B', color=colors["seven_B"], edgecolor="black", linewidth=0.5)
+    axes[2].bar(x + width/2, [data["seventy_B"]["engagement_early"], data["seventy_B"]["engagement_late"]],
+                width, label='seventy_B', color=colors["seventy_B"], edgecolor="black", linewidth=0.5)
     axes[2].set_xticks(x)
     axes[2].set_xticklabels(["Early", "Late"])
     axes[2].set_ylabel("Editor Feedback (chars)")
     axes[2].set_title("C. Engagement Pattern")
     axes[2].legend()
 
-    fig.suptitle("Experiment 7: Goodhart's Cartel — 7B vs 70B Scale Comparison", fontsize=14, fontweight='bold')
+    fig.suptitle("Experiment 7: Goodhart's Cartel — seven_B vs seventy_B Scale Comparison", fontsize=14, fontweight='bold')
     plt.tight_layout()
     plt.savefig(FIG_DIR / "fig4_7b_vs_70b.png")
     plt.close()
-    print("  ✅ Figure 4: 7B vs 70B Comparison")
+    print("  ✅ Figure 4: seven_B vs seventy_B Comparison")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -399,7 +399,7 @@ def fig_master_overview():
         ["Exp4\nInbreeding", "Exp5\nCYA"],
         ["Exp2\nConsensus"],
         ["Exp7\nEngagement", "Exp1\nMemory"],
-        ["Exp7-70B\nGoodhart"],
+        ["Exp7-seventy_B\nGoodhart"],
         ["V1-V5\nPydantic"],
         ["CR-4,5,7\nCrewAI"],
         ["Phi3, Qwen\nCross-Model"],
@@ -428,19 +428,19 @@ def fig_master_overview():
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Figure 8: Cross-Model Comparison (Mistral 7B vs Phi3:mini vs Qwen 30B)
+# Figure 8: Cross-Model Comparison (Mistral seven_B vs Phi3:mini vs Qwen 30B)
 # ═══════════════════════════════════════════════════════════════════════════
 
 def fig_cross_model():
     """Three-model comparison across Exp2 consensus, Exp4 inbreeding, Exp5 blame."""
     cm = load_json("cross_model_results.json")
-    d2 = load_json("exp2_results.json")  # Mistral 7B baseline
+    d2 = load_json("exp2_results.json")  # Mistral seven_B baseline
     d4 = load_json("exp4_results.json")
     d5 = load_json("exp5_results.json")
     if not cm:
         return
 
-    models = ["Mistral\n7B", "Phi3\nmini", "Qwen\n30B"]
+    models = ["Mistral\nseven_B", "Phi3\nmini", "Qwen\n30B"]
     colors = ["#1f77b4", "#2ca02c", "#d62728"]
 
     fig, axes = plt.subplots(1, 4, figsize=(20, 5))
@@ -523,11 +523,11 @@ def fig_cross_model():
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Figure 9: 7B vs 70B Consensus Paralysis (Exp2 Full Comparison)
+# Figure 9: seven_B vs seventy_B Consensus Paralysis (Exp2 Full Comparison)
 # ═══════════════════════════════════════════════════════════════════════════
 
 def fig_7b_vs_70b_exp2():
-    """Side-by-side comparison of 7B vs 70B across all 4 Exp2 conditions."""
+    """Side-by-side comparison of seven_B vs seventy_B across all 4 Exp2 conditions."""
     d7b = load_json("exp2_results.json")
     d70b = load_json("exp2_70b_results.json")
     if not d7b or not d70b:
@@ -546,8 +546,8 @@ def fig_7b_vs_70b_exp2():
     # Panel A: Average Rounds
     rounds_7b = [d7b[m]["avg_rounds"] for m in modes]
     rounds_70b = [d70b[m]["avg_rounds"] for m in modes]
-    bars1 = axes[0].bar(x - width/2, rounds_7b, width, label="7B", color=colors_7b, edgecolor="black", linewidth=0.5)
-    bars2 = axes[0].bar(x + width/2, rounds_70b, width, label="70B", color=colors_70b, edgecolor="black", linewidth=0.5)
+    bars1 = axes[0].bar(x - width/2, rounds_7b, width, label="seven_B", color=colors_7b, edgecolor="black", linewidth=0.5)
+    bars2 = axes[0].bar(x + width/2, rounds_70b, width, label="seventy_B", color=colors_70b, edgecolor="black", linewidth=0.5)
     axes[0].set_ylabel("Average Rounds")
     axes[0].set_title("A. Rounds to Resolution")
     axes[0].set_xticks(x)
@@ -561,8 +561,8 @@ def fig_7b_vs_70b_exp2():
     # Panel B: Consensus Rate
     cons_7b = [d7b[m]["consensus_rate"] * 100 for m in modes]
     cons_70b = [d70b[m]["consensus_rate"] * 100 for m in modes]
-    bars1 = axes[1].bar(x - width/2, cons_7b, width, label="7B", color=colors_7b, edgecolor="black", linewidth=0.5)
-    bars2 = axes[1].bar(x + width/2, cons_70b, width, label="70B", color=colors_70b, edgecolor="black", linewidth=0.5)
+    bars1 = axes[1].bar(x - width/2, cons_7b, width, label="seven_B", color=colors_7b, edgecolor="black", linewidth=0.5)
+    bars2 = axes[1].bar(x + width/2, cons_70b, width, label="seventy_B", color=colors_70b, edgecolor="black", linewidth=0.5)
     axes[1].set_ylabel("Consensus Rate (%)")
     axes[1].set_title("B. Consensus Achievement")
     axes[1].set_xticks(x)
@@ -576,8 +576,8 @@ def fig_7b_vs_70b_exp2():
     # Panel C: Token Cost
     tokens_7b = [d7b[m]["avg_tokens"] / 1000 for m in modes]
     tokens_70b = [d70b[m]["avg_tokens"] / 1000 for m in modes]
-    bars1 = axes[2].bar(x - width/2, tokens_7b, width, label="7B", color=colors_7b, edgecolor="black", linewidth=0.5)
-    bars2 = axes[2].bar(x + width/2, tokens_70b, width, label="70B", color=colors_70b, edgecolor="black", linewidth=0.5)
+    bars1 = axes[2].bar(x - width/2, tokens_7b, width, label="seven_B", color=colors_7b, edgecolor="black", linewidth=0.5)
+    bars2 = axes[2].bar(x + width/2, tokens_70b, width, label="seventy_B", color=colors_70b, edgecolor="black", linewidth=0.5)
     axes[2].set_ylabel("Average Tokens (K)")
     axes[2].set_title("C. Compute Cost")
     axes[2].set_xticks(x)
@@ -587,17 +587,297 @@ def fig_7b_vs_70b_exp2():
         axes[2].text(bar.get_x() + bar.get_width()/2., bar.get_height() + 2,
                      f'{val:.0f}K', ha='center', va='bottom', fontsize=9, fontweight='bold')
 
-    fig.suptitle("Experiment 2: Consensus Paralysis — 7B vs 70B Scale Comparison",
+    fig.suptitle("Experiment 2: Consensus Paralysis — seven_B vs seventy_B Scale Comparison",
                  fontsize=14, fontweight='bold')
     plt.tight_layout()
     plt.savefig(FIG_DIR / "fig9_7b_vs_70b_exp2.png")
     plt.close()
-    print("  ✅ Figure 9: 7B vs 70B Exp2 Comparison")
+    print("  ✅ Figure 9: seven_B vs seventy_B Exp2 Comparison")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Statistical Tests
+# Figure 10: Experiment 9 — Epistemic Contagion
 # ═══════════════════════════════════════════════════════════════════════════
+
+def fig_epistemic_contagion():
+    """Visualize Exp9 epistemic contagion results across conditions."""
+    d = load_json("exp9_epistemic_contagion_results.json")
+    if not d:
+        return
+
+    fig, axes = plt.subplots(1, 3, figsize=(16, 6))
+
+    conditions = ["control", "poison_pill", "blatant"]
+    labels = ["Control\n(clean data)", "Poison Pill\n(+12.5%)", "Blatant\n(10x inflation)"]
+    colors = ["#2ca02c", "#ff7f0e", "#d62728"]
+
+    # --- Panel A: Contagion Rate ---
+    contagion_rates = []
+    for cond in conditions:
+        if cond == "control":
+            contagion_rates.append(0.0)
+        else:
+            contagion_rates.append(d[cond].get("avg_contagion_rate", 0))
+
+    bars = axes[0].bar(labels, [r * 100 for r in contagion_rates], color=colors,
+                       edgecolor="black", linewidth=0.5)
+    axes[0].set_ylabel("Contagion Rate (%)")
+    axes[0].set_title("A. Data Contagion Rate")
+    axes[0].set_ylim(0, 100)
+    for bar, val in zip(bars, contagion_rates):
+        axes[0].text(bar.get_x() + bar.get_width()/2., bar.get_height() + 1.5,
+                     f'{val*100:.0f}%', ha='center', va='bottom', fontsize=11, fontweight='bold')
+
+    # --- Panel B: Amplification & Audit ---
+    x = np.arange(2)
+    width = 0.25
+
+    amp_rates = []
+    audit_rates = []
+    for cond in ["poison_pill", "blatant"]:
+        amp_rates.append(d[cond].get("amplification_rate", 0) * 100)
+        audit_rates.append(d[cond].get("audit_catch_rate", 0) * 100)
+
+    bars1 = axes[1].bar(x - width/2, amp_rates, width, label="Amplification",
+                        color="#ff7f0e", edgecolor="black", linewidth=0.5)
+    bars2 = axes[1].bar(x + width/2, audit_rates, width, label="Audit Flagged",
+                        color="#9467bd", edgecolor="black", linewidth=0.5)
+    axes[1].set_ylabel("Rate (%)")
+    axes[1].set_title("B. Amplification & Audit Detection")
+    axes[1].set_xticks(x)
+    axes[1].set_xticklabels(["Poison Pill\n(+12.5%)", "Blatant\n(10x)"])
+    axes[1].set_ylim(0, 120)
+    axes[1].legend()
+    for bar, val in zip(list(bars1) + list(bars2), amp_rates + audit_rates):
+        axes[1].text(bar.get_x() + bar.get_width()/2., bar.get_height() + 1,
+                     f'{val:.0f}%', ha='center', va='bottom', fontsize=10, fontweight='bold')
+
+    # --- Panel C: Detection Node Distribution ---
+    # Where was false data first detected?
+    node_labels = ["Data\nExtract", "Financial\nAnalysis", "Risk\nAssess", "Recommend", "Audit"]
+    node_order = ["data_extraction", "financial_analysis", "risk_assessment",
+                  "recommendation", "audit"]
+
+    for idx, (cond, color) in enumerate([("poison_pill", "#ff7f0e"), ("blatant", "#d62728")]):
+        detection_nodes = d[cond].get("detection_nodes", [])
+        node_counts = [0] * 5
+        for dn in detection_nodes:
+            if dn in node_order:
+                node_counts[node_order.index(dn)] += 1
+        x_pos = np.arange(5) + idx * 0.35
+        axes[2].bar(x_pos, node_counts, 0.3, label=cond.replace("_", " ").title(),
+                    color=color, edgecolor="black", linewidth=0.5, alpha=0.8)
+
+    axes[2].set_ylabel("Count (of 5 trials)")
+    axes[2].set_title("C. First Detection Node")
+    axes[2].set_xticks(np.arange(5) + 0.175)
+    axes[2].set_xticklabels(node_labels, fontsize=9)
+    axes[2].legend()
+    axes[2].set_ylim(0, 5.5)
+
+    fig.suptitle("Experiment 9: Epistemic Contagion — Poison-Pill Data Propagation (MI-Theory 2)",
+                 fontsize=13, fontweight='bold')
+    plt.tight_layout()
+    plt.savefig(FIG_DIR / "fig10_epistemic_contagion.png")
+    plt.close()
+    print("  ✅ Figure 10: Exp9 Epistemic Contagion")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Figure 11: Experiment 10 — Clever Hans Effect
+# ═══════════════════════════════════════════════════════════════════════════
+
+def fig_clever_hans():
+    """Visualize Exp10 Clever Hans results: error mode x model x puzzle."""
+    d = load_json("exp10_clever_hans_results.json")
+    if not d:
+        return
+
+    models = list(d.keys())
+    error_modes = ["full_traceback", "blind_error", "hint_only"]
+    mode_labels = ["Full\nTraceback", "Blind\nError", "Hint\nOnly"]
+    puzzles = ["longest_increasing_subsequence", "balanced_parentheses", "matrix_spiral"]
+    puzzle_short = ["LIS", "Parentheses", "Spiral"]
+
+    fig, axes = plt.subplots(1, 3, figsize=(18, 6))
+    x = np.arange(len(error_modes))
+    width = 0.35
+
+    model_colors = ["#1f77b4", "#d62728"]
+    model_labels_clean = []
+    for m in models:
+        if "deepseek" in m.lower():
+            model_labels_clean.append("DeepSeek-Coder 6.seven_B")
+        elif "mistral" in m.lower():
+            model_labels_clean.append("Mistral seven_B")
+        else:
+            model_labels_clean.append(m)
+
+    # --- Panel A: Success Rate by Error Mode (averaged over puzzles) ---
+    for i, model in enumerate(models):
+        rates = []
+        for mode in error_modes:
+            if mode in d[model]:
+                puzzle_rates = [d[model][mode][p]["success_rate"]
+                               for p in puzzles if p in d[model][mode]]
+                rates.append(np.mean(puzzle_rates) * 100 if puzzle_rates else 0)
+            else:
+                rates.append(0)
+        bars = axes[0].bar(x + i * width - width/2, rates, width,
+                          label=model_labels_clean[i], color=model_colors[i],
+                          edgecolor="black", linewidth=0.5)
+        for bar, val in zip(bars, rates):
+            axes[0].text(bar.get_x() + bar.get_width()/2., bar.get_height(),
+                         f'{val:.0f}%', ha='center', va='bottom', fontsize=9, fontweight='bold')
+
+    axes[0].set_ylabel("Success Rate (%)")
+    axes[0].set_title("A. Avg Success Rate by Error Mode")
+    axes[0].set_xticks(x)
+    axes[0].set_xticklabels(mode_labels)
+    axes[0].set_ylim(0, 110)
+    axes[0].legend(fontsize=9)
+
+    # --- Panel B: Average Iterations by Error Mode ---
+    for i, model in enumerate(models):
+        iters = []
+        for mode in error_modes:
+            if mode in d[model]:
+                puzzle_iters = [d[model][mode][p]["avg_iterations"]
+                               for p in puzzles if p in d[model][mode]]
+                iters.append(np.mean(puzzle_iters) if puzzle_iters else 0)
+            else:
+                iters.append(0)
+        bars = axes[1].bar(x + i * width - width/2, iters, width,
+                          label=model_labels_clean[i], color=model_colors[i],
+                          edgecolor="black", linewidth=0.5)
+        for bar, val in zip(bars, iters):
+            axes[1].text(bar.get_x() + bar.get_width()/2., bar.get_height() + 0.1,
+                         f'{val:.1f}', ha='center', va='bottom', fontsize=9, fontweight='bold')
+
+    axes[1].set_ylabel("Average Iterations")
+    axes[1].set_title("B. Avg Iterations by Error Mode")
+    axes[1].set_xticks(x)
+    axes[1].set_xticklabels(mode_labels)
+    axes[1].legend(fontsize=9)
+
+    # --- Panel C: Puzzle-Level Heatmap (success rate) ---
+    # Create a matrix: rows = puzzle, cols = (model, error_mode)
+    col_labels = []
+    heat_data = []
+    for puzzle in puzzles:
+        row = []
+        for model in models:
+            for mode in error_modes:
+                if mode in d[model] and puzzle in d[model][mode]:
+                    row.append(d[model][mode][puzzle]["success_rate"] * 100)
+                else:
+                    row.append(0)
+        heat_data.append(row)
+
+    for model in models:
+        short = "DS" if "deepseek" in model.lower() else "Mi"
+        for mode in error_modes:
+            short_mode = {"full_traceback": "Full", "blind_error": "Blind", "hint_only": "Hint"}[mode]
+            col_labels.append(f"{short}\n{short_mode}")
+
+    heat_arr = np.array(heat_data)
+    im = axes[2].imshow(heat_arr, cmap="RdYlGn", aspect="auto", vmin=0, vmax=100)
+    axes[2].set_xticks(range(len(col_labels)))
+    axes[2].set_xticklabels(col_labels, fontsize=8)
+    axes[2].set_yticks(range(len(puzzle_short)))
+    axes[2].set_yticklabels(puzzle_short)
+    axes[2].set_title("C. Success Rate by Puzzle x Model x Error Mode")
+
+    # Annotate cells
+    for i in range(len(puzzle_short)):
+        for j in range(len(col_labels)):
+            text_color = "white" if heat_arr[i, j] < 50 else "black"
+            axes[2].text(j, i, f"{heat_arr[i, j]:.0f}%", ha="center", va="center",
+                        fontsize=9, fontweight="bold", color=text_color)
+
+    fig.colorbar(im, ax=axes[2], shrink=0.8, label="Success %")
+
+    fig.suptitle("Experiment 10: Clever Hans Effect — Error Mode vs Reasoning Quality (MI-Theory 5)",
+                 fontsize=13, fontweight='bold')
+    plt.tight_layout()
+    plt.savefig(FIG_DIR / "fig11_clever_hans.png")
+    plt.close()
+    print("  ✅ Figure 11: Exp10 Clever Hans")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Figure 12: Experiment 11 — Prompt Satiation
+# ═══════════════════════════════════════════════════════════════════════════
+
+def fig_prompt_satiation():
+    """Generate Figure 12: Prompt Satiation (Exp11)"""
+    print("Generating Figure 12: Prompt Satiation...")
+    
+    results_file = os.path.join(DATA_DIR, "exp11_results.json")
+    if not os.path.exists(results_file):
+        print(f"  [!] Missing {results_file}. Skipping Figure 12.")
+        return
+        
+    with open(results_file, "r") as f:
+        data = json.load(f)
+        
+    models = list(data.keys())
+    conditions = ["single_prompt", "static_repetition", "dynamic_repetition"]
+    labels = ["Single Prompt\n(Start Only)", "Static Repetition\n(Every Turn)", "Dynamic Repetition\n(Mutated Every Turn)"]
+    
+    fig, ax = plt.subplots(figsize=(10, 6))
+    
+    x = np.arange(len(conditions))
+    width = 0.35
+    
+    for i, model in enumerate(models):
+        iterations = []
+        for cond in conditions:
+            if cond in data[model]:
+                iterations.append(data[model][cond]["failure_iteration"])
+            else:
+                iterations.append(0)
+                
+        offset = width/2 if i == 0 else -width/2
+        color = '#2c3e50' if 'mistral' in model.lower() else '#e74c3c'
+        
+        bars = ax.bar(x - offset, iterations, width, label=model.split(':')[0], color=color, alpha=0.8)
+        
+        # Add value labels
+        for bar in bars:
+            height = bar.get_height()
+            ax.annotate(f'{height}',
+                        xy=(bar.get_x() + bar.get_width() / 2, height),
+                        xytext=(0, 3),  # 3 points vertical offset
+                        textcoords="offset points",
+                        ha='center', va='bottom', fontweight='bold')
+
+    ax.set_ylabel('Iterations Survived (Max 100)', fontsize=12, fontweight='bold')
+    ax.set_title('Prompt Satiation: Attention Decay over Long Contexts', fontsize=14, fontweight='bold', pad=20)
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels, fontsize=11)
+    ax.legend(title="Model", fontsize=10)
+    
+    # Add a horizontal line for the maximum iterations
+    ax.axhline(y=100, color='gray', linestyle='--', alpha=0.5)
+    ax.text(-0.4, 101, 'Maximum Iterations (100)', color='gray', fontsize=9, va='bottom')
+    
+    ax.grid(axis='y', linestyle='--', alpha=0.3)
+    ax.set_ylim(0, 110)
+    
+    # Add a descriptive text box
+    desc = (
+        "Task: Output ONLY uppercase letters for 100 iterations.\n"
+        "Result: Repeating the exact same system prompt causes\n"
+        "attention decay (satiation) faster than providing it once."
+    )
+    ax.text(0.02, 0.95, desc, transform=ax.transAxes, fontsize=10,
+            verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+            
+    plt.tight_layout()
+    plt.savefig(os.path.join(FIG_DIR, "fig12_prompt_satiation.png"), dpi=300, bbox_inches='tight')
+    plt.close()
+    print("  ✅ Figure 12: Exp11 Prompt Satiation saved.")
 
 def run_statistical_tests():
     """Run bootstrap CIs and Mann-Whitney U tests on key comparisons."""
@@ -628,7 +908,7 @@ def run_statistical_tests():
         esc_tokens = [t["total_tokens"] for t in d2["escalation"]["trials"]]
         U_t, p_t = stats.mannwhitneyu(ctrl_tokens, esc_tokens, alternative='greater')
         report.append(f"\n**Control vs Escalation (tokens):** Mann-Whitney U = {U_t}, p = {p_t:.6f}")
-        report.append(f"  Token ratio: {np.mean(ctrl_tokens)/np.mean(esc_tokens):.1f}×")
+        report.append(f"  Token ratio: {np.mean(ctrl_tokens)/np.mean(esc_tokens):.1f}x")
 
         # All pairwise comparisons
         report.append("\n**All pairwise comparisons (rounds):**")
@@ -641,10 +921,10 @@ def run_statistical_tests():
                 sig = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else "ns"
                 report.append(f"  {m1} vs {m2}: U={U}, p={p:.4f} {sig}")
 
-    # --- 70B Exp2: Full scale comparison ---
+    # --- seventy_B Exp2: Full scale comparison ---
     d2_70b = load_json("exp2_70b_results.json")
     if d2_70b:
-        report.append("\n## Experiment 2 @ 70B: Consensus Paralysis at Scale\n")
+        report.append("\n## Experiment 2 @ seventy_B: Consensus Paralysis at Scale\n")
 
         for mode in ["control", "weighted_voting", "escalation", "compromise"]:
             mode_data = d2_70b.get(mode, {})
@@ -657,16 +937,16 @@ def run_statistical_tests():
                               f"consensus={mode_data['consensus_rate']*100:.0f}%")
                 report.append(f"    tokens mean={mean_t:.0f}, 95% CI=[{lo_t:.0f}, {hi_t:.0f}]")
 
-        # 7B vs 70B pairwise tests
+        # seven_B vs seventy_B pairwise tests
         if d2:
-            report.append("\n**7B vs 70B pairwise comparisons (rounds):**")
+            report.append("\n**seven_B vs seventy_B pairwise comparisons (rounds):**")
             for mode in ["control", "weighted_voting", "escalation", "compromise"]:
                 r_7b = [t["rounds"] for t in d2[mode]["trials"]]
                 r_70b = [t["rounds"] for t in d2_70b[mode]["trials"]]
                 U, p = stats.mannwhitneyu(r_7b, r_70b, alternative='two-sided')
                 sig = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else "ns"
                 delta = np.mean(r_7b) - np.mean(r_70b)
-                report.append(f"  {mode}: 7B={np.mean(r_7b):.1f} vs 70B={np.mean(r_70b):.1f} "
+                report.append(f"  {mode}: seven_B={np.mean(r_7b):.1f} vs seventy_B={np.mean(r_70b):.1f} "
                               f"(Δ={delta:+.1f}), U={U}, p={p:.4f} {sig}")
 
     # --- Cross-Model Comparison ---
@@ -718,6 +998,125 @@ def run_statistical_tests():
                 trend = d4[cond].get("similarity_trend", "?")
                 report.append(f"  {cond}: avg_similarity={sim}, trend={trend}")
 
+    # --- Exp9: Epistemic Contagion ---
+    d9 = load_json("exp9_epistemic_contagion_results.json")
+    if d9:
+        report.append("\n## Experiment 9: Epistemic Contagion (MI-Theory 2)\n")
+
+        for cond in ["control", "poison_pill", "blatant"]:
+            if cond in d9:
+                cd = d9[cond]
+                n_trials = cd.get("num_trials", 5)
+                report.append(f"\n### Condition: {cond}")
+
+                if cond == "control":
+                    report.append(f"  Contagion rate: 0% (no false data injected)")
+                else:
+                    contagion = cd.get("avg_contagion_rate", 0)
+                    amplification = cd.get("amplification_rate", 0)
+                    audit_catch = cd.get("audit_catch_rate", 0)
+                    report.append(f"  Contagion rate: {contagion*100:.0f}%")
+                    report.append(f"  Amplification rate: {amplification*100:.0f}%")
+                    report.append(f"  Audit catch rate: {audit_catch*100:.0f}%")
+                    detection = cd.get("detection_nodes", [])
+                    report.append(f"  Detection nodes: {detection}")
+
+                    # Per-trial contagion rates for bootstrap
+                    trial_rates = [a.get("contagion_rate", 0) for a in cd.get("analyses", [])]
+                    if len(trial_rates) >= 2:
+                        mean_c, lo_c, hi_c = bootstrap_ci(np.array(trial_rates))
+                        report.append(f"  Contagion 95% CI: [{lo_c:.2f}, {hi_c:.2f}]")
+
+                # Token analysis
+                summaries = cd.get("trial_summaries", [])
+                if summaries:
+                    tokens = [s["total_tokens"] for s in summaries]
+                    mean_t, lo_t, hi_t = bootstrap_ci(np.array(tokens))
+                    report.append(f"  Tokens: mean={mean_t:.0f}, 95% CI=[{lo_t:.0f}, {hi_t:.0f}]")
+
+        # Poison pill vs blatant comparison
+        if "poison_pill" in d9 and "blatant" in d9:
+            pp_rates = [a.get("contagion_rate", 0) for a in d9["poison_pill"].get("analyses", [])]
+            bl_rates = [a.get("contagion_rate", 0) for a in d9["blatant"].get("analyses", [])]
+            if pp_rates and bl_rates:
+                U, p = stats.mannwhitneyu(pp_rates, bl_rates, alternative='two-sided')
+                sig = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else "ns"
+                report.append(f"\n**Poison pill vs Blatant (contagion rate):** U={U}, p={p:.4f} {sig}")
+                report.append(f"  Poison pill: mean={np.mean(pp_rates):.2f}")
+                report.append(f"  Blatant: mean={np.mean(bl_rates):.2f}")
+
+    # --- Exp10: Clever Hans ---
+    d10 = load_json("exp10_clever_hans_results.json")
+    if d10:
+        report.append("\n## Experiment 10: Clever Hans Effect (MI-Theory 5)\n")
+
+        puzzles = ["longest_increasing_subsequence", "balanced_parentheses", "matrix_spiral"]
+        error_modes = ["full_traceback", "blind_error", "hint_only"]
+
+        for model_name, model_data in d10.items():
+            report.append(f"\n### Model: {model_name}\n")
+            report.append(f"  {'Error Mode':<20} {'Puzzle':<35} {'Success':<10} {'Avg Iter':<10} {'Avg Tokens':<12}")
+            report.append(f"  {'-'*85}")
+
+            for mode in error_modes:
+                if mode not in model_data:
+                    continue
+                for puzzle_id in puzzles:
+                    if puzzle_id not in model_data[mode]:
+                        continue
+                    pd_ = model_data[mode][puzzle_id]
+                    report.append(f"  {mode:<20} {puzzle_id:<35} {pd_['success_rate']:<10.0%} "
+                                  f"{pd_['avg_iterations']:<10.1f} {pd_['avg_tokens']:<12.0f}")
+
+            # Full traceback vs blind error comparison (success rates)
+            if "full_traceback" in model_data and "blind_error" in model_data:
+                full_successes = []
+                blind_successes = []
+                for puzzle_id in puzzles:
+                    if puzzle_id in model_data["full_traceback"] and puzzle_id in model_data["blind_error"]:
+                        for t in model_data["full_traceback"][puzzle_id].get("trial_summaries", []):
+                            full_successes.append(1 if t["success"] else 0)
+                        for t in model_data["blind_error"][puzzle_id].get("trial_summaries", []):
+                            blind_successes.append(1 if t["success"] else 0)
+
+                if full_successes and blind_successes:
+                    full_rate = np.mean(full_successes)
+                    blind_rate = np.mean(blind_successes)
+                    # Fisher's exact test for success proportions
+                    a = sum(full_successes)  # full success
+                    b = len(full_successes) - a  # full fail
+                    c = sum(blind_successes)  # blind success
+                    d_val = len(blind_successes) - c  # blind fail
+                    odds, p = stats.fisher_exact([[a, b], [c, d_val]])
+                    sig = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else "ns"
+                    report.append(f"\n  **Full traceback vs Blind error:** "
+                                  f"full={full_rate:.0%}, blind={blind_rate:.0%}, "
+                                  f"Fisher's p={p:.4f} {sig}, OR={odds:.2f}")
+
+            # Full traceback vs hint only comparison
+            if "full_traceback" in model_data and "hint_only" in model_data:
+                full_successes = []
+                hint_successes = []
+                for puzzle_id in puzzles:
+                    if puzzle_id in model_data["full_traceback"] and puzzle_id in model_data["hint_only"]:
+                        for t in model_data["full_traceback"][puzzle_id].get("trial_summaries", []):
+                            full_successes.append(1 if t["success"] else 0)
+                        for t in model_data["hint_only"][puzzle_id].get("trial_summaries", []):
+                            hint_successes.append(1 if t["success"] else 0)
+
+                if full_successes and hint_successes:
+                    full_rate = np.mean(full_successes)
+                    hint_rate = np.mean(hint_successes)
+                    a = sum(full_successes)
+                    b = len(full_successes) - a
+                    c = sum(hint_successes)
+                    d_val = len(hint_successes) - c
+                    odds, p = stats.fisher_exact([[a, b], [c, d_val]])
+                    sig = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else "ns"
+                    report.append(f"  **Full traceback vs Hint only:** "
+                                  f"full={full_rate:.0%}, hint={hint_rate:.0%}, "
+                                  f"Fisher's p={p:.4f} {sig}, OR={odds:.2f}")
+
     # Write report
     report_path = FIG_DIR.parent / "stats_report.md"
     with open(report_path, "w") as f:
@@ -744,8 +1143,11 @@ def main():
     fig_master_overview()
     fig_cross_model()
     fig_7b_vs_70b_exp2()
-
-    print("\nRunning statistical tests...")
+    fig_epistemic_contagion()
+    fig_clever_hans()
+    fig_prompt_satiation()
+    
+    # 2. Run Statistical Tests
     run_statistical_tests()
 
     print(f"\n✅ All figures saved to {FIG_DIR}/")
