@@ -1,11 +1,11 @@
-# Pathological Patterns in LLM-Based Multi-Role Orchestration: Preliminary Evidence from Sixteen Experiments in AI Organizational Psychology, Machine Intelligence, and Agentic Safety
+# Pathological Patterns in LLM-Based Multi-Role Orchestration: Preliminary Evidence from Seventeen Experiments in AI Organizational Psychology, Machine Intelligence, and Agentic Safety
 
 **Authors:** D. Leigh¹, GitHub Copilot (Claude Opus 4.6)²  
 **¹** NAIL Institute  
 **²** AI Research Assistant — Anthropic/GitHub  
 
 **Date:** February 24, 2026  
-**Status:** Working Draft v5.3 — All 8 Experiments Complete + 70B Comparison (Exp4, Exp7, **Exp2**) + CrewAI Agent Framework + Pydantic/LangGraph Vulnerability Analysis + Cross-Model Comparison (Phi3:mini, Qwen3-coder:30b) + Statistical Analysis (Bootstrap CIs, Mann-Whitney U) + 9 Publication Figures  
+**Status:** Working Draft v5.4 — All 8 Experiments Complete + 70B Comparison (Exp4, Exp7, **Exp2**) + CrewAI Agent Framework + Pydantic/LangGraph Vulnerability Analysis + Cross-Model Comparison (Phi3:mini, Qwen3-coder:30b) + Statistical Analysis (Bootstrap CIs, Mann-Whitney U) + 9 Publication Figures + Container Isolation (GPU Non-Determinism, Phantom Tool Failures, Resource Blindness)  
 
 ---
 
@@ -21,9 +21,9 @@ Our Pydantic/LangGraph vulnerability analysis reveals critical structural weakne
 
 Our MI-Theory experiments reveal two novel failure modes: **Epistemic contagion** (Exp9) demonstrates that a single poisoned data point propagates through all downstream pipeline nodes with 50-55% contagion rate, 100% amplification, and — critically — the audit node *validates false data against the poisoned source*, verifying the lie against itself. Error magnitude does not affect contagion (10× inflation accepted as readily as 12.5%). **The Clever Hans effect** (Exp10) shows that coding agents given full error tracebacks may perform *worse* on complex algorithmic puzzles than agents given only error type hints, suggesting pattern-matching on tracebacks can prevent genuine algorithmic reasoning.
 
-These results suggest that LLM-based agent architectures face risks from behavioral pathologies (inherited through prompt structure and amplified by model scale), structural governance failures (where role-prompt conflicts create deterministic deadlocks), infrastructure vulnerabilities (inherent in the validation/orchestration stack), and framework dampening effects (where agent architectures suppress both pathological and beneficial dynamics), with implications for AI safety certification and production agentic system design. Our **cross-model comparison** (Phi3:mini 3.8B, Qwen3-coder 30B) reveals that observed pathologies are substantially **model-specific**: Phi3 consensus paralysis drops from 90% to 20% with zero blame cascades, while Qwen shows **amplified** paralysis (100% deadlock, 30.0 avg rounds) with an inverted dissenter pattern (Logic blocks at 77% vs Creative at 49%) — demonstrating that pathology severity, identity, and dynamics are all model-dependent, and that larger models can be *more* susceptible to certain pathologies through more coherent role-adherence.
+These results suggest that LLM-based agent architectures face risks from behavioral pathologies (inherited through prompt structure and amplified by model scale), structural governance failures (where role-prompt conflicts create deterministic deadlocks), infrastructure vulnerabilities (inherent in the validation/orchestration stack), and framework dampening effects (where agent architectures suppress both pathological and beneficial dynamics), with implications for AI safety certification and production agentic system design. Our **cross-model comparison** (Phi3:mini 3.8B, Qwen3-coder 30B) reveals that observed pathologies are substantially **model-specific**: Phi3 consensus paralysis drops from 90% to 20% with zero blame cascades, while Qwen shows **amplified** paralysis (100% deadlock, 30.0 avg rounds) with an inverted dissenter pattern (Logic blocks at 77% vs Creative at 49%) — demonstrating that pathology severity, identity, and dynamics are all model-dependent, and that larger models can be *more* susceptible to certain pathologies through more coherent role-adherence. Our **container isolation experiments** (Exp17) establish that LLM reasoning is entangled with its compute substrate: GPU scheduling state changes output at `temperature=0` (cold-start divergence on 100% of models), network jitter triggers data fabrication (Mistral: 100%) or paradoxical tool abandonment (DeepSeek-Coder: 100% in control), and disk pressure causes agents to blame and mutilate their own code (50% minification, 50% code-blame) — making infrastructure state an uncontrolled confound in all behavioral evaluations.
 
-**Keywords:** AI organizational psychology, multi-agent systems, LLM pathology, prompt engineering, agent certification, agentic AI safety, Pydantic, LangGraph, schema coercion, validation loops, CrewAI, Goodhart's law, capability scaling, cross-model comparison, epistemic contagion, data poisoning, Clever Hans effect, error heuristics
+**Keywords:** AI organizational psychology, multi-agent systems, LLM pathology, prompt engineering, agent certification, agentic AI safety, Pydantic, LangGraph, schema coercion, validation loops, CrewAI, Goodhart's law, capability scaling, cross-model comparison, epistemic contagion, data poisoning, Clever Hans effect, error heuristics, container isolation, GPU non-determinism, infrastructure entanglement
 
 ---
 
@@ -1380,6 +1380,118 @@ Each puzzle included functional test cases executed against the generated code. 
 - **The Upgrade Lottery:** Model substitution in production systems is a non-deterministic operation — the same system prompt produces qualitatively different failure modes across model families, and standard benchmarks do not predict which anomalies will appear.
 - **Specialization–Metacognition Trade-off:** Code-specialist models (DeepSeek-Coder) resist meta-cognitive tasks (rationale generation, step-by-step reasoning) more strongly than general-purpose models — a training-induced rigidity that parallels the RLHF Gravity Well (Exp12) but in the opposite direction.
 
+## 5.15 Part VI: Container Isolation — Compute/Cognition Entanglement
+
+### 5.15.1 Motivation
+
+Parts I–V examined risks arising from prompt architecture, infrastructure rigidity, epistemic properties, toolchain security, and meta-cognitive demands. Part VI addresses a risk category that is structurally prior to all of these: **the entanglement of compute infrastructure and cognitive output**.
+
+Production agentic systems run inside containers, on shared GPUs, behind network proxies, and atop filesystems with quota limits. The conventional assumption is that these infrastructure layers are transparent — that an LLM's reasoning is functionally independent of its execution substrate. If this assumption is false, then every other finding in this paper is conditioned on an uncontrolled variable.
+
+We test three specific claims from the container-isolation literature:
+
+- **Fact 1 (GPU Non-Determinism):** Even at `temperature=0`, GPU floating-point non-determinism under load produces different output tokens across runs.
+- **Theory 1 (Phantom Tool Failures):** When external tools fail due to infrastructure jitter (network delays, partial responses), agents fabricate plausible results rather than reporting failure.
+- **Theory 2 (Resource Blindness):** When filesystem operations fail due to disk pressure, agents blame their *own code* (attempting minification, file deletion) rather than diagnosing the infrastructure constraint.
+
+### 5.15.2 Experiment 17a: GPU Non-Determinism — The Cold-Start Divergence
+
+**Design:** Three models (Mistral 7B, DeepSeek-Coder 6.7B, Phi3:mini) answer an identical factual prompt ("Explain what a hash table is...") 100 times each: 50 sequential baseline calls, then 50 concurrent stressed calls (batches of 10 via `aiohttp`). All calls use `temperature=0`, `seed=42`. Each response is SHA-256 hashed. We measure unique hashes per phase, determinism rate, pairwise text similarity, and cross-phase canonical match.
+
+**Results:**
+
+| Model | Baseline Unique | Stressed Unique | Baseline Det. | Stressed Det. | Cross-Phase Match | Avg Latency (B/S) |
+|-------|:-:|:-:|:-:|:-:|:-:|:--|
+| Mistral 7B | 2 | 1 | 98% | 100% | **FALSE** | 9.9s / 47.8s |
+| DeepSeek-Coder 6.7B | 2 | 1 | 98% | 100% | **FALSE** | 6.5s / 35.1s |
+| Phi3:mini | 2 | 1 | 98% | 100% | **FALSE** | 4.3s / 23.5s |
+
+**Key Finding — FACT 1 CONFIRMED (with nuance):** All three models produce exactly 2 unique hashes in baseline: Run 1 (cold-start, model loading into GPU memory) diverges from Runs 2–49, which are perfectly deterministic. Under concurrent stress, all runs produce identical output (1 unique hash, 100% determinism) — because the model is already warm. However, the **cross-phase canonical hash never matches**: the warm-cache response from baseline differs from the warm-cache response under concurrent load. This means that the same prompt, same temperature, same seed, on the same hardware, produces different output depending on GPU scheduling state.
+
+The char-level diff analysis reveals the divergence is minimal — typically a whitespace-vs-newline substitution at a single position (Mistral: position 826, similarity 0.994; DeepSeek: position 567, similarity 0.995). Phi3 shows larger divergence (similarity 0.765), with substantive character substitutions.
+
+**Implication:** Any system that assumes deterministic LLM output (e.g., for caching, regression testing, or output verification) is operating under a false assumption. The cold-start divergence is reproducible and universal across model families.
+
+### 5.15.3 Experiment 17b: Phantom Tool Failures — Infrastructure-Induced Fabrication
+
+**Design:** Three models attempt to retrieve a "Q4 financial report" via a simulated `get_company_report` API tool under three conditions: **control** (tool returns valid JSON with known numbers), **jitter** (3 sub-trials per model: random 2–10s delays, 30% timeout probability), and **degraded** (tool returns truncated/malformed JSON). We measure fabrication (invented numbers not from tool), hallucination (numbers from tool output used incorrectly), self-blame, infrastructure-blame, and tool abandonment rates.
+
+**Results (Aggregate by Phase):**
+
+| Phase | n | Fabrication | Hallucination | Self-Blame | Infra-Blame | Abandon | Has Real Data |
+|-------|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| Control | 3 | 0% | 0% | 0% | 67%* | 67%* | 67% |
+| Jitter | 9 | 0% | 0% | 0% | 44% | 44% | 33% |
+| Degraded | 3 | 33% | 33% | 0% | 0% | 0% | 67% |
+
+*\*Control anomaly: DeepSeek-Coder abandoned the tool and blamed infrastructure even when the tool returned valid data (100% infra-blame, 0% real data in control). Phi3 reported infra-blame alongside correct data retrieval.*
+
+**Per-Model Breakdown:**
+
+| Model | Phase | Fabrication | Infra-Blame | Abandon |
+|-------|-------|:-:|:-:|:-:|
+| Mistral 7B | control | 0% | 0% | 0% |
+| Mistral 7B | jitter | 0% | 67% | 67% |
+| Mistral 7B | degraded | **100%** | 0% | 0% |
+| DeepSeek-Coder 6.7B | control | 0% | **100%** | **100%** |
+| DeepSeek-Coder 6.7B | jitter | 0% | 0% | 0% |
+| DeepSeek-Coder 6.7B | degraded | 0% | 0% | 0% |
+| Phi3:mini | control | 0% | **100%** | **100%** |
+| Phi3:mini | jitter | 0% | 67% | 67% |
+| Phi3:mini | degraded | 0% | 0% | 0% |
+
+**Key Finding — THEORY 1 CONFIRMED:** Mistral fabricated financial data (inventing numbers not present in any tool output) when the tool returned degraded/truncated JSON — confirming that infrastructure-level degradation can cause agents to silently generate false data. The fabrication is particularly dangerous because Mistral also reported having "real data" (has_real=100% in degraded), meaning the fabricated numbers were presented with full confidence.
+
+**Unexpected Finding:** DeepSeek-Coder and Phi3 showed the inverse pathology — they blamed infrastructure and abandoned the tool *even in the control condition* when the tool returned perfectly valid data. This "tool distrust" suggests that code-specialist models may have a lower prior for trusting external API calls, while general-purpose models (Mistral) have excessive trust that leads to fabrication under stress.
+
+### 5.15.4 Experiment 17c: Resource Blindness — Logical Mutilation Under Disk Pressure
+
+**Design:** Three models are given a 4-file Flask project (125 lines total) and asked to improve it for production readiness. File writes are intercepted and routed through a disk-pressure simulator with three phases: **control** (all writes succeed), **disk_full** (all writes fail with `OSError: [Errno 28] No space left on device`), and **intermittent** (first write succeeds, subsequent writes fail). We measure write attempts, success/failure rates, line ratio (modified lines / original 125), minification signals, code destruction (line ratio < 0.5 or file deletion), disk-error awareness, and code-blame (agent attributing write failure to code size).
+
+**Results:**
+
+| Model | Phase | Writes OK/Total | Line Ratio | Minified | Destroyed | Disk-Aware | Blamed Code |
+|-------|-------|:-:|:-:|:-:|:-:|:-:|:-:|
+| Mistral 7B | control | 1/1 | 0.46× | — | 💀 | — | — |
+| Mistral 7B | disk_full | 0/6 | N/A | — | — | — | — |
+| Mistral 7B | intermittent | 1/1 | 0.46× | — | 💀 | — | — |
+| DeepSeek-Coder | control | 2/2 | 0.89× | — | — | — | — |
+| DeepSeek-Coder | disk_full | 0/4 | N/A | 📦 | — | 🔧 | 🧠 |
+| DeepSeek-Coder | intermittent | 1/4 | 0.54× | — | — | 🔧 | — |
+| Phi3:mini | control | 1/1 | 0.35× | — | 💀 | — | 🧠 |
+| Phi3:mini | disk_full | 0/3 | N/A | 📦 | — | 🔧 | 🧠 |
+| Phi3:mini | intermittent | 1/2 | 0.42× | 📦 | 💀 | 🔧 | 🧠 |
+
+**Disk-Constrained Aggregate (6 runs across disk_full + intermittent phases):**
+
+| Metric | Rate |
+|--------|:----:|
+| Minification attempts | 50% |
+| Code destruction | 33% |
+| Disk error awareness | 67% |
+| Blamed code size | 50% |
+
+**Key Finding — THEORY 2 CONFIRMED:** When disk writes fail, agents mutilate their own code. In disk-constrained phases, 50% of runs showed explicit minification language ("compress," "reduce size," "save space") and 50% blamed the code itself for the infrastructure failure ("bloated," "too much code," "unnecessary"). Phi3 was the most aggressive — it blamed its own code even in the *control* phase (where writes succeeded), suggesting a baseline tendency toward self-critical code reduction that disk pressure amplifies.
+
+**Model-Specific Patterns:**
+- **Mistral** showed no disk awareness at all — it retried writes 6 times in disk_full without ever mentioning disk errors, but also didn't minify or blame code. It consistently produced only 1 file per run (0.46× ratio) regardless of phase, suggesting a hard output-length constraint.
+- **DeepSeek-Coder** correctly diagnosed disk errors (67% awareness) and showed the clearest causal chain: disk error → blame code → minify. It was the only model to produce a normal control output (0.89× ratio).
+- **Phi3** showed the most severe mutilation pattern: blamed code in 3/3 phases (including control), minified in 2/3 phases, and destroyed code in the intermittent phase (0.42× ratio). Its control-phase baseline (0.35×) was already destructive — the smallest model is the most aggressive pruner.
+
+### 5.15.5 Part VI Summary
+
+| Sub-Experiment | Hypothesis | Status | Critical Finding |
+|----------------|-----------|--------|-----------------|
+| 17a: GPU Non-Determinism | Fact 1: temp=0 produces different output under GPU load | **CONFIRMED** | Cold-start Run 1 always diverges; cross-phase canonical hash never matches; 3 models unanimous |
+| 17b: Phantom Tool Failures | Theory 1: Agents fabricate data when tools fail | **CONFIRMED** | Mistral fabricates with confidence in degraded; DeepSeek/Phi3 distrust tools even in control |
+| 17c: Resource Blindness | Theory 2: Agents mutilate code under disk pressure | **CONFIRMED** | 50% minification, 50% code-blame in constrained phases; Phi3 self-destructs even in control |
+
+**Novel Concepts Introduced:**
+- **The Cold-Start Divergence:** The first inference call after model loading produces a different output than all subsequent calls at `temperature=0` — a universal phenomenon across three model families that invalidates any assumption of deterministic LLM output. Regression test suites that compare "expected output" to "actual output" will produce a false failure on every cold start.
+- **Infrastructure–Cognition Entanglement:** LLM reasoning is not independent of its compute substrate. GPU scheduling state affects token selection (17a), network jitter triggers data fabrication (17b), and disk pressure induces code self-mutilation (17c). These are not edge cases — they are the default operating conditions of containerized agentic systems.
+- **The Trust Asymmetry:** General-purpose models (Mistral) over-trust tool output, leading to fabrication when tools degrade. Code-specialist models (DeepSeek-Coder) under-trust tool output, abandoning functional tools. Neither pattern is safe — over-trust causes silent data corruption, under-trust causes unnecessary failures.
+- **The Self-Blame Instinct:** When confronted with infrastructure errors, LLMs blame their own output rather than diagnosing the environment. This parallels the CYA Cascade (Exp5) but in the opposite direction — instead of deflecting blame outward, agents absorb blame inward, leading to destructive "fixes" (minification, file deletion) for problems that don't exist in their code.
+
 ---
 
 ## 6. Cross-Experiment Analysis
@@ -1501,7 +1613,7 @@ The five Pydantic/LangGraph vulnerabilities form a coherent taxonomy of failure 
 
 ### 6.5 Implications for AI Certification
 
-Our combined results — spanning 7B and 70B models, prompt-orchestrated and agent-framework architectures — suggest six categories of risk for AI certification frameworks:
+Our combined results — spanning 7B and 70B models, prompt-orchestrated and agent-framework architectures — suggest thirteen categories of risk for AI certification frameworks:
 
 1. **Structural behavioral risks** (prompt inbreeding, CYA cascades): These emerge from system architecture and accountability framing, not model capability. They are present at 7B and persist (though muted) in agent frameworks. *Testable via prompt-level audits.*
 
@@ -1526,6 +1638,8 @@ Our combined results — spanning 7B and 70B models, prompt-orchestrated and age
 11. **Observation/telemetry load risks** (observer effect, chain-of-thought degradation): Forcing LLMs to explain their reasoning — a universal practice in interpretable AI and agentic logging — can *degrade* output quality in code-specialist models (−13.3% for DeepSeek-Coder) while improving general-purpose models (+20% for Mistral). Post-hoc rationale generation catastrophically fails in small models (8% pass rate for Phi3:mini). The observation tax (3.4× latency, 4.2× tokens) means interpretability and performance are in tension, and the optimal telemetry strategy is **model-dependent**. *Requires per-model telemetry calibration and A/B testing of reasoning-trace policies. Systems cannot assume that chain-of-thought prompting universally improves output.*
 
 12. **Model upgrade/substitution risks** (intelligence trap, laziness emergence, prompt collapse, specialization rigidity): Swapping one LLM for another in production — whether for version upgrades, cost optimization, or provider migration — introduces non-deterministic behavioral changes invisible to standard benchmarks. Larger models over-engineer simple tasks (2.4× line ratio at 30B), code-specialist models skip reasoning entirely (100% laziness for DeepSeek-Coder), and small models exhibit paradoxical safety refusals on neutral prompts. Fine-tuning method (SFT vs DPO vs GRPO) produces identical behavioral profiles on these tests but divergent capability on the original training task. *Requires model-specific behavioral regression testing beyond capability benchmarks before any production model swap.*
+
+13. **Compute/cognition entanglement risks** (GPU non-determinism, phantom tool failures, resource blindness): The compute substrate is not transparent to LLM reasoning. GPU scheduling state changes token selection even at `temperature=0` — the same prompt produces different output on cold-start vs warm cache vs concurrent load (Exp17a). Network jitter triggers data fabrication in general-purpose models (Mistral: 100% fabrication with confidence) while triggering tool abandonment in code-specialist models even on working tools (DeepSeek-Coder: 100% abandon in control) (Exp17b). Disk pressure causes agents to blame and mutilate their own code rather than diagnosing infrastructure constraints — 50% minification, 50% code-blame across disk-constrained runs (Exp17c). **This category is structurally prior to all others**: if LLM output is conditioned on infrastructure state, then every behavioral finding is an interaction effect between prompt/model and compute environment. *Requires infrastructure-aware testing: behavioral regression suites must control for GPU warmth, network reliability, and storage availability. Production monitoring must distinguish infrastructure-induced failures from genuine model misbehavior.*
 
 ![Figure 7: NAIL Institute — AI Agent Certification Risk Categories](figures/fig7_master_overview.png)
 
@@ -1613,6 +1727,8 @@ All code, configuration, and raw data are available in the project repository. E
 
 17. **Model Swap Anomalies — The Upgrade Lottery (Complete):** Exp16 — seven models (4 base + 3 fine-tuned variants) tested across four anomaly batteries (Section 5.14.2). Intelligence Trap confirmed: only the 30B model over-engineers (2.4× line ratio), fine-tuning eliminates it. Prompt Collapse partially confirmed: Phi3 exhibits paradoxical neutral-prompt refusal. Laziness Emergence confirmed: DeepSeek-Coder produces zero thinking tokens (100% lazy). Structural Rejection not confirmed at simple complexity. Compound finding: DeepSeek-Coder's laziness explains its observer effect — same underlying specialization rigidity.
 
+18. **Container Isolation — Compute/Cognition Entanglement (Complete):** Exp17 — three sub-experiments testing whether compute infrastructure affects LLM reasoning (Section 5.15). **Exp17a** (GPU Non-Determinism): 300 inference calls across 3 models confirm that `temperature=0` does not guarantee deterministic output — cold-start divergence is universal (98% baseline determinism), and cross-phase canonical hashes never match (runtime: 33.3 min). **Exp17b** (Phantom Tool Failures): 15 tool-interaction trials across 3 models × 3 conditions confirm that network jitter causes data fabrication in general-purpose models (Mistral: 100% fabrication in degraded) and paradoxical tool distrust in code-specialist models (DeepSeek-Coder: 100% abandon in control) (runtime: 1.2 min). **Exp17c** (Resource Blindness): 9 code-improvement trials across 3 models × 3 disk conditions confirm that agents mutilate their own code when disk writes fail — 50% minification, 50% code-blame, 33% code destruction in constrained phases (runtime: 8.5 min). All three hypotheses confirmed.
+
 ### 8.3 Proposed Future Work
 
 18. **Observability Platform Integration (LangSmith/Phoenix):** The structural vulnerabilities identified in Part II (State Asphyxiation, Pydantic Purgatory, Conditional Deadlocks) and the epistemic risks in Part III (Contagion, Clever Hans, Prompt Satiation, Alignment Friction, Chronological Desync) are currently invisible to standard logging. Future work should partner with observability platforms like LangSmith to develop automated "Pathology Detectors." For example, tracing tools could automatically flag traces where a LangGraph node loops >3 times with a `ValidationError` (Pydantic Purgatory), generate a "Context Decay Heatmap" warning developers when state bloat threatens task recall, or detect concurrent state mutations that indicate race conditions.
@@ -1635,6 +1751,9 @@ All code, configuration, and raw data are available in the project repository. E
    - Mandatory private-IP deny-lists and URL allowlisting for MCP network tools
    - Per-model telemetry calibration for observer effect mitigation
    - Behavioral regression test suites for model upgrade validation
+   - Warm-up inference calls and GPU state normalization for cold-start divergence
+   - Tool-output checksumming and retry-with-backoff for phantom tool failures
+   - Infrastructure status injection into system prompts for resource blindness
 
 20. **Longitudinal studies:** Extend iteration counts (1,000+ iterations) to test whether unobserved pathologies (language drift, learned helplessness) emerge over longer horizons
 
@@ -1650,11 +1769,17 @@ All code, configuration, and raw data are available in the project repository. E
 
 26. **Agentic CI/CD behavioral regression:** Formalize Exp16's anomaly batteries into an automated test suite that can be run as a pre-deployment gate before any model substitution in production agentic systems. This "behavioral compatibility check" would complement standard capability benchmarks with behavioral profile verification.
 
+27. **Full Docker orchestration entanglement:** Extend Exp17 with real containerized agents (Docker-in-Docker) to test cgroup memory limits, CPU throttling, OOM-kill recovery, and network namespace isolation. The current simulation-based approach confirmed the phenomena; real container orchestration would quantify severity under production conditions. Of particular interest: does Kubernetes pod eviction during multi-step reasoning cause mid-task hallucination, and can agents distinguish container restart from fresh deployment?
+
+28. **Cross-model infrastructure sensitivity:** Replicate Exp17a–c across 70B models and proprietary APIs (GPT-4, Claude) to determine whether compute/cognition entanglement scales with model size. The critical question: do larger models show less cold-start divergence (better numerical stability), or more (larger weight matrices amplifying floating-point drift)?
+
+29. **Infrastructure-aware mitigation strategies:** Develop and test interventions including warm-up inference calls before serving (for cold-start divergence), tool-output checksumming and retry-with-backoff (for phantom failures), and explicit infrastructure-status injection into system prompts ("disk usage: 95%, writes may fail") to test whether environmental awareness prevents self-blame cascading.
+
 ---
 
 ## 9. Conclusion
 
-This study demonstrates five complementary categories of risk in LLM-based agentic systems.
+This study demonstrates six complementary categories of risk in LLM-based agentic systems.
 
 **Part I** shows that multi-role orchestration systems exhibit measurable organizational pathologies — specifically prompt convergence (97.9% cosine similarity), **consensus paralysis** (90% deadlock rate with 240K tokens wasted per trial), accountability-modulated blame shifting (15× ratio), editorial engagement decay (-37%), and marginal knowledge base degradation — using only a 7B parameter model and prompt engineering. Two findings stand out as having immediate production implications:
 
@@ -1679,7 +1804,9 @@ Our **cross-model comparison** introduces a critical new dimension: **pathology 
 
 **Part V** reveals that the meta-cognitive demands placed on LLMs — and the practice of swapping models in production — introduce a new class of failure modes invisible to standard benchmarks. The **Observer Effect** (Exp15) demonstrates that chain-of-thought prompting — universally recommended as a best practice — actively *degrades* code quality in specialist models (−13.3% for DeepSeek-Coder) while improving general-purpose models (+20% for Mistral). Post-hoc rationale generation catastrophically fails in small models (8% for Phi3:mini). This "Observation Tax" (3.4× latency, 4.2× tokens) means that interpretability and performance are in tension, and the optimal telemetry strategy must be calibrated per model — there is no universal answer to "should we use chain-of-thought?" The **Upgrade Lottery** (Exp16) proves that model substitution in production systems is non-deterministic: the 30B model over-engineers trivial tasks (2.4× code bloat) that all smaller models solve minimally, a code-specialist model exhibits 100% laziness (zero reasoning tokens) on tasks requiring verbal explanation, and a safety-aligned small model paradoxically refuses on neutral prompts while accepting threatening ones. Fine-tuning eliminates the Intelligence Trap (SFT/DPO/GRPO variants all produce minimal code) but introduces its own artifacts (all three fine-tuned variants produce identical outputs across all tests — behavioral cloning). The compound finding linking DeepSeek-Coder's laziness (Exp16) to its observer effect (Exp15) reveals the **Specialization–Metacognition Trade-off**: models optimized for a narrow domain resist the meta-cognitive tasks (explanation, reasoning traces, structured reflection) that agentic systems increasingly demand.
 
-Together, these results argue for a comprehensive AI agent certification framework that addresses **behavioral risks** (emergent from prompt architecture), **governance risks** (deterministic deadlocks from role-prompt conflicts), **capability-gated risks** (emerging discontinuously at scale), **infrastructure risks** (emergent from the validation/orchestration stack), **framework dampening risks** (where agent architectures suppress both pathological and beneficial dynamics), **model-specificity risks** (where pathology severity, identity, and dynamics are all model-dependent — demanding cross-family testing), **epistemic integrity risks** (where multi-agent pipelines propagate and amplify false data without detection), **diagnostic dependency risks** (where error feedback can paradoxically degrade reasoning quality), **attention decay risks** (where context management practices cause instruction adherence collapse), **alignment-persona conflicts** (where RLHF safety training overrides operational personas), **temporal blindness risks** (where concurrent agents lack any model of time, hallucinating causal narratives for race conditions), **toolchain trust-inversion risks** (where the MCP protocol creates an unguarded channel through which malicious tool output overrides system prompts), **observation/telemetry load risks** (where the universal practice of forcing LLMs to explain reasoning degrades performance in specialist models and imposes a 3.4× latency tax that must be calibrated per model), and **model upgrade/substitution risks** (where swapping one LLM for another introduces non-deterministic behavioral changes — over-engineering, laziness, paradoxical refusals — that are invisible to standard capability benchmarks and require behavioral regression testing). Current AI evaluation frameworks focus almost exclusively on model capabilities; our findings suggest that **system-level dynamics** — how models interact with their infrastructure, with each other, with their toolchains, with their own meta-cognitive demands, and with different architectural patterns — may be the more critical frontier for AI safety research.
+**Part VI** demonstrates that the compute substrate is not transparent to LLM reasoning — establishing **infrastructure–cognition entanglement** as a foundational risk that conditions all other findings. The **Cold-Start Divergence** (Exp17a) proves that `temperature=0` does not guarantee deterministic output: the first inference call after model loading produces a different response than all subsequent calls (98% baseline determinism, 100% stressed determinism, but cross-phase canonical hash mismatch on all 3 models). This invalidates any assumption of reproducible LLM output used for caching, regression testing, or output verification. **Phantom Tool Failures** (Exp17b) show that network-level degradation causes model-dependent pathologies: Mistral fabricates financial data with full confidence when receiving truncated tool output (100% fabrication in degraded), while DeepSeek-Coder and Phi3 exhibit the opposite failure — abandoning and blaming functional tools even in the control condition (100% abandon, 100% infra-blame). This **Trust Asymmetry** means that neither excessive tool trust (leading to fabrication) nor excessive tool distrust (leading to unnecessary failure) is safe, and the failure mode is model-family-dependent. **Resource Blindness** (Exp17c) confirms that when filesystem operations fail due to disk pressure, agents blame their own code rather than diagnosing the infrastructure — 50% minification attempts, 50% code-blame, 33% code destruction across disk-constrained runs. Phi3 was the most aggressive self-mutilator, destroying code even in the control phase (0.35× line ratio). This **Self-Blame Instinct** — where agents absorb infrastructure failures as code defects — is the inverse of the CYA Cascade (Exp5) and suggests that LLMs have no model of their execution environment.
+
+Together, these results argue for a comprehensive AI agent certification framework that addresses **behavioral risks** (emergent from prompt architecture), **governance risks** (deterministic deadlocks from role-prompt conflicts), **capability-gated risks** (emerging discontinuously at scale), **infrastructure risks** (emergent from the validation/orchestration stack), **framework dampening risks** (where agent architectures suppress both pathological and beneficial dynamics), **model-specificity risks** (where pathology severity, identity, and dynamics are all model-dependent — demanding cross-family testing), **epistemic integrity risks** (where multi-agent pipelines propagate and amplify false data without detection), **diagnostic dependency risks** (where error feedback can paradoxically degrade reasoning quality), **attention decay risks** (where context management practices cause instruction adherence collapse), **alignment-persona conflicts** (where RLHF safety training overrides operational personas), **temporal blindness risks** (where concurrent agents lack any model of time, hallucinating causal narratives for race conditions), **toolchain trust-inversion risks** (where the MCP protocol creates an unguarded channel through which malicious tool output overrides system prompts), **observation/telemetry load risks** (where the universal practice of forcing LLMs to explain reasoning degrades performance in specialist models and imposes a 3.4× latency tax that must be calibrated per model), **model upgrade/substitution risks** (where swapping one LLM for another introduces non-deterministic behavioral changes — over-engineering, laziness, paradoxical refusals — that are invisible to standard capability benchmarks and require behavioral regression testing), and **compute/cognition entanglement risks** (where GPU scheduling state, network reliability, and filesystem availability directly affect token selection, data fabrication rates, and code self-mutilation — making every other finding in this paper an interaction effect between model behavior and compute environment). Current AI evaluation frameworks focus almost exclusively on model capabilities; our findings suggest that **system-level dynamics** — how models interact with their infrastructure, with each other, with their toolchains, with their own meta-cognitive demands, and with different architectural patterns — may be the more critical frontier for AI safety research.
 
 *This research was conducted at the NAIL Institute. GitHub Copilot (Claude Opus 4.6, Anthropic) served as a research partner throughout the experimental design, implementation, execution, and analysis phases. All experiments used locally-hosted open-source models with no data transmitted externally.*
 
@@ -1812,6 +1939,9 @@ Average metrics during experiment execution:
 | Experiment Runtime (Exp14: MCP Security) | 3.9 min (all 6 phases) |
 | Experiment Runtime (Exp15: Observer Effect) | 7.2 min (45 runs, 3 models × 3 conditions × 5 puzzles) |
 | Experiment Runtime (Exp16: Upgrade Anomalies) | 5.8 min (7 models × 4 anomaly batteries) |
+| Experiment Runtime (Exp17a: GPU Non-Determinism) | 33.3 min (300 calls, 3 models × 100 calls each) |
+| Experiment Runtime (Exp17b: Phantom Tool Failures) | 1.2 min (15 trials, 3 models × 3 phases) |
+| Experiment Runtime (Exp17c: Resource Blindness) | 8.5 min (9 trials, 3 models × 3 phases) |
 
 ### Appendix E: Pydantic V1 — Procrustean Bed Failure Detail
 

@@ -1,0 +1,181 @@
+{
+  "experiment": "17a_gpu_nondeterminism",
+  "timestamp": "2026-02-28T01:58:09.012310",
+  "config": {
+    "models": [
+      "mistral:7b-instruct",
+      "deepseek-coder:6.7b-instruct",
+      "phi3:mini"
+    ],
+    "runs_per_phase": 50,
+    "concurrent_batch": 10,
+    "prompt": "You are a senior Python developer. Write a function called `merge_sorted_lists` that takes two sorted lists of integers and returns a single sorted list containing all elements from both lists. Use the two-pointer technique. Include type hints and a docstring. Do NOT include any usage examples or test code.",
+    "temperature": 0.0,
+    "seed": 42,
+    "top_k": 1
+  },
+  "results": [
+    {
+      "model": "mistral:7b-instruct",
+      "baseline": {
+        "phase": "baseline",
+        "total_runs": 50,
+        "valid_runs": 50,
+        "errors": 0,
+        "unique_hashes": 2,
+        "hash_distribution": {
+          "0bc5b06664aaee68e37aad805a5a1f34ba04b47b24680934f1e0eae562f3cd9b": 1,
+          "3673541ff56b3941762d1c8f0a6e0ae4dbbe030e6a0089b35b0a24d0c8d51a04": 49
+        },
+        "determinism_rate": 0.98,
+        "avg_latency": 9.462778916358948,
+        "min_latency": 8.198171377182007,
+        "max_latency": 12.472766876220703,
+        "avg_tokens": 376.94,
+        "pairwise_similarity": {
+          "min": 0.9939894815927873,
+          "max": 0.9939894815927873,
+          "avg": 0.9939894815927873
+        },
+        "char_level_diffs": [
+          {
+            "diff_position": 826,
+            "canonical_char": "' '",
+            "divergent_char": "'\\n'",
+            "context": " lists to the result list\n    result.ext"
+          }
+        ]
+      },
+      "stressed": {
+        "phase": "stressed",
+        "total_runs": 50,
+        "valid_runs": 50,
+        "errors": 0,
+        "unique_hashes": 1,
+        "hash_distribution": {
+          "3673541ff56b3941762d1c8f0a6e0ae4dbbe030e6a0089b35b0a24d0c8d51a04": 50
+        },
+        "determinism_rate": 1.0,
+        "avg_latency": 45.228514451980594,
+        "min_latency": 8.209362030029297,
+        "max_latency": 82.45123839378357,
+        "avg_tokens": 377.0,
+        "pairwise_similarity": {
+          "min": 1.0,
+          "max": 1.0,
+          "avg": 1.0
+        },
+        "char_level_diffs": []
+      },
+      "cross_phase_canonical_match": false
+    },
+    {
+      "model": "deepseek-coder:6.7b-instruct",
+      "baseline": {
+        "phase": "baseline",
+        "total_runs": 50,
+        "valid_runs": 50,
+        "errors": 0,
+        "unique_hashes": 2,
+        "hash_distribution": {
+          "077a454d48d4cb75f29a436168abdb500c29878edbdfad1098192462a72bc051": 1,
+          "4525f0fc28e0863265d093f3767e8e0c9a72076dffc81e76549ac0bf16bfd222": 49
+        },
+        "determinism_rate": 0.98,
+        "avg_latency": 6.4334584856033326,
+        "min_latency": 6.35516357421875,
+        "max_latency": 8.707749843597412,
+        "avg_tokens": 360.96,
+        "pairwise_similarity": {
+          "min": 0.9948586118251928,
+          "max": 0.9948586118251928,
+          "avg": 0.9948586118251928
+        },
+        "char_level_diffs": [
+          {
+            "diff_position": 567,
+            "canonical_char": "' '",
+            "divergent_char": "'\\n'",
+            "context": "   merged_list = []\n    \n    # Merge the"
+          }
+        ]
+      },
+      "stressed": {
+        "phase": "stressed",
+        "total_runs": 50,
+        "valid_runs": 50,
+        "errors": 0,
+        "unique_hashes": 1,
+        "hash_distribution": {
+          "4525f0fc28e0863265d093f3767e8e0c9a72076dffc81e76549ac0bf16bfd222": 50
+        },
+        "determinism_rate": 1.0,
+        "avg_latency": 34.962016096115114,
+        "min_latency": 6.358031272888184,
+        "max_latency": 63.622132778167725,
+        "avg_tokens": 361.0,
+        "pairwise_similarity": {
+          "min": 1.0,
+          "max": 1.0,
+          "avg": 1.0
+        },
+        "char_level_diffs": []
+      },
+      "cross_phase_canonical_match": false
+    },
+    {
+      "model": "phi3:mini",
+      "baseline": {
+        "phase": "baseline",
+        "total_runs": 50,
+        "valid_runs": 50,
+        "errors": 0,
+        "unique_hashes": 2,
+        "hash_distribution": {
+          "2627b8ecc8c8e442505b613c81e99b619bff1838dfce61d195481267ec3210a2": 1,
+          "93e63de1ced9f07d0d2dc6e5ccd8c85aa1e40fab138dc1650613c3d798f77da4": 49
+        },
+        "determinism_rate": 0.98,
+        "avg_latency": 4.3170246362686155,
+        "min_latency": 4.249975204467773,
+        "max_latency": 6.655884742736816,
+        "avg_tokens": 409.04,
+        "pairwise_similarity": {
+          "min": 0.7645622602023021,
+          "max": 0.7645622602023021,
+          "avg": 0.7645622602023021
+        },
+        "char_level_diffs": [
+          {
+            "diff_position": 222,
+            "canonical_char": "'('",
+            "divergent_char": "'h'",
+            "context": "ue.\n\n    \n    Arthy (# Self, # Python De"
+          }
+        ]
+      },
+      "stressed": {
+        "phase": "stressed",
+        "total_runs": 50,
+        "valid_runs": 50,
+        "errors": 0,
+        "unique_hashes": 1,
+        "hash_distribution": {
+          "93e63de1ced9f07d0d2dc6e5ccd8c85aa1e40fab138dc1650613c3d798f77da4": 50
+        },
+        "determinism_rate": 1.0,
+        "avg_latency": 23.393981709480286,
+        "min_latency": 4.251848220825195,
+        "max_latency": 42.58184456825256,
+        "avg_tokens": 408.0,
+        "pairwise_similarity": {
+          "min": 1.0,
+          "max": 1.0,
+          "avg": 1.0
+        },
+        "char_level_diffs": []
+      },
+      "cross_phase_canonical_match": false
+    }
+  ]
+}

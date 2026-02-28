@@ -1,0 +1,88 @@
+{
+  "experiment": "17_container_isolation",
+  "timestamp": "2026-02-28T01:25:36.905609",
+  "sub_experiments": {
+    "17a": {
+      "status": "complete",
+      "elapsed_minutes": 32.53512585560481,
+      "result_summary": {
+        "experiment": "17a_gpu_nondeterminism",
+        "timestamp": "2026-02-28T01:58:09.012310",
+        "config": {
+          "models": [
+            "mistral:7b-instruct",
+            "deepseek-coder:6.7b-instruct",
+            "phi3:mini"
+          ],
+          "runs_per_phase": 50,
+          "concurrent_batch": 10,
+          "prompt": "You are a senior Python developer. Write a function called `merge_sorted_lists` that takes two sorted lists of integers and returns a single sorted list containing all elements from both lists. Use the two-pointer technique. Include type hints and a docstring. Do NOT include any usage examples or test code.",
+          "temperature": 0.0,
+          "seed": 42,
+          "top_k": 1
+        }
+      }
+    },
+    "17b": {
+      "status": "complete",
+      "elapsed_minutes": 1.2270438194274902,
+      "result_summary": {
+        "experiment": "17b_phantom_tool_failures",
+        "timestamp": "2026-02-28T01:59:22.634237",
+        "config": {
+          "models": [
+            "mistral:7b-instruct",
+            "deepseek-coder:6.7b-instruct",
+            "phi3:mini"
+          ],
+          "phases": [
+            "control",
+            "jitter",
+            "jitter",
+            "jitter",
+            "degraded"
+          ],
+          "real_tool_data": {
+            "company": "Acme Corp",
+            "q4_revenue": 14250000,
+            "q4_expenses": 11800000,
+            "q4_profit": 2450000,
+            "yoy_growth": 0.127,
+            "employees": 342,
+            "headquarters": "Austin, TX"
+          }
+        }
+      }
+    },
+    "17c": {
+      "status": "complete",
+      "elapsed_minutes": 9.956281975905101,
+      "result_summary": {
+        "experiment": "17c_resource_blindness",
+        "timestamp": "2026-02-28T02:09:20.011067",
+        "config": {
+          "models": [
+            "mistral:7b-instruct",
+            "deepseek-coder:6.7b-instruct",
+            "phi3:mini"
+          ],
+          "phases": [
+            "control",
+            "disk_full",
+            "intermittent"
+          ],
+          "original_project_metrics": {
+            "total_lines": 125,
+            "total_chars": 4198,
+            "total_files": 4,
+            "files_with_imports": 4,
+            "files_with_docstrings": 1,
+            "files_with_error_handling": 2,
+            "files_with_logging": 2
+          }
+        }
+      }
+    }
+  },
+  "total_elapsed_minutes": 43.71845269203186
+}
