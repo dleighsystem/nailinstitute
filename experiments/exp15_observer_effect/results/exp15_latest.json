@@ -1,0 +1,2971 @@
+[
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "observed",
+    "puzzle": "two_sum",
+    "difficulty": "easy",
+    "elapsed_seconds": 17.92,
+    "tests_passed": 3,
+    "tests_total": 3,
+    "pass_rate": 1.0,
+    "response_total_tokens": 370,
+    "code_tokens": 99,
+    "rationale_tokens": 179,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "dict"
+      ],
+      "rationale_mentions": [
+        "hash",
+        "dict"
+      ],
+      "overlap": [
+        "dict"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "two_sum([2, 7, 11, 15], 9)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ]
+      },
+      {
+        "passed": true,
+        "input": "two_sum([3, 2, 4], 6)",
+        "expected": [
+          1,
+          2
+        ],
+        "actual": [
+          1,
+          2
+        ]
+      },
+      {
+        "passed": true,
+        "input": "two_sum([3, 3], 6)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ]
+      }
+    ],
+    "raw_response_preview": " RATIONALE:\nTo solve this problem, we will utilize the concept of a hash table (also known as a dictionary in Python). The idea is to iterate through the list and for each number, check if its complement (target - current number) exists in the hash table. If it does, we have found our two numbers, and their indices can be returned.\n\nEdge cases to consider:\n1. Empty list or a list with only one element will not satisfy the problem's conditions. In such cases, an exception should be raised.\n2. Duplicate elements in the list may cause incorrect results if we use them twice. To avoid this, we will keep track of the indices we have already used.\n3. Negative numbers are allowed in the input list. This won't affect the algorithm's approach but needs to be considered when implementing the function.\n4. The time complexity of this solution is O(n), where n is the length of the input list, due to iterating through the list once and performing a constant-time lookup for each element in the hash table (dictionary).\n\nCODE:\n\n```python\ndef two_sum(nums, target):\n    num_dict = {}  # Initialize an empty dictionary to store numbers and their indices\n    for i, num in enumerate(nums):  # Iterate through the list\n        complement = target - num  # Calculate the complement of the current number\n        if complement in num_dict:  # Check if the complement exists in the dictionary\n            return [num_dict[complement], i]  # If it does, return the indices of the two numbers\n        else:\n            num_dict[num] = i  # If not, store the current number and its index in the dictionary\n    raise ValueError(\"No two sum solutions found.\")  # Raise an exception if no solution is found\n```\n\nIn this code, we first initialize an empty dictionary to store numbers and their indices. Then, we iterate through the list using a for loop with enumerate(). For each number, we calculate its complement and check if it exists in the dictionary. If it does, we return the indices of the two numbers. Oth"
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "observed",
+    "puzzle": "valid_parentheses",
+    "difficulty": "easy",
+    "elapsed_seconds": 14.61,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 357,
+    "code_tokens": 54,
+    "rationale_tokens": 210,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "stack"
+      ],
+      "rationale_mentions": [
+        "stack",
+        "dfs"
+      ],
+      "overlap": [
+        "stack"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "is_valid(\"()\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"()[]{}\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"(]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"([)]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"{[]}\")",
+        "expected": true,
+        "actual": true
+      }
+    ],
+    "raw_response_preview": " RATIONALE:\nThe function we will use to solve this problem is a variation of Depth-First Search (DFS) with a stack data structure. This approach is commonly used for solving problems related to parentheses validation, as it allows us to keep track of open brackets and ensure they are closed in the correct order.\n\nEdge cases to consider include:\n1. An empty string should return True since an empty string has no invalid pairs.\n2. Strings with unmatched or mismatched brackets should return False. For example, `\"([)]\"` is invalid because the opening bracket '(' is not closed by a closing bracket ')', and the closing bracket ')' does not have a corresponding opening bracket '('.\n3. Strings containing only one type of bracket (either all open or all closed) should return True, as they are valid. For example, `\"([])\"` is valid because each opening bracket has a corresponding closing bracket.\n4. Strings with nested brackets should also be considered valid if the innermost pair is closed correctly. For example, `\"([{()]}\"` is valid because the innermost pair `\"({})\"` is valid.\n\nThe time complexity of this solution will be O(n) where n is the length of the input string. This is because we visit each character in the string once during our DFS traversal.\n\nCODE:\n\n```python\ndef is_valid(s):\n    if not s:\n        return True\n\n    stack = []\n    opening_brackets = {'(': ')', '{': '}', '[': ']'}\n\n    for bracket in s:\n        if bracket in opening_brackets:\n            stack.append(bracket)\n        elif not stack or opening_brackets[stack[-1]] != bracket:\n            return False\n        else:\n            stack.pop()\n\n    return not stack  # The stack is empty if and only if all brackets are closed\n```\n\nIn this implementation, we use a dictionary `opening_brackets` to map each opening bracket to its corresponding closing bracket. We then iterate through the input string, pushing opening brackets onto a stack and popping them when we encounter their matching closing brackets. If we "
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "observed",
+    "puzzle": "longest_common_subsequence",
+    "difficulty": "medium",
+    "elapsed_seconds": 16.02,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 349,
+    "code_tokens": 103,
+    "rationale_tokens": 204,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [],
+      "rationale_mentions": [
+        "dynamic programming"
+      ],
+      "overlap": [],
+      "consistent": false
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "lcs(\"abcde\", \"ace\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"abc\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"def\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"\", \"abc\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"oxcpqrsvwf\", \"shmtulqrypy\")",
+        "expected": 2,
+        "actual": 2
+      }
+    ],
+    "raw_response_preview": " RATIONALE:\nTo solve this problem, we will use Dynamic Programming with Top-Down approach. The Longest Common Subsequence (LCS) problem asks for the longest sequence that can be found in two strings, where the sequence can be derived from either string and the order of characters within the sequence must match in both strings.\n\nThe dynamic programming solution works by creating a 2D table where `table[i][j]` represents the length of LCS between the first `i` characters of the first string and the first `j` characters of the second string. We fill this table using bottom-up approach, starting from the last indexes and moving towards the first indexes.\n\nEdge cases to consider:\n1. Both strings can be empty or null, in which case LCS length is 0.\n2. If either string contains special characters or numbers, we should preprocess them to ensure they only contain alphabetic characters.\n3. The time complexity of this solution is O(m*n), where m and n are the lengths of the two input strings. This is because we fill a table of size (m+1) x (n+1).\n\nSmall example:\nGiven `text1 = \"ABCD\"` and `text2 = \"ACDE\"`, the LCS would be \"ACD\", which has a length of 3. Here's how the table is filled:\n\n```\n   | A | C | D | E\n--------------------\nA | 0 | 1 | 1 | 0\nC | 0 | 1 | 2 | 1\nD | 0 | 1 | 2 | 2\n```\n\nCODE:\n\n```python\ndef lcs(text1, text2):\n    m = len(text1)\n    n = len(text2)\n\n    # Create a table to store the lengths of LCS for substrings\n    table = [[0] * (n + 1) for _ in range(m + 1)]\n\n    # Fill the table using bottom-up approach\n    for i in range(m + 1):\n        for j in range(n + 1):\n            if i == 0 or j == 0:\n                table[i][j] = 0\n            elif text1[i - 1] == text2[j - 1]:\n                table[i][j] = table[i - 1][j - 1] + 1\n            else:\n                table[i][j] = max(table[i - 1][j], table[i][j - 1])\n\n    # The length of LCS is stored in the bottom-right cell\n    return table[m][n]\n```"
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "observed",
+    "puzzle": "merge_intervals",
+    "difficulty": "medium",
+    "elapsed_seconds": 15.88,
+    "tests_passed": 4,
+    "tests_total": 4,
+    "pass_rate": 1.0,
+    "response_total_tokens": 386,
+    "code_tokens": 66,
+    "rationale_tokens": 223,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "sort"
+      ],
+      "rationale_mentions": [
+        "sort"
+      ],
+      "overlap": [
+        "sort"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,3],[2,6],[8,10],[15,18]])",
+        "expected": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[4,5]])",
+        "expected": [
+          [
+            1,
+            5
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            5
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[0,4]])",
+        "expected": [
+          [
+            0,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            4
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[2,3]])",
+        "expected": [
+          [
+            1,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            4
+          ]
+        ]
+      }
+    ],
+    "raw_response_preview": " RATIONALE:\nTo solve this problem, we will use a modified merge sort algorithm, which allows us to merge overlapping intervals efficiently. The idea is to first sort the intervals based on their start times, then iteratively merge adjacent intervals that do not overlap. This approach ensures that the merged intervals are non-overlapping and cover all the input intervals.\n\nEdge cases to consider:\n1. An empty list or a list with only one interval: In this case, we return the input list as it is since there are no overlaps to merge.\n2. Intervals with the same start and end times: These intervals should be merged into a single interval.\n3. Intervals that do not overlap but have gaps between them: The algorithm will correctly handle these cases by merging adjacent non-overlapping intervals.\n4. Intervals with complex overlaps: The modified merge sort algorithm can handle any number of overlapping intervals, regardless of their complexity.\n\nTime Complexity:\n1. Sorting the list of intervals takes O(n log n) time, where n is the number of intervals.\n2. Merging the intervals takes O(n) time in the worst case (when all intervals overlap). However, since we are merging at most half of the intervals at each step, the average time complexity for merging is O(n log n).\n3. The total time complexity of the algorithm is O(n log n).\n\nCODE:\n\n```python\ndef merge_intervals(intervals):\n    if not intervals or len(intervals) == 1:\n        return intervals\n\n    # Sort the intervals based on their start times\n    intervals.sort(key=lambda x: x[0])\n\n    merged = [intervals[0]]\n\n    for interval in intervals[1:]:\n        last_merged = merged[-1]\n        if interval[0] > last_merged[1]:\n            # No overlap, add the new interval to the list\n            merged.append(interval)\n        else:\n            # Overlap, merge the last merged and current intervals\n            merged[-1] = [min(last_merged[0], interval[0]), max(last_merged[1], interval[1])]\n\n    return merged\n```\n\nIn this code, we fi"
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "observed",
+    "puzzle": "word_ladder",
+    "difficulty": "hard",
+    "elapsed_seconds": 21.81,
+    "tests_passed": 1,
+    "tests_total": 3,
+    "pass_rate": 0.3333333333333333,
+    "response_total_tokens": 475,
+    "code_tokens": 105,
+    "rationale_tokens": 287,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "dict",
+        "queue"
+      ],
+      "rationale_mentions": [
+        "bfs"
+      ],
+      "overlap": [],
+      "consistent": false
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"])",
+        "expected": 5,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\"])",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"a\", \"c\", [\"a\",\"b\",\"c\"])",
+        "expected": 2,
+        "actual": 0
+      }
+    ],
+    "raw_response_preview": " RATIONALE:\nTo solve this problem, we will use Breadth-First Search (BFS) algorithm along with a graph data structure. The reason for choosing BFS is that it allows us to explore all possible transformations systematically and efficiently, ensuring we find the shortest transformation sequence if one exists.\n\nWe will create a graph where each node represents a word in `word_list`, and edges connect words that differ by only one letter. Since we can change only one letter at a time, this graph structure is appropriate for our problem.\n\nEdge cases to consider:\n1. If `begin_word` does not exist in the `word_list`, return 0 as no transformation sequence exists.\n2. If `end_word` does not exist in the `word_list`, return 0 as well, since there is no final destination for our transformation sequence.\n3. If both `begin_word` and `end_word` are in the `word_list`, but they cannot be connected by a series of single-letter changes, we will also return 0.\n4. The graph may contain cycles, which would mean multiple paths between nodes. In this case, we only care about the shortest path, so we can break the cycle as soon as we find it to avoid exploring unnecessary paths.\n\nTime complexity:\n1. Building the graph: O(n^2) where n is the number of words in `word_list`. This is because each word is compared with every other word in the list.\n2. BFS traversal: O(m*n) where m is the maximum length of a word and n is the number of unique words in the graph (which is less than or equal to the number of words in `word_list`). This is because each node is visited once during the BFS process, and each edge is traversed at most twice (once for each adjacent node).\n\nCODE:\n\n```python\nfrom collections import defaultdict, deque\n\ndef ladder_length(begin_word, end_word, word_list):\n    if begin_word not in word_list or end_word not in word_list:\n        return 0\n\n    graph = build_graph(word_list)\n    visited = set()\n    queue = deque([(begin_word, 1)])\n\n    while queue:\n        current_word, length "
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "unobserved",
+    "puzzle": "two_sum",
+    "difficulty": "easy",
+    "elapsed_seconds": 2.05,
+    "tests_passed": 0,
+    "tests_total": 3,
+    "pass_rate": 0.0,
+    "response_total_tokens": 26,
+    "code_tokens": 24,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "two_sum([2, 7, 11, 15], 9)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": null
+      },
+      {
+        "passed": false,
+        "input": "two_sum([3, 2, 4], 6)",
+        "expected": [
+          1,
+          2
+        ],
+        "actual": null
+      },
+      {
+        "passed": false,
+        "input": "two_sum([3, 3], 6)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          1,
+          1
+        ]
+      }
+    ],
+    "raw_response_preview": " ```python\ndef two_sum(nums, target):\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in nums[i+1:] and nums.index(complement) != i+1:\n            return [i+1, nums.index(complement)+1]\n```"
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "unobserved",
+    "puzzle": "valid_parentheses",
+    "difficulty": "easy",
+    "elapsed_seconds": 2.37,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 42,
+    "code_tokens": 40,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "is_valid(\"()\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"()[]{}\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"(]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"([)]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"{[]}\")",
+        "expected": true,
+        "actual": true
+      }
+    ],
+    "raw_response_preview": " ```python\ndef is_valid(s):\n    stack = []\n    pairs = {')': '(', '}': '{', ']': '['}\n    for char in s:\n        if char in ['(', '[', '{']:\n            stack.append(char)\n        elif char in pairs and not stack or stack.pop() != pairs[char]:\n            return False\n    return not stack\n```"
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "unobserved",
+    "puzzle": "longest_common_subsequence",
+    "difficulty": "medium",
+    "elapsed_seconds": 4.5,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 66,
+    "code_tokens": 64,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "lcs(\"abcde\", \"ace\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"abc\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"def\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"\", \"abc\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"oxcpqrsvwf\", \"shmtulqrypy\")",
+        "expected": 2,
+        "actual": 2
+      }
+    ],
+    "raw_response_preview": " ```python\ndef lcs(text1, text2):\n    m = len(text1)\n    n = len(text2)\n\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if text1[i - 1] == text2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\n    return dp[-1][-1]\n```"
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "unobserved",
+    "puzzle": "merge_intervals",
+    "difficulty": "medium",
+    "elapsed_seconds": 2.44,
+    "tests_passed": 4,
+    "tests_total": 4,
+    "pass_rate": 1.0,
+    "response_total_tokens": 29,
+    "code_tokens": 27,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,3],[2,6],[8,10],[15,18]])",
+        "expected": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[4,5]])",
+        "expected": [
+          [
+            1,
+            5
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            5
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[0,4]])",
+        "expected": [
+          [
+            0,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            4
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[2,3]])",
+        "expected": [
+          [
+            1,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            4
+          ]
+        ]
+      }
+    ],
+    "raw_response_preview": " ```python\ndef merge_intervals(intervals):\n    intervals.sort(key=lambda x: x[0])\n    merged = []\n    for interval in intervals:\n        if not merged or merged[-1][1] < interval[0]:\n            merged.append(interval)\n        else:\n            merged[-1][1] = max(merged[-1][1], interval[1])\n    return merged\n```"
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "unobserved",
+    "puzzle": "word_ladder",
+    "difficulty": "hard",
+    "elapsed_seconds": 7.31,
+    "tests_passed": 1,
+    "tests_total": 3,
+    "pass_rate": 0.3333333333333333,
+    "response_total_tokens": 100,
+    "code_tokens": 98,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"])",
+        "expected": 5,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\"])",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"a\", \"c\", [\"a\",\"b\",\"c\"])",
+        "expected": 2,
+        "actual": 3
+      }
+    ],
+    "raw_response_preview": " ```python\nfrom collections import deque\n\ndef ladder_length(begin_word, end_word, word_list):\n    word_set = set(word_list)\n    if not begin_word or not end_word or not word_set:\n        return 0\n    if begin_word not in word_set:\n        return 0\n    if begin_word == end_word:\n        return 1\n    q = deque([(begin_word, [begin_word], 2)])\n    visited = set()\n    visited.add(begin_word)\n    while q:\n        word, path, length = q.popleft()\n        for i in range(len(word)):\n            for new_word in (word[:i] + c + word[i+1:] for c in 'abcdefghijklmnopqrstuvwxyz' if word[i] != c):\n                if new_word in word_set and new_word not in visited:\n                    visited.add(new_word)\n                    if new_word == end_word:\n                        return length + 1\n                    q.append((new_word, path + [new_word], length + 1))\n    return 0\n```"
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "posthoc",
+    "puzzle": "two_sum",
+    "difficulty": "easy",
+    "elapsed_seconds": 8.54,
+    "tests_passed": 3,
+    "tests_total": 3,
+    "pass_rate": 1.0,
+    "response_total_tokens": 223,
+    "code_tokens": 26,
+    "rationale_tokens": 193,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "dict"
+      ],
+      "rationale_mentions": [
+        "hash",
+        "dict"
+      ],
+      "overlap": [
+        "dict"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "two_sum([2, 7, 11, 15], 9)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ]
+      },
+      {
+        "passed": true,
+        "input": "two_sum([3, 2, 4], 6)",
+        "expected": [
+          1,
+          2
+        ],
+        "actual": [
+          1,
+          2
+        ]
+      },
+      {
+        "passed": true,
+        "input": "two_sum([3, 3], 6)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ]
+      }
+    ],
+    "raw_response_preview": " CODE:\n```python\ndef two_sum(nums, target):\n    num_dict = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in num_dict:\n            return [num_dict[complement], i]\n        num_dict[num] = i\n```\n\nRATIONALE:\n\nThe function uses a hash table (dictionary) approach to solve the problem. This algorithm is efficient because it allows us to check for the presence of a number and its complement in constant time, O(1). The space complexity is O(n), as we store each unique number from `nums` in the dictionary.\n\nTo handle edge cases, I ensured that the function only returns indices and not values themselves, which would be invalid for this problem. Also, I assumed that the input list `nums` contains no duplicate elements, and if it does, the first occurrence of each number is used in the solution.\n\nThe logic behind the function is as follows:\n1. Initialize an empty dictionary to store numbers and their indices.\n2. Iterate through the input list `nums`. For each number, calculate its complement (target - num).\n3. If the complement exists in the dictionary, it means we have found two numbers that add up to the target. In this case, return the indices of those two numbers.\n4. If the complement is not found in the dictionary, add the current number and its index to the dictionary and continue with the next iteration."
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "posthoc",
+    "puzzle": "valid_parentheses",
+    "difficulty": "easy",
+    "elapsed_seconds": 12.81,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 328,
+    "code_tokens": 36,
+    "rationale_tokens": 288,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "stack"
+      ],
+      "rationale_mentions": [
+        "stack"
+      ],
+      "overlap": [
+        "stack"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "is_valid(\"()\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"()[]{}\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"(]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"([)]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"{[]}\")",
+        "expected": true,
+        "actual": true
+      }
+    ],
+    "raw_response_preview": " CODE:\n```python\ndef is_valid(s):\n    stack = []\n    opening_brackets = {'(': ')', '{': '}', '[': ']'}\n    for char in s:\n        if char in opening_brackets:\n            stack.append(char)\n        elif not stack or char != opening_brackets[stack[-1]]:\n            return False\n        else:\n            stack.pop()\n    return not stack\n```\n\nRATIONALE:\n\nThe function uses a stack data structure to solve the problem. The idea is to push all opening brackets onto the stack and pop them when their corresponding closing bracket is encountered. If the stack is empty or the closing bracket doesn't match the top element of the stack, the string is invalid.\n\n1. Algorithm: We use a stack-based approach because it allows us to keep track of open brackets and easily check if they are closed in the correct order. This algorithm works well for this problem due to its simplicity and efficiency.\n\n2. Edge Cases: The function handles strings containing only opening or closing brackets by returning False in both cases (since a valid string should have both). It also checks if the stack is empty at the end, which means all open brackets were properly closed.\n\n3. Time Complexity: The time complexity of this algorithm is O(n), where n is the length of the input string. This is because we iterate through the string once and perform constant-time operations (pushing and popping from the stack) for each character.\n\n4. Logic Walkthrough: Let's consider an example: `s = \"([{}])\"`. Initially, the stack is empty. When we encounter '(', '[', and '{', they are pushed onto the stack. Now the stack contains `['(', '[', '{']`. As we iterate through the string again, we pop each bracket when its corresponding closing bracket is encountered. The stack becomes empty at the end, indicating that all open brackets were properly closed, so the function returns True. If we had an invalid string like `s = \"([{)]\"`, the function would return False because the stack would contain '{' at the end, which means the "
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "posthoc",
+    "puzzle": "longest_common_subsequence",
+    "difficulty": "medium",
+    "elapsed_seconds": 17.6,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 399,
+    "code_tokens": 64,
+    "rationale_tokens": 307,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "dp"
+      ],
+      "rationale_mentions": [
+        "dynamic programming",
+        "dp"
+      ],
+      "overlap": [
+        "dp"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "lcs(\"abcde\", \"ace\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"abc\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"def\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"\", \"abc\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"oxcpqrsvwf\", \"shmtulqrypy\")",
+        "expected": 2,
+        "actual": 2
+      }
+    ],
+    "raw_response_preview": " CODE:\n```python\ndef lcs(text1, text2):\n    m = len(text1)\n    n = len(text2)\n\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if text1[i - 1] == text2[j - 1]:\n                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\n    return dp[-1][-1]\n```\n\nRATIONALE:\n\nThe function uses dynamic programming to solve the problem of finding the longest common subsequence (LCS) between two strings. The algorithm is based on the idea that if we have found the LCS for the first `i-1` characters of the first string and the first `j-1` characters of the second string, then we can extend it by checking whether the current character in both strings match or not. If they do, we add 1 to the length of the LCS found so far. If they don't, we take the maximum of the LCS for the remaining characters from either the first string or the second string.\n\nThe time complexity of this algorithm is O(m * n), where m and n are the lengths of the two input strings. This is because we have a nested loop that iterates over each character in both strings once, and we perform an additional operation for each iteration (comparing characters or updating the LCS length).\n\nEdge cases to consider include:\n1. If either string is empty, the LCS is also empty.\n2. If both strings are identical, the LCS is the same as the original strings.\n3. The function assumes that the input strings consist of printable ASCII characters only. If non-printable characters or unicode characters are present, appropriate modifications would be needed to handle them.\n\nFor example, let's consider the strings \"ABCD\" and \"ACDE\". The LCS is \"ACD\", which has a length of 3. Here's how the function would compute it:\n\n```python\ndp = [[0, 0, 0, 0, 0],\n      [0, 0, 0, 0, 0],\n      [0, 0, 1, 1, 0],\n      [0, 0, 1, 2, 1]]\n```\n\nIn the last row and column, we have `dp[3][4] = max(dp[3 - 1][4], dp[3][4 - 1]) ="
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "posthoc",
+    "puzzle": "merge_intervals",
+    "difficulty": "medium",
+    "elapsed_seconds": 18.52,
+    "tests_passed": 4,
+    "tests_total": 4,
+    "pass_rate": 1.0,
+    "response_total_tokens": 393,
+    "code_tokens": 41,
+    "rationale_tokens": 348,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "sort"
+      ],
+      "rationale_mentions": [
+        "sort"
+      ],
+      "overlap": [
+        "sort"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,3],[2,6],[8,10],[15,18]])",
+        "expected": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[4,5]])",
+        "expected": [
+          [
+            1,
+            5
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            5
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[0,4]])",
+        "expected": [
+          [
+            0,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            4
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[2,3]])",
+        "expected": [
+          [
+            1,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            4
+          ]
+        ]
+      }
+    ],
+    "raw_response_preview": " CODE:\n```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n\n    # Sort the intervals based on their start times\n    intervals.sort(key=lambda x: x[0])\n\n    merged = [intervals[0]]\n    for interval in intervals[1:]:\n        last_interval = merged[-1]\n        if last_interval[1] >= interval[0]:\n            last_interval[1] = max(last_interval[1], interval[1])\n        else:\n            merged.append(interval)\n\n    return merged\n```\n\nRATIONALE:\n\n1. Algorithm used: Merge Intervals problem can be solved using a combination of sorting and merging overlapping intervals. First, we sort the input list of intervals based on their start times. Then, we iterate through the sorted list and merge overlapping intervals as we go along. We keep track of the merged intervals in a new list called `merged`.\n\n2. Edge cases considered:\n   - Empty list: In case there are no intervals to merge, the function returns an empty list.\n   - Single interval: If there is only one interval, it gets added directly to the `merged` list without any merging.\n   - Multiple overlapping intervals: The function handles multiple overlapping intervals by merging them correctly and maintaining the order based on start times.\n\n3. Time complexity: The time complexity of this solution is O(n log n) due to sorting the input list, where n is the number of intervals. In the worst case, we may need to merge all intervals, which takes linear time (O(n)).\n\n4. Walk through the logic with a small example:\n   - Given `intervals = [[1, 3], [2, 6], [8, 10], [15, 18]]`, first we sort the intervals: `[[1, 3], [2, 6], [8, 10], [15, 18]]`.\n   - We start with the first interval `[1, 3]` and add it to the `merged` list.\n   - Next, we have `[2, 6]`, which overlaps with the last interval in the `merged` list (`[1, 3]`). So we update the end time of the last interval to be the maximum of its current end time and the end time of the new interval: `[1, 6]`.\n   - Now, we have `[8, 10]`, which does not over"
+  },
+  {
+    "model": "mistral:7b-instruct",
+    "condition": "posthoc",
+    "puzzle": "word_ladder",
+    "difficulty": "hard",
+    "elapsed_seconds": 16.29,
+    "tests_passed": 1,
+    "tests_total": 3,
+    "pass_rate": 0.3333333333333333,
+    "response_total_tokens": 344,
+    "code_tokens": 90,
+    "rationale_tokens": 250,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "dict",
+        "queue"
+      ],
+      "rationale_mentions": [
+        "queue",
+        "bfs"
+      ],
+      "overlap": [
+        "queue"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"])",
+        "expected": 5,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\"])",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"a\", \"c\", [\"a\",\"b\",\"c\"])",
+        "expected": 2,
+        "actual": 0
+      }
+    ],
+    "raw_response_preview": " CODE:\n```python\nfrom collections import defaultdict, deque\n\ndef ladder_length(begin_word, end_word, word_list):\n    word_set = set(word_list)\n    if not begin_word in word_set or not end_word in word_set:\n        return 0\n\n    graph = defaultdict(list)\n    for word in word_set:\n        for i in range(len(word)):\n            new_word = word[:i] + '_' + word[i+1:]\n            if new_word in word_set and new_word != begin_word and new_word != end_word:\n                graph[word].append(new_word)\n                graph[new_word].append(word)\n\n    queue = deque([(begin_word, 2)])\n    visited = set()\n    visited.add(begin_word)\n\n    while queue:\n        word, length = queue.popleft()\n\n        if word == end_word:\n            return length\n\n        for neighbor in graph[word]:\n            if neighbor not in visited:\n                queue.append((neighbor, length+1))\n                visited.add(neighbor)\n\n    return 0\n```\n\nRATIONALE:\n\nThe function uses Breadth-First Search (BFS) algorithm to find the shortest transformation sequence from `begin_word` to `end_word`. The graph is constructed using an adjacency list, where each word has edges to its neighbors that differ by one letter. We use a set for faster membership checks and a deque for BFS.\n\nEdge cases considered:\n1. If either `begin_word` or `end_word` are not in the given word list, we return 0 as no such transformation sequence exists.\n2. If both `begin_word` and `end_word` are in the given word list, we proceed with finding the shortest transformation sequence.\n3. We also handle the case where a word is its own neighbor (i.e., differs by one letter from itself), which can occur when the same letter appears more than once in a word.\n4. If no such transformation sequence exists, we return 0.\n\nTime complexity:\n- Building the graph takes O(n^2) time, where n is the number of words in the word list. This is because each word has at most n neighbors (one for each other word in the list).\n- BFS traversal takes O(m*n) time"
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "observed",
+    "puzzle": "two_sum",
+    "difficulty": "easy",
+    "elapsed_seconds": 11.86,
+    "tests_passed": 3,
+    "tests_total": 3,
+    "pass_rate": 1.0,
+    "response_total_tokens": 235,
+    "code_tokens": 31,
+    "rationale_tokens": 147,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "dict"
+      ],
+      "rationale_mentions": [
+        "hash",
+        "dict",
+        "map"
+      ],
+      "overlap": [
+        "dict"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "two_sum([2, 7, 11, 15], 9)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ]
+      },
+      {
+        "passed": true,
+        "input": "two_sum([3, 2, 4], 6)",
+        "expected": [
+          1,
+          2
+        ],
+        "actual": [
+          1,
+          2
+        ]
+      },
+      {
+        "passed": true,
+        "input": "two_sum([3, 3], 6)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ]
+      }
+    ],
+    "raw_response_preview": "RATIONALE:\n1. The algorithm I will use is called \"Hash Map\". It's an efficient way to solve this problem in linear time complexity O(n). \n2. Edge cases that we need to consider are when the input list is empty or contains only one element, and if there are no two numbers in the list that add up to the target.\n3. The time complexity of this algorithm will be O(n), where n is the length of the nums array. This is because we traverse through the array once to build a hash map (dictionary) and then again to find the pair.\n4. Let's take an example: \n   - Input: `nums = [2,7,11,5], target = 9`\n   - After first iteration, we have {2:0} in our dictionary. In second iteration, when we reach number 7, it is such that (9-7)=2 is present in the dictionary. So, we return `[0,1]` as output.\n\nCODE:\n```python\ndef two_sum(nums, target):\n    if len(nums) <= 1:\n        return False\n    num_dict = {}\n    for i, num in enumerate(nums):\n        if num not in num_dict:\n            num_dict[target - num] = i\n        else:\n            return [num_dict[num], i]\n```\nIn the above code, we are using a dictionary to store the difference between target and current number as key and its index as value. If we encounter a number which is already in our dictionary that means we have found two numbers adding up to the target so we return their indices.\n"
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "observed",
+    "puzzle": "valid_parentheses",
+    "difficulty": "easy",
+    "elapsed_seconds": 11.97,
+    "tests_passed": 0,
+    "tests_total": 5,
+    "pass_rate": 0.0,
+    "response_total_tokens": 327,
+    "code_tokens": 20,
+    "rationale_tokens": 196,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [],
+      "rationale_mentions": [
+        "stack"
+      ],
+      "overlap": [],
+      "consistent": false
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "is_valid(\"()\")",
+        "expected": true,
+        "error": "name 'is_valid' is not defined"
+      },
+      {
+        "passed": false,
+        "input": "is_valid(\"()[]{}\")",
+        "expected": true,
+        "error": "name 'is_valid' is not defined"
+      },
+      {
+        "passed": false,
+        "input": "is_valid(\"(]\")",
+        "expected": false,
+        "error": "name 'is_valid' is not defined"
+      },
+      {
+        "passed": false,
+        "input": "is_valid(\"([)]\")",
+        "expected": false,
+        "error": "name 'is_valid' is not defined"
+      },
+      {
+        "passed": false,
+        "input": "is_valid(\"{[]}\")",
+        "expected": true,
+        "error": "name 'is_valid' is not defined"
+      }
+    ],
+    "raw_response_preview": "RATIONALE:\nThis problem can be solved using a stack data structure. We will iterate through each character of the given string. If it's an opening bracket, we push it into our stack. If it's a closing bracket, we check if the top element of the stack is its corresponding opening bracket and remove it from the stack. At the end, if the stack is empty, then all brackets are properly closed and balanced.\n\nAlgorithm:\n1. Initialize an empty stack.\n2. Iterate through each character in the string.\n   a. If the character is an opening bracket (i.e., '(', '{', or '['), push it onto the stack.\n   b. If the character is a closing bracket, check if the top of the stack is its corresponding opening bracket. \n      i. If yes, pop from the stack.\n      ii. If no (or stack is empty), return False as this means there's an unmatched closing bracket.\n3. After going through all characters in the string, if the stack isn't empty, then some opening brackets were never closed and hence, return False. Otherwise, return True.\n\nTime Complexity: O(n), where n is the length of the string as we are iterating through each character once. \n\nExample:\n```python\nprint(is_valid(\"()\")) # Returns True\nprint(is_valid(\"(){}[]\")) # Returns True\nprint(is_valid(\"(]\")) # Returns False\nprint(is_valid(\"([)]\")) # Returns False\nprint(is_valid(\"{[]}\")) # Returns True\n```\n\nCODE:\n```python\ndef is_valid(s):\n    stack = []\n    bracket_map = {')': '(', '}': '{', ']': '['}  # Mapping of closing to opening brackets\n    \n    for char in s:\n        if char in bracket_map.values():   # If it's an opening bracket, push into stack\n            stack.append(char)\n        elif char in bracket_map.keys():  # If it's a closing bracket\n            if not stack or bracket_map[char] != stack.pop():  # Check if the top of the stack is its corresponding opening bracket\n                return False   # Return False if there's no matching opening bracket in the stack\n    return not stack  # If all characters have been processed and the "
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "observed",
+    "puzzle": "longest_common_subsequence",
+    "difficulty": "medium",
+    "elapsed_seconds": 12.75,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 329,
+    "code_tokens": 115,
+    "rationale_tokens": 169,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "dp"
+      ],
+      "rationale_mentions": [
+        "dynamic programming",
+        "dp"
+      ],
+      "overlap": [
+        "dp"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "lcs(\"abcde\", \"ace\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"abc\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"def\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"\", \"abc\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"oxcpqrsvwf\", \"shmtulqrypy\")",
+        "expected": 2,
+        "actual": 2
+      }
+    ],
+    "raw_response_preview": "RATIONALE:\nThis problem can be solved using dynamic programming. The idea is to create a 2D array dp where dp[i][j] represents the length of longest common subsequence of text1[:i] and text2[:j]. We fill this table by comparing characters from both strings one by one. If current character in both strings matches, we increment our LCS by 1 (which is stored at dp[i-1][j-1]) plus the length of longest common subsequence till now for remaining part of each string i.e., dp[i-1][j] and dp[i][j-1]. If characters don'<\uff5cbegin\u2581of\u2581sentence\uff5c> match, we take maximum from two possibilities: if we ignore current character in first string or second string.\n\nWe start filling our table from left to right, top to bottom. So the final answer will be at dp[len(text1)][len(text2)], where len() is a built-in Python function that returns length of a sequence.\n\nThe time complexity for this approach would be O(length_of_string1 * length_of_string2), as we are iterating through the 2D dp array once. The space complexity will also be O(length_of_string1 * length_of_string2) due to our DP table.\n\nCODE:\n```python\ndef lcs(text1, text2):\n    m = len(text1)\n    n = len(text2)\n    \n    # Create a 2D array of size (m+1)*(n+1) initialized with zeroes\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n    \n    # Iterate through the strings\n    for i in range(1, m + 1):\n        for j in range(1, n + 1):\n            if text1[i - 1] == text2[j - 1]:   # If current characters match\n                dp[i][j] = dp[i - 1][j - 1] + 1    # Increment LCS by one and move diagonally up-left\n            else:\n                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])   # Take maximum from left or above cell\n    \n    return dp[-1][-1]   # Return the last element in DP table which is our LCS length\n```\nThis function will work for any two strings and can handle edge cases like empty strings. For example, if text1 = \"\" and text2 = \"abc\", then lcs(text1, text2) would return 0 as there are no common subsequences in this case."
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "observed",
+    "puzzle": "merge_intervals",
+    "difficulty": "medium",
+    "elapsed_seconds": 13.54,
+    "tests_passed": 4,
+    "tests_total": 4,
+    "pass_rate": 1.0,
+    "response_total_tokens": 413,
+    "code_tokens": 99,
+    "rationale_tokens": 219,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "sort"
+      ],
+      "rationale_mentions": [
+        "sort"
+      ],
+      "overlap": [
+        "sort"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,3],[2,6],[8,10],[15,18]])",
+        "expected": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[4,5]])",
+        "expected": [
+          [
+            1,
+            5
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            5
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[0,4]])",
+        "expected": [
+          [
+            0,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            4
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[2,3]])",
+        "expected": [
+          [
+            1,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            4
+          ]
+        ]
+      }
+    ],
+    "raw_response_preview": "RATIONALE:\n1. The problem can be solved using sorting and interval merging techniques. Firstly, we need to understand what an interval is. It's a range of values where each value falls within that range. In this case, the intervals are defined by their start and end points. \n2. To solve this problem, first we will sort all the intervals based on their starting time. This way, we can easily merge overlapping intervals without having to worry about the order in which they were inputted.\n3. After that, we iterate through our sorted list of intervals and check for any overlap between consecutive intervals. If an overlap is found, we merge these two intervals into one larger interval by updating the end time of the previous interval if it's greater than the current interval's end time. \n4. We continue this process until we have iterated through all our sorted intervals and merged any overlapping ones that we find. At the end of this, we will be left with a list of non-overlapping intervals covering all input intervals in their entirety.\n5. Finally, return these intervals sorted by start time. \n6. The time complexity for sorting is O(n log n) and then iterating through the list once which makes it O(n log n).\n7. For example:\n   - Input: [[1,3],[2,6],[8,10],[15,18]]\n   - Output: [[1,6],[8,10],[15,18]]\n   \nCODE:\n```python\ndef merge_intervals(intervals):\n    # Sort the intervals by start time\n    intervals.sort(key=lambda x: x[0])\n    \n    merged = []\n    for interval in intervals:\n        # If the list of merged intervals is empty or if the current\n        # interval does not overlap with the previous, append it\n        if not merged or merged[-1][1] < interval[0]:\n            merged.append(interval)\n        else:\n            # Otherwise, there is an overlap, so we merge the current and previous\n            # intervals by updating the end time of the last interval in the list to be the max of its own end time and the current interval's end time\n            merged[-1][1] = m"
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "observed",
+    "puzzle": "word_ladder",
+    "difficulty": "hard",
+    "elapsed_seconds": 13.84,
+    "tests_passed": 1,
+    "tests_total": 3,
+    "pass_rate": 0.3333333333333333,
+    "response_total_tokens": 344,
+    "code_tokens": 86,
+    "rationale_tokens": 175,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "queue"
+      ],
+      "rationale_mentions": [
+        "bfs"
+      ],
+      "overlap": [],
+      "consistent": false
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"])",
+        "expected": 5,
+        "error": "name 'collections' is not defined"
+      },
+      {
+        "passed": true,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\"])",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"a\", \"c\", [\"a\",\"b\",\"c\"])",
+        "expected": 2,
+        "error": "name 'collections' is not defined"
+      }
+    ],
+    "raw_response_preview": "RATIONALE:\nThis problem is essentially asking for finding the shortest path between two nodes in a graph, where each node represents a word and there's an edge from one word to another if they differ by only one character. We can use Breadth-First Search (BFS) algorithm to solve this problem because it guarantees the shortest path in unweighted graphs.\n\n1. What Algorithm you will Use: BFS\n2. Edge Cases: \n   - If end_word is not in word_list, return 0 immediately as there's no way to transform begin_word into end_word.\n   - Handle the case where begin_word equals end_word by returning 1 directly because we don't need to do any transformation.\n3. Time Complexity: The time complexity of BFS is O(N), where N is the number of words in word_list, as it visits each node once.\n4. Logic with a Small Example:\n   - Suppose begin_word = \"hit\", end_word = \"cog\" and word_list = [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"]. We can transform \"hit\" to \"hot\", then \"hot\" to \"dot\", \"dot\" to \"dog\", \"dog\" to \"cog\". So the shortest transformation sequence is 4 words long.\n\nCODE:\n```python\ndef ladder_length(begin_word, end_word, word_list):\n    if end_word not in word_list or begin_word == end_word:\n        return 0\n    \n    L = len(begin_word)\n    all_combinations = {word[:i] + '*' + word[i+1:] for word in word_list for i in range(L)}\n    queue = collections.deque([[begin_word, 1]])\n    \n    while queue:\n        curr_word, level = queue.popleft()\n        for i in range(L):\n            intermediate_word = curr_word[:i] + '*' + curr_word[i+1:]\n            if intermediate_word in all_combinations:\n                for word in all_combinations[intermediate_word]:\n                    if word == end_word:\n                        return level + 1\n                    queue.append([word, level + 1])\n        # remove the current word to avoid cycle\n        all_combinations.pop(curr_word, None)\n    return 0\n```\nIn this code, we first generate a set of intermediate words for each word in word_list by replaci"
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "unobserved",
+    "puzzle": "two_sum",
+    "difficulty": "easy",
+    "elapsed_seconds": 4.12,
+    "tests_passed": 3,
+    "tests_total": 3,
+    "pass_rate": 1.0,
+    "response_total_tokens": 120,
+    "code_tokens": 40,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "two_sum([2, 7, 11, 15], 9)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ]
+      },
+      {
+        "passed": true,
+        "input": "two_sum([3, 2, 4], 6)",
+        "expected": [
+          1,
+          2
+        ],
+        "actual": [
+          1,
+          2
+        ]
+      },
+      {
+        "passed": true,
+        "input": "two_sum([3, 3], 6)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ]
+      }
+    ],
+    "raw_response_preview": "Here is a simple python function using dictionary (hashmap):\n\n```python\ndef two_sum(nums, target):\n    num_dict = {}  # Initialize an empty dictionary\n    \n    for i, num in enumerate(nums):  \n        complement = target - num  \n        \n        if complement in num_dict:  \n            return [num_dict[complement], i]  \n            \n        num_dict[num] = i  # Add the number and its index to dictionary\n```\nThis function works by iterating over each element of `nums`, calculating the \"complement\" needed to reach the target sum (which is what we're looking for), and checking if this complement exists in our dictionary. If it does, we return a list containing the indices of the current number and its complement from the dictionary. Otherwise, we add the current number and its index to the dictionary and continue iterating.\n"
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "unobserved",
+    "puzzle": "valid_parentheses",
+    "difficulty": "easy",
+    "elapsed_seconds": 5.67,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 185,
+    "code_tokens": 88,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "is_valid(\"()\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"()[]{}\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"(]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"([)]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"{[]}\")",
+        "expected": true,
+        "actual": true
+      }
+    ],
+    "raw_response_preview": "Here is a Python function that uses a stack to solve this problem:\n\n```python\ndef is_valid(s):\n    stack = []\n    dict = {\"]\": \"[\", \"}\": \"{\", \")\": \"(\"}\n    for char in s:\n        if char in dict.values():  # If the character is an opening bracket, push it to the stack\n            stack.append(char)\n        elif char in dict.keys():  # If the character is a closing bracket\n            if not stack or dict[char] != stack.pop():  # Check that there's a matching opening bracket and remove it from the stack\n                return False\n    return not stack  # Return True only if all brackets are matched correctly and the stack is empty\n```\nThis function works by iterating over each character in the string `s`. If the character is an opening bracket, it's pushed onto a stack. If the character is a closing bracket, we check that there's a matching opening bracket at the top of the stack and remove it from the stack. If these conditions are not met, or if there are any unmatched opening brackets left in the stack after iterating over all characters, the function returns `False`. Otherwise, it returns `True`.\n"
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "unobserved",
+    "puzzle": "longest_common_subsequence",
+    "difficulty": "medium",
+    "elapsed_seconds": 7.77,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 215,
+    "code_tokens": 74,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "lcs(\"abcde\", \"ace\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"abc\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"def\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"\", \"abc\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"oxcpqrsvwf\", \"shmtulqrypy\")",
+        "expected": 2,
+        "actual": 2
+      }
+    ],
+    "raw_response_preview": "Here's how you could implement this using dynamic programming in Python:\n\n```python\ndef lcs(text1, text2):\n    m = len(text1)\n    n = len(text2)\n    \n    # Create a table to store lengths of longest common subsequences.  \n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n    \n    # Fill the lookup table in bottom-up manner.\n    for i in range(m+1):\n        for j in range(n+1):\n            if i == 0 or j == 0:\n                dp[i][j] = 0\n            elif text1[i-1] == text2[j-1]: \n                dp[i][j] = dp[i-1][j-1]+1\n            else:\n                dp[i][j] = max(dp[i-1][j], dp[i][j-1])\n    \n    return dp[m][n]\n```\nThis function works by creating a 2D array `dp` where each cell represents the length of the longest common subsequence for substrings of text1 up to position i and text2 up to position j. It then fills this table in bottom-up manner, comparing characters from both strings at each step. If the current pair of characters are equal, it adds 1 to the value diagonally above and left of the current cell (representing the longest common subsequence without considering these two characters). Otherwise, it takes the maximum length found so far in either the row or column above the current one. Finally, it returns the value at the bottom right corner of the table as this represents the length of the longest common subsequence for the entire strings.\n"
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "unobserved",
+    "puzzle": "merge_intervals",
+    "difficulty": "medium",
+    "elapsed_seconds": 5.5,
+    "tests_passed": 4,
+    "tests_total": 4,
+    "pass_rate": 1.0,
+    "response_total_tokens": 172,
+    "code_tokens": 81,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,3],[2,6],[8,10],[15,18]])",
+        "expected": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[4,5]])",
+        "expected": [
+          [
+            1,
+            5
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            5
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[0,4]])",
+        "expected": [
+          [
+            0,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            4
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[2,3]])",
+        "expected": [
+          [
+            1,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            4
+          ]
+        ]
+      }
+    ],
+    "raw_response_preview": "Sure, here is a Python function to solve this problem:\n\n```python\ndef merge_intervals(intervals):\n    # Sorting based on starting times\n    intervals.sort(key=lambda x: x[0])\n    \n    merged = []\n    for interval in intervals:\n        # if the list of merged intervals is empty or if the current\n        # interval does not overlap with the previous, append it\n        if not merged or merged[-1][1] < interval[0]:\n            merged.append(interval)\n        else:\n            # otherwise there is an overlap so we merge the current and previous\n            # intervals by updating the end time of the last added interval\n            merged[-1][1] = max(merged[-1][1], interval[1])\n    \n    return merged\n```\nThis function works by first sorting the input list of intervals based on their start times. It then iterates over this sorted list, checking for overlaps with the previous interval. If an overlap is found, it updates the end time of the last added interval to be the maximum of its current and new end times. Otherwise, it adds the current interval to the merged list. The function finally returns the merged intervals in order of their start times.\n"
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "unobserved",
+    "puzzle": "word_ladder",
+    "difficulty": "hard",
+    "elapsed_seconds": 9.97,
+    "tests_passed": 0,
+    "tests_total": 3,
+    "pass_rate": 0.0,
+    "response_total_tokens": 261,
+    "code_tokens": 123,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"])",
+        "expected": 5,
+        "error": "invalid character '\uff5c' (U+FF5C) (<string>, line 20)"
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\"])",
+        "expected": 0,
+        "error": "invalid character '\uff5c' (U+FF5C) (<string>, line 20)"
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"a\", \"c\", [\"a\",\"b\",\"c\"])",
+        "expected": 2,
+        "error": "invalid character '\uff5c' (U+FF5C) (<string>, line 20)"
+      }
+    ],
+    "raw_response_preview": "Here is a Python function that uses Breadth-First Search (BFS) algorithm to solve this problem. The idea is to create an adjacency list for all possible one-character transformations of each word, then use BFS to find the shortest path from begin_word to end_word.\n\n```python\nfrom collections import deque\n\ndef ladder_length(begin_word, end_word, word_list):\n    wordList = set(word_list) # Convert list to set for O(1) lookup time\n    queue = deque([[begin_word]]) \n    if begin_word == end_word:\n        return 0\n    while queue:\n        path = queue.popleft()\n        word = path[-1]\n        for i in range(len(word)): # For each position of the current word\n            for c in 'abcdefghijklmnopqrstuvwxyz':  # Try all possible characters at this position\n                next_word = word[:i] + c + word[i+1:]  \n                if next_word in wordList:    # If the new word is in our list of words\n                    if next_word == end_word:   # And it's equal to the target word, return its length\n                        return len(path) + 1 \n                    else:   # Otherwise add this word to the queue and remove it from the set\n                        wordList.remove(next_word)\n                        queue.append(list(path) + [next<\uff5cbegin\u2581of\u2581sentence\uff5c>word])\n    return 0\n```\nThis function will return the length of the shortest path from begin_word to end_word, or 0 if no such path exists. The time complexity is O(N*M^2), where N is the number of words in word_list and M is the length of each word. This is because for each word we generate all possible transformations (which are at most M possibilities) and then check whether they exist in our set or not, which takes O(1) time. The space complexity is also O(N*M^2), as in the worst case scenario, every word could have M-1 neighbors.\n"
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "posthoc",
+    "puzzle": "two_sum",
+    "difficulty": "easy",
+    "elapsed_seconds": 8.1,
+    "tests_passed": 3,
+    "tests_total": 3,
+    "pass_rate": 1.0,
+    "response_total_tokens": 261,
+    "code_tokens": 39,
+    "rationale_tokens": 218,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "dict"
+      ],
+      "rationale_mentions": [
+        "hash",
+        "dict",
+        "map",
+        "sort"
+      ],
+      "overlap": [
+        "dict"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "two_sum([2, 7, 11, 15], 9)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ]
+      },
+      {
+        "passed": true,
+        "input": "two_sum([3, 2, 4], 6)",
+        "expected": [
+          1,
+          2
+        ],
+        "actual": [
+          1,
+          2
+        ]
+      },
+      {
+        "passed": true,
+        "input": "two_sum([3, 3], 6)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ]
+      }
+    ],
+    "raw_response_preview": "CODE:\n```python\ndef two_sum(nums, target):\n    num_dict = {}  # Dictionary to store number-index pairs\n    \n    for i, num in enumerate(nums):\n        complement = target - num\n        \n        if complement in num_dict:  \n            return [num_dict[complement], i]\n            \n        num_dict[num] = i  # Store the number and its index\n```\nRATIONALE:\nThis function uses a dictionary to store each number from the input list along with its index. For every new number, it calculates the complement needed to reach the target sum (i.e., `target - num`). If this complement is already in the dictionary, we have found our pair of numbers and return their indices. Otherwise, we add the current number and its index to the dictionary for future use.\n\nThe time complexity of this function is O(n), where n is the length of the input list `nums`. This is because we perform a constant-time operation (dictionary lookup) for each element in the list once, resulting in linear time complexity. \n\nThis solution assumes that exactly one pair of numbers adds up to the target and there are no duplicate elements in the array. If these assumptions do not hold, additional checks or modifications would be needed. For example, if we allow duplicates, a simple modification is to sort the input list first before processing it. \n\nFor small inputs, this function works well. However, for large lists of numbers, there are more efficient algorithms available that can solve this problem in linear time (e.g., using hash maps or two-pointers). These methods would be more complex to implement and understand, but they could potentially provide a significant speedup on larger inputs.\n"
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "posthoc",
+    "puzzle": "valid_parentheses",
+    "difficulty": "easy",
+    "elapsed_seconds": 10.29,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 305,
+    "code_tokens": 39,
+    "rationale_tokens": 245,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "map",
+        "stack"
+      ],
+      "rationale_mentions": [
+        "dict",
+        "map",
+        "stack"
+      ],
+      "overlap": [
+        "map",
+        "stack"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "is_valid(\"()\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"()[]{}\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"(]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"([)]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"{[]}\")",
+        "expected": true,
+        "actual": true
+      }
+    ],
+    "raw_response_preview": "CODE:\n```python\ndef is_valid(s):\n    stack = []\n    mapping = {\")\": \"(\", \"}\": \"{\", \"]\": \"[\"}\n    \n    for char in s:\n        if char in mapping:\n            top_element = stack.pop() if stack else '#'\n            if mapping[char] != top_element:\n                return False\n        else:\n            stack.append(char)\n            \n    return not stack\n```\nRATIONALE:\nThis function uses a concept called \"stack\" to solve the problem. A stack is a data structure that follows LIFO (Last In First Out) principle, which means the last element inserted into the stack will be the first one to come out of it. This property makes it perfect for solving this kind of problems where we need to check if brackets are balanced and in correct order.\n\nThe function iterates over each character in the string `s`. If the character is a closing bracket, it pops an element from the stack (if there's any). It then compares the popped element with the current character using the dictionary mapping. If they don't match or if the stack is empty when trying to pop, it returns False indicating that the string is not valid.\n\nIf the character is not a closing bracket, it pushes it onto the stack. After going through all characters in `s`, if there are any elements left on the stack (which means some opening brackets were never closed), it returns False. If no such case happened, then the string is valid and function returns True.\n\nThe time complexity of this solution is O(n) where n is the length of the string `s` because we're going through each character in the string once. The space complexity is also O(n) due to the usage of stack data structure. \n\nLet's test it with a few examples:\n```python\nprint(is_valid(\"()\")) # True\nprint(is_valid(\"()[]{}\")) # True\nprint(is_valid(\"(]\")) # False\nprint(is_valid(\"([)]\")) # False\nprint(is_valid(\"{[]}\")) # True\n```\nIn all these examples, the function returns correct results.\n"
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "posthoc",
+    "puzzle": "longest_common_subsequence",
+    "difficulty": "medium",
+    "elapsed_seconds": 10.59,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 283,
+    "code_tokens": 79,
+    "rationale_tokens": 200,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "dp"
+      ],
+      "rationale_mentions": [
+        "dynamic programming",
+        "dp"
+      ],
+      "overlap": [
+        "dp"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "lcs(\"abcde\", \"ace\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"abc\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"def\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"\", \"abc\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"oxcpqrsvwf\", \"shmtulqrypy\")",
+        "expected": 2,
+        "actual": 2
+      }
+    ],
+    "raw_response_preview": "CODE:\n```python\ndef lcs(text1, text2):\n    m = len(text1)\n    n = len(text2)\n    \n    # Create a table to store lengths of longest common suffixes of substrings\n    dp = [[0] * (n + 1) for _ in range(m + 1)]\n    \n    # Fill the lookup table in bottom up manner\n    for i in range(m+1):\n        for j in range(n+1):\n            if i == 0 or j == 0:\n                dp[i][j] = 0\n            elif text1[i-1] == text2[j-1]: \n                dp[i][j] = dp[i-1][j-1] + 1\n            else:\n                dp[i][j] = max(dp[i-1][j], dp[i][j-1])\n    \n    return dp[m][n]\n```\nRATIONALE:\nThis problem can be solved using dynamic programming. The idea is to create a 2D table where each cell represents the length of longest common subsequence for substrings `text1[:i]` and `text2[:j]`, where `i` and `j` are lengths of these strings respectively.\n\nThe base case for this dynamic programming solution is when either one of the string's length is 0 (empty string). In such cases, there can be no common subsequence so we return 0.\n\nIf characters at current positions in both strings match, then we increment the count by 1 from the diagonal cell `dp[i-1][j-1]`. This represents that one more character is part of longest common subsequence.\n\nIf characters don't match, we take maximum length from either top or left cell and store it in current position. This is because we are considering two options - either the current character of first string can be a part of LCS or not, same goes for second string. We choose the option which gives us longest common subsequence.\n\nThe time complexity of this solution is O(m*n) where m and n are lengths of input strings respectively as we fill up a 2D table in bottom-up manner. The space complexity is also O(m*n).\n"
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "posthoc",
+    "puzzle": "merge_intervals",
+    "difficulty": "medium",
+    "elapsed_seconds": 8.9,
+    "tests_passed": 4,
+    "tests_total": 4,
+    "pass_rate": 1.0,
+    "response_total_tokens": 289,
+    "code_tokens": 72,
+    "rationale_tokens": 213,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "sort"
+      ],
+      "rationale_mentions": [
+        "sort"
+      ],
+      "overlap": [
+        "sort"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,3],[2,6],[8,10],[15,18]])",
+        "expected": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[4,5]])",
+        "expected": [
+          [
+            1,
+            5
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            5
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[0,4]])",
+        "expected": [
+          [
+            0,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            4
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[2,3]])",
+        "expected": [
+          [
+            1,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            4
+          ]
+        ]
+      }
+    ],
+    "raw_response_preview": "CODE:\n```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n        \n    # Sorting based on starting times of each interval\n    intervals.sort(key=lambda x: x[0])\n    \n    merged = [intervals[0]]  # Initialize the first interval as our result\n    \n    for current in intervals[1:]:  \n        if current[0] <= merged[-1][1]:  # If there is an overlap\n            merged[-1][1] = max(merged[-1][1], current[1])  # Merge the intervals by updating end time of last interval\n        else:\n            merged.append(current)   # Else, append the new interval to our result\n    return merged\n```\nRATIONALE:\nThe problem is asking us to merge overlapping intervals and return a list of non-overlapping intervals that cover all input intervals. The first step in solving this problem is sorting the given intervals based on their start times. This way, we ensure that all intervals are sorted by their starting time which will help us identify any overlap easily.\n\nWe then initialize our result with the first interval from the sorted list of intervals. We iterate over the remaining intervals and for each one, if its start time is less than or equal to the end time of the last interval in our merged list, we merge these two intervals by updating the end time of the last interval in our merged list to be maximum between current interval's end time and existing end time.\n\nIf there is no overlap, we simply append this new interval to our result. Finally, we return the merged intervals sorted by their start times. \n\nThe time complexity for sorting the intervals is O(n log n) where n is the number of intervals. The subsequent loop runs in linear time i.e., O(n). So, overall time complexity will be O(n log n). The space complexity is also O(n), as we are storing all the intervals in our result list.\n"
+  },
+  {
+    "model": "deepseek-coder:6.7b-instruct",
+    "condition": "posthoc",
+    "puzzle": "word_ladder",
+    "difficulty": "hard",
+    "elapsed_seconds": 11.36,
+    "tests_passed": 0,
+    "tests_total": 3,
+    "pass_rate": 0.0,
+    "response_total_tokens": 334,
+    "code_tokens": 92,
+    "rationale_tokens": 178,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "queue"
+      ],
+      "rationale_mentions": [
+        "dict",
+        "queue",
+        "bfs"
+      ],
+      "overlap": [
+        "queue"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"])",
+        "expected": 5,
+        "error": "invalid character '\uff5c' (U+FF5C) (<string>, line 17)"
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\"])",
+        "expected": 0,
+        "error": "invalid character '\uff5c' (U+FF5C) (<string>, line 17)"
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"a\", \"c\", [\"a\",\"b\",\"c\"])",
+        "expected": 2,
+        "error": "invalid character '\uff5c' (U+FF5C) (<string>, line 17)"
+      }
+    ],
+    "raw_response_preview": "Here is an implementation of this problem using Breadth-First Search (BFS) algorithm. The idea here is to use a queue and perform level order traversal on the graph formed by changing one character at a time from each word in the list. We keep track of the number of transformations made so far, which will be our shortest path length.\n\nCODE:\n```python\nfrom collections import deque\ndef ladder_length(begin_word, end_word, word_list):\n    wordList = set(word_list) # Convert list to a set for O(1) lookup time\n    queue = deque([[begin_word]]) \n    seen = {begin_word: 1}  \n    while queue:\n        path = queue.popleft()\n        word = path[-1]\n        if word == end_word:\n            return len(path) # Return the length of the shortest path found\n        for i in range(len(word)): \n            for c in 'abcdefghijklmnopqrstuvwxyz':  \n                next_word = word[:i] + c + word[i+1:]  \n                if next_word in wordList and next_word not in seen:   \n                    seen[next_word] = 1  # Mark as visited\n                    queue.append(list(path) + [next<\uff5cbegin\u2581of\u2581sentence\uff5c>word])  # Add to the path\n    return 0\n```\nRATIONALE:\nThis problem is a variant of word ladder problem, where we are given two words and a list of words, our task is to find the shortest transformation sequence from begin_word to end_word by changing only one letter at a time. We use BFS here because it guarantees the shortest path in an unweighted graph (each step has equal cost).\n\nWe start with `begin_word` and for each word, we generate all possible words that differ by exactly 1 character. If such a new word exists in our list of words, we add it to the queue. We keep track of visited nodes using a dictionary `seen`. The BFS traversal continues until we find the `end_word` or exhaust all possibilities.\n\nThe time complexity is O(N * M^2), where N is the number of words in wordList and M is the length of each word, because for every word, we generate all possible words that differ by exa"
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "observed",
+    "puzzle": "two_sum",
+    "difficulty": "easy",
+    "elapsed_seconds": 10.08,
+    "tests_passed": 0,
+    "tests_total": 3,
+    "pass_rate": 0.0,
+    "response_total_tokens": 428,
+    "code_tokens": 186,
+    "rationale_tokens": 239,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "dict"
+      ],
+      "rationale_mentions": [
+        "hash",
+        "dict"
+      ],
+      "overlap": [
+        "dict"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "two_sum([2, 7, 11, 15], 9)",
+        "expected": [
+          0,
+          1
+        ],
+        "error": "name 'num_tos' is not defined"
+      },
+      {
+        "passed": false,
+        "input": "two_sum([3, 2, 4], 6)",
+        "expected": [
+          1,
+          2
+        ],
+        "error": "name 'num_tos' is not defined"
+      },
+      {
+        "passed": false,
+        "input": "two_sum([3, 3], 6)",
+        "expected": [
+          0,
+          1
+        ],
+        "error": "name 'num_tos' is not defined"
+      }
+    ],
+    "raw_response_preview": "RATIONALE:\nTo solve this problem efficiently, I will employ a hash table (dictionary in Python) for its constant-time lookups which is essential when dealing with large datasets or time constraints. The algorithmic approach here involves iterating through each number and checking if the complement that would sum up to the target exists within our list of numbers already seen so far by subtracting the current value from the target. This method ensures we do not use an element more than once, as required in this problem statement.\n\nThe edge cases I am considering include: \n- Ensuring there are exactly two indices that sum up to the target (guaranteed here).\n- Handling negative numbers and zeroes within our list of integers since they can also form valid pairs with positive or other negatives/zero values for a given target.\n- Avoiding using an element more than once, which is critical as per problem constraints. \n\nThe time complexity will be O(n), where n is the number of elements in our list `nums`. This efficiency comes from only needing to traverse through the list once and performing constant-time lookups for complements within a hash table during each iteration, which does not depend on the size of the input.\n\nHere's how I would implement this logic:\n```python\ndef two_sum(nums, target):\n    # Create a dictionary to store value -> index pairs we have seen so far for constant-time lookups later in our iteration loop below.\n    num_to_index = {}\n    \n    # Iterate through the list of numbers with their indices using enumerate() function which provides both item and its corresponding index at each step.\n    for i, num in enumerate(nums):\n        complement = target - num  # Calculate what number we need to find that would sum up to our target when added to current 'num'.\n        \n        if complement in num_to_index:\n            # If the complement exists within our dictionary of seen numbers, return their indices. This is because they add up to the target and are un"
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "observed",
+    "puzzle": "valid_parentheses",
+    "difficulty": "easy",
+    "elapsed_seconds": 7.98,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 438,
+    "code_tokens": 193,
+    "rationale_tokens": 241,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "dict",
+        "map",
+        "stack"
+      ],
+      "rationale_mentions": [
+        "stack"
+      ],
+      "overlap": [
+        "stack"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "is_valid(\"()\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"()[]{}\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"(]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"([)]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"{[]}\")",
+        "expected": true,
+        "actual": true
+      }
+    ],
+    "raw_response_preview": "RATIONALE:\nTo solve this problem, I will use a stack data structure because it perfectly suits scenarios where we need to keep track of elements with respect to their opening sequence (i.e., last-in first-out). The algorithm works by iterating through the string and pushing any open bracket onto the stack while popping for matching closing brackets, ensuring that they close in pairs as per our problem statement.\n\nThe edge cases I'm considering include: 1) an empty input string; this should return True since there are no characters to violate the rules of pairing and order. Another case is a non-empty string with only closing brackets, which also returns False because it doesn\u2019t have any opening bracket for matching or proper sequencing.\n\nThe time complexity will be O(n), where n represents the length of the input string since we're going through each character exactly once in our iteration and stack operations (push/pop). The space complexity is also O(n) because, in the worst case scenario, all characters are opening brackets that need to be pushed onto the stack.\n\nHere\u2019s a small example: For an input string \"([]){}\" which should return True as it's valid since every open bracket has its corresponding closing one and they close in proper order too. Conversely for \"{)}\" or \"(]\", both of these would be invalid, returning False because the brackets are not properly closed by their respective pairs nor do they follow a correct sequence to begin with.\n\nCODE:\n```python\ndef is_valid(s):\n    stack = []\n    \n    # Dictionary mapping closing bracket as key and corresponding opening one as value for easy lookup \n    matching_brackets = {')': '(', ']': '[', '}': '{'}  \n    \n    for char in s:\n        if char in ['(','{','[']:\n            stack.append(char) # push onto the stack when an opening bracket is encountered \n        elif len(stack) != 0 and matching_brackets[char] == stack[-1]:  \n            stack.pop() # pop from the stack if a closing bracket matches with top of the"
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "observed",
+    "puzzle": "longest_common_subsequence",
+    "difficulty": "medium",
+    "elapsed_seconds": 9.77,
+    "tests_passed": 4,
+    "tests_total": 5,
+    "pass_rate": 0.8,
+    "response_total_tokens": 446,
+    "code_tokens": 76,
+    "rationale_tokens": 335,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "dynamic programming"
+      ],
+      "rationale_mentions": [
+        "dynamic programming"
+      ],
+      "overlap": [
+        "dynamic programming"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "lcs(\"abcde\", \"ace\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"abc\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"def\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": false,
+        "input": "lcs(\"\", \"abc\")",
+        "expected": 0,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"oxcpqrsvwf\", \"shmtulqrypy\")",
+        "expected": 2,
+        "actual": 2
+      }
+    ],
+    "raw_response_preview": "RATIONALE:\nTo solve this problem, I will use dynamic programming to find the Longest Common Subsequence (LCS) between `text1` and `text2`. The LCS algorithm works well for strings because it breaks down a complex subproblem into simpler overlapping parts. Here's my approach in detail:\n\nAlgorithm Used: Dynamic Programming with 2D Array to store intermediate results, ensuring that we do not recompute the same values multiple times and thus saving time complexity. This is an optimal solution for LCS problems as it guarantees finding the shortest subsequence length without missing any possible subsequences within `text1` and `text2`.\n\nEdge Cases Considered: \n- Both input strings are empty, in which case we return a length of zero since there's no commonality.\n- One or both inputs contain only whitespace characters; these cases should be treated as regular string comparisons without affecting the LCS calculation because they do not contribute to any meaningful subsequence between texts with actual content. \n- Input strings are identical, which is a trivial case where we return their length immediately since every character forms part of an LCS by itself or in combination.\n\nTime Complexity: The time complexity for this algorithm will be O(m*n), where m and n represent the lengths of `text1` and `text2`, respectively, because each cell within our 2D array represents a subproblem that is solved once with respect to its position (i, j) in both strings.\n\nExample Walkthrough: Let's consider an example using \"ABCD\" for text1 and \"ACDF\" for text2. We create a matrix where the first row and column represent prefixes of `text1` and `text2`, respectively. The cell at position (4,3) represents whether 'D' is part of LCS or not; since it isn\u2019t in both strings after index 2 but before index 3 for text2, we fill the matrix with zeros up to that point:\n```\nA B C D\n0 0 0 0 0\nA A A A 0\nB B B B 0\nC C C C 0\nD D D D 1\n```\nThe final answer is found at cell (4,3), which gives us the length of "
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "observed",
+    "puzzle": "merge_intervals",
+    "difficulty": "medium",
+    "elapsed_seconds": 11.92,
+    "tests_passed": 4,
+    "tests_total": 4,
+    "pass_rate": 1.0,
+    "response_total_tokens": 621,
+    "code_tokens": 207,
+    "rationale_tokens": 410,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "sort"
+      ],
+      "rationale_mentions": [
+        "sort",
+        "greedy"
+      ],
+      "overlap": [
+        "sort"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,3],[2,6],[8,10],[15,18]])",
+        "expected": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[4,5]])",
+        "expected": [
+          [
+            1,
+            5
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            5
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[0,4]])",
+        "expected": [
+          [
+            0,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            0,
+            4
+          ]
+        ]
+      },
+      {
+        "passed": true,
+        "input": "merge_intervals([[1,4],[2,3]])",
+        "expected": [
+          [
+            1,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            4
+          ]
+        ]
+      }
+    ],
+    "raw_response_preview": "RATIONALE:\nTo solve this problem efficiently, I will use an algorithmic approach where we sort the given intervals based on their starting times and then iterate through them to merge overlapping ones. This is a classic greedy strategy that ensures optimal substructure by always choosing the interval with the earliest start time for merging when possible.\n\n1. Sorting: The first step involves sorting all input intervals in ascending order based on their starting times, which will help us to easily identify overlapping intervals as we iterate through them. This is a necessary preprocessing step that ensures our algorithm works correctly and efficiently by reducing the problem size at each iteration when possible.\n   \n2. Edge Cases: I am considering edge cases such as an empty list of intervals, where my function should return an empty result immediately without further processing; also handling scenarios with single-intervals or overlapping pairs that need to be merged into a larger interval seamlessly within the main loop structure. Additionally, if all input intervals are disjoint (non-overlapping), they will already form our desired output after sorting and merging logic is applied once through them without further changes needed in this case as well.\n   \n3. Time Complexity: The time complexity of my approach primarily depends on the sort operation which has a best, average, and worst-case scenario of O(n log n), where 'n' represents the number of intervals provided to our function `merge_intervals`. Since sorting is typically more expensive than iterating through elements in most scenarios (especially when dealing with merging operations that are linear time complexity or better) this will be my primary bottleneck. The subsequent merge operation, which involves a single pass over the sorted intervals and constant-time lookups for potential interval overlap checks should not significantly add to our overall runtime beyond O(n log n).\n   \n4. Logic Walkthrough: Let's"
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "observed",
+    "puzzle": "word_ladder",
+    "difficulty": "hard",
+    "elapsed_seconds": 13.0,
+    "tests_passed": 0,
+    "tests_total": 3,
+    "pass_rate": 0.0,
+    "response_total_tokens": 591,
+    "code_tokens": 174,
+    "rationale_tokens": 413,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "queue",
+        "bfs"
+      ],
+      "rationale_mentions": [
+        "queue",
+        "bfs",
+        "dp"
+      ],
+      "overlap": [
+        "queue",
+        "bfs"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"])",
+        "expected": 5,
+        "error": "unmatched ')' (<string>, line 36)"
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\"])",
+        "expected": 0,
+        "error": "unmatched ')' (<string>, line 36)"
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"a\", \"c\", [\"a\",\"b\",\"c\"])",
+        "expected": 2,
+        "error": "unmatched ')' (<string>, line 36)"
+      }
+    ],
+    "raw_response_preview": "RATIONALE:\nTo solve this problem efficiently, I will use Breadth-First Search (BFS) because it is a shortest path algorithm that guarantees finding the minimum number of transformations if one exists due to its nature of exploring all possible paths in increasing order of their length. The reason for using BFS over other algorithms like Dijkstra's or A* here, which are also used for similar problems but with different heuristics and often more complex implementations when dealing with graphs without a clear priority queue mechanism (like Python\u2019s heapq), is that we do not have any additional information to prioritize one path over another other than the length of each transformation sequence.\n\nEdge cases I am considering include: \n- The `begin_word` and `end_word` might be identical, in which case there's no need for transformations (and thus a return value should reflect this).\n- If either word is not present within the provided list of words (`word_list`), it would mean that transformation sequence cannot exist. In such cases, I will immediately return 0 without further processing since BFS won\u2019t find any path to transform `begin_word` into `end_word`.\n- The function should handle situations where no transformations are possible (i.e., when the word list does not contain a valid sequence of words that can lead from begin_word to end_word). In this case, BFS will explore all paths and eventually return 0 once it exhausts them without finding an endpoint in `end_word`.\n- The function should also handle cases where there are multiple shortest transformation sequences. While the problem statement asks for just one sequence length (the minimum), I'll implement a way to find this by keeping track of visited words and their predecessors, which allows us to reconstruct any path once we reach `end_word`.\n- The time complexity will be O(N + M) where N is the number of nodes in our graph representation (words from word_list), and M is the maximum possible distance between be"
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "unobserved",
+    "puzzle": "two_sum",
+    "difficulty": "easy",
+    "elapsed_seconds": 1.23,
+    "tests_passed": 0,
+    "tests_total": 3,
+    "pass_rate": 0.0,
+    "response_total_tokens": 24,
+    "code_tokens": 22,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "two_sum([2, 7, 11, 15], 9)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          15,
+          1,
+          0
+        ]
+      },
+      {
+        "passed": false,
+        "input": "two_sum([3, 2, 4], 6)",
+        "expected": [
+          1,
+          2
+        ],
+        "actual": [
+          1,
+          4,
+          0,
+          1
+        ]
+      },
+      {
+        "passed": false,
+        "input": "two_sum([3, 3], 6)",
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          3,
+          0,
+          0
+        ]
+      }
+    ],
+    "raw_response_preview": "```python\ndef two_sum(nums, target):\n    for i in range(len(nums)):\n        complement = target - nums[i]\n        if complement in nums[i+1:]:\n            return [i, nums[i+1:][(complement-target)//(2*nums[i])]] + [(complement-target)%len(nums[i+1:]), i]\n```"
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "unobserved",
+    "puzzle": "valid_parentheses",
+    "difficulty": "easy",
+    "elapsed_seconds": 1.35,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 43,
+    "code_tokens": 41,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "is_valid(\"()\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"()[]{}\")",
+        "expected": true,
+        "actual": true
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"(]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"([)]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"{[]}\")",
+        "expected": true,
+        "actual": true
+      }
+    ],
+    "raw_response_preview": "```python\ndef is_valid(s):\n    stack = []\n    mapping = {')': '(', '}': '{', ']': '['}\n    \n    for char in s:\n        if char in mapping.values():\n            stack.append(char)\n        elif char in mapping.keys():\n            if not stack or mapping[char] != stack.pop():\n                return False\n        else:\n            continue\n            \n    return len(stack) == 0\n```"
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "unobserved",
+    "puzzle": "longest_common_subsequence",
+    "difficulty": "medium",
+    "elapsed_seconds": 2.28,
+    "tests_passed": 5,
+    "tests_total": 5,
+    "pass_rate": 1.0,
+    "response_total_tokens": 59,
+    "code_tokens": 57,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": true,
+        "input": "lcs(\"abcde\", \"ace\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"abc\")",
+        "expected": 3,
+        "actual": 3
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"abc\", \"def\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"\", \"abc\")",
+        "expected": 0,
+        "actual": 0
+      },
+      {
+        "passed": true,
+        "input": "lcs(\"oxcpqrsvwf\", \"shmtulqrypy\")",
+        "expected": 2,
+        "actual": 2
+      }
+    ],
+    "raw_response_preview": "```python\ndef lcs(text1, text2):\n    m = len(text1)\n    n = len(text2)\n    \n    L = [[0] * (n + 1) for _ in range(m + 1)]\n    \n    for i in range(m+1):\n        for j in range(n+1):\n            if i == 0 or j == 0:\n                L[i][j] = 0\n            elif text1[i-1] == text2[j-1]:\n                L[i][j] = L[i-1][j-1] + 1\n            else:\n                L[i][j] = max(L[i-1][j], L[i][j-1])\n    \n    return L[m][n]\n```"
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "unobserved",
+    "puzzle": "merge_intervals",
+    "difficulty": "medium",
+    "elapsed_seconds": 1.39,
+    "tests_passed": 0,
+    "tests_total": 4,
+    "pass_rate": 0.0,
+    "response_total_tokens": 34,
+    "code_tokens": 32,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "merge_intervals([[1,3],[2,6],[8,10],[15,18]])",
+        "expected": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ],
+        "actual": [
+          [
+            2,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ]
+      },
+      {
+        "passed": false,
+        "input": "merge_intervals([[1,4],[4,5]])",
+        "expected": [
+          [
+            1,
+            5
+          ]
+        ],
+        "actual": [
+          [
+            4,
+            5
+          ]
+        ]
+      },
+      {
+        "passed": false,
+        "input": "merge_intervals([[1,4],[0,4]])",
+        "expected": [
+          [
+            0,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            1,
+            4
+          ]
+        ]
+      },
+      {
+        "passed": false,
+        "input": "merge_intervals([[1,4],[2,3]])",
+        "expected": [
+          [
+            1,
+            4
+          ]
+        ],
+        "actual": [
+          [
+            2,
+            3
+          ]
+        ]
+      }
+    ],
+    "raw_response_preview": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    intervals.sort(key=lambda x: x[0])\n    merged = [intervals[0]]\n    for current in intervals[1:]:\n        last = merged[-1]\n        if current[0] <= last[1]:\n            last[1] = max(last[1], current[1])\n            merged.pop()\n        merged.append(current)\n    return merged\n```"
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "unobserved",
+    "puzzle": "word_ladder",
+    "difficulty": "hard",
+    "elapsed_seconds": 2.5,
+    "tests_passed": 0,
+    "tests_total": 3,
+    "pass_rate": 0.0,
+    "response_total_tokens": 65,
+    "code_tokens": 63,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": false,
+    "rationale_compliance": true,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"])",
+        "expected": 5,
+        "error": "invalid syntax. Perhaps you forgot a comma? (<string>, line 21)"
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\"])",
+        "expected": 0,
+        "error": "invalid syntax. Perhaps you forgot a comma? (<string>, line 21)"
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"a\", \"c\", [\"a\",\"b\",\"c\"])",
+        "expected": 2,
+        "error": "invalid syntax. Perhaps you forgot a comma? (<string>, line 21)"
+      }
+    ],
+    "raw_response_preview": "```python\nfrom collections import deque\ndef ladder_length(begin_word, end_word, word_list):\n    queue = deque([[begin_word]])\n    seen = {begin_word}\n    \n    while queue:\n        words = set(queue)\n        queue.clear()\n        \n        for word in words:\n            if word == end_word:\n                return len(seen) + 1\n            \n            for i in range(len(word)):\n                for c in 'abcdefghijklmnopqrstuvwxyz':\n                    next_word = word[:i] + c + word[i+1:]\n                    \n                    if next_word in word_list and next_word not in seen:\n                        queue.append(seen | {next_word})\n                        seen.add(next end_word)\n    return 0\n```"
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "posthoc",
+    "puzzle": "two_sum",
+    "difficulty": "easy",
+    "elapsed_seconds": 10.57,
+    "tests_passed": 0,
+    "tests_total": 3,
+    "pass_rate": 0.0,
+    "response_total_tokens": 573,
+    "code_tokens": 28,
+    "rationale_tokens": 542,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [],
+      "rationale_mentions": [
+        "hash",
+        "dict"
+      ],
+      "overlap": [],
+      "consistent": false
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "two_sum([2, 7, 11, 15], 9)",
+        "expected": [
+          0,
+          1
+        ],
+        "error": "invalid syntax (<string>, line 6)"
+      },
+      {
+        "passed": false,
+        "input": "two_sum([3, 2, 4], 6)",
+        "expected": [
+          1,
+          2
+        ],
+        "error": "invalid syntax (<string>, line 6)"
+      },
+      {
+        "passed": false,
+        "input": "two_sum([3, 3], 6)",
+        "expected": [
+          0,
+          1
+        ],
+        "error": "invalid syntax (<string>, line 6)"
+      }
+    ],
+    "raw_response_preview": "```python\ndef two_sum(nums, target):\n    num_to_index = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in num_to end=True:\n            return [i, num_to_index[complement]]\n        else:\n            num_to_index[num] = i\n```\nRATIONALE: \nI used a hash table (dictionary) to solve this problem. The idea is that for each number in the list, I calculate its complement by subtracting it from the target value and check if this complement exists as a key in my dictionary `num_to_index`. If yes, then we have found our two numbers whose sum equals the target; hence their indices are returned.\n\nThe time complexity of this solution is O(n), where n represents the length of the input list 'nums'. This is because each element needs to be processed once in a single pass through the data structure (the for loop). The space complexity, on the other hand, also depends upon the size of our dictionary `num_to_index`, which can store up to n elements. Therefore, it's O(n) as well.\n\nLet me illustrate this with an example: Suppose we have nums = [2, 7, 11, 15] and target=9. The function will iterate through the list in order of appearance (i.e., index starts from zero). For each number it encounters, say `num`, it calculates its complement (`target - num`) which is then checked against our dictionary keys:\n- At first iteration with 2 as 'num', we calculate the complement to be 7 and since this key does not exist in our dictionary yet (as we haven't encountered a number that equals or complements 7), it adds an entry into `num_to_index` where num is the key, and i (current index) being its value.\n- Next iteration with 'num' as 7 gives us complement of zero which does not exist in our dictionary yet so we add another entry for this number too. Now both indices are stored against their respective numbers: {2:0, 7:1}.\n- When it encounters the third element (i=2), its 'num' is 11 and complement becomes -2 which does not exist in our dictionary yet "
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "posthoc",
+    "puzzle": "valid_parentheses",
+    "difficulty": "easy",
+    "elapsed_seconds": 10.0,
+    "tests_passed": 2,
+    "tests_total": 5,
+    "pass_rate": 0.4,
+    "response_total_tokens": 500,
+    "code_tokens": 66,
+    "rationale_tokens": 431,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "map",
+        "stack"
+      ],
+      "rationale_mentions": [
+        "stack"
+      ],
+      "overlap": [
+        "stack"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "is_valid(\"()\")",
+        "expected": true,
+        "actual": false
+      },
+      {
+        "passed": false,
+        "input": "is_valid(\"()[]{}\")",
+        "expected": true,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"(]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": true,
+        "input": "is_valid(\"([)]\")",
+        "expected": false,
+        "actual": false
+      },
+      {
+        "passed": false,
+        "input": "is_valid(\"{[]}\")",
+        "expected": true,
+        "actual": false
+      }
+    ],
+    "raw_response_preview": "```python\ndef is_valid(s):\n    stack = []\n    mapping = {')': '(', '}': '{',']':'['}\n    \n    for char in s:\n        if char not in mapping.values() and char not in mapping.keys():\n            continue\n            \n        if char in mapping.values():\n            if stack and (stack[-1] == mapping[char]):\n                stack.pop()\n            else:\n                return False\n                \n        elif char in mapping.keys():\n            if not stack or stack[-1] != mapping[char]:\n                return False\n            \n        else:  # open bracket, push to the stack\n            stack.append(char)\n    \n    return len(stack) == 0\n```\nRATIONALE:\nTo solve this problem, I used a simple yet effective algorithm called \"Stack-Based Parentheses Validation\". The idea is that for every opening bracket encountered in the string (i.e., '(', '{', or '['), we push it onto our stack and keep track of its corresponding closing bracket ('\\)', '}', or ']'). Whenever a closing bracket appears, I check if the topmost element on the stack matches with this closing bracket's expected opening counterpart. If not, then the string is invalid as per problem statement (i.e., open brackets are closed by different types).\n\nI also considered edge cases where an empty or non-bracket character strings might be passed to our function. In such scenarios, I simply return `True` because they don't violate any rules of bracket pairing and order as per the problem statement (i.e., open brackets are closed by same type).\n\nThe time complexity for this algorithm is O(n), where n represents the length of our input string 's'. This comes from having to traverse through each character in the given string exactly once, with constant-time operations performed on them such as push and pop. \n\nLet's walkthrough a small example: Consider `is_valid('([]){}')`. Here are the steps that would be followed by our function for this input -\n1) '[' is pushed onto stack -> ['[']\n2) '(' encountered, it gets pushed to"
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "posthoc",
+    "puzzle": "longest_common_subsequence",
+    "difficulty": "medium",
+    "elapsed_seconds": 2.25,
+    "tests_passed": 0,
+    "tests_total": 5,
+    "pass_rate": 0.0,
+    "response_total_tokens": 69,
+    "code_tokens": 67,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": true,
+    "rationale_compliance": false,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "lcs(\"abcde\", \"ace\")",
+        "expected": 3,
+        "error": "expected an indented block after 'if' statement on line 8 (<string>, line 9)"
+      },
+      {
+        "passed": false,
+        "input": "lcs(\"abc\", \"abc\")",
+        "expected": 3,
+        "error": "expected an indented block after 'if' statement on line 8 (<string>, line 9)"
+      },
+      {
+        "passed": false,
+        "input": "lcs(\"abc\", \"def\")",
+        "expected": 0,
+        "error": "expected an indented block after 'if' statement on line 8 (<string>, line 9)"
+      },
+      {
+        "passed": false,
+        "input": "lcs(\"\", \"abc\")",
+        "expected": 0,
+        "error": "expected an indented block after 'if' statement on line 8 (<string>, line 9)"
+      },
+      {
+        "passed": false,
+        "input": "lcs(\"oxcpqrsvwf\", \"shmtulqrypy\")",
+        "expected": 2,
+        "error": "expected an indented block after 'if' statement on line 8 (<string>, line 9)"
+      }
+    ],
+    "raw_response_preview": "```python\ndef lcs(text1, text2):\n    lengths = [[0 for j in range(len(text2)+1)] for i in range(len(text1)+1)]\n    \n    # Build the length matrix from top to bottom and left to right.\n    for i, x in enumerate(text1):\n        for j, y in enumerate(text2):\n            if x == y:\nbonus_points = 50\n                lengths[i+1][j+1] = lengths[i][j] + 1\n            else:\n                lengths[i+1][j+1] = max(lengths[i+1][j], lengths[i][j+1])\n    \n    # Read the result from the bottom right of the matrix.\n    return lengths[-1][-1]\n```"
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "posthoc",
+    "puzzle": "merge_intervals",
+    "difficulty": "medium",
+    "elapsed_seconds": 2.08,
+    "tests_passed": 0,
+    "tests_total": 4,
+    "pass_rate": 0.0,
+    "response_total_tokens": 80,
+    "code_tokens": 78,
+    "rationale_tokens": 0,
+    "rationale_present": false,
+    "rationale_required": true,
+    "rationale_compliance": false,
+    "consistency_check": null,
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "merge_intervals([[1,3],[2,6],[8,10],[15,18]])",
+        "expected": [
+          [
+            1,
+            6
+          ],
+          [
+            8,
+            10
+          ],
+          [
+            15,
+            18
+          ]
+        ],
+        "error": "invalid syntax. Perhaps you forgot a comma? (<string>, line 16)"
+      },
+      {
+        "passed": false,
+        "input": "merge_intervals([[1,4],[4,5]])",
+        "expected": [
+          [
+            1,
+            5
+          ]
+        ],
+        "error": "invalid syntax. Perhaps you forgot a comma? (<string>, line 16)"
+      },
+      {
+        "passed": false,
+        "input": "merge_intervals([[1,4],[0,4]])",
+        "expected": [
+          [
+            0,
+            4
+          ]
+        ],
+        "error": "invalid syntax. Perhaps you forgot a comma? (<string>, line 16)"
+      },
+      {
+        "passed": false,
+        "input": "merge_intervals([[1,4],[2,3]])",
+        "expected": [
+          [
+            1,
+            4
+          ]
+        ],
+        "error": "invalid syntax. Perhaps you forgot a comma? (<string>, line 16)"
+      }
+    ],
+    "raw_response_preview": "```python\ndef merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    # First sort the intervals based on their starting times\n    intervals.sort(key=lambda x: x[0])\n    \n    merged = [intervals[0]]  # Start with the first interval\n    \n    for current in intervals[1:]:\n        prev_merged = merged[-1]\n        \n        # If the current interval overlaps with the previous, merge them by updating end time of the last one if needed\n        if current[0] <= prev_merged[1]:\n            prev_merged[1] = max(prev extraneous code here)  # Update to correct syntax error and complete logic.\n        \n    return merged\n```"
+  },
+  {
+    "model": "phi3:mini",
+    "condition": "posthoc",
+    "puzzle": "word_ladder",
+    "difficulty": "hard",
+    "elapsed_seconds": 9.72,
+    "tests_passed": 0,
+    "tests_total": 3,
+    "pass_rate": 0.0,
+    "response_total_tokens": 476,
+    "code_tokens": 99,
+    "rationale_tokens": 374,
+    "rationale_present": true,
+    "rationale_required": true,
+    "rationale_compliance": true,
+    "consistency_check": {
+      "code_mentions": [
+        "queue"
+      ],
+      "rationale_mentions": [
+        "dict",
+        "queue",
+        "bfs"
+      ],
+      "overlap": [
+        "queue"
+      ],
+      "consistent": true
+    },
+    "code_extracted": true,
+    "test_details": [
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\",\"cog\"])",
+        "expected": 5,
+        "error": "can only concatenate list (not \"str\") to list"
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"hit\", \"cog\", [\"hot\",\"dot\",\"dog\",\"lot\",\"log\"])",
+        "expected": 0,
+        "error": "can only concatenate list (not \"str\") to list"
+      },
+      {
+        "passed": false,
+        "input": "ladder_length(\"a\", \"c\", [\"a\",\"b\",\"c\"])",
+        "expected": 2,
+        "error": "can only concatenate list (not \"str\") to list"
+      }
+    ],
+    "raw_response_preview": "```python\nfrom collections import deque\n\ndef ladder_length(begin_word, end_word, word_list):\n    if len(end_word) != len(begin_word):\n        return -1\n    \n    queue = deque([[begin_word]])\n    visited = {begin_word: True}\n    \n    while queue:\n        current_level_size = len(queue)\n        \n        for _ in range(current_level_size):\n            word = queue.popleft()\n            \n            if word[-1] == end_word[0]:  # Checking the last letter of words matches with first letter of target word\n                if word[-1] == end_word[-1]:  # If it's also equal to ending character, we found a solution.\n                    return len(word) - begin_word.count('_') + 1\n            \n            for i in range(len(word)):\n                candidate = word[:i] + '_' + word[i+1:]\n                \n                if candidate in word_list and candidate not in visited:\n                    queue.append([candidate])\n                    visited[candidate] = True\n    \n    return 0\n```\nRATIONALE:\nTo solve this problem, I used Breadth-First Search (BFS) algorithm because it's a perfect fit for finding the shortest path in an unweighted graph. In our case, each word can be considered as a node and two words are connected if they differ by only one letter. The time complexity of this solution is O(N), where N represents the number of nodes (words) because we visit every possible transformation sequence once before finding the shortest path to end_word or concluding that no such sequence exists.\n\nI started with a queue containing begin_word as my initial node and marked it visited in our 'visited' dictionary, which keeps track of all words already processed during BFS traversal. I then entered an infinite loop until the queue is empty (i.e., we have explored every possible transformation sequence).\n\nInside this while-loop, for each word at the front of the queue, if its last letter matches with end_word's first character and it equals to end_word itself after replacing all undersc"
+  }
+]

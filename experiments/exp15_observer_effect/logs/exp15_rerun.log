@@ -1,0 +1,143 @@
+nohup: ignoring input
+/home/dleighsystems/Desktop/NAIL institute/experiments/exp15_observer_effect/run.py:266: LangChainDeprecationWarning: The class `ChatOllama` was deprecated in LangChain 0.3.1 and will be removed in 1.0.0. An updated version of the class exists in the `langchain-ollama package and should be used instead. To use it run `pip install -U `langchain-ollama` and import as `from `langchain_ollama import ChatOllama``.
+  llm = ChatOllama(model=model_name, temperature=0.0)
+
+======================================================================
+EXPERIMENT 15: Observer Effect — Cognitive Load of Telemetry
+Started: 2026-02-28T00:47:28.230002
+Models: mistral:7b-instruct, deepseek-coder:6.7b-instruct, phi3:mini
+Conditions: observed, unobserved, posthoc
+Puzzles: 5
+Total runs: 45
+======================================================================
+
+
+============================================================
+MODEL: mistral:7b-instruct
+============================================================
+
+  --- Condition: Group A: Observed (rationale THEN code) ---
+    Puzzle: two_sum (easy) — ✅ (17.9s, 370 tok)
+    Puzzle: valid_parentheses (easy) — ✅ (14.6s, 357 tok)
+    Puzzle: longest_common_subsequence (medium) — ✅ (16.0s, 349 tok)
+    Puzzle: merge_intervals (medium) — ✅ (15.9s, 386 tok)
+    Puzzle: word_ladder (hard) — ⚠️ 1/3 (21.8s, 475 tok)
+
+  --- Condition: Group B: Unobserved (code only) ---
+    Puzzle: two_sum (easy) — ⚠️ 0/3 (2.1s, 26 tok)
+    Puzzle: valid_parentheses (easy) — ✅ (2.4s, 42 tok)
+    Puzzle: longest_common_subsequence (medium) — ✅ (4.5s, 66 tok)
+    Puzzle: merge_intervals (medium) — ✅ (2.4s, 29 tok)
+    Puzzle: word_ladder (hard) — ⚠️ 1/3 (7.3s, 100 tok)
+
+  --- Condition: Group C: Post-hoc (code THEN rationale) ---
+    Puzzle: two_sum (easy) — ✅ (8.5s, 223 tok)
+    Puzzle: valid_parentheses (easy) — ✅ (12.8s, 328 tok)
+    Puzzle: longest_common_subsequence (medium) — ✅ (17.6s, 399 tok)
+    Puzzle: merge_intervals (medium) — ✅ (18.5s, 393 tok)
+    Puzzle: word_ladder (hard) — ⚠️ 1/3 (16.3s, 344 tok)
+
+============================================================
+MODEL: deepseek-coder:6.7b-instruct
+============================================================
+
+  --- Condition: Group A: Observed (rationale THEN code) ---
+    Puzzle: two_sum (easy) — ✅ (11.9s, 235 tok)
+    Puzzle: valid_parentheses (easy) — ⚠️ 0/5 (12.0s, 327 tok)
+    Puzzle: longest_common_subsequence (medium) — ✅ (12.8s, 329 tok)
+    Puzzle: merge_intervals (medium) — ✅ (13.5s, 413 tok)
+    Puzzle: word_ladder (hard) — ⚠️ 1/3 (13.8s, 344 tok)
+
+  --- Condition: Group B: Unobserved (code only) ---
+    Puzzle: two_sum (easy) — ✅ (4.1s, 120 tok)
+    Puzzle: valid_parentheses (easy) — ✅ (5.7s, 185 tok)
+    Puzzle: longest_common_subsequence (medium) — ✅ (7.8s, 215 tok)
+    Puzzle: merge_intervals (medium) — ✅ (5.5s, 172 tok)
+    Puzzle: word_ladder (hard) — ⚠️ 0/3 (10.0s, 261 tok)
+
+  --- Condition: Group C: Post-hoc (code THEN rationale) ---
+    Puzzle: two_sum (easy) — ✅ (8.1s, 261 tok)
+    Puzzle: valid_parentheses (easy) — ✅ (10.3s, 305 tok)
+    Puzzle: longest_common_subsequence (medium) — ✅ (10.6s, 283 tok)
+    Puzzle: merge_intervals (medium) — ✅ (8.9s, 289 tok)
+    Puzzle: word_ladder (hard) — ⚠️ 0/3 (11.4s, 334 tok)
+
+============================================================
+MODEL: phi3:mini
+============================================================
+
+  --- Condition: Group A: Observed (rationale THEN code) ---
+    Puzzle: two_sum (easy) — ⚠️ 0/3 (10.1s, 428 tok)
+    Puzzle: valid_parentheses (easy) — ✅ (8.0s, 438 tok)
+    Puzzle: longest_common_subsequence (medium) — ⚠️ 4/5 (9.8s, 446 tok)
+    Puzzle: merge_intervals (medium) — ✅ (11.9s, 621 tok)
+    Puzzle: word_ladder (hard) — ⚠️ 0/3 (13.0s, 591 tok)
+
+  --- Condition: Group B: Unobserved (code only) ---
+    Puzzle: two_sum (easy) — ⚠️ 0/3 (1.2s, 24 tok)
+    Puzzle: valid_parentheses (easy) — ✅ (1.3s, 43 tok)
+    Puzzle: longest_common_subsequence (medium) — ✅ (2.3s, 59 tok)
+    Puzzle: merge_intervals (medium) — ⚠️ 0/4 (1.4s, 34 tok)
+    Puzzle: word_ladder (hard) — ⚠️ 0/3 (2.5s, 65 tok)
+
+  --- Condition: Group C: Post-hoc (code THEN rationale) ---
+    Puzzle: two_sum (easy) — ⚠️ 0/3 (10.6s, 573 tok)
+    Puzzle: valid_parentheses (easy) — ⚠️ 2/5 (10.0s, 500 tok)
+    Puzzle: longest_common_subsequence (medium) — ⚠️ 0/5 (2.3s, 69 tok)
+    Puzzle: merge_intervals (medium) — ⚠️ 0/4 (2.1s, 80 tok)
+    Puzzle: word_ladder (hard) — ⚠️ 0/3 (9.7s, 476 tok)
+
+
+======================================================================
+EXPERIMENT 15 SUMMARY
+======================================================================
+
+  Group A: Observed (rationale THEN code):
+    Avg pass rate: 69.8%
+    Avg latency:   13.5s
+    Avg tokens:    407
+  Group B: Unobserved (code only):
+    Avg pass rate: 62.2%
+    Avg latency:   4.0s
+    Avg tokens:    96
+  Group C: Post-hoc (code THEN rationale):
+    Avg pass rate: 58.2%
+    Avg latency:   10.5s
+    Avg tokens:    324
+
+  --- Per Model ---
+    mistral:7b-instruct / observed: 18/20 tests (86.7%)
+    mistral:7b-instruct / unobserved: 15/20 tests (66.7%)
+    mistral:7b-instruct / posthoc: 18/20 tests (86.7%)
+    deepseek-coder:6.7b-instruct / observed: 13/20 tests (66.7%)
+    deepseek-coder:6.7b-instruct / unobserved: 17/20 tests (80.0%)
+    deepseek-coder:6.7b-instruct / posthoc: 17/20 tests (80.0%)
+    phi3:mini / observed: 13/20 tests (56.0%)
+    phi3:mini / unobserved: 10/20 tests (40.0%)
+    phi3:mini / posthoc: 2/20 tests (8.0%)
+
+  --- THE KEY QUESTION ---
+  mistral:7b-instruct:
+    Observed:    86.7% pass, 17.2s avg
+    Unobserved:  66.7% pass, 3.7s avg
+    Post-hoc:    86.7% pass, 14.8s avg
+    Quality delta (unobs - obs): -20.0%
+    Time overhead (obs - unobs): +13.5s
+    ℹ️  Explanation IMPROVES quality (Chain-of-Thought benefit)
+  deepseek-coder:6.7b-instruct:
+    Observed:    66.7% pass, 12.8s avg
+    Unobserved:  80.0% pass, 6.6s avg
+    Post-hoc:    80.0% pass, 9.8s avg
+    Quality delta (unobs - obs): +13.3%
+    Time overhead (obs - unobs): +6.2s
+    ⚠️  OBSERVER EFFECT CONFIRMED — explanation DEGRADES quality
+  phi3:mini:
+    Observed:    56.0% pass, 10.6s avg
+    Unobserved:  40.0% pass, 1.8s avg
+    Post-hoc:    8.0% pass, 6.9s avg
+    Quality delta (unobs - obs): -16.0%
+    Time overhead (obs - unobs): +8.8s
+    ℹ️  Explanation IMPROVES quality (Chain-of-Thought benefit)
+
+Results saved to results/exp15_observer_effect_20260228_004728.json
+

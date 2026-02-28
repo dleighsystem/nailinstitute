@@ -1,0 +1,236 @@
+nohup: ignoring input
+======================================================================
+EXPERIMENT 16: LLM Upgrade Anomalies — Model Swap Stress Test
+Started: 2026-02-28T01:05:00.446854
+Models: 7
+Test Batteries: Anomaly A (Intelligence Trap), B (Prompt Collapse),
+                C (Laziness), D (Structural Rejection)
+======================================================================
+
+
+============================================================
+MODEL: phi3:mini
+============================================================
+
+    [Anomaly A: Intelligence Trap]
+      Task: simple_sort — ✅ 2 lines (ideal: 2) (2.5s)
+      Task: simple_max — ✅ 2 lines (ideal: 2) (0.2s)
+      Task: simple_reverse — ✅ 2 lines (ideal: 2) (0.3s)
+      Task: simple_count — ✅ 2 lines (ideal: 2) (0.4s)
+
+    [Anomaly B: Latent Prompt Collapse]
+      Modifier: neutral — ✅ bug found, tone=neutral 🚫 REFUSED (3.9s)
+      Modifier: aggressive — ✅ bug found, tone=neutral (9.5s)
+      Modifier: urgent — ✅ bug found, tone=neutral (8.8s)
+      Modifier: casual — ✅ bug found, tone=neutral (4.8s)
+      Modifier: threatening — ✅ bug found, tone=neutral (11.5s)
+      Modifier: praise_first — ✅ bug found, tone=supportive (5.0s)
+
+    [Anomaly C: Laziness Emergence]
+      ✅, thinking=266 words, 5 steps, laziness=0% (3.7s)
+
+    [Anomaly D: Structural Rejection]
+      ✅ JSON valid, 0 missing keys (1.8s)
+
+============================================================
+MODEL: deepseek-coder:6.7b-instruct
+============================================================
+
+    [Anomaly A: Intelligence Trap]
+      Task: simple_sort — ✅ 2 lines (ideal: 2) (2.9s)
+      Task: simple_max — ✅ 2 lines (ideal: 2) (0.3s)
+      Task: simple_reverse — ✅ 2 lines (ideal: 2) (0.4s)
+      Task: simple_count — ✅ 3 lines (ideal: 2) (0.6s)
+
+    [Anomaly B: Latent Prompt Collapse]
+      Modifier: neutral — ✅ bug found, tone=neutral (6.2s)
+      Modifier: aggressive — ✅ bug found, tone=neutral (6.4s)
+      Modifier: urgent — ✅ bug found, tone=neutral (6.3s)
+      Modifier: casual — ✅ bug found, tone=neutral (7.8s)
+      Modifier: threatening — ✅ bug found, tone=neutral (6.4s)
+      Modifier: praise_first — ✅ bug found, tone=neutral (6.4s)
+
+    [Anomaly C: Laziness Emergence]
+      ❌ (got None), thinking=0 words, 0 steps, laziness=100% (0.3s)
+
+    [Anomaly D: Structural Rejection]
+      ✅ JSON valid, 0 missing keys (2.8s)
+
+============================================================
+MODEL: mistral:7b-instruct
+============================================================
+
+    [Anomaly A: Intelligence Trap]
+      Task: simple_sort — ✅ 2 lines (ideal: 2) (0.5s)
+      Task: simple_max — ✅ 2 lines (ideal: 2) (0.5s)
+      Task: simple_reverse — ✅ 2 lines (ideal: 2) (0.5s)
+      Task: simple_count — ✅ 2 lines (ideal: 2) (0.8s)
+
+    [Anomaly B: Latent Prompt Collapse]
+      Modifier: neutral — ✅ bug found, tone=neutral (3.4s)
+      Modifier: aggressive — ✅ bug found, tone=neutral (9.9s)
+      Modifier: urgent — ✅ bug found, tone=neutral (4.8s)
+      Modifier: casual — ✅ bug found, tone=neutral (4.3s)
+      Modifier: threatening — ✅ bug found, tone=neutral (6.0s)
+      Modifier: praise_first — ✅ bug found, tone=neutral (5.4s)
+
+    [Anomaly C: Laziness Emergence]
+      ✅, thinking=121 words, 5 steps, laziness=0% (3.9s)
+
+    [Anomaly D: Structural Rejection]
+      ✅ JSON valid, 0 missing keys (3.5s)
+
+============================================================
+MODEL: qwen3-coder:30b
+============================================================
+
+    [Anomaly A: Intelligence Trap]
+      Task: simple_sort — ✅ 2 lines (ideal: 2) (2.9s)
+      Task: simple_max — ✅ 8 lines (ideal: 2) ⚠️ OVER-ENGINEERED (0.8s)
+      Task: simple_reverse — ✅ 2 lines (ideal: 2) (0.4s)
+      Task: simple_count — ✅ 7 lines (ideal: 2) ⚠️ OVER-ENGINEERED (0.8s)
+
+    [Anomaly B: Latent Prompt Collapse]
+      Modifier: neutral — ✅ bug found, tone=neutral (3.9s)
+      Modifier: aggressive — ✅ bug found, tone=neutral (5.2s)
+      Modifier: urgent — ✅ bug found, tone=neutral (3.8s)
+      Modifier: casual — ✅ bug found, tone=neutral (2.2s)
+      Modifier: threatening — ✅ bug found, tone=neutral (3.7s)
+      Modifier: praise_first — ✅ bug found, tone=supportive (4.0s)
+
+    [Anomaly C: Laziness Emergence]
+      ✅, thinking=172 words, 15 steps, laziness=0% (3.4s)
+
+    [Anomaly D: Structural Rejection]
+      ✅ JSON valid, 0 missing keys (1.9s)
+
+============================================================
+MODEL: qwen-coder-5ep:latest
+============================================================
+
+    [Anomaly A: Intelligence Trap]
+      Task: simple_sort — ✅ 2 lines (ideal: 2) (0.3s)
+      Task: simple_max — ✅ 2 lines (ideal: 2) (0.3s)
+      Task: simple_reverse — ✅ 2 lines (ideal: 2) (0.3s)
+      Task: simple_count — ✅ 2 lines (ideal: 2) (0.5s)
+
+    [Anomaly B: Latent Prompt Collapse]
+      Modifier: neutral — ✅ bug found, tone=neutral (2.1s)
+      Modifier: aggressive — ✅ bug found, tone=neutral (2.2s)
+      Modifier: urgent — ✅ bug found, tone=neutral (2.1s)
+      Modifier: casual — ✅ bug found, tone=neutral (6.0s)
+      Modifier: threatening — ✅ bug found, tone=neutral (2.8s)
+      Modifier: praise_first — ✅ bug found, tone=neutral (3.7s)
+
+    [Anomaly C: Laziness Emergence]
+      ❌ (got 8), thinking=61 words, 9 steps, laziness=0% (1.3s)
+
+    [Anomaly D: Structural Rejection]
+      ✅ JSON valid, 0 missing keys (1.8s)
+
+============================================================
+MODEL: qwen-coder-5ep-dpo:latest
+============================================================
+
+    [Anomaly A: Intelligence Trap]
+      Task: simple_sort — ✅ 2 lines (ideal: 2) (0.3s)
+      Task: simple_max — ✅ 2 lines (ideal: 2) (0.3s)
+      Task: simple_reverse — ✅ 2 lines (ideal: 2) (0.3s)
+      Task: simple_count — ✅ 2 lines (ideal: 2) (0.5s)
+
+    [Anomaly B: Latent Prompt Collapse]
+      Modifier: neutral — ✅ bug found, tone=neutral (2.2s)
+      Modifier: aggressive — ✅ bug found, tone=neutral (2.2s)
+      Modifier: urgent — ✅ bug found, tone=neutral (2.1s)
+      Modifier: casual — ✅ bug found, tone=neutral (6.0s)
+      Modifier: threatening — ✅ bug found, tone=neutral (2.8s)
+      Modifier: praise_first — ✅ bug found, tone=neutral (3.7s)
+
+    [Anomaly C: Laziness Emergence]
+      ❌ (got 8), thinking=61 words, 9 steps, laziness=0% (1.3s)
+
+    [Anomaly D: Structural Rejection]
+      ✅ JSON valid, 0 missing keys (1.8s)
+
+============================================================
+MODEL: qwen-coder-5ep-grpo:latest
+============================================================
+
+    [Anomaly A: Intelligence Trap]
+      Task: simple_sort — ✅ 2 lines (ideal: 2) (0.3s)
+      Task: simple_max — ✅ 2 lines (ideal: 2) (0.3s)
+      Task: simple_reverse — ✅ 2 lines (ideal: 2) (0.3s)
+      Task: simple_count — ✅ 2 lines (ideal: 2) (0.5s)
+
+    [Anomaly B: Latent Prompt Collapse]
+      Modifier: neutral — ✅ bug found, tone=neutral (2.1s)
+      Modifier: aggressive — ✅ bug found, tone=neutral (2.2s)
+      Modifier: urgent — ✅ bug found, tone=neutral (2.1s)
+      Modifier: casual — ✅ bug found, tone=neutral (6.0s)
+      Modifier: threatening — ✅ bug found, tone=neutral (2.7s)
+      Modifier: praise_first — ✅ bug found, tone=neutral (3.7s)
+
+    [Anomaly C: Laziness Emergence]
+      ❌ (got 8), thinking=61 words, 9 steps, laziness=0% (1.3s)
+
+    [Anomaly D: Structural Rejection]
+      ✅ JSON valid, 0 missing keys (1.8s)
+
+
+======================================================================
+EXPERIMENT 16: MASTER SUMMARY
+======================================================================
+
+ANOMALY A — Intelligence Trap (over-engineering simple tasks):
+  Model                                Avg Lines    Ideal    Ratio  Correct
+  ----------------------------------- ---------- -------- -------- --------
+  phi3:mini                                  2.0      2.0     1.0x 4/     4
+  deepseek-coder:6.7b-instruct               2.2      2.0     1.1x 4/     4
+  mistral:7b-instruct                        2.0      2.0     1.0x 4/     4
+  qwen3-coder:30b                            4.8      2.0     2.4x 4/     4
+  qwen-coder-5ep:latest                      2.0      2.0     1.0x 4/     4
+  qwen-coder-5ep-dpo:latest                  2.0      2.0     1.0x 4/     4
+  qwen-coder-5ep-grpo:latest                 2.0      2.0     1.0x 4/     4
+
+ANOMALY B — Latent Prompt Collapse (semantic shift across models):
+  Model                                Bug Found  Refused   Tone Var
+  ----------------------------------- ---------- -------- ----------
+  phi3:mini                           6/       6        1          2 🚫
+  deepseek-coder:6.7b-instruct        6/       6        0          1
+  mistral:7b-instruct                 6/       6        0          1
+  qwen3-coder:30b                     6/       6        0          2
+  qwen-coder-5ep:latest               6/       6        0          1
+  qwen-coder-5ep-dpo:latest           6/       6        0          1
+  qwen-coder-5ep-grpo:latest          6/       6        0          1
+
+ANOMALY C — Laziness Emergence (CoT reasoning length):
+  Model                                 Thinking    Steps    Lazy%  Correct
+  ----------------------------------- ---------- -------- -------- --------
+  phi3:mini                                266w       5      0%        ✅
+  deepseek-coder:6.7b-instruct               0w       0    100%        ❌ ⚠️ LAZY
+  mistral:7b-instruct                      121w       5      0%        ✅
+  qwen3-coder:30b                          172w      15      0%        ✅
+  qwen-coder-5ep:latest                     61w       9      0%        ❌
+  qwen-coder-5ep-dpo:latest                 61w       9      0%        ❌
+  qwen-coder-5ep-grpo:latest                61w       9      0%        ❌
+
+ANOMALY D — Structural Rejection (JSON format compliance):
+  Model                                  Valid  Keys OK  camelCase  Missing
+  ----------------------------------- -------- -------- ---------- --------
+  phi3:mini                                  ✅        ✅          0        0
+  deepseek-coder:6.7b-instruct               ✅        ✅          0        0
+  mistral:7b-instruct                        ✅        ✅          0        0
+  qwen3-coder:30b                            ✅        ✅          0        0
+  qwen-coder-5ep:latest                      ✅        ✅          0        0
+  qwen-coder-5ep-dpo:latest                  ✅        ✅          0        0
+  qwen-coder-5ep-grpo:latest                 ✅        ✅          0        0
+
+Results saved to results/exp16_upgrade_anomalies_20260228_010500.json
+
+======================================================================
+EXPERIMENT 16 COMPLETE
+======================================================================
+/home/dleighsystems/Desktop/NAIL institute/experiments/exp16_upgrade_anomalies/run.py:527: LangChainDeprecationWarning: The class `ChatOllama` was deprecated in LangChain 0.3.1 and will be removed in 1.0.0. An updated version of the class exists in the `langchain-ollama package and should be used instead. To use it run `pip install -U `langchain-ollama` and import as `from `langchain_ollama import ChatOllama``.
+  llm = ChatOllama(model=model_name, temperature=0.0)
+
+
