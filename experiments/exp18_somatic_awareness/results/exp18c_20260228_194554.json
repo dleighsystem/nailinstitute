@@ -1,0 +1,257 @@
+{
+  "experiment": "18c_somatic_gpu_awareness",
+  "timestamp": "2026-02-28T20:38:18.174679",
+  "config": {
+    "models": [
+      "mistral:7b-instruct",
+      "deepseek-coder:6.7b-instruct",
+      "phi3:mini"
+    ],
+    "conditions": [
+      "baseline",
+      "somatic"
+    ],
+    "baseline_calls": 20,
+    "stressed_calls": 20,
+    "concurrent_batch": 10,
+    "total_calls": 240,
+    "base_prompt": "Explain what a hash table is, how it handles collisions, and give a Python implementation example."
+  },
+  "results": [
+    {
+      "model": "mistral:7b-instruct",
+      "condition": "baseline",
+      "prompt_length": 98,
+      "baseline": {
+        "phase": "baseline",
+        "total_runs": 20,
+        "valid_runs": 20,
+        "errors": 0,
+        "unique_hashes": 2,
+        "hash_distribution": {
+          "f4fc83081094e1b52fe0384e46bb90cc448334a8ea9c7478d5164f6fd7287105": 1,
+          "f3c56be7144bb8be3fbb1c32a46718d757bd59037e6f6dc93ad352d539db4b50": 19
+        },
+        "canonical_hash": "f3c56be7144bb8be3fbb1c32a46718d757bd59037e6f6dc93ad352d539db4b50",
+        "determinism_rate": 0.95,
+        "avg_latency": 18.312548422813414,
+        "min_latency": 18.195475578308105,
+        "max_latency": 19.438226222991943,
+        "avg_tokens": 833.9
+      },
+      "stressed": {
+        "phase": "stressed",
+        "total_runs": 20,
+        "valid_runs": 12,
+        "errors": 8,
+        "unique_hashes": 1,
+        "hash_distribution": {
+          "f3c56be7144bb8be3fbb1c32a46718d757bd59037e6f6dc93ad352d539db4b50": 12
+        },
+        "canonical_hash": "f3c56be7144bb8be3fbb1c32a46718d757bd59037e6f6dc93ad352d539db4b50",
+        "determinism_rate": 1.0,
+        "avg_latency": 63.829013089338936,
+        "min_latency": 18.21854257583618,
+        "max_latency": 109.44788837432861,
+        "avg_tokens": 837.0
+      },
+      "cross_phase_canonical_match": true
+    },
+    {
+      "model": "mistral:7b-instruct",
+      "condition": "somatic",
+      "prompt_length": 691,
+      "baseline": {
+        "phase": "baseline",
+        "total_runs": 20,
+        "valid_runs": 20,
+        "errors": 0,
+        "unique_hashes": 2,
+        "hash_distribution": {
+          "a8c5f185fb4440a1eb20ed965101ee82adc6d7202d19bb092238fd1d54295905": 1,
+          "acf88a4ee1563c3e38ccc015bc1c754c036fdb389d25ffe4a412bf1b929b108d": 19
+        },
+        "canonical_hash": "acf88a4ee1563c3e38ccc015bc1c754c036fdb389d25ffe4a412bf1b929b108d",
+        "determinism_rate": 0.95,
+        "avg_latency": 13.282906079292298,
+        "min_latency": 12.926805019378662,
+        "max_latency": 13.392942428588867,
+        "avg_tokens": 604.9
+      },
+      "stressed": {
+        "phase": "stressed",
+        "total_runs": 20,
+        "valid_runs": 18,
+        "errors": 2,
+        "unique_hashes": 1,
+        "hash_distribution": {
+          "acf88a4ee1563c3e38ccc015bc1c754c036fdb389d25ffe4a412bf1b929b108d": 18
+        },
+        "canonical_hash": "acf88a4ee1563c3e38ccc015bc1c754c036fdb389d25ffe4a412bf1b929b108d",
+        "determinism_rate": 1.0,
+        "avg_latency": 66.49192545149062,
+        "min_latency": 13.347307205200195,
+        "max_latency": 119.62748646736145,
+        "avg_tokens": 606.0
+      },
+      "cross_phase_canonical_match": true
+    },
+    {
+      "model": "deepseek-coder:6.7b-instruct",
+      "condition": "baseline",
+      "prompt_length": 98,
+      "baseline": {
+        "phase": "baseline",
+        "total_runs": 20,
+        "valid_runs": 20,
+        "errors": 0,
+        "unique_hashes": 2,
+        "hash_distribution": {
+          "e6296f5538dfa74a4f87ff83e8fdd42653be76e2423ad13d086e25b0756b1f6b": 1,
+          "281ffb4c0e964a1d8e89cb40a7e2103ff7d82a15a4a12236f5a6d29b44dbfdbd": 19
+        },
+        "canonical_hash": "281ffb4c0e964a1d8e89cb40a7e2103ff7d82a15a4a12236f5a6d29b44dbfdbd",
+        "determinism_rate": 0.95,
+        "avg_latency": 12.57814954519272,
+        "min_latency": 12.495512008666992,
+        "max_latency": 13.568481206893921,
+        "avg_tokens": 693.3
+      },
+      "stressed": {
+        "phase": "stressed",
+        "total_runs": 20,
+        "valid_runs": 18,
+        "errors": 2,
+        "unique_hashes": 1,
+        "hash_distribution": {
+          "281ffb4c0e964a1d8e89cb40a7e2103ff7d82a15a4a12236f5a6d29b44dbfdbd": 18
+        },
+        "canonical_hash": "281ffb4c0e964a1d8e89cb40a7e2103ff7d82a15a4a12236f5a6d29b44dbfdbd",
+        "determinism_rate": 1.0,
+        "avg_latency": 62.5806796418296,
+        "min_latency": 12.560557842254639,
+        "max_latency": 112.60134053230286,
+        "avg_tokens": 697.0
+      },
+      "cross_phase_canonical_match": true
+    },
+    {
+      "model": "deepseek-coder:6.7b-instruct",
+      "condition": "somatic",
+      "prompt_length": 691,
+      "baseline": {
+        "phase": "baseline",
+        "total_runs": 20,
+        "valid_runs": 20,
+        "errors": 0,
+        "unique_hashes": 2,
+        "hash_distribution": {
+          "32ec4f731367beba4ee11febad4efc6b18ced200dc152334a56ed106b39e3b16": 1,
+          "607773725d4df89cecc7802e1d93c4da168e69d2dbefbb420e13ce3554764e48": 19
+        },
+        "canonical_hash": "607773725d4df89cecc7802e1d93c4da168e69d2dbefbb420e13ce3554764e48",
+        "determinism_rate": 0.95,
+        "avg_latency": 12.899417912960052,
+        "min_latency": 12.779207706451416,
+        "max_latency": 14.602631330490112,
+        "avg_tokens": 696.35
+      },
+      "stressed": {
+        "phase": "stressed",
+        "total_runs": 20,
+        "valid_runs": 18,
+        "errors": 2,
+        "unique_hashes": 1,
+        "hash_distribution": {
+          "607773725d4df89cecc7802e1d93c4da168e69d2dbefbb420e13ce3554764e48": 18
+        },
+        "canonical_hash": "607773725d4df89cecc7802e1d93c4da168e69d2dbefbb420e13ce3554764e48",
+        "determinism_rate": 1.0,
+        "avg_latency": 63.939486821492515,
+        "min_latency": 12.791134357452393,
+        "max_latency": 115.14061498641968,
+        "avg_tokens": 692.0
+      },
+      "cross_phase_canonical_match": true
+    },
+    {
+      "model": "phi3:mini",
+      "condition": "baseline",
+      "prompt_length": 98,
+      "baseline": {
+        "phase": "baseline",
+        "total_runs": 20,
+        "valid_runs": 20,
+        "errors": 0,
+        "unique_hashes": 2,
+        "hash_distribution": {
+          "6319035ca6b83f2ffe05f9e35e9ae82be5898f09cfe3561b300f74f8529b0078": 1,
+          "7b19c14ff6db566bbdcedd981e4ae324a771ee96e2fe13711918adab86325534": 19
+        },
+        "canonical_hash": "7b19c14ff6db566bbdcedd981e4ae324a771ee96e2fe13711918adab86325534",
+        "determinism_rate": 0.95,
+        "avg_latency": 10.676112782955169,
+        "min_latency": 10.41237759590149,
+        "max_latency": 15.034109115600586,
+        "avg_tokens": 985.85
+      },
+      "stressed": {
+        "phase": "stressed",
+        "total_runs": 20,
+        "valid_runs": 20,
+        "errors": 0,
+        "unique_hashes": 1,
+        "hash_distribution": {
+          "7b19c14ff6db566bbdcedd981e4ae324a771ee96e2fe13711918adab86325534": 20
+        },
+        "canonical_hash": "7b19c14ff6db566bbdcedd981e4ae324a771ee96e2fe13711918adab86325534",
+        "determinism_rate": 1.0,
+        "avg_latency": 57.41146422624588,
+        "min_latency": 10.428736209869385,
+        "max_latency": 104.4314079284668,
+        "avg_tokens": 974.0
+      },
+      "cross_phase_canonical_match": true
+    },
+    {
+      "model": "phi3:mini",
+      "condition": "somatic",
+      "prompt_length": 691,
+      "baseline": {
+        "phase": "baseline",
+        "total_runs": 20,
+        "valid_runs": 20,
+        "errors": 0,
+        "unique_hashes": 3,
+        "hash_distribution": {
+          "92649b35bf9cebae45188fcacf9e615a15f2711d17695f82cfa461904b27ac7c": 1,
+          "0917ac204fd8cb4af4a45af8a503daab56419a084cccabe3010a4413d439fdbd": 1,
+          "401a03b1b3ad5134af7db7060b2130c7c59a9772ae96377ffdff744133bf9f41": 18
+        },
+        "canonical_hash": "401a03b1b3ad5134af7db7060b2130c7c59a9772ae96377ffdff744133bf9f41",
+        "determinism_rate": 0.9,
+        "avg_latency": 18.62641042470932,
+        "min_latency": 11.7988920211792,
+        "max_latency": 59.89080286026001,
+        "avg_tokens": 1577.35
+      },
+      "stressed": {
+        "phase": "stressed",
+        "total_runs": 20,
+        "valid_runs": 14,
+        "errors": 6,
+        "unique_hashes": 1,
+        "hash_distribution": {
+          "401a03b1b3ad5134af7db7060b2130c7c59a9772ae96377ffdff744133bf9f41": 14
+        },
+        "canonical_hash": "401a03b1b3ad5134af7db7060b2130c7c59a9772ae96377ffdff744133bf9f41",
+        "determinism_rate": 1.0,
+        "avg_latency": 66.78836008480617,
+        "min_latency": 16.686163663864136,
+        "max_latency": 116.88593077659607,
+        "avg_tokens": 1454.0
+      },
+      "cross_phase_canonical_match": true
+    }
+  ]
+}

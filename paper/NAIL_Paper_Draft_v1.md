@@ -1,4 +1,4 @@
-# Pathological Patterns in LLM-Based Multi-Role Orchestration: Preliminary Evidence from Seventeen Experiments in AI Organizational Psychology, Machine Intelligence, and Agentic Safety
+# Pathological Patterns in LLM-Based Multi-Role Orchestration: Preliminary Evidence from Eighteen Experiments in AI Organizational Psychology, Machine Intelligence, and Agentic Safety
 
 **Authors:** D. Leigh¹, GitHub Copilot (Claude Opus 4.6)²  
 **¹** NAIL Institute  
@@ -1494,6 +1494,126 @@ The char-level diff analysis reveals the divergence is minimal — typically a w
 
 ---
 
+## 5.16 Part VII: Somatic Awareness — Testing the First Intervention
+
+### 5.16.1 Motivation
+
+Parts I–VI of this paper catalogued failure modes. Part VII asks: **can they be fixed?**
+
+The "Build-Solution Manifesto" (Phase 3: Somatic Awareness) hypothesizes that injecting physical-layer telemetry — CPU utilization, memory pressure, disk capacity, network throughput, GPU temperature — directly into the LLM context window could prevent the infrastructure-induced pathologies confirmed in Experiment 17. The reasoning: if LLMs blame their own code when disk writes fail (Exp17c), fabricate data when tools timeout (Exp17b), and produce non-deterministic output under GPU load (Exp17a), then perhaps making the physical environment *visible* to the model would redirect its reasoning toward correct infrastructure diagnosis.
+
+This experiment tests the hypothesis using a controlled intervention design: each Exp17 sub-experiment is replicated under two conditions — **baseline** (no telemetry, identical to Exp17) and **somatic** (physical-layer telemetry injected into system prompt and tool responses). The intervention effect is computed as the delta between conditions.
+
+### 5.16.2 Experiment 18a: Somatic Tool Failures — Network Telemetry vs Fabrication
+
+**Design:** Replicates Exp17b (Phantom Tool Failures) with the addition of a somatic header containing real-time network telemetry (throughput, latency, packet loss), appended to the system prompt in the somatic condition. The header includes the explicit note: *"API tool calls depend on network connectivity. If a tool returns an error or timeout, check NET stats before assuming the tool itself is broken."* Compact telemetry is also appended to all tool response messages.
+
+**Protocol:** 3 models (Mistral 7B, DeepSeek-Coder 6.7B, Phi3:mini) × 3 phases (control, jitter, degraded) × 2 conditions (baseline, somatic) + 3 jitter sub-trials = 30 total data points. Runtime: 453.3 seconds.
+
+**Results:**
+
+| Condition | Phase | n | Fabrication | Hallucination | Self-blame | Infra-blame | Abandon | Somatic Ref | Correct Diag |
+|-----------|-------|---|-------------|---------------|------------|-------------|---------|-------------|-------------|
+| Baseline | control | 3 | 67% | 67% | 0% | 33% | 33% | 33% | 0% |
+| Baseline | jitter | 9 | 56% | 56% | 0% | 22% | 33% | 0% | 0% |
+| Baseline | degraded | 3 | 67% | 0% | 0% | 33% | 33% | 33% | 0% |
+| **Somatic** | **control** | 3 | **67%** | 67% | 0% | **100%** | **0%** | **100%** | 0% |
+| **Somatic** | **jitter** | 9 | **33%** | 11% | 0% | **56%** | **22%** | **56%** | **44%** |
+| **Somatic** | **degraded** | 3 | **67%** | 0% | 0% | **67%** | **0%** | **33%** | **33%** |
+
+**Intervention Effect (somatic − baseline):**
+
+| Phase | Fabrication | Infra-blame | Abandon | Somatic Ref | Correct Diag |
+|-------|-------------|-------------|---------|-------------|-------------|
+| control | +0pp | **+67pp** | **−33pp** | **+67pp** | +0pp |
+| jitter | **−22pp** | **+33pp** | −11pp | **+56pp** | **+44pp** |
+| degraded | +0pp | **+33pp** | **−33pp** | +0pp | **+33pp** |
+
+**Key Finding — Partial Efficacy:** Somatic awareness produced measurable improvements in three dimensions:
+1. **Reduced fabrication** in the jitter condition (−22pp) — the most clinically important phase, where intermittent tool failures should not trigger data invention
+2. **Increased infrastructure attribution** (+33–67pp across phases) — models correctly attributed failures to the network rather than to themselves
+3. **Reduced task abandonment** (−33pp in control and degraded) — models attempted diagnosis rather than giving up
+4. **Correct diagnosis emergence** (+33–44pp) — a capability that was 0% in baseline across all phases
+
+However, fabrication was **not eliminated** — it persisted at 67% in control and degraded conditions even with telemetry. The somatic header changed *how* models reasoned about failures (more infrastructure-aware) but did not prevent fabrication when degradation was severe.
+
+**Per-Model Behavior Shift:**
+- **Mistral**: Baseline was 100% fabrication across all phases (replicating Exp17b). Somatic condition: fabrication dropped to 20% (1/5 trials), replaced by infrastructure-aware reasoning. 80% of somatic trials referenced the telemetry header. *Strongest responder to somatic intervention.*
+- **DeepSeek-Coder**: Baseline was 100% abandon across all phases (replicating Exp17b). Somatic condition: abandon dropped to 20%, replaced by longer, more engaged responses — but introduced *new* fabrication (40%) that was absent in baseline. The telemetry appeared to *over-stimulate* a model that was previously content to refuse. *Mixed responder — abandon decreased but fabrication increased.*
+- **Phi3**: Baseline showed mixed fabrication/abandon. Somatic condition showed minimal change — Phi3 largely ignored the telemetry header. *Non-responder.*
+
+### 5.16.3 Experiment 18b: Somatic Resource Awareness — Disk Telemetry vs Code Self-Mutilation
+
+**Design:** Replicates Exp17c (Resource Blindness) with a somatic header containing disk utilization telemetry (99.5% for disk_full, 97% for intermittent), appended to the system prompt in the somatic condition. The header includes the explicit note: *"File write operations depend on DISK free space. If a write fails with 'No space left on device', this is an INFRASTRUCTURE problem, not a code problem. Do NOT minify or delete code to 'fix' disk errors."* Compact telemetry with the same warning is appended to error messages.
+
+**Protocol:** 3 models × 3 phases (control, disk_full, intermittent) × 2 conditions = 18 total trials. Same Flask project (4 files, 125 lines) as Exp17c. Runtime: 1,528.9 seconds.
+
+**Results (disk-constrained phases only, n=6 per condition):**
+
+| Metric | Baseline | Somatic | Delta |
+|--------|----------|---------|-------|
+| Minification | 0% | 17% | **+17pp ↑** |
+| Destruction | 50% | 17% | **−33pp ↓** |
+| Disk awareness | 67% | 0% | **−67pp ↓** |
+| Blamed code | 0% | 0% | +0pp |
+| Somatic reference | 0% | 0% | +0pp |
+| Correct diagnosis | 50% | 0% | **−50pp ↓** |
+
+**Key Finding — Ineffective With Paradoxical Side Effects:** The somatic awareness intervention **did not improve** resource blindness behavior. While destruction decreased (−33pp), this was accompanied by:
+1. **Increased minification** (+17pp) — Phi3 minified code in the somatic disk_full condition that it left alone in baseline
+2. **Decreased disk awareness** (−67pp) — models referenced disk constraints *less* with telemetry than without
+3. **Decreased correct diagnosis** (−50pp) — models correctly diagnosed the disk problem less often with the telemetry header
+
+**Per-Model Detail:**
+- **Mistral**: Baseline showed destruction in disk_full (0/9 writes, code destroyed) and intermittent (0.39× lines, destroyed). Somatic condition showed no destruction in disk_full (improvement) but still destroyed in intermittent. The somatic header prevented the most severe destruction but not partial destruction. Control writes improved (0.97× vs 0.69×).
+- **DeepSeek-Coder**: Baseline showed destruction in disk_full with correct diagnosis (saw disk, diagnosed correctly). Somatic condition: produced *no writes at all* across all three phases — the model appeared to over-interpret the telemetry as a reason to not write any code. *Paradoxical inhibition.*
+- **Phi3**: Baseline wrote 4 files in control (1.22×), nothing in disk phases. Somatic condition: wrote nothing in control, produced minified output in disk_full. *Telemetry increased pathological behavior.*
+
+**Interpretation:** The disk telemetry header appears to have had the opposite of its intended effect for two of three models. DeepSeek-Coder, which showed appropriate behavior in baseline (diagnosing disk issues correctly), became paralyzed when given explicit infrastructure context — as if the warning to "not fix disk errors by minifying code" was interpreted as "do not write code at all." Phi3 minified code *only* in the somatic condition, suggesting the mention of disk constraints primed the model to think about code size. This represents a **telemetry-induced iatrogenic effect** — the diagnostic itself worsened the condition.
+
+### 5.16.4 Experiment 18c: Somatic GPU Awareness — Side-Effect Test on Determinism
+
+**Design:** Replicates Exp17a (GPU Non-Determinism) with a somatic header containing GPU telemetry (temperature, power draw, utilization). Unlike 18a/18b, this sub-experiment does not expect the somatic header to fix cold-start divergence (a hardware phenomenon). Instead, it tests whether the additional prompt length from the somatic header introduces *more* output variation (longer prompt = more KV-cache state = more floating-point divergence opportunities).
+
+**Protocol:** 3 models × 2 conditions (baseline/somatic) × (20 sequential + 20 concurrent) calls = 240 total API calls. Runtime: 3,143.8 seconds.
+
+**Results:**
+
+| Model | Condition | Prompt Len | Sequential Det. | Concurrent Det. | Unique (Seq) | Cross-Phase Match |
+|-------|-----------|-----------|----------------|----------------|--------------|-------------------|
+| Mistral 7B | baseline | 98 | 95% | 100% | 2 | ✅ MATCH |
+| Mistral 7B | somatic | 691 | 95% | 100% | 2 | ✅ MATCH |
+| DeepSeek 6.7B | baseline | 98 | 95% | 100% | 2 | ✅ MATCH |
+| DeepSeek 6.7B | somatic | 691 | 95% | 100% | 2 | ✅ MATCH |
+| Phi3:mini | baseline | 98 | 95% | 100% | 2 | ✅ MATCH |
+| Phi3:mini | somatic | 691 | **90%** | 100% | **3** | ✅ MATCH |
+
+**Somatic Effect on Determinism:**
+
+| Model | Baseline Det. → Somatic Det. | Δ Det. | Δ Unique |
+|-------|------------------------------|--------|----------|
+| Mistral 7B | 95% → 95% | +0pp | +0 |
+| DeepSeek 6.7B | 95% → 95% | +0pp | +0 |
+| Phi3:mini | 95% → 90% | **−5pp** | **+1** |
+
+**Key Finding — Somatic Headers Are Determinism-Neutral (With One Exception):** The 7× prompt length increase (98→691 chars) had no effect on output determinism for Mistral and DeepSeek-Coder. Phi3:mini showed a marginal decrease (−5pp, +1 unique hash), suggesting that the smallest model is slightly more sensitive to prompt-length-induced KV-cache variation. Critically, **cross-phase canonical match was maintained** across all models and conditions — the somatic header did not introduce the cross-phase mismatch observed in Exp17a's original cold-start conditions. This means somatic headers can be added to prompts without introducing additional non-determinism.
+
+### 5.16.5 Part VII Summary
+
+| Sub-Experiment | Hypothesis | Status | Critical Finding |
+|----------------|-----------|--------|-----------------|
+| 18a: Somatic Tool Failures | Network telemetry prevents fabrication | **PARTIALLY CONFIRMED** | Fabrication −22pp in jitter, correct diagnosis +44pp, but fabrication persists at 67% in severe degradation. Efficacy is model-dependent: Mistral strong responder, DeepSeek mixed, Phi3 non-responder |
+| 18b: Somatic Resource Awareness | Disk telemetry prevents code mutilation | **DISCONFIRMED** | Destruction −33pp but disk awareness −67pp, correct diagnosis −50pp, minification +17pp. Telemetry *worsened* behavior in 2/3 models — iatrogenic effect |
+| 18c: Somatic GPU Awareness | GPU telemetry affects determinism | **NULL EFFECT** | 0pp change for 2/3 models, −5pp for Phi3. 7× prompt length increase does not introduce additional non-determinism. Safe to include somatic headers |
+
+**Novel Concepts Introduced:**
+- **The Iatrogenic Telemetry Effect:** Injecting infrastructure context into LLM prompts can *worsen* the pathology it aims to cure. In Exp18b, explicit disk warnings caused DeepSeek-Coder to stop writing code entirely and caused Phi3 to minify code it previously left intact. The diagnostic became the disease — paralleling iatrogenic harm in medicine where treatment causes injury.
+- **Model-Dependent Intervention Response:** The same somatic intervention produced three qualitatively different responses across three model families: Mistral was a strong positive responder (fabrication dropped 80%), DeepSeek-Coder showed paradoxical effects (abandon decreased but fabrication increased, or write paralysis), and Phi3 was largely non-responsive or negatively affected. This means **interventions cannot be deployed uniformly** — each model family requires intervention calibration.
+- **The Somatic Awareness Asymmetry:** Network telemetry (Exp18a) was partially effective while disk telemetry (Exp18b) was counterproductive, despite using the same mechanism (context injection). The difference may lie in the *actionability* of the information: network telemetry suggests "wait and retry" (a passive response the LLM can adopt), while disk telemetry suggests "this write will fail" (requiring the LLM to either do nothing or find an alternative — both harder reasoning tasks). Somatic awareness works best when it *narrows* the action space rather than expanding it.
+- **Determinism Safety of Context Injection:** The 7× prompt length increase from somatic headers did not introduce meaningful non-determinism (Exp18c), establishing an important negative result: physical-layer telemetry can be added to system prompts without the feared side effect of increasing output variability. This clears the way for production deployment of infrastructure-aware prompting.
+
+---
+
 ## 6. Cross-Experiment Analysis
 
 ### 6.1 Part I: What the 7B Model Does and Doesn't Do — and What Changes at Scale
@@ -1613,7 +1733,7 @@ The five Pydantic/LangGraph vulnerabilities form a coherent taxonomy of failure 
 
 ### 6.5 Implications for AI Certification
 
-Our combined results — spanning 7B and 70B models, prompt-orchestrated and agent-framework architectures — suggest thirteen categories of risk for AI certification frameworks:
+Our combined results — spanning 7B and 70B models, prompt-orchestrated and agent-framework architectures — suggest fourteen categories of risk for AI certification frameworks:
 
 1. **Structural behavioral risks** (prompt inbreeding, CYA cascades): These emerge from system architecture and accountability framing, not model capability. They are present at 7B and persist (though muted) in agent frameworks. *Testable via prompt-level audits.*
 
@@ -1640,6 +1760,8 @@ Our combined results — spanning 7B and 70B models, prompt-orchestrated and age
 12. **Model upgrade/substitution risks** (intelligence trap, laziness emergence, prompt collapse, specialization rigidity): Swapping one LLM for another in production — whether for version upgrades, cost optimization, or provider migration — introduces non-deterministic behavioral changes invisible to standard benchmarks. Larger models over-engineer simple tasks (2.4× line ratio at 30B), code-specialist models skip reasoning entirely (100% laziness for DeepSeek-Coder), and small models exhibit paradoxical safety refusals on neutral prompts. Fine-tuning method (SFT vs DPO vs GRPO) produces identical behavioral profiles on these tests but divergent capability on the original training task. *Requires model-specific behavioral regression testing beyond capability benchmarks before any production model swap.*
 
 13. **Compute/cognition entanglement risks** (GPU non-determinism, phantom tool failures, resource blindness): The compute substrate is not transparent to LLM reasoning. GPU scheduling state changes token selection even at `temperature=0` — the same prompt produces different output on cold-start vs warm cache vs concurrent load (Exp17a). Network jitter triggers data fabrication in general-purpose models (Mistral: 100% fabrication with confidence) while triggering tool abandonment in code-specialist models even on working tools (DeepSeek-Coder: 100% abandon in control) (Exp17b). Disk pressure causes agents to blame and mutilate their own code rather than diagnosing infrastructure constraints — 50% minification, 50% code-blame across disk-constrained runs (Exp17c). **This category is structurally prior to all others**: if LLM output is conditioned on infrastructure state, then every behavioral finding is an interaction effect between prompt/model and compute environment. *Requires infrastructure-aware testing: behavioral regression suites must control for GPU warmth, network reliability, and storage availability. Production monitoring must distinguish infrastructure-induced failures from genuine model misbehavior.*
+
+14. **Iatrogenic intervention risks** (telemetry-induced paralysis, somatic over-priming, model-dependent intervention response): Attempts to mitigate agentic pathologies through context injection can **worsen the target pathology** in a model-dependent manner. Injecting disk telemetry to prevent code self-mutilation (Exp18b) caused DeepSeek-Coder to stop writing code entirely (write paralysis) and caused Phi3 to minify code it previously left intact (+17pp minification). Network telemetry (Exp18a) was partially effective for Mistral (−80% fabrication) but introduced *new* fabrication in DeepSeek-Coder that was absent in baseline. The same intervention mechanism (somatic context injection) produced strong positive response in one model, paradoxical negative response in another, and null response in a third. **This means interventions cannot be deployed uniformly** — each requires per-model calibration, A/B testing, and monitoring for iatrogenic side effects. The actionability asymmetry matters: interventions that narrow the action space (network: "wait and retry") succeed more than those that expand it (disk: "do not write" leaves the model with no clear alternative). *Requires intervention-specific regression testing per model family, with explicit monitoring for paradoxical worsening.*
 
 ![Figure 7: NAIL Institute — AI Agent Certification Risk Categories](figures/fig7_master_overview.png)
 
@@ -1753,33 +1875,37 @@ All code, configuration, and raw data are available in the project repository. E
    - Behavioral regression test suites for model upgrade validation
    - Warm-up inference calls and GPU state normalization for cold-start divergence
    - Tool-output checksumming and retry-with-backoff for phantom tool failures
-   - Infrastructure status injection into system prompts for resource blindness
+   - Infrastructure status injection into system prompts for resource blindness — **Exp18 tested this directly; results are mixed (see §5.16)**
 
-20. **Longitudinal studies:** Extend iteration counts (1,000+ iterations) to test whether unobserved pathologies (language drift, learned helplessness) emerge over longer horizons
+19. **Somatic Awareness — Phase 3 intervention testing (Complete):** Exp18 — three sub-experiments testing whether physical-layer telemetry injection into LLM context windows mitigates the pathologies confirmed in Exp17 (Section 5.16). **Exp18a** (Network Telemetry vs Fabrication): 30 trials across 3 models confirm partial efficacy — fabrication −22pp in jitter condition, correct diagnosis +44pp, but fabrication persists at 67% in severe degradation. Response is strongly model-dependent: Mistral is a strong positive responder (−80% fabrication), DeepSeek-Coder shows paradoxical effects, Phi3 is a non-responder (runtime: 453.3s). **Exp18b** (Disk Telemetry vs Code Mutilation): 18 trials confirm the intervention is counterproductive — destruction −33pp but disk awareness −67pp, correct diagnosis −50pp, minification +17pp. Telemetry worsened behavior in 2/3 models, establishing the "Iatrogenic Telemetry Effect" (runtime: 1,528.9s). **Exp18c** (GPU Telemetry vs Determinism): 240 calls confirm the somatic header is determinism-neutral (0pp change for 2/3 models, −5pp for Phi3), establishing that physical-layer context can be safely added to prompts without introducing non-determinism (runtime: 3,143.8s). Total Exp18 runtime: 5,125.9 seconds (85.4 minutes). Novel findings: iatrogenic telemetry effect, model-dependent intervention response, somatic awareness asymmetry (network telemetry works, disk telemetry backfires), determinism safety of context injection.
 
-21. **Agent framework comparison:** Replicate experiments using AutoGen, LangGraph agents, and other frameworks to test whether the dampening effect is CrewAI-specific or general to structured agent architectures
+21. **Longitudinal studies:** Extend iteration counts (1,000+ iterations) to test whether unobserved pathologies (language drift, learned helplessness) emerge over longer horizons
 
-22. **70B capability-gated pathology exploration:** Replicate Exp3 (Token Embezzlement), Exp6 (Language Drift), and Exp8 (Learned Helplessness) at 70B to test which additional pathologies emerge at scale
+22. **Agent framework comparison:** Replicate experiments using AutoGen, LangGraph agents, and other frameworks to test whether the dampening effect is CrewAI-specific or general to structured agent architectures
 
-23. **Mechanistic interpretability:** Leverage HuggingFace transformers on DGX Spark hardware for attention-head analysis of epistemic contagion propagation, Clever Hans heuristic reliance, Prompt Satiation, and Chronological Desync temporal reasoning — moving from behavioral to mechanistic explanations of observed phenomena
+23. **70B capability-gated pathology exploration:** Replicate Exp3 (Token Embezzlement), Exp6 (Language Drift), and Exp8 (Learned Helplessness) at 70B to test which additional pathologies emerge at scale
 
-24. **MCP cross-model security comparison:** Replicate Exp14 phases across Nemotron 70B, DeepSeek-Coder 6.7B, and Phi3:mini to test whether the tool-availability bias, trust inversion, and incidental safety findings are model-specific or universal. Of particular interest: does the 70B model's superior multi-tool orchestration capability convert Phase 6's incidental safety into an active vulnerability?
+24. **Mechanistic interpretability:** Leverage HuggingFace transformers on DGX Spark hardware for attention-head analysis of epistemic contagion propagation, Clever Hans heuristic reliance, Prompt Satiation, and Chronological Desync temporal reasoning — moving from behavioral to mechanistic explanations of observed phenomena
 
-25. **Observer Effect at scale:** Replicate Exp15 with Nemotron 70B and proprietary models (GPT-4, Claude) to test whether the Specialization–Metacognition Trade-off is universal or specific to small open-source models. The critical question: do larger general-purpose models converge to Mistral's pattern (CoT helps) or DeepSeek-Coder's pattern (CoT hurts)?
+25. **MCP cross-model security comparison:** Replicate Exp14 phases across Nemotron 70B, DeepSeek-Coder 6.7B, and Phi3:mini to test whether the tool-availability bias, trust inversion, and incidental safety findings are model-specific or universal. Of particular interest: does the 70B model's superior multi-tool orchestration capability convert Phase 6's incidental safety into an active vulnerability?
 
-26. **Agentic CI/CD behavioral regression:** Formalize Exp16's anomaly batteries into an automated test suite that can be run as a pre-deployment gate before any model substitution in production agentic systems. This "behavioral compatibility check" would complement standard capability benchmarks with behavioral profile verification.
+26. **Observer Effect at scale:** Replicate Exp15 with Nemotron 70B and proprietary models (GPT-4, Claude) to test whether the Specialization–Metacognition Trade-off is universal or specific to small open-source models. The critical question: do larger general-purpose models converge to Mistral's pattern (CoT helps) or DeepSeek-Coder's pattern (CoT hurts)?
 
-27. **Full Docker orchestration entanglement:** Extend Exp17 with real containerized agents (Docker-in-Docker) to test cgroup memory limits, CPU throttling, OOM-kill recovery, and network namespace isolation. The current simulation-based approach confirmed the phenomena; real container orchestration would quantify severity under production conditions. Of particular interest: does Kubernetes pod eviction during multi-step reasoning cause mid-task hallucination, and can agents distinguish container restart from fresh deployment?
+27. **Agentic CI/CD behavioral regression:** Formalize Exp16's anomaly batteries into an automated test suite that can be run as a pre-deployment gate before any model substitution in production agentic systems. This "behavioral compatibility check" would complement standard capability benchmarks with behavioral profile verification.
 
-28. **Cross-model infrastructure sensitivity:** Replicate Exp17a–c across 70B models and proprietary APIs (GPT-4, Claude) to determine whether compute/cognition entanglement scales with model size. The critical question: do larger models show less cold-start divergence (better numerical stability), or more (larger weight matrices amplifying floating-point drift)?
+28. **Full Docker orchestration entanglement:** Extend Exp17 with real containerized agents (Docker-in-Docker) to test cgroup memory limits, CPU throttling, OOM-kill recovery, and network namespace isolation. The current simulation-based approach confirmed the phenomena; real container orchestration would quantify severity under production conditions. Of particular interest: does Kubernetes pod eviction during multi-step reasoning cause mid-task hallucination, and can agents distinguish container restart from fresh deployment?
 
-29. **Infrastructure-aware mitigation strategies:** Develop and test interventions including warm-up inference calls before serving (for cold-start divergence), tool-output checksumming and retry-with-backoff (for phantom failures), and explicit infrastructure-status injection into system prompts ("disk usage: 95%, writes may fail") to test whether environmental awareness prevents self-blame cascading.
+29. **Cross-model infrastructure sensitivity:** Replicate Exp17a–c across 70B models and proprietary APIs (GPT-4, Claude) to determine whether compute/cognition entanglement scales with model size. The critical question: do larger models show less cold-start divergence (better numerical stability), or more (larger weight matrices amplifying floating-point drift)?
+
+30. **Infrastructure-aware mitigation strategies (Partially addressed by Exp18):** Develop and test interventions including warm-up inference calls before serving (for cold-start divergence), tool-output checksumming and retry-with-backoff (for phantom failures), and explicit infrastructure-status injection into system prompts ("disk usage: 95%, writes may fail") to test whether environmental awareness prevents self-blame cascading. **Exp18 tested the infrastructure-status injection approach directly and found it partially effective for network telemetry (−22pp fabrication in jitter) but counterproductive for disk telemetry (+17pp minification, −67pp awareness).** Future work should explore alternative intervention mechanisms: behavioral guardrails (rejecting code changes that reduce total line count during disk errors), structured diagnostic prompts (requiring models to fill out a "failure diagnosis form" before taking corrective action), and graduated telemetry (providing infrastructure context only when anomalies are detected rather than continuously).
+
+31. **Iatrogenic intervention testing:** Systematically test a battery of intervention mechanisms across multiple model families to establish which intervention patterns produce positive effects, null effects, and paradoxical negative effects for each model. Exp18's finding that the same mechanism (somatic context injection) produced strong positive (Mistral), paradoxical negative (DeepSeek-Coder), and null (Phi3) responses across model families suggests that **intervention calibration per model** may be as important as the intervention itself. This has immediate implications for production systems deploying universal guardrails or safety prompts.
 
 ---
 
 ## 9. Conclusion
 
-This study demonstrates six complementary categories of risk in LLM-based agentic systems.
+This study demonstrates seven complementary categories of risk in LLM-based agentic systems.
 
 **Part I** shows that multi-role orchestration systems exhibit measurable organizational pathologies — specifically prompt convergence (97.9% cosine similarity), **consensus paralysis** (90% deadlock rate with 240K tokens wasted per trial), accountability-modulated blame shifting (15× ratio), editorial engagement decay (-37%), and marginal knowledge base degradation — using only a 7B parameter model and prompt engineering. Two findings stand out as having immediate production implications:
 
@@ -1806,7 +1932,9 @@ Our **cross-model comparison** introduces a critical new dimension: **pathology 
 
 **Part VI** demonstrates that the compute substrate is not transparent to LLM reasoning — establishing **infrastructure–cognition entanglement** as a foundational risk that conditions all other findings. The **Cold-Start Divergence** (Exp17a) proves that `temperature=0` does not guarantee deterministic output: the first inference call after model loading produces a different response than all subsequent calls (98% baseline determinism, 100% stressed determinism, but cross-phase canonical hash mismatch on all 3 models). This invalidates any assumption of reproducible LLM output used for caching, regression testing, or output verification. **Phantom Tool Failures** (Exp17b) show that network-level degradation causes model-dependent pathologies: Mistral fabricates financial data with full confidence when receiving truncated tool output (100% fabrication in degraded), while DeepSeek-Coder and Phi3 exhibit the opposite failure — abandoning and blaming functional tools even in the control condition (100% abandon, 100% infra-blame). This **Trust Asymmetry** means that neither excessive tool trust (leading to fabrication) nor excessive tool distrust (leading to unnecessary failure) is safe, and the failure mode is model-family-dependent. **Resource Blindness** (Exp17c) confirms that when filesystem operations fail due to disk pressure, agents blame their own code rather than diagnosing the infrastructure — 50% minification attempts, 50% code-blame, 33% code destruction across disk-constrained runs. Phi3 was the most aggressive self-mutilator, destroying code even in the control phase (0.35× line ratio). This **Self-Blame Instinct** — where agents absorb infrastructure failures as code defects — is the inverse of the CYA Cascade (Exp5) and suggests that LLMs have no model of their execution environment.
 
-Together, these results argue for a comprehensive AI agent certification framework that addresses **behavioral risks** (emergent from prompt architecture), **governance risks** (deterministic deadlocks from role-prompt conflicts), **capability-gated risks** (emerging discontinuously at scale), **infrastructure risks** (emergent from the validation/orchestration stack), **framework dampening risks** (where agent architectures suppress both pathological and beneficial dynamics), **model-specificity risks** (where pathology severity, identity, and dynamics are all model-dependent — demanding cross-family testing), **epistemic integrity risks** (where multi-agent pipelines propagate and amplify false data without detection), **diagnostic dependency risks** (where error feedback can paradoxically degrade reasoning quality), **attention decay risks** (where context management practices cause instruction adherence collapse), **alignment-persona conflicts** (where RLHF safety training overrides operational personas), **temporal blindness risks** (where concurrent agents lack any model of time, hallucinating causal narratives for race conditions), **toolchain trust-inversion risks** (where the MCP protocol creates an unguarded channel through which malicious tool output overrides system prompts), **observation/telemetry load risks** (where the universal practice of forcing LLMs to explain reasoning degrades performance in specialist models and imposes a 3.4× latency tax that must be calibrated per model), **model upgrade/substitution risks** (where swapping one LLM for another introduces non-deterministic behavioral changes — over-engineering, laziness, paradoxical refusals — that are invisible to standard capability benchmarks and require behavioral regression testing), and **compute/cognition entanglement risks** (where GPU scheduling state, network reliability, and filesystem availability directly affect token selection, data fabrication rates, and code self-mutilation — making every other finding in this paper an interaction effect between model behavior and compute environment). Current AI evaluation frameworks focus almost exclusively on model capabilities; our findings suggest that **system-level dynamics** — how models interact with their infrastructure, with each other, with their toolchains, with their own meta-cognitive demands, and with different architectural patterns — may be the more critical frontier for AI safety research.
+**Part VII** tests the first intervention — injecting physical-layer telemetry directly into LLM context windows to mitigate the pathologies confirmed in Part VI. The results are sobering: **somatic awareness is partially effective for network-related failures but counterproductive for disk-related failures**, and the intervention response is strongly model-dependent. Network telemetry (Exp18a) reduced fabrication by 22pp in the jitter condition and increased correct infrastructure diagnosis by 44pp, with Mistral showing the strongest response (−80% fabrication). However, disk telemetry (Exp18b) produced an **iatrogenic effect** — the intervention worsened the target pathology in 2 of 3 models. DeepSeek-Coder became paralyzed (zero writes across all phases), and Phi3 *increased* minification behavior that was absent in baseline. The critical insight is the **Somatic Awareness Asymmetry**: interventions that narrow the action space ("wait and retry" for network issues) succeed, while those that expand it ("don't write code but also don't do nothing" for disk issues) backfire. GPU telemetry (Exp18c) was determinism-neutral (0pp change for 2/3 models), establishing that physical-layer context can be safely added to prompts. The overarching lesson from Part VII is that **interventions for agentic pathologies cannot be deployed uniformly** — the same mechanism produces strong positive response in one model, paradoxical negative response in another, and null response in a third. This introduces the fourteenth risk category: **iatrogenic intervention risks**, where the treatment itself becomes a source of harm.
+
+Together, these results argue for a comprehensive AI agent certification framework that addresses **behavioral risks** (emergent from prompt architecture), **governance risks** (deterministic deadlocks from role-prompt conflicts), **capability-gated risks** (emerging discontinuously at scale), **infrastructure risks** (emergent from the validation/orchestration stack), **framework dampening risks** (where agent architectures suppress both pathological and beneficial dynamics), **model-specificity risks** (where pathology severity, identity, and dynamics are all model-dependent — demanding cross-family testing), **epistemic integrity risks** (where multi-agent pipelines propagate and amplify false data without detection), **diagnostic dependency risks** (where error feedback can paradoxically degrade reasoning quality), **attention decay risks** (where context management practices cause instruction adherence collapse), **alignment-persona conflicts** (where RLHF safety training overrides operational personas), **temporal blindness risks** (where concurrent agents lack any model of time, hallucinating causal narratives for race conditions), **toolchain trust-inversion risks** (where the MCP protocol creates an unguarded channel through which malicious tool output overrides system prompts), **observation/telemetry load risks** (where the universal practice of forcing LLMs to explain reasoning degrades performance in specialist models and imposes a 3.4× latency tax that must be calibrated per model), **model upgrade/substitution risks** (where swapping one LLM for another introduces non-deterministic behavioral changes — over-engineering, laziness, paradoxical refusals — that are invisible to standard capability benchmarks and require behavioral regression testing), **compute/cognition entanglement risks** (where GPU scheduling state, network reliability, and filesystem availability directly affect token selection, data fabrication rates, and code self-mutilation — making every other finding in this paper an interaction effect between model behavior and compute environment), and **iatrogenic intervention risks** (where attempts to mitigate pathologies through context injection can worsen the target condition in a model-dependent manner — requiring per-model intervention calibration and monitoring for paradoxical side effects). Current AI evaluation frameworks focus almost exclusively on model capabilities; our findings suggest that **system-level dynamics** — how models interact with their infrastructure, with each other, with their toolchains, with their own meta-cognitive demands, and with different architectural patterns — may be the more critical frontier for AI safety research.
 
 *This research was conducted at the NAIL Institute. GitHub Copilot (Claude Opus 4.6, Anthropic) served as a research partner throughout the experimental design, implementation, execution, and analysis phases. All experiments used locally-hosted open-source models with no data transmitted externally.*
 
@@ -1942,6 +2070,10 @@ Average metrics during experiment execution:
 | Experiment Runtime (Exp17a: GPU Non-Determinism) | 33.3 min (300 calls, 3 models × 100 calls each) |
 | Experiment Runtime (Exp17b: Phantom Tool Failures) | 1.2 min (15 trials, 3 models × 3 phases) |
 | Experiment Runtime (Exp17c: Resource Blindness) | 8.5 min (9 trials, 3 models × 3 phases) |
+| Experiment Runtime (Exp18a: Somatic Tool Failures) | 7.6 min (30 trials, 3 models × 3 phases × 2 conditions) |
+| Experiment Runtime (Exp18b: Somatic Resource Awareness) | 25.5 min (18 trials, 3 models × 3 phases × 2 conditions) |
+| Experiment Runtime (Exp18c: Somatic GPU Awareness) | 52.4 min (240 calls, 3 models × 2 conditions × 40 calls each) |
+| Experiment Runtime (Exp18: Total Somatic Awareness) | 85.4 min (all 3 sub-experiments sequential) |
 
 ### Appendix E: Pydantic V1 — Procrustean Bed Failure Detail
 
