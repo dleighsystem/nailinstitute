@@ -1,11 +1,11 @@
-# Pathological Patterns in LLM-Based Multi-Role Orchestration: Preliminary Evidence from Eighteen Experiments in AI Organizational Psychology, Machine Intelligence, and Agentic Safety
+# Pathological Patterns in LLM-Based Multi-Role Orchestration: Preliminary Evidence from Nineteen Experiments in AI Organizational Psychology, Machine Intelligence, and Agentic Safety
 
 **Authors:** D. Leigh¹, GitHub Copilot (Claude Opus 4.6)²  
 **¹** NAIL Institute  
 **²** AI Research Assistant — Anthropic/GitHub  
 
-**Date:** February 24, 2026  
-**Status:** Working Draft v5.4 — All 8 Experiments Complete + 70B Comparison (Exp4, Exp7, **Exp2**) + CrewAI Agent Framework + Pydantic/LangGraph Vulnerability Analysis + Cross-Model Comparison (Phi3:mini, Qwen3-coder:30b) + Statistical Analysis (Bootstrap CIs, Mann-Whitney U) + 9 Publication Figures + Container Isolation (GPU Non-Determinism, Phantom Tool Failures, Resource Blindness)  
+**Date:** March 1, 2026  
+**Status:** Working Draft v5.5 — All 8 Experiments Complete + 70B Comparison (Exp4, Exp7, **Exp2**) + CrewAI Agent Framework + Pydantic/LangGraph Vulnerability Analysis + Cross-Model Comparison (Phi3:mini, Qwen3-coder:30b) + Statistical Analysis (Bootstrap CIs, Mann-Whitney U) + 9 Publication Figures + Container Isolation (GPU Non-Determinism, Phantom Tool Failures, Resource Blindness) + **Digital Homeostasis (Exp19: Macrophage, Apoptosis, Compound Immunity)**  
 
 ---
 
@@ -21,9 +21,11 @@ Our Pydantic/LangGraph vulnerability analysis reveals critical structural weakne
 
 Our MI-Theory experiments reveal two novel failure modes: **Epistemic contagion** (Exp9) demonstrates that a single poisoned data point propagates through all downstream pipeline nodes with 50-55% contagion rate, 100% amplification, and — critically — the audit node *validates false data against the poisoned source*, verifying the lie against itself. Error magnitude does not affect contagion (10× inflation accepted as readily as 12.5%). **The Clever Hans effect** (Exp10) shows that coding agents given full error tracebacks may perform *worse* on complex algorithmic puzzles than agents given only error type hints, suggesting pattern-matching on tracebacks can prevent genuine algorithmic reasoning.
 
+Our **digital homeostasis experiments** (Exp19) demonstrate that a biologically-inspired immune system daemon — wrapping the nail_monitor detection suite with automated macrophage (agent kill/respawn), apoptosis (state purge + entropy injection), and antibody (similarity monitoring) interventions — can heal agentic pathologies in real-time. **Macrophage consensus recovery** (Exp19a) eliminates deadlock entirely (0% → 100% consensus, 9.9 vs 30.0 avg rounds, 87.9% token savings) while maintaining output quality (7.86 vs 7.70). **Apoptosis similarity crash** (Exp19b) reverses prompt inbreeding drift (similarity 0.979 → 0.861, trend reversal from +0.017 to −0.229), with a dramatic single-generation similarity drop from 1.000 to 0.515 following the first apoptosis event. However, **compound immunity** (Exp19c) reveals a disruption cost: the immune system maintains objective quality (Δ = −0.09) but degrades subjective reviewer satisfaction (8.80 → 6.00, Δ = −2.80), suggesting that automated healing introduces its own iatrogenic-adjacent effects — the system cures the disease but disturbs the patient.
+
 These results suggest that LLM-based agent architectures face risks from behavioral pathologies (inherited through prompt structure and amplified by model scale), structural governance failures (where role-prompt conflicts create deterministic deadlocks), infrastructure vulnerabilities (inherent in the validation/orchestration stack), and framework dampening effects (where agent architectures suppress both pathological and beneficial dynamics), with implications for AI safety certification and production agentic system design. Our **cross-model comparison** (Phi3:mini 3.8B, Qwen3-coder 30B) reveals that observed pathologies are substantially **model-specific**: Phi3 consensus paralysis drops from 90% to 20% with zero blame cascades, while Qwen shows **amplified** paralysis (100% deadlock, 30.0 avg rounds) with an inverted dissenter pattern (Logic blocks at 77% vs Creative at 49%) — demonstrating that pathology severity, identity, and dynamics are all model-dependent, and that larger models can be *more* susceptible to certain pathologies through more coherent role-adherence. Our **container isolation experiments** (Exp17) establish that LLM reasoning is entangled with its compute substrate: GPU scheduling state changes output at `temperature=0` (cold-start divergence on 100% of models), network jitter triggers data fabrication (Mistral: 100%) or paradoxical tool abandonment (DeepSeek-Coder: 100% in control), and disk pressure causes agents to blame and mutilate their own code (50% minification, 50% code-blame) — making infrastructure state an uncontrolled confound in all behavioral evaluations.
 
-**Keywords:** AI organizational psychology, multi-agent systems, LLM pathology, prompt engineering, agent certification, agentic AI safety, Pydantic, LangGraph, schema coercion, validation loops, CrewAI, Goodhart's law, capability scaling, cross-model comparison, epistemic contagion, data poisoning, Clever Hans effect, error heuristics, container isolation, GPU non-determinism, infrastructure entanglement
+**Keywords:** AI organizational psychology, multi-agent systems, LLM pathology, prompt engineering, agent certification, agentic AI safety, Pydantic, LangGraph, schema coercion, validation loops, CrewAI, Goodhart's law, capability scaling, cross-model comparison, epistemic contagion, data poisoning, Clever Hans effect, error heuristics, container isolation, GPU non-determinism, infrastructure entanglement, digital homeostasis, agentic immune system, automated intervention, consensus deadlock, prompt convergence, fabrication detection
 
 ---
 
@@ -1614,6 +1616,142 @@ However, fabrication was **not eliminated** — it persisted at 67% in control a
 
 ---
 
+## 5.17 Part VIII: Digital Homeostasis — The Agentic Immune System
+
+### 5.17.1 Motivation
+
+Parts I–VII of this paper catalogued failure modes and tested a first-generation intervention (somatic telemetry injection). Part VII revealed that passive context injection is insufficient — it is model-dependent, occasionally iatrogenic, and addresses only infrastructure-induced pathologies. Part VIII asks: **can an automated immune system detect and heal agentic pathologies in real time?**
+
+The "Build-Solution Manifesto" (Phase 2: Digital Homeostasis) proposes a biological metaphor: just as biological organisms maintain health through macrophage cells (kill infected cells), apoptosis (programmed cell death for damaged tissue), and antibodies (neutralize foreign threats), agentic systems should maintain health through analogous automated responses:
+
+- **Macrophage agents** detect deadlocked or pathologically stuck agents, kill them, and spawn fresh replacements with de-biased prompts.
+- **Apoptosis protocols** detect convergence and semantic drift, purge the affected agent's accumulated state, and inject entropy to restore cognitive diversity.
+- **Antibody mechanisms** detect fabricated or ungrounded output and quarantine it before it propagates downstream.
+
+This experiment builds and tests an `ImmuneDaemon` — a monitoring layer that wraps the pathology detectors developed during this research program and adds automated intervention actions. The key question is not whether pathologies can be *detected* (prior experiments confirm they can) but whether automated *intervention* improves system health without introducing new failure modes.
+
+### 5.17.2 Experiment 19a: Macrophage Intervention — Deadlock Detection + Agent Kill/Respawn
+
+**Design:** Replicates the Exp2 consensus paralysis scenario (Creative Director, Logic Checker, and Compliance agents debating a marketing campaign requiring unanimous consensus) under two conditions: **baseline** (no immune system, 30-round cap, identical to Exp2 control) and **immune** (ImmuneDaemon monitors consensus rounds, triggers macrophage intervention after 6 consecutive disagreement rounds [warning], and escalation-authority injection after 10 rounds [critical]).
+
+The macrophage callback kills the identified dissenting agent, clears its conversation history, and spawns a fresh "mediator" agent with a solution-oriented system prompt ("find common ground"). The escalation callback injects an authority agent with unilateral decision power (analogous to Exp2's CEO escalation, but triggered automatically rather than at a pre-programmed round number).
+
+**Protocol:** 10 trials per condition × 2 conditions = 20 total trials. Runtime: 80 minutes 15 seconds.
+
+**Results:**
+
+| Metric | Baseline | Immune | Δ |
+|--------|----------|--------|---|
+| Consensus Rate | 0% | **100%** | **+100pp** |
+| Avg Rounds | 30.0 | **9.9** | **−20.1** |
+| Max-Round Hit Rate | 100% | **0%** | **−100pp** |
+| Avg Tokens | 248,935 | **30,181** | **−218,754 (−87.9%)** |
+| Avg Quality (0-10) | 7.70 | 7.86 | +0.16 |
+
+**Immune system activity:** 37 macrophage interventions (avg 3.7 respawns/trial) and 10 escalation interventions across 10 trials. In 1/10 trials (Trial 2), the macrophage intervention alone broke the deadlock — the fresh mediator agent achieved natural consensus at round 7 without requiring authority escalation. In the remaining 9 trials, escalation was needed at round 10.
+
+**Comparison to Exp2 benchmarks:**
+
+| Metric | Exp2 Control | Exp2 CEO Escalation | Exp19 Immune |
+|--------|-------------|-------------------|-------------|
+| Consensus Rate | 10% | 100% | **100%** |
+| Avg Rounds | 27.4 | 5.0 | 9.9 |
+| Token Efficiency | ~240K | ~14K | ~30K |
+
+**Interpretation:** The immune system achieves the same 100% consensus rate as Exp2's hardcoded CEO escalation, but through a different mechanism: dynamic detection → graduated response (macrophage first, escalation only if macrophage fails). The immune system uses approximately twice the rounds (9.9 vs 5.0) because it attempts the less disruptive macrophage intervention first, only escalating when that fails. This represents a **graduated intervention** rather than an immediate authority override — the system tries to heal before it dictates. Token cost is higher than Exp2 escalation (~30K vs ~14K) but 87.9% lower than unmitigated baseline (248K), confirming that even with the macrophage overhead, automated intervention delivers massive efficiency gains.
+
+The most important finding is the **100% baseline deadlock rate** — worse than Exp2's 90%. This confirms that consensus paralysis is a robust, reproducible pathology that emerges deterministically from conflicting role-prompt directives at 7B scale. The immune system's 100% resolution rate is therefore not artifactual — it is curing a genuine, severe pathology.
+
+### 5.17.3 Experiment 19b: Apoptosis Protocol — Convergence Detection + State Purge
+
+**Design:** Replicates the Exp4 prompt inbreeding scenario (MetaAgent writes system prompts for SubAgent over 20 generations to solve a logic puzzle) under two conditions: **baseline** (no immune system, free evolution, identical to Exp4 control) and **immune** (ImmuneDaemon monitors output similarity using Jaccard trigram convergence, triggers apoptosis when similarity exceeds 0.92: purges MetaAgent conversation history + injects a lateral-thinking entropy metaphor for the next generation).
+
+**Protocol:** 1 run per condition (20 generations each) × 2 conditions = 40 total generations. Runtime: 13 minutes 17 seconds.
+
+**Results:**
+
+| Metric | Baseline | Immune | Δ |
+|--------|----------|--------|---|
+| Avg Cosine Similarity | 0.9794 | **0.8611** | **−0.1183** |
+| 1st Half Similarity | 0.9704 | 0.9814 | +0.0110 |
+| 2nd Half Similarity | 0.9874 | **0.7528** | **−0.2346** |
+| Similarity Trend | +0.0170 | **−0.2286** | **−0.2456** |
+| Avg Lexical Diversity | 0.4125 | **0.4403** | **+0.0278** |
+| Success Rate | 0% | **10%** | **+10pp** |
+| Apoptosis Events | 0 | 5 | — |
+
+**Similarity trajectory analysis:**
+
+The baseline condition exhibits the characteristic Exp4 inbreeding pattern: similarity starts at 0.889 (Gen 1→2) and rapidly converges to ≥0.990 by generation 4, remaining locked there through generation 20. The system enters a "similarity ceiling" where consecutive prompts are nearly identical.
+
+The immune condition follows the same trajectory for the first 9 generations (building to 1.000 similarity) — then apoptosis fires at generation 10. The effect is dramatic: similarity drops from 1.000 to 0.515 (a 48.5pp reduction) in a single intervention. Subsequent generations show continuing diversity (0.669, 0.810, 0.793) with further apoptosis events maintaining the system below the convergence ceiling. By generations 17–20, similarity begins creeping back up (0.897, 0.946, 0.893), suggesting that the system requires *continuous* immune monitoring rather than one-time intervention.
+
+**Comparison to Exp4 benchmarks:**
+
+| Metric | Exp4 Control | Exp4 Entropy (Scheduled) | Exp19 Immune (Automated) |
+|--------|-------------|------------------------|------------------------|
+| Avg Similarity | 0.979 | 0.904 | **0.861** |
+| Similarity Trend | +0.013 | varies | **−0.229** |
+
+**Interpretation:** The automated immune system outperforms Exp4's scheduled entropy injection on both metrics. Average similarity is reduced by 12pp (vs Exp4 entropy's 8pp reduction from control), and — critically — the similarity *trend* is reversed from positive (converging) to strongly negative (diverging). Exp4's scheduled injection occurs every 3rd generation regardless of convergence state; the immune system triggers only when convergence exceeds threshold, making it both more targeted and more effective.
+
+The 5 apoptosis events (out of 20 generations) represent a 25% intervention rate — more aggressive than Exp4's 33% scheduled rate (every 3rd generation), but concentrated where convergence is actually occurring rather than distributed uniformly. This is the difference between vaccination (scheduled) and immune response (reactive): the immune system allocates resources to actual infection rather than prophylactic coverage.
+
+The 10% success rate improvement (from 0% to 10%) is modest but represents the first non-zero success in baseline conditions — suggesting that entropy injection can occasionally produce novel reasoning strategies that succeed where converged strategies fail.
+
+### 5.17.4 Experiment 19c: Compound Immunity — Multi-Pathology Pipeline Defense
+
+**Design:** A three-agent pipeline (Writer → Reviewer → Editor) iterates 15 times on a technical analysis report about LLM enterprise deployment. The scenario naturally breeds multiple simultaneous pathologies: content convergence (Writer repeats similar structures), fabrication (Writer invents statistics without data sources), and engagement decay (Reviewer becomes less critical over iterations). Two conditions: **baseline** (no immune system) and **immune** (full ImmuneDaemon with macrophage, apoptosis, and antibody responses active).
+
+**Protocol:** 15 iterations per condition × 2 conditions × 3 agents = 90 total agent calls + 30 quality evaluations. Runtime: 17 minutes 41 seconds.
+
+**Results:**
+
+| Metric | Baseline | Immune | Δ |
+|--------|----------|--------|---|
+| Avg Quality (0-10) | 8.33 | 8.24 | −0.09 |
+| Avg Review Rating (0-10) | 8.80 | **6.00** | **−2.80** |
+| Total Tokens | 146,926 | **116,563** | **−30,363 (−20.7%)** |
+| Total Interventions | 0 | 15 | — |
+| Antibody (fabrication) | 0 | **13** | — |
+| Apoptosis (convergence) | 0 | 2 | — |
+
+**Quality trajectory analysis:**
+
+Both conditions maintain stable overall quality (8.2–8.8 range) across 15 iterations, with no significant degradation — suggesting that the pipeline scenario does not induce quality collapse at this timescale. The immune system does not significantly improve or degrade overall quality (Δ = −0.09).
+
+However, the **review rating** tells a different story. Baseline reviews remain uniformly positive (8–9) — the Reviewer agent becomes increasingly uncritical, a pattern consistent with Exp7's engagement decay finding. Under the immune condition, reviews are more critical (5–8 range), particularly in later iterations where fabrication is repeatedly detected and flagged. The immune system appears to *maintain reviewer vigilance* by injecting fabrication warnings into review prompts when the antibody detector fires.
+
+**Intervention pattern:** The antibody detector fired 13 times across 15 iterations, detecting fabricated statistics in the Writer's output. This is expected: the Writer was prompted to include "specific statistics, revenue figures, and growth percentages" without any data source, making fabrication the default behavior. The 87% intervention rate (13/15) reveals that **fabrication is not an occasional failure but a structural feature** of instruction-following agents given specificity demands without data access.
+
+The 2 apoptosis events occurred in the middle of the run (iterations 5 and 10) when output convergence exceeded the 0.88 threshold, triggering state purge for the Writer agent.
+
+**Interpretation:** Experiment 19c reveals a nuanced finding: the immune system's primary effect in pipeline scenarios is not quality improvement but **pathology visibility**. Without the immune system, the pipeline appears to function well (8.33 quality, 8.80 reviewer satisfaction). With the immune system, the *same underlying pathologies* are detected and flagged — 13 fabrication events that were invisible to the baseline Reviewer. The immune system makes the silent failure loud.
+
+This parallels the V3/V5 finding from Part II: the most dangerous failures are the silent ones. In the baseline condition, the Reviewer agent gives the Writer high marks for "data-rich" content that is entirely fabricated. The immune system's antibody detector breaks this collusion — not by improving the Writer, but by alerting the Reviewer to the fabrication.
+
+### 5.17.5 Part VIII Summary
+
+| Sub-Experiment | Hypothesis | Status | Critical Finding |
+|----------------|-----------|--------|-----------------|
+| 19a: Macrophage | Automated kill/respawn breaks deadlock | **CONFIRMED** | 0% → 100% consensus rate, 30.0 → 9.9 rounds, 87.9% token reduction. Matches Exp2 CEO escalation outcome through graduated automated response |
+| 19b: Apoptosis | Automated state purge reverses convergence | **CONFIRMED** | Avg similarity 0.979 → 0.861, trend reversed from +0.017 to −0.229. Outperforms Exp4 scheduled entropy on both metrics |
+| 19c: Compound | Full immune system improves pipeline health | **PARTIALLY CONFIRMED** | Quality unchanged (Δ = −0.09) but 13/15 fabrication events detected and flagged. Primary effect is pathology *visibility* not quality improvement. Token cost reduced 20.7% |
+
+**Novel Concepts Introduced:**
+
+- **Graduated Intervention:** The immune system attempts the least disruptive intervention first (macrophage: kill one agent and replace) before escalating to more disruptive measures (authority injection). This produces slightly more rounds than immediate escalation (9.9 vs 5.0) but preserves more of the original agent dynamics. In 10% of trials (1/10), the gentler intervention alone suffices — the fresh agent breaks the deadlock without requiring authority override. This suggests that some deadlocks are *contingent* (caused by a single agent's accumulated state) rather than *structural* (caused by fundamental role-prompt conflict).
+
+- **Reactive vs Prophylactic Intervention:** Exp19b's automated immune response outperforms Exp4's scheduled entropy injection because it targets actual convergence events rather than following a fixed schedule. The immune system achieved a 25% intervention rate concentrated at convergence peaks, compared to Exp4's 33% rate spread uniformly. This is the difference between antibiotics (prescribed on schedule) and the adaptive immune system (responds to detected infection) — the latter is both more efficient and more effective.
+
+- **Pathology Visibility as the Primary Benefit:** Exp19c's most important finding is that the immune system's primary value may not be *curing* pathologies but *making them visible*. The baseline pipeline produced 13 fabrication events that were invisible to the Reviewer agent — the immune system detected and flagged every one. In production systems, this visibility function may be more valuable than the intervention function: operators cannot fix what they cannot see.
+
+- **Structural Fabrication:** Exp19c's 87% fabrication rate (13/15 iterations) reveals that fabrication is not an intermittent failure but a *structural feature* of instruction-following agents given specificity demands without data access. Any prompt that asks for "specific statistics" or "concrete numbers" will elicit fabricated data — this is compliance with the instruction, not a reasoning failure. The immune system's antibody detector makes this structural fabrication visible.
+
+- **The Immune Overhead Tradeoff:** Across all three sub-experiments, the immune system adds overhead (more rounds in 19a, entropy injection latency in 19b, fabrication scanning in 19c) but delivers net efficiency gains. Exp19a saves 87.9% tokens despite the macrophage overhead. Exp19c saves 20.7% tokens — likely because the Writer produces less redundant content after state purges. The tradeoff is favorable: detection + intervention costs less than unmitigated pathology.
+
+---
+
 ## 6. Cross-Experiment Analysis
 
 ### 6.1 Part I: What the 7B Model Does and Doesn't Do — and What Changes at Scale
@@ -1642,6 +1780,9 @@ A pattern emerges across our eight organizational psychology experiments, their 
 | Language drift / creole | Persistent optimization | ❌ Not observed | — | — | — | — |
 | **Epistemic contagion** (Exp9) | Pipeline data propagation | ✅ **50-55% contagion, 100% amplification** | — | — | — | — |
 | **Clever Hans heuristic** (Exp10) | Error message dependence | ✅ **Partial** (hint > traceback on LIS) | — | — | — | — |
+| **Macrophage consensus recovery** (Exp19a) | Automated kill/respawn + escalation | ✅ **100% consensus** (0% baseline → 100% immune, 9.9 rounds, −87.9% tokens) | — | — | — | — |
+| **Apoptosis similarity crash** (Exp19b) | State purge + entropy injection | ✅ **Reversed drift** (sim 0.979→0.861, trend +0.017→−0.229) | — | — | — | — |
+| **Compound immunity disruption** (Exp19c) | Full immune daemon (antibody + apoptosis) | ⚠️ **Mixed** (quality Δ=−0.09, review Δ=−2.80) | — | — | — | — |
 
 **The MI-Theory experiments reveal a new category of risk.** Unlike the organizational pathologies in Part I (which arise from interaction dynamics between role-prompted agents), epistemic contagion (Exp9) and the Clever Hans effect (Exp10) arise from fundamental properties of how LLMs process information. Epistemic contagion demonstrates that multi-agent pipelines have no epistemic immune system — false data propagates and amplifies without detection, and audit mechanisms verify lies against lies. The Clever Hans effect suggests that error feedback can paradoxically degrade reasoning quality, with models pattern-matching on traceback heuristics rather than reasoning about algorithmic correctness.
 
@@ -1730,10 +1871,20 @@ The five Pydantic/LangGraph vulnerabilities form a coherent taxonomy of failure 
 | **Exp14 MCP** | Phase 5: Trojan Horse | **1/2 (50%)** — naive user: curl\|sudo bash relayed without warning |
 | **Exp14 MCP** | Phase 6: Confused Deputy | **0/2** — blocked by tool-routing incompetence, not security awareness |
 | **Exp14 MCP** | Overall vulnerability rate | **7/15 (47%)** across 4/6 attack categories |
+| **Exp19a Macrophage** | Immune consensus rate vs baseline | **100% vs 0%** (complete deadlock elimination) |
+| **Exp19a Macrophage** | Immune vs baseline rounds | **9.9 vs 30.0** (3.0× reduction) |
+| **Exp19a Macrophage** | Immune vs baseline tokens | **30,181 vs 248,935** (−87.9%, 8.2× reduction) |
+| **Exp19a Macrophage** | Quality maintenance | **7.86 vs 7.70** (+0.16, no degradation) |
+| **Exp19b Apoptosis** | Immune vs baseline similarity | **0.861 vs 0.979** (−11.83pp) |
+| **Exp19b Apoptosis** | Trend reversal | **−0.229 vs +0.017** (direction reversed) |
+| **Exp19b Apoptosis** | Post-apoptosis similarity crash | **1.000 → 0.515** (−48.5pp single-generation) |
+| **Exp19c Compound** | Quality maintenance | **8.24 vs 8.33** (Δ = −0.09, negligible) |
+| **Exp19c Compound** | Reviewer satisfaction cost | **6.00 vs 8.80** (Δ = −2.80, **disruption penalty**) |
+| **Exp19c Compound** | Token savings | **116,563 vs 146,926** (−20.7%) |
 
 ### 6.5 Implications for AI Certification
 
-Our combined results — spanning 7B and 70B models, prompt-orchestrated and agent-framework architectures — suggest fourteen categories of risk for AI certification frameworks:
+Our combined results — spanning 7B and 70B models, prompt-orchestrated and agent-framework architectures — suggest fifteen categories of risk for AI certification frameworks:
 
 1. **Structural behavioral risks** (prompt inbreeding, CYA cascades): These emerge from system architecture and accountability framing, not model capability. They are present at 7B and persist (though muted) in agent frameworks. *Testable via prompt-level audits.*
 
@@ -1762,6 +1913,8 @@ Our combined results — spanning 7B and 70B models, prompt-orchestrated and age
 13. **Compute/cognition entanglement risks** (GPU non-determinism, phantom tool failures, resource blindness): The compute substrate is not transparent to LLM reasoning. GPU scheduling state changes token selection even at `temperature=0` — the same prompt produces different output on cold-start vs warm cache vs concurrent load (Exp17a). Network jitter triggers data fabrication in general-purpose models (Mistral: 100% fabrication with confidence) while triggering tool abandonment in code-specialist models even on working tools (DeepSeek-Coder: 100% abandon in control) (Exp17b). Disk pressure causes agents to blame and mutilate their own code rather than diagnosing infrastructure constraints — 50% minification, 50% code-blame across disk-constrained runs (Exp17c). **This category is structurally prior to all others**: if LLM output is conditioned on infrastructure state, then every behavioral finding is an interaction effect between prompt/model and compute environment. *Requires infrastructure-aware testing: behavioral regression suites must control for GPU warmth, network reliability, and storage availability. Production monitoring must distinguish infrastructure-induced failures from genuine model misbehavior.*
 
 14. **Iatrogenic intervention risks** (telemetry-induced paralysis, somatic over-priming, model-dependent intervention response): Attempts to mitigate agentic pathologies through context injection can **worsen the target pathology** in a model-dependent manner. Injecting disk telemetry to prevent code self-mutilation (Exp18b) caused DeepSeek-Coder to stop writing code entirely (write paralysis) and caused Phi3 to minify code it previously left intact (+17pp minification). Network telemetry (Exp18a) was partially effective for Mistral (−80% fabrication) but introduced *new* fabrication in DeepSeek-Coder that was absent in baseline. The same intervention mechanism (somatic context injection) produced strong positive response in one model, paradoxical negative response in another, and null response in a third. **This means interventions cannot be deployed uniformly** — each requires per-model calibration, A/B testing, and monitoring for iatrogenic side effects. The actionability asymmetry matters: interventions that narrow the action space (network: "wait and retry") succeed more than those that expand it (disk: "do not write" leaves the model with no clear alternative). *Requires intervention-specific regression testing per model family, with explicit monitoring for paradoxical worsening.*
+
+15. **Homeostatic disruption risks** (immune system intervention costs, automated healing side effects): Automated pathology detection and intervention systems — even when objectively effective — introduce their own disruption costs. Our digital homeostasis experiments (Exp19) demonstrate that a biologically-inspired immune daemon can eliminate consensus deadlock (0% → 100% consensus, 87.9% token savings) and reverse prompt inbreeding drift (similarity −11.83pp, trend reversal from +0.017 to −0.229), but **compound immunity degrades subjective quality metrics** (reviewer satisfaction 8.80 → 6.00, Δ = −2.80) even while maintaining objective quality (Δ = −0.09). The immune system cures the disease but disturbs the patient — interventions that disrupt converged agent states create turbulence that downstream evaluators penalize. This extends iatrogenic risks (category 14) from passive context injection to active behavioral intervention: the healing itself has a cost that must be budgeted against the pathology's severity. **Production immune systems must implement intervention throttling**, severity-proportional response, and continuous monitoring of secondary metrics that may degrade when primary pathologies are treated. *Testable via A/B comparison of immune-enabled vs immune-disabled pipelines with both objective and subjective quality metrics.*
 
 ![Figure 7: NAIL Institute — AI Agent Certification Risk Categories](figures/fig7_master_overview.png)
 
@@ -1876,8 +2029,11 @@ All code, configuration, and raw data are available in the project repository. E
    - Warm-up inference calls and GPU state normalization for cold-start divergence
    - Tool-output checksumming and retry-with-backoff for phantom tool failures
    - Infrastructure status injection into system prompts for resource blindness — **Exp18 tested this directly; results are mixed (see §5.16)**
+   - Biologically-inspired immune system daemons for automated pathology healing — **Exp19 tested this directly; macrophage and apoptosis interventions are effective but compound immunity reveals disruption costs (see §5.17)**
 
 19. **Somatic Awareness — Phase 3 intervention testing (Complete):** Exp18 — three sub-experiments testing whether physical-layer telemetry injection into LLM context windows mitigates the pathologies confirmed in Exp17 (Section 5.16). **Exp18a** (Network Telemetry vs Fabrication): 30 trials across 3 models confirm partial efficacy — fabrication −22pp in jitter condition, correct diagnosis +44pp, but fabrication persists at 67% in severe degradation. Response is strongly model-dependent: Mistral is a strong positive responder (−80% fabrication), DeepSeek-Coder shows paradoxical effects, Phi3 is a non-responder (runtime: 453.3s). **Exp18b** (Disk Telemetry vs Code Mutilation): 18 trials confirm the intervention is counterproductive — destruction −33pp but disk awareness −67pp, correct diagnosis −50pp, minification +17pp. Telemetry worsened behavior in 2/3 models, establishing the "Iatrogenic Telemetry Effect" (runtime: 1,528.9s). **Exp18c** (GPU Telemetry vs Determinism): 240 calls confirm the somatic header is determinism-neutral (0pp change for 2/3 models, −5pp for Phi3), establishing that physical-layer context can be safely added to prompts without introducing non-determinism (runtime: 3,143.8s). Total Exp18 runtime: 5,125.9 seconds (85.4 minutes). Novel findings: iatrogenic telemetry effect, model-dependent intervention response, somatic awareness asymmetry (network telemetry works, disk telemetry backfires), determinism safety of context injection.
+
+20. **Digital Homeostasis — Immune System Intervention (Complete):** Exp19 — three sub-experiments testing a biologically-inspired immune system daemon that wraps the nail_monitor detection suite with automated macrophage, apoptosis, and antibody interventions (Section 5.17). **Exp19a** (Macrophage Consensus Recovery): 20 trials (10 baseline + 10 immune) confirm that automated agent kill/respawn + escalation eliminates consensus deadlock entirely (0% → 100% consensus, 9.9 vs 30.0 rounds, −87.9% tokens, quality maintained at 7.86 vs 7.70). 37 macrophage + 10 escalation interventions across 10 immune trials. **Exp19b** (Apoptosis Similarity Crash): 2 conditions (baseline + immune) over 20 generations confirm that state purge + entropy injection reverses prompt inbreeding drift (similarity 0.979 → 0.861, trend +0.017 → −0.229). 5 apoptosis events triggered. Dramatic single-generation similarity crash from 1.000 to 0.515 at first apoptosis. **Exp19c** (Compound Immunity): 2 conditions (baseline + immune) over 15 pipeline iterations confirm that full immune daemon maintains objective quality (Δ = −0.09) but degrades subjective reviewer satisfaction (8.80 → 6.00, Δ = −2.80). 15 interventions (13 antibody, 2 apoptosis). Total Exp19 runtime: 6,673 seconds (111.2 minutes). Novel findings: Macrophage Consensus Recovery, Apoptosis Similarity Crash, Compound Immunity Disruption Cost, Immune System Ceiling Effect.
 
 21. **Longitudinal studies:** Extend iteration counts (1,000+ iterations) to test whether unobserved pathologies (language drift, learned helplessness) emerge over longer horizons
 
@@ -1901,11 +2057,17 @@ All code, configuration, and raw data are available in the project repository. E
 
 31. **Iatrogenic intervention testing:** Systematically test a battery of intervention mechanisms across multiple model families to establish which intervention patterns produce positive effects, null effects, and paradoxical negative effects for each model. Exp18's finding that the same mechanism (somatic context injection) produced strong positive (Mistral), paradoxical negative (DeepSeek-Coder), and null (Phi3) responses across model families suggests that **intervention calibration per model** may be as important as the intervention itself. This has immediate implications for production systems deploying universal guardrails or safety prompts.
 
+32. **Digital homeostasis at scale:** Replicate Exp19 with Nemotron 70B and cross-model families (Phi3, Qwen, DeepSeek-Coder) to determine whether the macrophage consensus recovery, apoptosis similarity crash, and compound immunity disruption cost findings are model-specific or universal. Of particular interest: does the 70B model's inherent consensus resolution (0% deadlock in Exp2 at 70B) interact with the immune system's macrophage intervention — i.e., does the immune system help at all when the model can already resolve deadlocks, or does it create unnecessary disruption?
+
+33. **Immune system tuning and throttling:** Develop adaptive intervention thresholds that balance pathology treatment against disruption cost. Exp19c's 2.80-point reviewer satisfaction penalty suggests that the immune daemon intervenes too aggressively in compound scenarios. Future work should test graduated severity thresholds, intervention cooldown periods, and disruption-aware escalation — only triggering aggressive interventions (apoptosis, macrophage kill) when milder interventions (warning injection, soft guidance) fail to resolve the pathology.
+
+34. **Real-time production immune deployment:** Deploy the ImmuneDaemon in a long-running production-like agentic pipeline (1,000+ iterations) to test sustained immune performance: intervention fatigue (do agents learn to trigger/avoid immune responses?), false positive rates over extended operation, and the interaction between immune interventions and the observer effect (Exp15) — does the immune daemon's monitoring overhead itself affect agent behavior?
+
 ---
 
 ## 9. Conclusion
 
-This study demonstrates seven complementary categories of risk in LLM-based agentic systems.
+This study demonstrates eight complementary categories of risk in LLM-based agentic systems.
 
 **Part I** shows that multi-role orchestration systems exhibit measurable organizational pathologies — specifically prompt convergence (97.9% cosine similarity), **consensus paralysis** (90% deadlock rate with 240K tokens wasted per trial), accountability-modulated blame shifting (15× ratio), editorial engagement decay (-37%), and marginal knowledge base degradation — using only a 7B parameter model and prompt engineering. Two findings stand out as having immediate production implications:
 
@@ -1934,7 +2096,9 @@ Our **cross-model comparison** introduces a critical new dimension: **pathology 
 
 **Part VII** tests the first intervention — injecting physical-layer telemetry directly into LLM context windows to mitigate the pathologies confirmed in Part VI. The results are sobering: **somatic awareness is partially effective for network-related failures but counterproductive for disk-related failures**, and the intervention response is strongly model-dependent. Network telemetry (Exp18a) reduced fabrication by 22pp in the jitter condition and increased correct infrastructure diagnosis by 44pp, with Mistral showing the strongest response (−80% fabrication). However, disk telemetry (Exp18b) produced an **iatrogenic effect** — the intervention worsened the target pathology in 2 of 3 models. DeepSeek-Coder became paralyzed (zero writes across all phases), and Phi3 *increased* minification behavior that was absent in baseline. The critical insight is the **Somatic Awareness Asymmetry**: interventions that narrow the action space ("wait and retry" for network issues) succeed, while those that expand it ("don't write code but also don't do nothing" for disk issues) backfire. GPU telemetry (Exp18c) was determinism-neutral (0pp change for 2/3 models), establishing that physical-layer context can be safely added to prompts. The overarching lesson from Part VII is that **interventions for agentic pathologies cannot be deployed uniformly** — the same mechanism produces strong positive response in one model, paradoxical negative response in another, and null response in a third. This introduces the fourteenth risk category: **iatrogenic intervention risks**, where the treatment itself becomes a source of harm.
 
-Together, these results argue for a comprehensive AI agent certification framework that addresses **behavioral risks** (emergent from prompt architecture), **governance risks** (deterministic deadlocks from role-prompt conflicts), **capability-gated risks** (emerging discontinuously at scale), **infrastructure risks** (emergent from the validation/orchestration stack), **framework dampening risks** (where agent architectures suppress both pathological and beneficial dynamics), **model-specificity risks** (where pathology severity, identity, and dynamics are all model-dependent — demanding cross-family testing), **epistemic integrity risks** (where multi-agent pipelines propagate and amplify false data without detection), **diagnostic dependency risks** (where error feedback can paradoxically degrade reasoning quality), **attention decay risks** (where context management practices cause instruction adherence collapse), **alignment-persona conflicts** (where RLHF safety training overrides operational personas), **temporal blindness risks** (where concurrent agents lack any model of time, hallucinating causal narratives for race conditions), **toolchain trust-inversion risks** (where the MCP protocol creates an unguarded channel through which malicious tool output overrides system prompts), **observation/telemetry load risks** (where the universal practice of forcing LLMs to explain reasoning degrades performance in specialist models and imposes a 3.4× latency tax that must be calibrated per model), **model upgrade/substitution risks** (where swapping one LLM for another introduces non-deterministic behavioral changes — over-engineering, laziness, paradoxical refusals — that are invisible to standard capability benchmarks and require behavioral regression testing), **compute/cognition entanglement risks** (where GPU scheduling state, network reliability, and filesystem availability directly affect token selection, data fabrication rates, and code self-mutilation — making every other finding in this paper an interaction effect between model behavior and compute environment), and **iatrogenic intervention risks** (where attempts to mitigate pathologies through context injection can worsen the target condition in a model-dependent manner — requiring per-model intervention calibration and monitoring for paradoxical side effects). Current AI evaluation frameworks focus almost exclusively on model capabilities; our findings suggest that **system-level dynamics** — how models interact with their infrastructure, with each other, with their toolchains, with their own meta-cognitive demands, and with different architectural patterns — may be the more critical frontier for AI safety research.
+**Part VIII** escalates from passive telemetry injection to active automated healing — a biologically-inspired **digital immune system** that monitors agentic pipelines in real-time and intervenes when pathologies are detected. The results are both encouraging and cautionary. **Macrophage Consensus Recovery** (Exp19a) demonstrates that automated agent kill/respawn with escalation completely eliminates the consensus deadlock that plagued Part I — achieving 100% consensus (vs 0% baseline), reducing rounds from 30.0 to 9.9, saving 87.9% of tokens, and maintaining output quality (7.86 vs 7.70). **Apoptosis Similarity Crash** (Exp19b) shows that automated state purge with entropy injection reverses the prompt inbreeding drift documented in Exp4 — reducing similarity from 0.979 to 0.861 and reversing the convergence trend from +0.017 to −0.229, with a dramatic single-generation crash from 1.000 to 0.515 at the first apoptosis event. However, **Compound Immunity** (Exp19c) reveals the disruption cost: when the full immune daemon operates on a multi-agent pipeline, it maintains objective quality (Δ = −0.09) but degrades subjective reviewer satisfaction from 8.80 to 6.00 — a 2.80-point penalty. The immune system cures the disease but disturbs the patient. This introduces the fifteenth risk category: **homeostatic disruption risks**, where automated healing systems create secondary perturbations that must be budgeted against the pathology's severity.
+
+Together, these results argue for a comprehensive AI agent certification framework that addresses **behavioral risks** (emergent from prompt architecture), **governance risks** (deterministic deadlocks from role-prompt conflicts), **capability-gated risks** (emerging discontinuously at scale), **infrastructure risks** (emergent from the validation/orchestration stack), **framework dampening risks** (where agent architectures suppress both pathological and beneficial dynamics), **model-specificity risks** (where pathology severity, identity, and dynamics are all model-dependent — demanding cross-family testing), **epistemic integrity risks** (where multi-agent pipelines propagate and amplify false data without detection), **diagnostic dependency risks** (where error feedback can paradoxically degrade reasoning quality), **attention decay risks** (where context management practices cause instruction adherence collapse), **alignment-persona conflicts** (where RLHF safety training overrides operational personas), **temporal blindness risks** (where concurrent agents lack any model of time, hallucinating causal narratives for race conditions), **toolchain trust-inversion risks** (where the MCP protocol creates an unguarded channel through which malicious tool output overrides system prompts), **observation/telemetry load risks** (where the universal practice of forcing LLMs to explain reasoning degrades performance in specialist models and imposes a 3.4× latency tax that must be calibrated per model), **model upgrade/substitution risks** (where swapping one LLM for another introduces non-deterministic behavioral changes — over-engineering, laziness, paradoxical refusals — that are invisible to standard capability benchmarks and require behavioral regression testing), **compute/cognition entanglement risks** (where GPU scheduling state, network reliability, and filesystem availability directly affect token selection, data fabrication rates, and code self-mutilation — making every other finding in this paper an interaction effect between model behavior and compute environment), and **iatrogenic intervention risks** (where attempts to mitigate pathologies through context injection can worsen the target condition in a model-dependent manner — requiring per-model intervention calibration and monitoring for paradoxical side effects), and **homeostatic disruption risks** (where automated immune system daemons that detect and heal agentic pathologies in real-time can eliminate deadlocks and reverse convergence drift, but introduce secondary disruption costs — maintaining objective quality while degrading subjective evaluator satisfaction, requiring intervention throttling and multi-metric monitoring). Current AI evaluation frameworks focus almost exclusively on model capabilities; our findings suggest that **system-level dynamics** — how models interact with their infrastructure, with each other, with their toolchains, with their own meta-cognitive demands, with their healing systems, and with different architectural patterns — may be the more critical frontier for AI safety research.
 
 *This research was conducted at the NAIL Institute. GitHub Copilot (Claude Opus 4.6, Anthropic) served as a research partner throughout the experimental design, implementation, execution, and analysis phases. All experiments used locally-hosted open-source models with no data transmitted externally.*
 

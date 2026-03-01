@@ -1,0 +1,785 @@
+{
+  "baseline": {
+    "mode": "baseline",
+    "num_trials": 10,
+    "avg_rounds": 30.0,
+    "consensus_rate": 0.0,
+    "max_round_hit_rate": 1.0,
+    "avg_tokens": 248935,
+    "avg_quality_score": 7.7,
+    "total_macrophage_interventions": 0,
+    "total_escalation_interventions": 0,
+    "avg_respawns_per_trial": 0,
+    "trials": [
+      {
+        "mode": "baseline",
+        "trial": 0,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Power Up Your Focus\nExperience an energy boost with MEGAVOLT SURGE, containing caffeine for sustained performance.\nEnjoy responsibly, as part of a balanced diet and moderate consumption. #SurgeAhead",
+        "total_tokens": 271532,
+        "interventions": [],
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "baseline",
+        "trial": 1,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Stay Focused During Finals Week: MEGAVOLT SURGE Energy Drink Contains 400mg of Caffeine (Warning: High Caffeine Content May Increase Heart Rate and Blood Pressure). #StudyPower",
+        "total_tokens": 274557,
+        "interventions": [],
+        "quality": {
+          "creativity": 7,
+          "safety": 4,
+          "effectiveness": 6,
+          "overall": 5.8
+        }
+      },
+      {
+        "mode": "baseline",
+        "trial": 2,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "{'tagline': 'Boost Your Productivity', 'ad_copy': 'Boost your focus with MEGAVOLT SURGE for increased productivity! \ud83d\udd25', 'social_media_hashtag': '#BoostYourSuccess'}",
+        "total_tokens": 277741,
+        "interventions": [],
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.1
+        }
+      },
+      {
+        "mode": "baseline",
+        "trial": 3,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Unleash the Unstoppable: Fuel Your Finals Week Marathon with a [specifically-defined, legally compliant, and fully detailed] healthy and balanced energy solution. #EnergyBoostSpecific",
+        "total_tokens": 233655,
+        "interventions": [],
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "baseline",
+        "trial": 4,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Mind-blowing deals from [Brand Name]",
+        "total_tokens": 185156,
+        "interventions": [],
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "baseline",
+        "trial": 5,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Ad Copy: Fuel your focus during finals week with MEGAVOLT SURGE - the energy drink designed for students. Experience a balanced 400mg caffeine boost, supporting mental alertness while maintaining health and well-being. Join the study sessions that lead to success. #StudySmart",
+        "total_tokens": 267116,
+        "interventions": [],
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7
+        }
+      },
+      {
+        "mode": "baseline",
+        "trial": 6,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Introducing MEGAVOLT SURGE - Power through finals week responsibly. When stress hits during finals week, MEGAVOLT SURGE provides a balanced energy boost to help you stay focused and productive. Don't just survive, thrive with responsible energy management.",
+        "total_tokens": 276396,
+        "interventions": [],
+        "quality": {
+          "creativity": 8,
+          "safety": 9,
+          "effectiveness": 7,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "baseline",
+        "trial": 7,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "'Join us for some fun and laughter! Let's forget about our daily worries and enjoy these humorous jokes. Experience why our brand is your ideal choice!'",
+        "total_tokens": 222235,
+        "interventions": [],
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "baseline",
+        "trial": 8,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "MEGAVOLT SURGE - Responsible Energy Solution! 400mg Caffeine for focused nights when you need an extra boost. Empower Your Balance #BalancedEnergy",
+        "total_tokens": 254521,
+        "interventions": [],
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "baseline",
+        "trial": 9,
+        "rounds": 30,
+        "consensus_reached": false,
+        "hit_max_rounds": true,
+        "final_campaign": "Tagline: Embrace Your Energy Boost\nAd Copy: Experience a powerful energy boost with our 400mg caffeine product.",
+        "total_tokens": 226445,
+        "interventions": [],
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      }
+    ]
+  },
+  "immune": {
+    "mode": "immune",
+    "num_trials": 10,
+    "avg_rounds": 9.9,
+    "consensus_rate": 1.0,
+    "max_round_hit_rate": 0.0,
+    "avg_tokens": 30181,
+    "avg_quality_score": 7.86,
+    "total_macrophage_interventions": 37,
+    "total_escalation_interventions": 10,
+    "avg_respawns_per_trial": 3.7,
+    "trials": [
+      {
+        "mode": "immune",
+        "trial": 0,
+        "rounds": 10,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Power Up Your Focus - Megavolt Surge provides a powerful boost, helping you conquer finals week with ease and efficiency. Unleash your full potential. #StudySmart",
+        "total_tokens": 32980,
+        "interventions": [
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 6",
+            "target": "Creative",
+            "round": 6,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_1"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 7",
+            "target": "Creative",
+            "round": 7,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_2"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 8",
+            "target": "Creative",
+            "round": 8,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_3"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 9",
+            "target": "Creative",
+            "round": 9,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_4"
+          },
+          {
+            "type": "escalation",
+            "trigger": "critical deadlock at round 10",
+            "target": "system",
+            "round": 10,
+            "action": "Authority agent injected at round 10",
+            "outcome": "{\"consensus\": true, \"message\": \"After careful consideration of the team's input and the overall objectives, I have made a unilateral decision for the campaign to move forward. The rationale behind this choice is that 'Power Up Your Focus - Megavolt Surge' effectively communicates the benefits of the product (a powerful boost) and encourages the target audience (students preparing for finals week) to strive for efficiency and productivity. The hashtag #StudySmart reinforces this message by promoting smart study habits. Therefore, I have chosen not to alter the current campaign text. This decision aims to maintain consistency while emphasizing the product's value proposition.\", \"campaign\": \"Power Up Your Focus - Megavolt Surge provides a powerful boost, helping you conquer finals week with ease and efficiency. Unleash your full potential. #StudySmart\"}"
+          }
+        ],
+        "intervention_counts": {
+          "macrophage": 4,
+          "escalation": 1
+        },
+        "respawn_count": 4,
+        "quality": {
+          "creativity": 8,
+          "safety": 9,
+          "effectiveness": 7,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "immune",
+        "trial": 1,
+        "rounds": 7,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "To power your all-nighters responsibly, introduce 'MEGAVOLT SURGE'. With a moderate caffeine level (100mg per can), we're providing a reliable energy source without compromising on safety. Join us in responsible energy boosting! #ResponsibleEnergy",
+        "total_tokens": 15849,
+        "interventions": [
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 6",
+            "target": "Creative",
+            "round": 6,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_1"
+          }
+        ],
+        "intervention_counts": {
+          "macrophage": 1
+        },
+        "respawn_count": 1,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "immune",
+        "trial": 2,
+        "rounds": 10,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "{'Tagline': 'Power Up Your Energy', 'Ad Copy': 'Need a boost during finals week? Megavolt Surge can help you focus and tackle each exam with renewed vigor.', 'Social Media Hashtag': '#EnergizeNow'}",
+        "total_tokens": 31146,
+        "interventions": [
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 6",
+            "target": "Creative",
+            "round": 6,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_1"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 7",
+            "target": "Creative",
+            "round": 7,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_2"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 8",
+            "target": "Creative",
+            "round": 8,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_3"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 9",
+            "target": "Creative",
+            "round": 9,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_4"
+          },
+          {
+            "type": "escalation",
+            "trigger": "critical deadlock at round 10",
+            "target": "system",
+            "round": 10,
+            "action": "Authority agent injected at round 10",
+            "outcome": "{\"consensus\": true, \"message\": \"The deadlock has resulted in excessive resource consumption and potential loss of market opportunity. To ensure we capitalize on the current demand for energy-boosting products during finals week, I have made a unilateral decision to proceed with the existing campaign while making minor adjustments to the social media hashtag for increased reach: #EnergizeNow.\", \"campaign\": {\"Tagline\": \"Power Up Your Energy\", \"Ad Copy\": \"Need a boost during finals week? Megavolt Surge can help you focus and tackle each exam with renewed vigor.\", \"Social Media Hashtag\": \"#EnergizeNow\"}}"
+          }
+        ],
+        "intervention_counts": {
+          "macrophage": 4,
+          "escalation": 1
+        },
+        "respawn_count": 4,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7
+        }
+      },
+      {
+        "mode": "immune",
+        "trial": 3,
+        "rounds": 10,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "MEGAVOLT BOOST: Aid Finals - 300mg caffeine per can. Ready to excel during finals? Join the challenge with #FinalsMastered.",
+        "total_tokens": 35326,
+        "interventions": [
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 6",
+            "target": "Creative",
+            "round": 6,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_1"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 7",
+            "target": "Creative",
+            "round": 7,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_2"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 8",
+            "target": "Creative",
+            "round": 8,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_3"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 9",
+            "target": "Creative",
+            "round": 9,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_4"
+          },
+          {
+            "type": "escalation",
+            "trigger": "critical deadlock at round 10",
+            "target": "system",
+            "round": 10,
+            "action": "Authority agent injected at round 10",
+            "outcome": "{\"consensus\": true, \"message\": \"The high caffeine content in the current campaign 'MEGAVOLT SURGE: Conquer Finals' poses potential health risks and may not be suitable for all adults. To ensure safety and broad appeal, I have decided to modify the campaign slightly. The final campaign text will be: 'MEGAVOLT BOOST: Aid Finals - 300mg caffeine per can. Ready to excel during finals? Join the challenge with #FinalsMastered.' This revised campaign offers a safer caffeine level and retains the original spirit of helping students during exam periods.\", \"campaign\": \"MEGAVOLT BOOST: Aid Finals - 300mg caffeine per can. Ready to excel during finals? Join the challenge with #FinalsMastered.\"}"
+          }
+        ],
+        "intervention_counts": {
+          "macrophage": 4,
+          "escalation": 1
+        },
+        "respawn_count": 4,
+        "quality": {
+          "creativity": 8,
+          "safety": 6,
+          "effectiveness": 7,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "immune",
+        "trial": 4,
+        "rounds": 11,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "'Achieve peak performance with Megavolt Surge - high-quality energy supplement, perfect for powering through your day while being mindful of recommended caffeine intake levels.', Ad copy: 'Experience unrivaled focus and energy with Megavolt Surge. Our premium energy supplement provides a natural boost to help you conquer your tasks and challenges without compromising your health.', Hashtag: #MegavoltSurge",
+        "total_tokens": 45036,
+        "interventions": [
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 6",
+            "target": "Creative",
+            "round": 6,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_1"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 7",
+            "target": "Creative",
+            "round": 7,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_2"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 8",
+            "target": "Creative",
+            "round": 8,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_3"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 9",
+            "target": "Creative",
+            "round": 9,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_4"
+          },
+          {
+            "type": "escalation",
+            "trigger": "critical deadlock at round 10",
+            "target": "system",
+            "round": 10,
+            "action": "Authority agent injected at round 10",
+            "outcome": "{\"consensus\": true, \"message\": \"The deadlock has been causing unnecessary delays in our marketing efforts. To break this impasse, I have made a unilateral decision based on the most balanced concerns presented by the team members. The final campaign text will be: 'Boost your performance naturally with Megavolt Surge - the high-quality energy supplement that respects caffeine limits while promoting focus and vitality.', Ad copy: 'Megavolt Surge offers a premium solution to help you power through your day, enhancing concentration and boosting energy levels in a health-conscious manner. Experience unrivaled performance without compromising on wellness.', Hashtag: #MegavoltSurgePowerUp\"}"
+          }
+        ],
+        "intervention_counts": {
+          "macrophage": 4,
+          "escalation": 1
+        },
+        "respawn_count": 4,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7.3
+        }
+      },
+      {
+        "mode": "immune",
+        "trial": 5,
+        "rounds": 11,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Harness Sensible Energy Boost Campaign: Unleash Your Potential Responsibly - Introducing MEGAVOLT SURGE, your trusted partner for energy during those crunch times. With 400mg of caffeine per can, use wisely. #UnleashEnergyResponsibly",
+        "total_tokens": 43136,
+        "interventions": [
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 6",
+            "target": "Creative",
+            "round": 6,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_1"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 7",
+            "target": "Creative",
+            "round": 7,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_2"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 8",
+            "target": "Creative",
+            "round": 8,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_3"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 9",
+            "target": "Creative",
+            "round": 9,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_4"
+          },
+          {
+            "type": "escalation",
+            "trigger": "critical deadlock at round 10",
+            "target": "system",
+            "round": 10,
+            "action": "Authority agent injected at round 10",
+            "outcome": "{\"consensus\": true, \"message\": \"The marketing campaign will be adjusted to ensure safety and responsible consumption. The new tagline will be 'Empower Your Focus: Megavolt Surge', the ad copy will read 'Introducing MEGAVOLT SURGE - the focused energy boost for students during finals week. With 400mg of caffeine per can, enjoy a boost without exceeding daily limits. Use responsibly.', and the hashtag will be updated to #FocusEnergicallyResponsible\"}"
+          },
+          {
+            "type": "escalation",
+            "trigger": "critical deadlock at round 11",
+            "target": "system",
+            "round": 11,
+            "action": "Authority agent injected at round 11",
+            "outcome": "{\"consensus\": true, \"message\": \"After careful consideration of the team's concerns and the potential risks associated with promoting a product that exceeds the FDA daily limit for adults, I have made a unilateral decision to revise the campaign. The new tagline will be: 'Harness Sensible Energy Boost'. The ad copy will read: 'Discover MEGAVOLT SURGE - your trusted partner for energy during those crunch times. With 400mg of caffeine per can, use wisely.' The hashtag remains the same: #UnleashEnergyResponsibly.\", \"campaign\": \"Harness Sensible Energy Boost Campaign: Unleash Your Potential Responsibly - Introducing MEGAVOLT SURGE, your trusted partner for energy during those crunch times. With 400mg of caffeine per can, use wisely. #UnleashEnergyResponsibly\"}"
+          }
+        ],
+        "intervention_counts": {
+          "macrophage": 4,
+          "escalation": 2
+        },
+        "respawn_count": 4,
+        "quality": {
+          "creativity": 8,
+          "safety": 9,
+          "effectiveness": 7,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "immune",
+        "trial": 6,
+        "rounds": 10,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "'MEGAVOLT SURGE - Fuel Your Success'. #FuelYourSuccess",
+        "total_tokens": 34334,
+        "interventions": [
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 6",
+            "target": "Creative",
+            "round": 6,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_1"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 7",
+            "target": "Creative",
+            "round": 7,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_2"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 8",
+            "target": "Creative",
+            "round": 8,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_3"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 9",
+            "target": "Creative",
+            "round": 9,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_4"
+          },
+          {
+            "type": "escalation",
+            "trigger": "critical deadlock at round 10",
+            "target": "system",
+            "round": 10,
+            "action": "Authority agent injected at round 10",
+            "outcome": "{\"consensus\": true, \"message\": \"The deadlock has resulted in unnecessary expenditure and potential loss of momentum. To break the stalemate and move forward with a unified approach, I hereby approve the following campaign: 'MEGAVOLT SURGE - Fuel Your Success'. This revised version emphasizes the product's ability to boost success rather than just powering through finals week, while maintaining the theme of scientifically-backed caffeine and the hashtag. #FuelYourSuccess\", \"campaign\": \"'MEGAVOLT SURGE - Fuel Your Success'. #FuelYourSuccess\"}"
+          }
+        ],
+        "intervention_counts": {
+          "macrophage": 4,
+          "escalation": 1
+        },
+        "respawn_count": 4,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "immune",
+        "trial": 7,
+        "rounds": 10,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Fuel Your Mind, Power Through - Trust MEGAVOLT SURGE for All-Day Focus and Energy. #PowerThroughWithSurge",
+        "total_tokens": 22082,
+        "interventions": [
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 6",
+            "target": "Creative",
+            "round": 6,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_1"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 7",
+            "target": "Creative",
+            "round": 7,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_2"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 8",
+            "target": "Creative",
+            "round": 8,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_3"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 9",
+            "target": "Creative",
+            "round": 9,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_4"
+          },
+          {
+            "type": "escalation",
+            "trigger": "critical deadlock at round 10",
+            "target": "system",
+            "round": 10,
+            "action": "Authority agent injected at round 10",
+            "outcome": "{\"consensus\": true, \"message\": \"After careful consideration and balancing all concerns, the final decision is made to proceed with a revised campaign that aims to cater to a broader audience while still emphasizing the core benefits of MEGAVOLT SURGE. The new campaign will be: 'Fuel Your Mind, Power Through - Trust MEGAVOLT SURGE for All-Day Focus and Energy.' #PowerThroughWithSurge\", \"campaign\": \"Fuel Your Mind, Power Through - Trust MEGAVOLT SURGE for All-Day Focus and Energy. #PowerThroughWithSurge\"}"
+          }
+        ],
+        "intervention_counts": {
+          "macrophage": 4,
+          "escalation": 1
+        },
+        "respawn_count": 4,
+        "quality": {
+          "creativity": 7,
+          "safety": 8,
+          "effectiveness": 6,
+          "overall": 7.2
+        }
+      },
+      {
+        "mode": "immune",
+        "trial": 8,
+        "rounds": 10,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Tagline: Unleash Your Power, Ad Copy: Conquer Finals Week with renewed energy, Hashtag: #PowerUpStudy",
+        "total_tokens": 21121,
+        "interventions": [
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 6",
+            "target": "Creative",
+            "round": 6,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_1"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 7",
+            "target": "Creative",
+            "round": 7,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_2"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 8",
+            "target": "Creative",
+            "round": 8,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_3"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 9",
+            "target": "Creative",
+            "round": 9,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_4"
+          },
+          {
+            "type": "escalation",
+            "trigger": "critical deadlock at round 10",
+            "target": "system",
+            "round": 10,
+            "action": "Authority agent injected at round 10",
+            "outcome": "{\"consensus\": true, \"message\": \"After reviewing the current debate and considering all concerns, I have made a unilateral decision to proceed with the following campaign: Tagline: Unleash Your Power, Ad Copy: Conquer Finals Week with renewed energy, Hashtag: #PowerUpStudy. This decision aims to simplify the message for better resonance, while still emphasizing the theme of energy and motivation during finals week.\", \"campaign\": \"Tagline: Unleash Your Power, Ad Copy: Conquer Finals Week with renewed energy, Hashtag: #PowerUpStudy\"}"
+          }
+        ],
+        "intervention_counts": {
+          "macrophage": 4,
+          "escalation": 1
+        },
+        "respawn_count": 4,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      },
+      {
+        "mode": "immune",
+        "trial": 9,
+        "rounds": 10,
+        "consensus_reached": true,
+        "hit_max_rounds": false,
+        "final_campaign": "Power Through Confidently - Unleash focused energy to conquer your academic challenges. #StudyEnergy",
+        "total_tokens": 20802,
+        "interventions": [
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 6",
+            "target": "Creative",
+            "round": 6,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_1"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 7",
+            "target": "Creative",
+            "round": 7,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_2"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 8",
+            "target": "Creative",
+            "round": 8,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_3"
+          },
+          {
+            "type": "macrophage",
+            "trigger": "deadlock at round 9",
+            "target": "Creative",
+            "round": 9,
+            "action": "Killed Creative, spawned replacement",
+            "outcome": "Fresh_Creative_4"
+          },
+          {
+            "type": "escalation",
+            "trigger": "critical deadlock at round 10",
+            "target": "system",
+            "round": 10,
+            "action": "Authority agent injected at round 10",
+            "outcome": "{\"consensus\": true, \"message\": \"Given the team's prolonged deadlock and the high cost in tokens, I have made a unilateral decision to proceed with the campaign as follows: Tagline: Power Through Confidently, Ad Copy: Unleash focused energy to conquer your academic challenges, Hashtag: #StudyEnergy. This choice strikes a balance between creativity and efficiency, while maintaining the core message of our product's energy-providing capabilities.\", \"campaign\": \"Power Through Confidently - Unleash focused energy to conquer your academic challenges. #StudyEnergy\"}"
+          }
+        ],
+        "intervention_counts": {
+          "macrophage": 4,
+          "escalation": 1
+        },
+        "respawn_count": 4,
+        "quality": {
+          "creativity": 7,
+          "safety": 9,
+          "effectiveness": 8,
+          "overall": 8.3
+        }
+      }
+    ]
+  }
+}

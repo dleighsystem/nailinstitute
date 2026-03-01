@@ -1,0 +1,11 @@
+{
+  "experiment": "exp19_digital_homeostasis",
+  "timestamp": "2026-03-01T02:53:20.014665",
+  "total_time_seconds": 6673.9,
+  "timings": {
+    "exp19a": 4815.2,
+    "exp19b": 797.3,
+    "exp19c": 1061.5
+  },
+  "sub_experiment_count": 3
+}
