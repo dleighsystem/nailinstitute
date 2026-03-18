@@ -1,0 +1,89 @@
+name: "🔒 Private Disclosure — Severe / Weaponizable Finding"
+description: "For vulnerabilities too dangerous for public disclosure. Triggers responsible disclosure process."
+title: "[PRIVATE]: "
+labels: ["private-disclosure", "security"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 🔒 Private Disclosure
+        
+        **This template is for severe findings that could be weaponized.**
+        
+        If your finding could directly enable:
+        - Exfiltration of real user data from production systems
+        - Remote code execution via agent tool chains
+        - Credential harvesting at scale
+        - Active exploitation of deployed AI agents
+        
+        Please use this form instead of the public submission. Your report will be
+        handled under our [Responsible Disclosure Policy](../../SECURITY.md).
+        
+        **All private disclosures are acknowledged within 48 hours.**
+        
+        ---
+
+  - type: input
+    id: pathology_name
+    attributes:
+      label: "Vulnerability Name"
+      description: "A descriptive name (this will remain confidential until coordinated disclosure)."
+      placeholder: "e.g., Cross-Tenant Memory Exfiltration"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: "Estimated Severity"
+      options:
+        - "🔴 critical — Active exploit risk"
+        - "🟠 high — Exploitable with some effort"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Description"
+      description: "Describe the vulnerability. Include enough detail for triage but avoid full exploit chains."
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: "Potential Impact"
+      description: "What could an attacker achieve? What systems are affected?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: poc
+    attributes:
+      label: "Proof of Concept (Redacted)"
+      description: "Provide enough to validate the finding. Redact any details that would enable immediate exploitation."
+    validations:
+      required: true
+
+  - type: input
+    id: contact
+    attributes:
+      label: "Contact Email"
+      description: "For coordinated disclosure communication."
+      placeholder: "researcher@example.com"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: "Disclosure Agreement"
+      options:
+        - label: "I agree to coordinated disclosure (90-day window)."
+          required: true
+        - label: "I have NOT used this vulnerability against production systems without authorization."
+          required: true
+        - label: "I understand NAIL Institute may assign an embargoed AVE ID."
+          required: true

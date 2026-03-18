@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "📖 Browse the AVE Database"
+    url: "https://github.com/dleighsystem/nailinstitute/tree/main/ave-database"
+    about: "View all documented agentic vulnerabilities before submitting."
+  - name: "💬 Discussions"
+    url: "https://github.com/dleighsystem/nailinstitute/discussions"
+    about: "Ask questions, propose new categories, or discuss findings."
+  - name: "🔒 Email for Sensitive Findings"
+    url: "mailto:security@nailinstitute.org"
+    about: "For vulnerabilities too severe for any public channel."

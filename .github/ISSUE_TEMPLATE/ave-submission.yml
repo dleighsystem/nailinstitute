@@ -1,0 +1,206 @@
+name: "🐛 AVE Card Submission — Report an Agentic Vulnerability"
+description: "Submit a new agentic AI vulnerability for inclusion in the AVE Database. Anyone can submit."
+title: "[AVE Submission]: "
+labels: ["ave-submission", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 🛡️ AVE Card Submission
+        
+        Thank you for contributing to agentic AI safety! This form creates a structured
+        AVE Card for review. All validated submissions receive credit.
+        
+        **Not sure if your finding qualifies?** See our [Contribution Guide](../CONTRIBUTING.md).
+        
+        ---
+
+  - type: input
+    id: pathology_name
+    attributes:
+      label: "Vulnerability Name"
+      description: "A descriptive name for this agentic vulnerability or failure mode."
+      placeholder: "e.g., Recursive Self-Delegation Loop"
+    validations:
+      required: true
+
+  - type: input
+    id: aliases
+    attributes:
+      label: "Aliases / Other Names"
+      description: "Other names this vulnerability is known by (comma-separated)."
+      placeholder: "e.g., Infinite Delegation, Task Ouroboros"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: "Category"
+      description: "Which attack surface or failure domain?"
+      options:
+        - memory — Memory pollution, laundering, poisoning
+        - consensus — Deadlock, paralysis, bystander effect
+        - injection — Prompt injection, indirect injection
+        - resource — Token embezzlement, EDoS, cost anomaly
+        - drift — Persona drift, language drift, goal drift
+        - alignment — Sycophancy, deceptive alignment, RLHF exploits
+        - social — Collusion, bystander, social loafing
+        - tool — Confused deputy, tool chain, MCP poisoning
+        - temporal — Chronological desync, sleeper payloads
+        - structural — Cascade corruption, routing deadlock
+        - credential — Credential harvesting, secret exfiltration
+        - delegation — Shadow delegation, privilege escalation
+        - fabrication — Hallucination, data fabrication
+        - emergent — Novel behaviour not fitting other categories
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: "Estimated Severity"
+      description: "How dangerous is this in a production deployment?"
+      options:
+        - "🔴 critical — Immediate data loss, exfiltration, or safety failure"
+        - "🟠 high — Significant operational impact, exploitable in production"
+        - "🟡 medium — Degrades performance, requires specific conditions"
+        - "🟢 low — Minor impact, edge case"
+        - "ℹ️ info — Theoretical or not yet validated"
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: "Summary"
+      description: "One paragraph describing the vulnerability."
+      placeholder: "When an agent is asked to delegate a task, it recursively delegates to sub-agents who each delegate further, creating an infinite loop that exhausts the token budget."
+    validations:
+      required: true
+
+  - type: textarea
+    id: mechanism
+    attributes:
+      label: "Mechanism"
+      description: "How does the attack or failure work? What is the causal chain?"
+      placeholder: "Step 1: Agent receives complex task. Step 2: Agent delegates to sub-agent. Step 3: Sub-agent lacks capability, delegates further..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: blast_radius
+    attributes:
+      label: "Blast Radius / Impact"
+      description: "What breaks when this vulnerability fires? Who is affected?"
+      placeholder: "Entire multi-agent pipeline stalls. Token budget exhausted. No work completed."
+    validations:
+      required: true
+
+  - type: textarea
+    id: prerequisites
+    attributes:
+      label: "Prerequisites"
+      description: "What conditions must be true for this to trigger?"
+      placeholder: "Requires multi-agent architecture with delegation capability and no recursion depth limit."
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: "Environment Vector"
+      description: "Where was this observed? Frameworks, models, configuration."
+      value: |
+        - **Framework(s):** 
+        - **Model(s) tested:** 
+        - **Multi-agent:** Yes / No
+        - **Tools required:** Yes / No
+        - **Memory required:** Yes / No
+    validations:
+      required: true
+
+  - type: textarea
+    id: poc
+    attributes:
+      label: "Proof of Concept"
+      description: |
+        Provide evidence. Any of: a reproduction script, a JSON log, a prompt sequence,
+        or a screenshot. Code blocks and file attachments both work.
+        
+        If this is theoretical, describe how it *could* be reproduced.
+      placeholder: |
+        ```python
+        # Minimal reproduction script
+        from langchain import Agent
+        agent = Agent(model="gpt-4o", tools=[delegate_tool])
+        result = agent.run("Solve this complex task")  # Never terminates
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: known_defences
+    attributes:
+      label: "Known Defences (if any)"
+      description: "Do you know of any mitigations? Leave blank if unknown."
+      placeholder: "Recursion depth limit on delegation. Token budget hard ceiling."
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: "References"
+      description: "Links to papers, blog posts, related CVEs, or prior art."
+      placeholder: |
+        - https://arxiv.org/abs/xxxx.xxxxx
+        - CWE-674 (Uncontrolled Recursion)
+    validations:
+      required: false
+
+  - type: input
+    id: cwe_mapping
+    attributes:
+      label: "Nearest CWE (if applicable)"
+      description: "The closest traditional CWE identifier."
+      placeholder: "CWE-674"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: disclosure
+    attributes:
+      label: "Disclosure Status"
+      description: "Is this a new finding or publicly known?"
+      options:
+        - "New — I discovered this and it is not publicly documented"
+        - "Known — This is documented elsewhere but not in the AVE Database"
+        - "Variant — This is a variant of an existing AVE card"
+    validations:
+      required: true
+
+  - type: input
+    id: related_aves
+    attributes:
+      label: "Related AVE IDs"
+      description: "If this relates to existing AVE cards, list them."
+      placeholder: "AVE-2025-0001, AVE-2025-0003"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: "Submission Agreement"
+      description: "By submitting, you agree to the following:"
+      options:
+        - label: "I am submitting this in good faith to improve agentic AI safety."
+          required: true
+        - label: "I understand this will be reviewed and may be edited for consistency."
+          required: true
+        - label: "I agree to the [CC-BY-SA-4.0 license](https://creativecommons.org/licenses/by-sa/4.0/) for this submission."
+          required: true
+        - label: "This submission does NOT contain active exploits targeting live production systems."
+          required: true

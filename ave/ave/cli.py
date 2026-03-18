@@ -12,6 +12,8 @@ Usage:
     python -m ave.cli export ./ave-database   # Export all cards
     python -m ave.cli stats                   # Database statistics
     python -m ave.cli score AVE-2025-0001     # Show AVSS score
+    python -m ave.cli validate ./cards/       # Validate card JSON files
+    python -m ave.cli submit --name "..."     # Generate a draft card skeleton
 """
 
 from __future__ import annotations
@@ -246,6 +248,45 @@ def cmd_score(args: argparse.Namespace) -> None:
     print()
 
 
+def cmd_validate(args: argparse.Namespace) -> None:
+    """Validate AVE card files."""
+    from .validate import run_validation
+
+    success = run_validation(args.path, verbose=args.verbose)
+    if not success:
+        sys.exit(1)
+
+
+def cmd_submit(args: argparse.Namespace) -> None:
+    """Generate a draft AVE card skeleton."""
+    from .submit import generate_skeleton, interactive_submit
+
+    output_dir = args.output_dir or "ave-database/cards"
+
+    if args.interactive:
+        ave_id, json_path, md_path = interactive_submit(output_dir)
+    else:
+        if not args.name:
+            print("Error: --name is required (or use --interactive)")
+            sys.exit(1)
+        ave_id, json_path, md_path = generate_skeleton(
+            name=args.name,
+            category=args.category,
+            severity=args.severity,
+            contributor=args.contributor or "",
+            output_dir=output_dir,
+        )
+
+    print(f"\n  ✓ Generated draft card: {ave_id}")
+    print(f"    JSON:     {json_path}")
+    print(f"    Markdown: {md_path}")
+    print(f"\n  Next steps:")
+    print(f"    1. Edit the generated files with your data")
+    print(f"    2. Validate: python -m ave validate {json_path}")
+    print(f"    3. Submit a pull request")
+    print()
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Build the CLI argument parser."""
     parser = argparse.ArgumentParser(
@@ -288,6 +329,25 @@ def build_parser() -> argparse.ArgumentParser:
     p_score = sub.add_parser("score", help="Show AVSS score for a card")
     p_score.add_argument("ave_id", help="AVE card ID")
 
+    # validate
+    p_validate = sub.add_parser("validate", help="Validate AVE card files")
+    p_validate.add_argument("path", help="Path to JSON file or directory of cards")
+    p_validate.add_argument("--verbose", "-v", action="store_true",
+                            help="Show all results including passing cards")
+
+    # submit
+    p_submit = sub.add_parser("submit", help="Generate a draft AVE card skeleton")
+    p_submit.add_argument("--name", "-n", help="Vulnerability name")
+    p_submit.add_argument("--category", "-c", default="emergent",
+                          help="Category (default: emergent)")
+    p_submit.add_argument("--severity", "-s", default="medium",
+                          help="Severity (default: medium)")
+    p_submit.add_argument("--contributor", help="Your name or handle")
+    p_submit.add_argument("--output-dir", "-o",
+                          help="Output directory (default: ave-database/cards)")
+    p_submit.add_argument("--interactive", "-i", action="store_true",
+                          help="Interactive mode with prompts")
+
     return parser
 
 
@@ -307,6 +367,8 @@ def main(argv: list[str] | None = None) -> None:
         "export": cmd_export,
         "stats": cmd_stats,
         "score": cmd_score,
+        "validate": cmd_validate,
+        "submit": cmd_submit,
     }
     commands[args.command](args)
 

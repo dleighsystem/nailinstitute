@@ -1,0 +1,94 @@
+name: AVE Card Validation
+
+on:
+  pull_request:
+    paths:
+      - 'ave-database/cards/**'
+      - 'ave/ave/schema.py'
+  push:
+    paths:
+      - 'ave-database/cards/**'
+    branches: [main]
+
+jobs:
+  validate-cards:
+    name: Validate AVE Cards
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install NAIL AVE package
+        run: |
+          pip install -e ave/
+
+      - name: Validate all AVE cards
+        run: |
+          python -m ave validate ave-database/cards/
+
+      - name: Check index is up to date
+        run: |
+          python -m ave export --format index --output /tmp/index.json ave-database/cards/
+          if ! diff -q ave-database/index.json /tmp/index.json > /dev/null 2>&1; then
+            echo "::error::ave-database/index.json is out of date. Run: python -m ave export --format index"
+            exit 1
+          fi
+
+      - name: Verify JSON/Markdown pairs
+        run: |
+          cd ave-database/cards
+          errors=0
+          for json_file in *.json; do
+            md_file="${json_file%.json}.md"
+            if [ ! -f "$md_file" ]; then
+              echo "::error::Missing markdown companion: $md_file for $json_file"
+              errors=$((errors + 1))
+            fi
+          done
+          for md_file in *.md; do
+            json_file="${md_file%.md}.json"
+            if [ ! -f "$json_file" ]; then
+              echo "::error::Missing JSON companion: $json_file for $md_file"
+              errors=$((errors + 1))
+            fi
+          done
+          if [ $errors -gt 0 ]; then
+            echo "::error::$errors missing companion files"
+            exit 1
+          fi
+          echo "✓ All JSON/Markdown pairs verified"
+
+      - name: Summary
+        if: always()
+        run: |
+          total=$(ls ave-database/cards/*.json 2>/dev/null | wc -l)
+          echo "### AVE Card Validation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total cards:** $total" >> $GITHUB_STEP_SUMMARY
+          echo "- **Validation:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+
+  run-tests:
+    name: Run AVE Test Suite
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -e rmap/ -e ave/ -e canary/ -e arena/ -e ctf/ \
+                      -e diagnostic/ -e horizon/ -e integration/ -e threatfeed/
+
+      - name: Run AVE tests
+        run: |
+          python -m pytest ave/tests/ -v --tb=short
