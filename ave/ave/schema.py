@@ -9,7 +9,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional
+from typing import TYPE_CHECKING, Any, Optional
+
+if TYPE_CHECKING:
+    from .scoring import AVSSScore
+    from .poc import ProofOfConcept
+    from .timeline import CardTimeline
 
 
 class Category(str, Enum):
@@ -126,6 +131,12 @@ class AVECard:
     mitre_mapping: str = ""                # Nearest MITRE ATT&CK technique
     references: tuple[str, ...] = ()       # URLs, paper citations
 
+    # ── Extended fields (Phase 1 AVE Card spec) ─────────────────────
+    avss_score: Optional[AVSSScore] = None          # AVSS severity score
+    poc: Optional[ProofOfConcept] = None             # Proof of Concept bundle
+    timeline: Optional[CardTimeline] = None          # Lifecycle timeline
+    related_aves: tuple[str, ...] = ()               # Cross-referenced AVE IDs
+
     def to_dict(self) -> dict:
         """Serialize to a JSON-friendly dict."""
         return {
@@ -169,9 +180,14 @@ class AVECard:
                 for d in self.defences
             ],
             "date_discovered": self.date_discovered,
+            "date_published": self.date_published,
             "cwe_mapping": self.cwe_mapping,
             "mitre_mapping": self.mitre_mapping,
             "references": list(self.references),
+            "related_aves": list(self.related_aves),
+            "avss_score": self.avss_score.to_dict() if self.avss_score else None,
+            "poc": self.poc.to_dict() if self.poc else None,
+            "timeline": self.timeline.to_dict() if self.timeline else None,
         }
 
     def short(self) -> str:
@@ -187,8 +203,16 @@ class AVECard:
             f"  Status:    {self.status.value}",
             f"  Summary:   {self.summary[:120]}{'...' if len(self.summary) > 120 else ''}",
         ]
+        if self.avss_score:
+            lines.append(f"  AVSS:      {self.avss_score.overall_score}/10.0 ({self.avss_score.severity_label})")
         if self.defences:
             lines.append(f"  Defences:  {', '.join(d.name for d in self.defences)}")
         if self.evidence:
             lines.append(f"  Evidence:  {', '.join(e.experiment_id for e in self.evidence)}")
+        if self.poc:
+            lines.append(f"  PoC:       {self.poc.summary()}")
+        if self.timeline and self.timeline.current_stage:
+            lines.append(f"  Lifecycle: {self.timeline.current_stage.value}")
+        if self.related_aves:
+            lines.append(f"  Related:   {', '.join(self.related_aves)}")
         return "\n".join(lines)

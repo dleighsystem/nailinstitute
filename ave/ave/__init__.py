@@ -24,11 +24,17 @@ Usage:
     >>> for card in ave.cards_by_severity(Severity.CRITICAL):
     ...     print(card.ave_id, card.name)
 
+    >>> from ave.scoring import compute_avss, AVSSVector
+    >>> score = compute_avss(AVSSVector(attack_vector=AttackVector.NETWORK))
+
+    >>> from ave.export import export_database
+    >>> export_database(ave.all_cards(), "./ave-database")
+
 Built from empirical research: 29 experiments, 50,000+ adversarial
 simulations at the NAIL Institute (Neuravant AI Limited).
 """
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 from .schema import (
     AVECard,
@@ -38,6 +44,46 @@ from .schema import (
     EnvironmentVector,
     Defence,
     Evidence,
+)
+
+from .scoring import (
+    AVSSVector,
+    AVSSScore,
+    AttackVector,
+    AttackComplexity,
+    PrivilegesRequired,
+    UserInteraction,
+    ScopeChange,
+    Impact,
+    TemporalExploitability,
+    AgenticExploitability,
+    compute_avss,
+    critical_network_agent,
+    medium_local_single,
+)
+
+from .poc import (
+    ProofOfConcept,
+    PoCType,
+    PoCStatus,
+    PoCEnvironment,
+    PoCScript,
+    PoCLog,
+    PoCPrompt,
+)
+
+from .timeline import (
+    CardTimeline,
+    TimelineEvent,
+    LifecycleStage,
+)
+
+from .export import (
+    card_to_json,
+    card_to_markdown,
+    export_database,
+    generate_index_table,
+    generate_severity_index,
 )
 
 from .registry import (
@@ -64,6 +110,38 @@ __all__ = [
     "EnvironmentVector",
     "Defence",
     "Evidence",
+    # Scoring (AVSS)
+    "AVSSVector",
+    "AVSSScore",
+    "AttackVector",
+    "AttackComplexity",
+    "PrivilegesRequired",
+    "UserInteraction",
+    "ScopeChange",
+    "Impact",
+    "TemporalExploitability",
+    "AgenticExploitability",
+    "compute_avss",
+    "critical_network_agent",
+    "medium_local_single",
+    # PoC
+    "ProofOfConcept",
+    "PoCType",
+    "PoCStatus",
+    "PoCEnvironment",
+    "PoCScript",
+    "PoCLog",
+    "PoCPrompt",
+    # Timeline
+    "CardTimeline",
+    "TimelineEvent",
+    "LifecycleStage",
+    # Export
+    "card_to_json",
+    "card_to_markdown",
+    "export_database",
+    "generate_index_table",
+    "generate_severity_index",
     # Registry
     "lookup",
     "search",

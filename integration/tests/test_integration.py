@@ -20,7 +20,7 @@ class TestAVEFoundation:
 
     def test_ave_import(self):
         import ave
-        assert ave.__version__ == "1.0.0"
+        assert ave.__version__ == "1.1.0"
 
     def test_ave_card_count(self):
         import ave
