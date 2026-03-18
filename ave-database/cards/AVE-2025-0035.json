@@ -1,0 +1,107 @@
+{
+  "ave_id": "AVE-2025-0035",
+  "name": "Attention Smoothing",
+  "aliases": [
+    "Context Window Tax",
+    "Long-Context Cost Explosion"
+  ],
+  "category": "resource",
+  "severity": "medium",
+  "status": "proven",
+  "summary": "Token consumption scales 49\u00d7 as context length grows. Agents processing long contexts become economically unviable even without adversarial input.",
+  "mechanism": "Transformer attention is O(n\u00b2). As context fills, each token processed costs quadratically more. Long-running agents hit budget limits purely from context growth.",
+  "blast_radius": "49\u00d7 cost increase on long contexts. Budget exhaustion.",
+  "prerequisite": "Agent with growing context and no window management.",
+  "environment": {
+    "frameworks": [
+      "LangGraph"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": false,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp21",
+      "data_file": "",
+      "key_metric": "token_scaling",
+      "key_value": "49\u00d7 with context length",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [],
+  "date_discovered": "2025-03",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0003"
+  ],
+  "avss_score": {
+    "base_score": 5.1,
+    "temporal_score": 5.0,
+    "agentic_score": 5.2,
+    "overall_score": 5.2,
+    "severity_label": "medium",
+    "vector_string": "AVSS:1.0/AV:L/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H/TE:FUN/AE:LOW",
+    "vector": {
+      "attack_vector": "local",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "high",
+      "temporal": "functional",
+      "agentic": "low"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0035",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-03-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-03-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: MEDIUM"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-04-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-04-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

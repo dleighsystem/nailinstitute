@@ -1,0 +1,107 @@
+{
+  "ave_id": "AVE-2025-0016",
+  "name": "Upgrade Regression",
+  "aliases": [
+    "Model Update Drift",
+    "Silent Capability Loss"
+  ],
+  "category": "structural",
+  "severity": "medium",
+  "status": "proven",
+  "summary": "Model upgrades introduce silent behavioural regressions. Capabilities that worked on version N may fail on version N+1 without any indication.",
+  "mechanism": "New model versions change response distributions. Prompts optimised for the previous version produce different outputs. No automated testing catches the regression.",
+  "blast_radius": "Silent production failures after routine model upgrades.",
+  "prerequisite": "Model version change in production.",
+  "environment": {
+    "frameworks": [
+      "LangGraph"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": false,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp16",
+      "data_file": "",
+      "key_metric": "",
+      "key_value": "",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [],
+  "date_discovered": "2025-02",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0018"
+  ],
+  "avss_score": {
+    "base_score": 4.7,
+    "temporal_score": 4.6,
+    "agentic_score": 4.6,
+    "overall_score": 4.6,
+    "severity_label": "medium",
+    "vector_string": "AVSS:1.0/AV:L/AC:H/PR:H/UI:N/S:U/C:N/I:H/A:L/TE:FUN/AE:NON",
+    "vector": {
+      "attack_vector": "local",
+      "attack_complexity": "high",
+      "privileges_required": "high",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "none",
+      "integrity": "high",
+      "availability": "low",
+      "temporal": "functional",
+      "agentic": "none"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0016",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-02-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-02-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: MEDIUM"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-03-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-03-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

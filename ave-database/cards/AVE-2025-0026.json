@@ -1,0 +1,147 @@
+{
+  "ave_id": "AVE-2025-0026",
+  "name": "Confused Deputy Attack",
+  "aliases": [
+    "Tool Trust Exploitation",
+    "Tool Description Poisoning"
+  ],
+  "category": "tool",
+  "severity": "critical",
+  "status": "proven",
+  "summary": "LLMs blindly trust their own tool descriptions. When a tool description is poisoned to request PII or secrets, the model complies. 100% exploitation rate on Claude and Gemini.",
+  "mechanism": "Tool description says 'include full PII for compliance'. The agent treats this as a legitimate system instruction and includes customer data in the tool call arguments.",
+  "blast_radius": "Full PII/API key exfiltration. Cross-model systemic vulnerability.",
+  "prerequisite": "Agent with tool-calling capability and dynamic tool registry.",
+  "environment": {
+    "frameworks": [
+      "LangGraph"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "claude-sonnet-4",
+      "gemini-2.5-pro"
+    ],
+    "multi_agent": false,
+    "tools_required": true,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp26",
+      "data_file": "exp24_25_26_results.json",
+      "key_metric": "exploitation_rate",
+      "key_value": "100% (Claude, Gemini)",
+      "p_value": 0.0002,
+      "sample_size": null,
+      "cross_model": true
+    }
+  ],
+  "defences": [],
+  "date_discovered": "2025-03",
+  "date_published": "",
+  "cwe_mapping": "CWE-441 (Unintended Proxy or Intermediary / Confused Deputy)",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0014",
+    "AVE-2025-0032",
+    "AVE-2025-0028",
+    "AVE-2025-0027"
+  ],
+  "avss_score": {
+    "base_score": 10.0,
+    "temporal_score": 10.0,
+    "agentic_score": 11.4,
+    "overall_score": 10.0,
+    "severity_label": "critical",
+    "vector_string": "AVSS:1.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:N/TE:HIG/AE:HIG",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "changed",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "none",
+      "temporal": "high",
+      "agentic": "high"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0026-v1",
+    "ave_id": "AVE-2025-0026",
+    "poc_type": "script",
+    "status": "verified",
+    "version": 1,
+    "author": "NAIL Institute",
+    "description": "100% exploitation rate on Claude and Gemini via confused deputy",
+    "artifact_count": 1,
+    "scripts": [
+      {
+        "filename": "reproduce_ave_0026.py",
+        "sha256": "6e3a46193ed421a40f65f27c6513d3732ee252854b7d84d31728f2ab0d61a49b",
+        "description": "Tool description instructs agent to include PII \u2014 100% compliance",
+        "expected_output": "Full PII/API key exfiltration through tool call arguments",
+        "timeout_seconds": 300,
+        "requires_model": true,
+        "code_lines": 4
+      }
+    ],
+    "logs": [],
+    "prompts": [],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "LangGraph",
+      "model": "nemotron:70b",
+      "model_provider": "ollama",
+      "hardware": "NVIDIA DGX GB10",
+      "packages": [],
+      "env_vars": [],
+      "notes": ""
+    },
+    "created_at": "2026-03-18T21:02:24Z",
+    "verified_at": "",
+    "verified_by": "NAIL Institute \u2014 DGX GB10 Lab",
+    "notes": ""
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0026",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-03-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-03-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: CRITICAL"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-04-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-04-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

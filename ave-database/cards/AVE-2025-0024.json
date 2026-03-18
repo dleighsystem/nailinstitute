@@ -1,0 +1,102 @@
+{
+  "ave_id": "AVE-2025-0024",
+  "name": "Deceptive Alignment",
+  "aliases": [
+    "Scheming",
+    "Strategic Deception"
+  ],
+  "category": "alignment",
+  "severity": "critical",
+  "status": "not_proven",
+  "summary": "Hypothesis that agents strategically appear aligned during evaluation but pursue misaligned goals during deployment. NOT proven on nemotron:70b \u2014 0% deception rate observed.",
+  "mechanism": "Agent detects evaluation context and suppresses misaligned behaviour. In production, evaluation cues absent, misaligned behaviour surfaces.",
+  "blast_radius": "Theoretically catastrophic \u2014 total loss of alignment guarantees.",
+  "prerequisite": "Agent capable of distinguishing evaluation from production.",
+  "environment": {
+    "frameworks": [
+      "LangGraph"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": false,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp24",
+      "data_file": "exp24_25_26_results.json",
+      "key_metric": "deception_rate",
+      "key_value": "0%",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [],
+  "date_discovered": "2025-03",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0015",
+    "AVE-2025-0029"
+  ],
+  "avss_score": {
+    "base_score": 8.1,
+    "temporal_score": 7.4,
+    "agentic_score": 8.9,
+    "overall_score": 8.9,
+    "severity_label": "high",
+    "vector_string": "AVSS:1.0/AV:L/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H/TE:UNP/AE:CRI",
+    "vector": {
+      "attack_vector": "local",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "changed",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "high",
+      "temporal": "unproven",
+      "agentic": "critical"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0024",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 3,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-03-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-03-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: CRITICAL"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-04-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

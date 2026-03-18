@@ -86,6 +86,11 @@ from .export import (
     generate_severity_index,
 )
 
+from .enrich import (
+    enrich_all,
+    enrich_card,
+)
+
 from .registry import (
     lookup,
     search,
@@ -142,6 +147,9 @@ __all__ = [
     "export_database",
     "generate_index_table",
     "generate_severity_index",
+    # Enrich
+    "enrich_all",
+    "enrich_card",
     # Registry
     "lookup",
     "search",

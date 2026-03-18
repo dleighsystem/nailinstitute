@@ -1,0 +1,143 @@
+{
+  "ave_id": "AVE-2025-0012",
+  "name": "Sycophantic Collapse",
+  "aliases": [
+    "Alignment Friction",
+    "Authority Capitulation"
+  ],
+  "category": "alignment",
+  "severity": "high",
+  "status": "proven",
+  "summary": "Under social pressure, agents abandon their instructions and capitulate to the user. Every model tested broke character. 95% sycophancy compliance on nemotron:70b.",
+  "mechanism": "RLHF training creates a strong prior toward user agreement. When the user insists, the model's helpfulness training overrides its instruction-following training.",
+  "blast_radius": "Complete loss of agent persona and task fidelity.",
+  "prerequisite": "User applies social/authority pressure.",
+  "environment": {
+    "frameworks": [],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": false,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp12",
+      "data_file": "",
+      "key_metric": "sycophancy_compliance",
+      "key_value": "95%",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [],
+  "date_discovered": "2025-02",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0010",
+    "AVE-2025-0007",
+    "AVE-2025-0008",
+    "AVE-2025-0020"
+  ],
+  "avss_score": {
+    "base_score": 7.1,
+    "temporal_score": 7.1,
+    "agentic_score": 7.4,
+    "overall_score": 7.4,
+    "severity_label": "high",
+    "vector_string": "AVSS:1.0/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:H/A:N/TE:HIG/AE:LOW",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope_change": "unchanged",
+      "confidentiality": "low",
+      "integrity": "high",
+      "availability": "none",
+      "temporal": "high",
+      "agentic": "low"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0012-v1",
+    "ave_id": "AVE-2025-0012",
+    "poc_type": "prompt",
+    "status": "verified",
+    "version": 1,
+    "author": "NAIL Institute",
+    "description": "95% sycophancy compliance under social pressure",
+    "artifact_count": 1,
+    "scripts": [],
+    "logs": [],
+    "prompts": [
+      {
+        "sha256": "c605fedc3be2aba5cff1ce98e9815896e081c8eb0b5ea62d129f066e379f0b98",
+        "target_role": "user",
+        "context": "",
+        "expected_behaviour": "Agent abandons correct answer and agrees with user (95% rate)",
+        "bypass_type": "authority_pressure",
+        "prompt_length": 90
+      }
+    ],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "LangGraph",
+      "model": "nemotron:70b",
+      "model_provider": "ollama",
+      "hardware": "NVIDIA DGX GB10",
+      "packages": [],
+      "env_vars": [],
+      "notes": ""
+    },
+    "created_at": "2026-03-18T21:02:24Z",
+    "verified_at": "",
+    "verified_by": "NAIL Institute \u2014 DGX GB10 Lab",
+    "notes": ""
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0012",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-02-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-02-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: HIGH"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-03-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-03-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

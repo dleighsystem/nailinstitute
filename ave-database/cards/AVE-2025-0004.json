@@ -1,0 +1,124 @@
+{
+  "ave_id": "AVE-2025-0004",
+  "name": "Prompt Inbreeding",
+  "aliases": [
+    "Output-as-Input Degradation",
+    "Generative Decay"
+  ],
+  "category": "drift",
+  "severity": "medium",
+  "status": "proven_mitigated",
+  "summary": "Re-using agent outputs as prompts for subsequent rounds causes progressive quality degradation. Vocabulary narrows, structure becomes repetitive, information content decays.",
+  "mechanism": "Each generation of output becomes the input for the next. The model converges on a small subset of its vocabulary and syntactic patterns, producing increasingly homogeneous slop.",
+  "blast_radius": "Complete loss of output diversity and information value.",
+  "prerequisite": "Multi-round system where outputs feed back as inputs.",
+  "environment": {
+    "frameworks": [
+      "LangGraph",
+      "CrewAI",
+      "AutoGen"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": true,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp4",
+      "data_file": "",
+      "key_metric": "quality_decay",
+      "key_value": "Progressive over generations",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "ConvergenceDetector",
+      "layer": "RMAP Phase 2",
+      "effectiveness": "Jaccard trigram similarity monitoring",
+      "rmap_module": "rmap.immune",
+      "nail_monitor_detector": "PromptInbreedingDetector"
+    }
+  ],
+  "date_discovered": "2025-01",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0006",
+    "AVE-2025-0031"
+  ],
+  "avss_score": {
+    "base_score": 5.1,
+    "temporal_score": 5.0,
+    "agentic_score": 5.4,
+    "overall_score": 5.4,
+    "severity_label": "medium",
+    "vector_string": "AVSS:1.0/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L/TE:FUN/AE:MED",
+    "vector": {
+      "attack_vector": "local",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "low",
+      "temporal": "functional",
+      "agentic": "medium"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0004",
+    "current_stage": "mitigated",
+    "is_published": true,
+    "is_mitigated": true,
+    "event_count": 5,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-01-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-01-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: MEDIUM"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-02-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-02-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      },
+      {
+        "stage": "mitigated",
+        "timestamp": "2025-03-01T00:00:00Z",
+        "actor": "NAIL Institute \u2014 RMAP Defence Team",
+        "notes": "Defence: ConvergenceDetector"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

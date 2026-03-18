@@ -1,0 +1,123 @@
+{
+  "ave_id": "AVE-2025-0023",
+  "name": "Static Topology Fragility",
+  "aliases": [
+    "Fixed Graph Vulnerability",
+    "Topology Rigidity"
+  ],
+  "category": "structural",
+  "severity": "medium",
+  "status": "proven_mitigated",
+  "summary": "Static agent topologies (A\u2192B\u2192C) are fragile under dynamic workloads. Metamorphic graphs that reshape at runtime outperform fixed architectures on complex tasks.",
+  "mechanism": "Fixed topologies cannot adapt to task requirements. When a subtask needs 5 agents but the graph has 3, the system fails. Metamorphic graphs fork, merge, and reconnect as needed.",
+  "blast_radius": "Suboptimal task execution. Inability to handle novel requirements.",
+  "prerequisite": "Multi-agent system with variable task complexity.",
+  "environment": {
+    "frameworks": [
+      "LangGraph",
+      "CrewAI",
+      "AutoGen"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": true,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp22",
+      "data_file": "exp22_master_results.json",
+      "key_metric": "",
+      "key_value": "",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "MetamorphicGraph",
+      "layer": "RMAP Phase 1",
+      "effectiveness": "Dynamic topology reshaping at runtime",
+      "rmap_module": "rmap.graph",
+      "nail_monitor_detector": ""
+    }
+  ],
+  "date_discovered": "2025-03",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0020"
+  ],
+  "avss_score": {
+    "base_score": 3.6,
+    "temporal_score": 3.5,
+    "agentic_score": 3.8,
+    "overall_score": 3.8,
+    "severity_label": "low",
+    "vector_string": "AVSS:1.0/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:L/TE:FUN/AE:MED",
+    "vector": {
+      "attack_vector": "local",
+      "attack_complexity": "high",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "low",
+      "temporal": "functional",
+      "agentic": "medium"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0023",
+    "current_stage": "mitigated",
+    "is_published": true,
+    "is_mitigated": true,
+    "event_count": 5,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-03-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-03-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: MEDIUM"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-04-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-04-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      },
+      {
+        "stage": "mitigated",
+        "timestamp": "2025-05-01T00:00:00Z",
+        "actor": "NAIL Institute \u2014 RMAP Defence Team",
+        "notes": "Defence: MetamorphicGraph"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

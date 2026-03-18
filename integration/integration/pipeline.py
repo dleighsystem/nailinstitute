@@ -30,6 +30,10 @@ from typing import Any
 # ── Phase 1: AVE ──────────────────────────────────────────────────
 import ave
 from ave.schema import AVECard, Category, Severity, Status, EnvironmentVector, Evidence
+from ave.enrich import enrich_card, enrich_all
+from ave.scoring import compute_avss, AVSSVector
+from ave.timeline import CardTimeline, LifecycleStage
+from ave.export import export_database, card_to_json, card_to_markdown
 
 # ── Phase 2: Canary ───────────────────────────────────────────────
 from canary import (
@@ -256,7 +260,8 @@ class Pipeline:
         Publish all unpublished draft cards to the live AVE registry.
 
         Converts draft dicts into full AVECard objects, assigns
-        dynamic AVE-IDs, and registers them in the live database.
+        dynamic AVE-IDs, registers them in the live database, and
+        auto-enriches with AVSS score and timeline.
 
         Returns the list of newly assigned AVE-IDs.
         """
@@ -267,6 +272,10 @@ class Pipeline:
             if draft_id in self._published_draft_ids:
                 continue
             card = ave.submit_draft(draft)
+
+            # Auto-enrich new card with AVSS, timeline, etc.
+            enrich_card(card)
+
             new_ids.append(card.ave_id)
             self.published_ave_ids.append(card.ave_id)
             self._published_draft_ids.add(draft_id)
@@ -275,6 +284,28 @@ class Pipeline:
             self.feed.ingest_draft_card(draft)
 
         return new_ids
+
+    def enrich_database(self) -> dict[str, int]:
+        """
+        Enrich ALL cards in the AVE registry with AVSS scores,
+        timelines, PoCs, and cross-references.
+
+        Returns enrichment counts.
+        """
+        return enrich_all()
+
+    def export_database(self, output_dir: str, **kwargs) -> dict[str, int]:
+        """
+        Export the full enriched AVE database to a directory.
+
+        Creates: README.md, index.json, severity_index.json,
+        and per-card JSON + Markdown files.
+
+        Returns file counts.
+        """
+        # Ensure all cards are enriched first
+        enrich_all()
+        return export_database(ave.all_cards(), output_dir, **kwargs)
 
     # ═══════════════════════════════════════════════════════════
     # PROTECT — ThreatFeed & SDK Push
@@ -335,8 +366,12 @@ class Pipeline:
 
     def status(self) -> dict[str, Any]:
         """Full pipeline status."""
+        # Count enriched cards
+        enriched = sum(1 for c in ave.all_cards() if c.avss_score is not None)
+        total = len(ave.all_cards())
         return {
             "ave_database_size": ave.card_count(),
+            "ave_enrichment": f"{enriched}/{total} cards scored",
             "canary_fleet_agents": len(self.fleet.agents),
             "canary_incidents": len(self.fleet.incident_log.all_incidents()),
             "arena_seasons": self.arena._season_count,

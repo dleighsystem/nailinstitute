@@ -1,0 +1,175 @@
+{
+  "ave_id": "AVE-2025-0002",
+  "name": "Consensus Paralysis",
+  "aliases": [
+    "Dead Horse Syndrome",
+    "Multi-Agent Deadlock"
+  ],
+  "category": "consensus",
+  "severity": "high",
+  "status": "proven_mitigated",
+  "summary": "Multi-agent committees deadlock indefinitely when asked to reach consensus, wasting hundreds of thousands of tokens without converging.",
+  "mechanism": "Agents adopt fixed positions and repeat arguments. Each round reinforces existing positions rather than converging. The system burns tokens in an infinite loop of polite disagreement.",
+  "blast_radius": "240k+ tokens wasted. No decision reached. System stalls indefinitely.",
+  "prerequisite": "Multi-agent consensus architecture with >= 3 agents.",
+  "environment": {
+    "frameworks": [
+      "LangGraph",
+      "CrewAI",
+      "AutoGen"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": true,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp2",
+      "data_file": "exp2_results.json",
+      "key_metric": "deadlock_rate",
+      "key_value": "90%",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    },
+    {
+      "experiment_id": "exp2_70b",
+      "data_file": "exp2_70b_results.json",
+      "key_metric": "sycophancy_compliance",
+      "key_value": "95%",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "ImmuneDaemon \u2014 DeadlockDetector",
+      "layer": "RMAP Phase 2",
+      "effectiveness": "Breaks deadlock after configurable rounds",
+      "rmap_module": "rmap.immune",
+      "nail_monitor_detector": "ConsensusParalysisDetector"
+    },
+    {
+      "name": "Escalation Protocol",
+      "layer": "RMAP Phase 2",
+      "effectiveness": "Authority agent injection at critical threshold",
+      "rmap_module": "rmap.immune",
+      "nail_monitor_detector": ""
+    }
+  ],
+  "date_discovered": "2025-01",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0021",
+    "AVE-2025-0005"
+  ],
+  "avss_score": {
+    "base_score": 8.2,
+    "temporal_score": 8.0,
+    "agentic_score": 8.7,
+    "overall_score": 8.7,
+    "severity_label": "high",
+    "vector_string": "AVSS:1.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H/TE:FUN/AE:MED",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "high",
+      "temporal": "functional",
+      "agentic": "medium"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0002-v1",
+    "ave_id": "AVE-2025-0002",
+    "poc_type": "log",
+    "status": "verified",
+    "version": 1,
+    "author": "NAIL Institute",
+    "description": "Triggers consensus deadlock in multi-agent committee",
+    "artifact_count": 1,
+    "scripts": [],
+    "logs": [
+      {
+        "log_name": "consensus_deadlock_trace.json",
+        "description": "240k+ tokens consumed in infinite polite disagreement",
+        "total_tokens": 240000,
+        "total_rounds": 50,
+        "failure_round": 3,
+        "entry_count": 0
+      }
+    ],
+    "prompts": [],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "LangGraph",
+      "model": "nemotron:70b",
+      "model_provider": "ollama",
+      "hardware": "NVIDIA DGX GB10",
+      "packages": [],
+      "env_vars": [],
+      "notes": ""
+    },
+    "created_at": "2026-03-18T21:02:24Z",
+    "verified_at": "",
+    "verified_by": "NAIL Institute \u2014 DGX GB10 Lab",
+    "notes": ""
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0002",
+    "current_stage": "mitigated",
+    "is_published": true,
+    "is_mitigated": true,
+    "event_count": 5,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-01-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-01-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: HIGH"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-02-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-02-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      },
+      {
+        "stage": "mitigated",
+        "timestamp": "2025-03-01T00:00:00Z",
+        "actor": "NAIL Institute \u2014 RMAP Defence Team",
+        "notes": "Defence: ImmuneDaemon \u2014 DeadlockDetector"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

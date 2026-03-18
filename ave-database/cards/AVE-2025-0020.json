@@ -1,0 +1,170 @@
+{
+  "ave_id": "AVE-2025-0020",
+  "name": "Multi-Pathology Compound Attack",
+  "aliases": [
+    "Pathology Collider",
+    "Simultaneous Multi-Vector"
+  ],
+  "category": "structural",
+  "severity": "critical",
+  "status": "proven_mitigated",
+  "summary": "13 pathologies launched simultaneously create compound effects worse than any individual attack. Defence requires a multi-layer architecture with genetically-optimised thresholds.",
+  "mechanism": "Sycophancy, hallucination, memory pollution, context decay, echo chamber, token embezzlement, prompt injection, sleeper agents, goal drift, reward hacking, cascade corruption, identity confusion, and epistemic contagion fire concurrently.",
+  "blast_radius": "Total system compromise. No single defence survives.",
+  "prerequisite": "Multi-agent system under coordinated adversarial attack.",
+  "environment": {
+    "frameworks": [
+      "LangGraph",
+      "CrewAI",
+      "AutoGen"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": true,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp20",
+      "data_file": "exp20_collider_results.json",
+      "key_metric": "ga_best_fitness",
+      "key_value": "0.8066",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "4-Layer Defence Architecture",
+      "layer": "L1\u2013L4",
+      "effectiveness": "100% detection, 0% corruption post-GA",
+      "rmap_module": "rmap.immune",
+      "nail_monitor_detector": ""
+    },
+    {
+      "name": "Genetic Algorithm Optimiser",
+      "layer": "RMAP Phase 4",
+      "effectiveness": "12-gene genome, 15 generations",
+      "rmap_module": "rmap.crucible",
+      "nail_monitor_detector": ""
+    }
+  ],
+  "date_discovered": "2025-02",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0011",
+    "AVE-2025-0001",
+    "AVE-2025-0003",
+    "AVE-2025-0009",
+    "AVE-2025-0012",
+    "AVE-2025-0023"
+  ],
+  "avss_score": {
+    "base_score": 9.0,
+    "temporal_score": 8.8,
+    "agentic_score": 10.6,
+    "overall_score": 10.0,
+    "severity_label": "critical",
+    "vector_string": "AVSS:1.0/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H/TE:FUN/AE:CRI",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "changed",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "high",
+      "temporal": "functional",
+      "agentic": "critical"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0020-v1",
+    "ave_id": "AVE-2025-0020",
+    "poc_type": "log",
+    "status": "verified",
+    "version": 1,
+    "author": "NAIL Institute",
+    "description": "13-pathology compound attack requiring GA-optimised defence",
+    "artifact_count": 1,
+    "scripts": [],
+    "logs": [
+      {
+        "log_name": "pathology_collider_results.json",
+        "description": "13 simultaneous pathologies with GA-evolved defence thresholds",
+        "total_tokens": 500000,
+        "total_rounds": 100,
+        "failure_round": 1,
+        "entry_count": 0
+      }
+    ],
+    "prompts": [],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "LangGraph",
+      "model": "nemotron:70b",
+      "model_provider": "ollama",
+      "hardware": "NVIDIA DGX GB10",
+      "packages": [],
+      "env_vars": [],
+      "notes": ""
+    },
+    "created_at": "2026-03-18T21:02:24Z",
+    "verified_at": "",
+    "verified_by": "NAIL Institute \u2014 DGX GB10 Lab",
+    "notes": ""
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0020",
+    "current_stage": "mitigated",
+    "is_published": true,
+    "is_mitigated": true,
+    "event_count": 5,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-02-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-02-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: CRITICAL"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-03-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-03-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      },
+      {
+        "stage": "mitigated",
+        "timestamp": "2025-04-01T00:00:00Z",
+        "actor": "NAIL Institute \u2014 RMAP Defence Team",
+        "notes": "Defence: 4-Layer Defence Architecture"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

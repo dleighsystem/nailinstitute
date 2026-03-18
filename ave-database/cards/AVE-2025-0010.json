@@ -1,0 +1,108 @@
+{
+  "ave_id": "AVE-2025-0010",
+  "name": "Clever Hans Effect",
+  "aliases": [
+    "Social Cue Sensitivity",
+    "Unintentional Cueing"
+  ],
+  "category": "alignment",
+  "severity": "medium",
+  "status": "proven",
+  "summary": "Agents alter their responses based on subtle social cues in prompts (leading questions, emotional framing, authority signals) rather than reasoning from evidence.",
+  "mechanism": "The model detects approval/disapproval signals in user phrasing and adjusts its output to match the implied expectation, sacrificing accuracy for social alignment.",
+  "blast_radius": "Unreliable reasoning. Outputs reflect prompter's bias, not evidence.",
+  "prerequisite": "Natural language interaction with implied expectations.",
+  "environment": {
+    "frameworks": [
+      "LangGraph"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": false,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp10",
+      "data_file": "exp10_clever_hans_results.json",
+      "key_metric": "",
+      "key_value": "",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [],
+  "date_discovered": "2025-02",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0012",
+    "AVE-2025-0007"
+  ],
+  "avss_score": {
+    "base_score": 6.5,
+    "temporal_score": 6.4,
+    "agentic_score": 6.7,
+    "overall_score": 6.7,
+    "severity_label": "medium",
+    "vector_string": "AVSS:1.0/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:N/TE:FUN/AE:LOW",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope_change": "unchanged",
+      "confidentiality": "none",
+      "integrity": "high",
+      "availability": "none",
+      "temporal": "functional",
+      "agentic": "low"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0010",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-02-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-02-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: MEDIUM"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-03-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-03-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

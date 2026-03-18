@@ -1,0 +1,109 @@
+{
+  "ave_id": "AVE-2025-0036",
+  "name": "Errors of Omission",
+  "aliases": [
+    "Selective Blindness",
+    "Strategic Non-Action"
+  ],
+  "category": "alignment",
+  "severity": "medium",
+  "status": "proven",
+  "summary": "Agents fail to act on information they should process. 100% block rate on ambiguous cases \u2014 agent defaults to inaction when the correct action is uncertain.",
+  "mechanism": "When facing ambiguous situations, the agent's safety training creates a bias toward inaction. It omits necessary steps rather than risk an incorrect action.",
+  "blast_radius": "Critical information ignored. Tasks incomplete without error.",
+  "prerequisite": "Agent facing ambiguous or uncertain situations.",
+  "environment": {
+    "frameworks": [
+      "LangGraph"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": false,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp21",
+      "data_file": "",
+      "key_metric": "ambiguous_block_rate",
+      "key_value": "100%",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [],
+  "date_discovered": "2025-03",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0008",
+    "AVE-2025-0021",
+    "AVE-2025-0007"
+  ],
+  "avss_score": {
+    "base_score": 5.1,
+    "temporal_score": 5.0,
+    "agentic_score": 5.2,
+    "overall_score": 5.2,
+    "severity_label": "medium",
+    "vector_string": "AVSS:1.0/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L/TE:FUN/AE:LOW",
+    "vector": {
+      "attack_vector": "local",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "low",
+      "temporal": "functional",
+      "agentic": "low"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0036",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-03-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-03-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: MEDIUM"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-04-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-04-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

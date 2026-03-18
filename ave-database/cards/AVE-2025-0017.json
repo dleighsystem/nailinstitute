@@ -1,0 +1,107 @@
+{
+  "ave_id": "AVE-2025-0017",
+  "name": "Container Isolation Bleed",
+  "aliases": [
+    "Sandbox Escape",
+    "Environment Leakage"
+  ],
+  "category": "structural",
+  "severity": "high",
+  "status": "proven",
+  "summary": "Agents running in containers can leak information across isolation boundaries through shared resources, environment variables, or filesystem artifacts.",
+  "mechanism": "Container isolation is imperfect. Shared volumes, network interfaces, and environment variables can be probed by a code-executing agent to discover cross-container state.",
+  "blast_radius": "Cross-tenant data leakage. Sandbox escape.",
+  "prerequisite": "Agent with code execution inside a container.",
+  "environment": {
+    "frameworks": [
+      "Docker",
+      "Kubernetes"
+    ],
+    "models_tested": [
+      "nemotron:70b"
+    ],
+    "multi_agent": false,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp17",
+      "data_file": "",
+      "key_metric": "",
+      "key_value": "",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [],
+  "date_discovered": "2025-02",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0028"
+  ],
+  "avss_score": {
+    "base_score": 6.5,
+    "temporal_score": 6.4,
+    "agentic_score": 6.7,
+    "overall_score": 6.7,
+    "severity_label": "medium",
+    "vector_string": "AVSS:1.0/AV:A/AC:H/PR:L/UI:N/S:C/C:H/I:L/A:N/TE:FUN/AE:LOW",
+    "vector": {
+      "attack_vector": "adjacent",
+      "attack_complexity": "high",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope_change": "changed",
+      "confidentiality": "high",
+      "integrity": "low",
+      "availability": "none",
+      "temporal": "functional",
+      "agentic": "low"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0017",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-02-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-02-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: HIGH"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-03-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-03-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

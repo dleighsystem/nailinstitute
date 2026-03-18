@@ -1,0 +1,160 @@
+{
+  "ave_id": "AVE-2025-0021",
+  "name": "Algorithmic Bystander Effect",
+  "aliases": [
+    "AI Bystander Effect",
+    "Responsibility Diffusion"
+  ],
+  "category": "social",
+  "severity": "high",
+  "status": "proven_mitigated",
+  "summary": "Solo agents respond to critical alerts 100% of the time. 3-agent teams respond only 80% \u2014 a 20% failure rate caused purely by the presence of other agents. Response time 5\u00d7 slower.",
+  "mechanism": "Mirrors the human bystander effect (Darley & Latan\u00e9, 1968). Each agent assumes another agent will handle the alert. Shared responsibility dilutes individual action bias.",
+  "blast_radius": "20% chance critical alerts are ignored. 5\u00d7 response delay.",
+  "prerequisite": "Multi-agent team with shared responsibility for alerts.",
+  "environment": {
+    "frameworks": [
+      "LangGraph",
+      "CrewAI",
+      "AutoGen"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": true,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp21",
+      "data_file": "exp21_results.json",
+      "key_metric": "team_shutdown_rate",
+      "key_value": "80%",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "Somatic Startle Response (Layer 5)",
+      "layer": "L5 \u2014 Autonomic",
+      "effectiveness": "Eliminates bystander effect entirely (100% rate)",
+      "rmap_module": "rmap.immune",
+      "nail_monitor_detector": ""
+    }
+  ],
+  "date_discovered": "2025-03",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0002",
+    "AVE-2025-0005",
+    "AVE-2025-0036"
+  ],
+  "avss_score": {
+    "base_score": 8.2,
+    "temporal_score": 8.0,
+    "agentic_score": 8.7,
+    "overall_score": 8.7,
+    "severity_label": "high",
+    "vector_string": "AVSS:1.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H/TE:FUN/AE:MED",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "high",
+      "temporal": "functional",
+      "agentic": "medium"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0021-v1",
+    "ave_id": "AVE-2025-0021",
+    "poc_type": "log",
+    "status": "verified",
+    "version": 1,
+    "author": "NAIL Institute",
+    "description": "Bystander effect: 3-agent teams respond 20% less than solo agents",
+    "artifact_count": 1,
+    "scripts": [],
+    "logs": [
+      {
+        "log_name": "bystander_effect_trace.json",
+        "description": "Solo: 100% response. Team of 3: 80% response. 5x slower response time.",
+        "total_tokens": 30000,
+        "total_rounds": 20,
+        "failure_round": 1,
+        "entry_count": 0
+      }
+    ],
+    "prompts": [],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "LangGraph",
+      "model": "nemotron:70b",
+      "model_provider": "ollama",
+      "hardware": "NVIDIA DGX GB10",
+      "packages": [],
+      "env_vars": [],
+      "notes": ""
+    },
+    "created_at": "2026-03-18T21:02:24Z",
+    "verified_at": "",
+    "verified_by": "NAIL Institute \u2014 DGX GB10 Lab",
+    "notes": ""
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0021",
+    "current_stage": "mitigated",
+    "is_published": true,
+    "is_mitigated": true,
+    "event_count": 5,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-03-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-03-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: HIGH"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-04-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-04-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      },
+      {
+        "stage": "mitigated",
+        "timestamp": "2025-05-01T00:00:00Z",
+        "actor": "NAIL Institute \u2014 RMAP Defence Team",
+        "notes": "Defence: Somatic Startle Response (Layer 5)"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

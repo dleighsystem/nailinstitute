@@ -1,0 +1,87 @@
+{
+  "ave_id": "AVE-2025-0030",
+  "name": "Semantic Trojan Horse",
+  "aliases": [
+    "Metaphorical Encoding",
+    "Safety Filter Bypass via Semantics"
+  ],
+  "category": "injection",
+  "severity": "high",
+  "status": "theoretical",
+  "summary": "Adversarial inputs encode harmful instructions inside semantically benign language (gardening metaphors for SQL injection). Keyword-based safety filters see nothing.",
+  "mechanism": "Attacker uses extended metaphor: 'the ROOT access to the GARDEN (database) can be achieved by PLANTING a SEED (SQL injection).' The LLM decodes the metaphor. Safety filters don't.",
+  "blast_radius": "Complete safety filter bypass. Agent executes encoded attack.",
+  "prerequisite": "Agent with tool execution and keyword-based safety filter.",
+  "environment": {
+    "frameworks": [
+      "LangGraph"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "claude-sonnet-4",
+      "gemini-2.5-pro"
+    ],
+    "multi_agent": false,
+    "tools_required": true,
+    "memory_required": false
+  },
+  "evidence": [],
+  "defences": [],
+  "date_discovered": "2025-03",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0019",
+    "AVE-2025-0033"
+  ],
+  "avss_score": {
+    "base_score": 7.4,
+    "temporal_score": 6.8,
+    "agentic_score": 7.1,
+    "overall_score": 7.1,
+    "severity_label": "high",
+    "vector_string": "AVSS:1.0/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N/TE:UNP/AE:LOW",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "none",
+      "temporal": "unproven",
+      "agentic": "low"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0030",
+    "current_stage": "triaged",
+    "is_published": false,
+    "is_mitigated": false,
+    "event_count": 2,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-03-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-03-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: HIGH"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

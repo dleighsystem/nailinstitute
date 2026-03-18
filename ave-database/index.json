@@ -1,0 +1,259 @@
+{
+  "schema_version": "1.0.0",
+  "generated_at": "2026-03-18T21:02:24Z",
+  "total_cards": 36,
+  "cards": [
+    {
+      "ave_id": "AVE-2025-0001",
+      "name": "Sleeper Payload Injection",
+      "category": "memory",
+      "severity": "critical",
+      "status": "proven_mitigated"
+    },
+    {
+      "ave_id": "AVE-2025-0002",
+      "name": "Consensus Paralysis",
+      "category": "consensus",
+      "severity": "high",
+      "status": "proven_mitigated"
+    },
+    {
+      "ave_id": "AVE-2025-0003",
+      "name": "Token Embezzlement (EDoS)",
+      "category": "resource",
+      "severity": "critical",
+      "status": "proven_mitigated"
+    },
+    {
+      "ave_id": "AVE-2025-0004",
+      "name": "Prompt Inbreeding",
+      "category": "drift",
+      "severity": "medium",
+      "status": "proven_mitigated"
+    },
+    {
+      "ave_id": "AVE-2025-0005",
+      "name": "CYA Cascade",
+      "category": "social",
+      "severity": "medium",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0006",
+      "name": "Language Drift",
+      "category": "drift",
+      "severity": "medium",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0007",
+      "name": "Goodhart's Cartel",
+      "category": "alignment",
+      "severity": "high",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0008",
+      "name": "Learned Helplessness",
+      "category": "alignment",
+      "severity": "medium",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0009",
+      "name": "Epistemic Contagion",
+      "category": "memory",
+      "severity": "critical",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0010",
+      "name": "Clever Hans Effect",
+      "category": "alignment",
+      "severity": "medium",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0011",
+      "name": "Prompt Satiation",
+      "category": "structural",
+      "severity": "medium",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0012",
+      "name": "Sycophantic Collapse",
+      "category": "alignment",
+      "severity": "high",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0013",
+      "name": "Chronological Desync",
+      "category": "temporal",
+      "severity": "medium",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0014",
+      "name": "MCP Tool Registration Poisoning",
+      "category": "tool",
+      "severity": "high",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0015",
+      "name": "Observer Effect",
+      "category": "alignment",
+      "severity": "medium",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0016",
+      "name": "Upgrade Regression",
+      "category": "structural",
+      "severity": "medium",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0017",
+      "name": "Container Isolation Bleed",
+      "category": "structural",
+      "severity": "high",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0018",
+      "name": "Somatic Blindness",
+      "category": "structural",
+      "severity": "medium",
+      "status": "proven_mitigated"
+    },
+    {
+      "ave_id": "AVE-2025-0019",
+      "name": "Pydantic Schema Exploitation",
+      "category": "injection",
+      "severity": "high",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0020",
+      "name": "Multi-Pathology Compound Attack",
+      "category": "structural",
+      "severity": "critical",
+      "status": "proven_mitigated"
+    },
+    {
+      "ave_id": "AVE-2025-0021",
+      "name": "Algorithmic Bystander Effect",
+      "category": "social",
+      "severity": "high",
+      "status": "proven_mitigated"
+    },
+    {
+      "ave_id": "AVE-2025-0022",
+      "name": "Memory Laundering",
+      "category": "memory",
+      "severity": "high",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0023",
+      "name": "Static Topology Fragility",
+      "category": "structural",
+      "severity": "medium",
+      "status": "proven_mitigated"
+    },
+    {
+      "ave_id": "AVE-2025-0024",
+      "name": "Deceptive Alignment",
+      "category": "alignment",
+      "severity": "critical",
+      "status": "not_proven"
+    },
+    {
+      "ave_id": "AVE-2025-0025",
+      "name": "Agent Collusion",
+      "category": "social",
+      "severity": "high",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0026",
+      "name": "Confused Deputy Attack",
+      "category": "tool",
+      "severity": "critical",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0027",
+      "name": "Shadow Delegation",
+      "category": "delegation",
+      "severity": "high",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0028",
+      "name": "Credential Harvesting",
+      "category": "credential",
+      "severity": "critical",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0029",
+      "name": "Temporal Sleeper Agent",
+      "category": "temporal",
+      "severity": "critical",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0030",
+      "name": "Semantic Trojan Horse",
+      "category": "injection",
+      "severity": "high",
+      "status": "theoretical"
+    },
+    {
+      "ave_id": "AVE-2025-0031",
+      "name": "Temporal Persona Shift",
+      "category": "drift",
+      "severity": "high",
+      "status": "theoretical"
+    },
+    {
+      "ave_id": "AVE-2025-0032",
+      "name": "Multi-Hop Tool Chain Exploitation",
+      "category": "tool",
+      "severity": "critical",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0033",
+      "name": "Jailbreak Chaining for Capability Escalation",
+      "category": "injection",
+      "severity": "critical",
+      "status": "theoretical"
+    },
+    {
+      "ave_id": "AVE-2025-0034",
+      "name": "Federated Poisoning in Multi-Tenant Systems",
+      "category": "memory",
+      "severity": "critical",
+      "status": "theoretical"
+    },
+    {
+      "ave_id": "AVE-2025-0035",
+      "name": "Attention Smoothing",
+      "category": "resource",
+      "severity": "medium",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0036",
+      "name": "Errors of Omission",
+      "category": "alignment",
+      "severity": "medium",
+      "status": "proven"
+    }
+  ]
+}

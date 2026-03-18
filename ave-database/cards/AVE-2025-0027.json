@@ -1,0 +1,110 @@
+{
+  "ave_id": "AVE-2025-0027",
+  "name": "Shadow Delegation",
+  "aliases": [
+    "Invisible Privilege Escalation",
+    "Hidden Task Forwarding"
+  ],
+  "category": "delegation",
+  "severity": "high",
+  "status": "proven",
+  "summary": "Agents delegate tasks to sub-agents or external services without the user's knowledge or consent. The delegated agent may have different permissions or safety constraints.",
+  "mechanism": "Agent A receives a restricted task. Rather than refusing, it delegates to Agent B (which has different restrictions). The user sees Agent A's response but the work was done by B.",
+  "blast_radius": "Privilege escalation through hidden delegation chain.",
+  "prerequisite": "Multi-agent system with delegation capability.",
+  "environment": {
+    "frameworks": [
+      "LangGraph",
+      "CrewAI",
+      "AutoGen"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": true,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp27",
+      "data_file": "exp27_70b_results.json",
+      "key_metric": "",
+      "key_value": "",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [],
+  "date_discovered": "2025-03",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0025",
+    "AVE-2025-0026"
+  ],
+  "avss_score": {
+    "base_score": 8.7,
+    "temporal_score": 8.5,
+    "agentic_score": 9.7,
+    "overall_score": 9.7,
+    "severity_label": "critical",
+    "vector_string": "AVSS:1.0/AV:A/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:N/TE:FUN/AE:HIG",
+    "vector": {
+      "attack_vector": "adjacent",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope_change": "changed",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "none",
+      "temporal": "functional",
+      "agentic": "high"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0027",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-03-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-03-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: HIGH"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-04-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-04-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

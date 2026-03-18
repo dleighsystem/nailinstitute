@@ -1,0 +1,142 @@
+{
+  "ave_id": "AVE-2025-0022",
+  "name": "Memory Laundering",
+  "aliases": [
+    "Provenance Laundering",
+    "Self-Citation Trust Escalation"
+  ],
+  "category": "memory",
+  "severity": "high",
+  "status": "proven",
+  "summary": "Agent stores untrusted information, then retrieves it from its own memory. Because it's now 'self-generated', the trust score is elevated. 53% citation laundering rate.",
+  "mechanism": "Round 1: External source \u2192 agent stores fact (low trust). Round 2: Agent summarises memories \u2192 fact appears in summary (high trust). Round 3: Summary stored \u2192 fact now has elevated provenance.",
+  "blast_radius": "Trust model completely undermined. Poisoned facts become 'verified'.",
+  "prerequisite": "Agent with persistent memory and self-referential retrieval.",
+  "environment": {
+    "frameworks": [
+      "LangGraph"
+    ],
+    "models_tested": [
+      "nemotron:70b"
+    ],
+    "multi_agent": true,
+    "tools_required": false,
+    "memory_required": true
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp22",
+      "data_file": "exp22a_results.json",
+      "key_metric": "citation_laundering_rate",
+      "key_value": "53%",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [],
+  "date_discovered": "2025-03",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0001",
+    "AVE-2025-0009"
+  ],
+  "avss_score": {
+    "base_score": 7.1,
+    "temporal_score": 6.9,
+    "agentic_score": 7.5,
+    "overall_score": 7.5,
+    "severity_label": "high",
+    "vector_string": "AVSS:1.0/AV:A/AC:L/PR:N/UI:N/S:U/C:L/I:H/A:N/TE:FUN/AE:MED",
+    "vector": {
+      "attack_vector": "adjacent",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "low",
+      "integrity": "high",
+      "availability": "none",
+      "temporal": "functional",
+      "agentic": "medium"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0022-v1",
+    "ave_id": "AVE-2025-0022",
+    "poc_type": "log",
+    "status": "verified",
+    "version": 1,
+    "author": "NAIL Institute",
+    "description": "53% citation laundering rate via self-referential memory",
+    "artifact_count": 1,
+    "scripts": [],
+    "logs": [
+      {
+        "log_name": "memory_laundering_trace.json",
+        "description": "External fact \u2192 stored \u2192 summarised \u2192 elevated provenance. 53% laundering.",
+        "total_tokens": 60000,
+        "total_rounds": 15,
+        "failure_round": 3,
+        "entry_count": 0
+      }
+    ],
+    "prompts": [],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "LangGraph",
+      "model": "nemotron:70b",
+      "model_provider": "ollama",
+      "hardware": "NVIDIA DGX GB10",
+      "packages": [],
+      "env_vars": [],
+      "notes": ""
+    },
+    "created_at": "2026-03-18T21:02:24Z",
+    "verified_at": "",
+    "verified_by": "NAIL Institute \u2014 DGX GB10 Lab",
+    "notes": ""
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0022",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-03-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-03-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: HIGH"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-04-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-04-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

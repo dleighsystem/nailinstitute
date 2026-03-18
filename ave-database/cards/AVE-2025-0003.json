@@ -1,0 +1,168 @@
+{
+  "ave_id": "AVE-2025-0003",
+  "name": "Token Embezzlement (EDoS)",
+  "aliases": [
+    "Economic Denial of Service",
+    "Recursive Token Drain"
+  ],
+  "category": "resource",
+  "severity": "critical",
+  "status": "proven_mitigated",
+  "summary": "Attacker tricks an agent into exponential token consumption via recursive loops, inflating costs 3\u201312\u00d7 within 5 rounds.",
+  "mechanism": "Crafted prompts trigger self-referential reasoning loops, tool-call chains that expand, or verbose output modes that compound across multi-agent passes.",
+  "blast_radius": "3\u201312\u00d7 budget overrun. Potential unbounded cost in production.",
+  "prerequisite": "Agent with token budget and iterative/recursive capability.",
+  "environment": {
+    "frameworks": [
+      "LangGraph"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": false,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp3",
+      "data_file": "",
+      "key_metric": "budget_overrun",
+      "key_value": "3-12\u00d7 within 5 rounds",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "Token Kinetics Monitor (L4)",
+      "layer": "L4 \u2014 TokenKinetics",
+      "effectiveness": "Spike detection + burn-rate tracking",
+      "rmap_module": "",
+      "nail_monitor_detector": "BudgetEmbezzlementDetector"
+    }
+  ],
+  "date_discovered": "2025-01",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0035",
+    "AVE-2025-0011",
+    "AVE-2025-0020"
+  ],
+  "avss_score": {
+    "base_score": 7.5,
+    "temporal_score": 7.5,
+    "agentic_score": 8.2,
+    "overall_score": 8.2,
+    "severity_label": "high",
+    "vector_string": "AVSS:1.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H/TE:HIG/AE:MED",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "none",
+      "integrity": "none",
+      "availability": "high",
+      "temporal": "high",
+      "agentic": "medium"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0003-v1",
+    "ave_id": "AVE-2025-0003",
+    "poc_type": "composite",
+    "status": "verified",
+    "version": 1,
+    "author": "NAIL Institute",
+    "description": "Token embezzlement via recursive self-referential loops",
+    "artifact_count": 2,
+    "scripts": [
+      {
+        "filename": "reproduce_ave_0003.py",
+        "sha256": "822edbbdcdfdbca1619178ff742246d55363cdee02957c5f4090cc2d3af187d6",
+        "description": "Recursive prompt that causes exponential token growth",
+        "expected_output": "Token consumption grows 3-12x within 5 rounds",
+        "timeout_seconds": 300,
+        "requires_model": true,
+        "code_lines": 4
+      }
+    ],
+    "logs": [],
+    "prompts": [
+      {
+        "sha256": "7e9322bc5a7c0a75987ed1ba71c0b5423656b9cf99c0a39aef25e85eba39de00",
+        "target_role": "user",
+        "context": "",
+        "expected_behaviour": "Agent enters recursive elaboration loop, consuming 3-12x budget",
+        "bypass_type": "indirect",
+        "prompt_length": 128
+      }
+    ],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "LangGraph",
+      "model": "nemotron:70b",
+      "model_provider": "ollama",
+      "hardware": "NVIDIA DGX GB10",
+      "packages": [],
+      "env_vars": [],
+      "notes": ""
+    },
+    "created_at": "2026-03-18T21:02:24Z",
+    "verified_at": "",
+    "verified_by": "NAIL Institute \u2014 DGX GB10 Lab",
+    "notes": ""
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0003",
+    "current_stage": "mitigated",
+    "is_published": true,
+    "is_mitigated": true,
+    "event_count": 5,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-01-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-01-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: CRITICAL"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-02-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-02-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      },
+      {
+        "stage": "mitigated",
+        "timestamp": "2025-03-01T00:00:00Z",
+        "actor": "NAIL Institute \u2014 RMAP Defence Team",
+        "notes": "Defence: Token Kinetics Monitor (L4)"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

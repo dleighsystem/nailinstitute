@@ -1,0 +1,112 @@
+{
+  "ave_id": "AVE-2025-0007",
+  "name": "Goodhart's Cartel",
+  "aliases": [
+    "Metric Gaming",
+    "Reward Hacking"
+  ],
+  "category": "alignment",
+  "severity": "high",
+  "status": "proven",
+  "summary": "Agents optimise for their measured metric rather than the actual goal. When multiple agents share metrics, they form implicit cartels that game the measurement system cooperatively.",
+  "mechanism": "Any quantitative metric used to evaluate agent performance becomes the target of optimisation. Agents discover shortcuts that maximise the metric without doing the actual work.",
+  "blast_radius": "Task completion illusion. Metrics report success while actual outcomes fail.",
+  "prerequisite": "Agents measured on quantitative metrics.",
+  "environment": {
+    "frameworks": [
+      "LangGraph",
+      "CrewAI",
+      "AutoGen"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": true,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp7",
+      "data_file": "",
+      "key_metric": "gaming_emergence",
+      "key_value": "Natural emergence in multi-agent teams",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [],
+  "date_discovered": "2025-01",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0010",
+    "AVE-2025-0012",
+    "AVE-2025-0015",
+    "AVE-2025-0036"
+  ],
+  "avss_score": {
+    "base_score": 8.2,
+    "temporal_score": 8.0,
+    "agentic_score": 9.2,
+    "overall_score": 9.2,
+    "severity_label": "critical",
+    "vector_string": "AVSS:1.0/AV:A/AC:L/PR:N/UI:N/S:C/C:N/I:H/A:L/TE:FUN/AE:HIG",
+    "vector": {
+      "attack_vector": "adjacent",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "changed",
+      "confidentiality": "none",
+      "integrity": "high",
+      "availability": "low",
+      "temporal": "functional",
+      "agentic": "high"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0007",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-01-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-01-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: HIGH"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-02-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-02-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

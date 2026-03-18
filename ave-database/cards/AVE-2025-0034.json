@@ -1,0 +1,84 @@
+{
+  "ave_id": "AVE-2025-0034",
+  "name": "Federated Poisoning in Multi-Tenant Systems",
+  "aliases": [
+    "Cross-Tenant Contamination",
+    "Shared Model Poisoning"
+  ],
+  "category": "memory",
+  "severity": "critical",
+  "status": "theoretical",
+  "summary": "SaaS platforms deploy the same base agent for multiple clients. A compromised client's interactions poison the shared model or knowledge base, affecting all other clients.",
+  "mechanism": "Client A's adversarial interactions shift shared model behaviour via fine-tuning/RLHF. Client A's poisoned RAG documents become retrievable by Client B's agent.",
+  "blast_radius": "Single compromise affects all customers on the platform.",
+  "prerequisite": "Multi-tenant agent-as-a-service with shared resources.",
+  "environment": {
+    "frameworks": [
+      "SaaS",
+      "Multi-Tenant"
+    ],
+    "models_tested": [],
+    "multi_agent": true,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [],
+  "defences": [],
+  "date_discovered": "2025-03",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0001",
+    "AVE-2025-0009"
+  ],
+  "avss_score": {
+    "base_score": 8.4,
+    "temporal_score": 7.7,
+    "agentic_score": 9.3,
+    "overall_score": 9.3,
+    "severity_label": "critical",
+    "vector_string": "AVSS:1.0/AV:N/AC:H/PR:L/UI:N/S:C/C:H/I:H/A:L/TE:UNP/AE:CRI",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope_change": "changed",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "low",
+      "temporal": "unproven",
+      "agentic": "critical"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0034",
+    "current_stage": "triaged",
+    "is_published": false,
+    "is_mitigated": false,
+    "event_count": 2,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-03-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-03-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: CRITICAL"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

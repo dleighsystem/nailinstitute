@@ -1,0 +1,146 @@
+{
+  "ave_id": "AVE-2025-0014",
+  "name": "MCP Tool Registration Poisoning",
+  "aliases": [
+    "Tool Description Attack",
+    "MCP Injection"
+  ],
+  "category": "tool",
+  "severity": "high",
+  "status": "proven",
+  "summary": "MCP (Model Context Protocol) tool registries accept malicious tool definitions without verification. Agents trust tool descriptions implicitly, enabling data exfiltration.",
+  "mechanism": "Attacker registers a tool with a poisoned description that instructs the agent to include sensitive data in its arguments. The agent complies because it trusts the tool definition.",
+  "blast_radius": "Full PII/secret exfiltration through tool call arguments.",
+  "prerequisite": "Agent uses MCP or dynamic tool registry.",
+  "environment": {
+    "frameworks": [
+      "LangGraph"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "claude-sonnet-4",
+      "gemini-2.5-pro"
+    ],
+    "multi_agent": false,
+    "tools_required": true,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp14",
+      "data_file": "",
+      "key_metric": "",
+      "key_value": "",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [],
+  "date_discovered": "2025-02",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0026",
+    "AVE-2025-0032",
+    "AVE-2025-0019"
+  ],
+  "avss_score": {
+    "base_score": 10.0,
+    "temporal_score": 9.7,
+    "agentic_score": 11.1,
+    "overall_score": 10.0,
+    "severity_label": "critical",
+    "vector_string": "AVSS:1.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:N/TE:FUN/AE:HIG",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "changed",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "none",
+      "temporal": "functional",
+      "agentic": "high"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0014-v1",
+    "ave_id": "AVE-2025-0014",
+    "poc_type": "script",
+    "status": "verified",
+    "version": 1,
+    "author": "NAIL Institute",
+    "description": "MCP tool description poisoning for data exfiltration",
+    "artifact_count": 1,
+    "scripts": [
+      {
+        "filename": "reproduce_ave_0014.py",
+        "sha256": "d0fad4203616b098eee2cd2895dbe811fa6be57fc87c8ce71a19490a5b23e081",
+        "description": "Poisoned tool description causes agent to exfiltrate PII",
+        "expected_output": "Agent includes PII in tool call arguments as instructed by description",
+        "timeout_seconds": 300,
+        "requires_model": true,
+        "code_lines": 9
+      }
+    ],
+    "logs": [],
+    "prompts": [],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "LangGraph",
+      "model": "nemotron:70b",
+      "model_provider": "ollama",
+      "hardware": "NVIDIA DGX GB10",
+      "packages": [],
+      "env_vars": [],
+      "notes": ""
+    },
+    "created_at": "2026-03-18T21:02:24Z",
+    "verified_at": "",
+    "verified_by": "NAIL Institute \u2014 DGX GB10 Lab",
+    "notes": ""
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0014",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-02-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-02-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: HIGH"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-03-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-03-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

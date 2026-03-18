@@ -1,0 +1,169 @@
+{
+  "ave_id": "AVE-2025-0001",
+  "name": "Sleeper Payload Injection",
+  "aliases": [
+    "Memory Poisoning",
+    "Delayed Payload Injection"
+  ],
+  "category": "memory",
+  "severity": "critical",
+  "status": "proven_mitigated",
+  "summary": "Attacker plants false facts in shared agent memory. The agent stores them as trusted ground truth. Later rounds retrieve and act on the poisoned data with full confidence.",
+  "mechanism": "Adversarial input is crafted to look like legitimate knowledge. The memory system accepts it without provenance verification. Subsequent retrieval treats it as authoritative.",
+  "blast_radius": "Complete corruption of agent knowledge base. All downstream decisions tainted.",
+  "prerequisite": "Agent must have writable shared memory or persistent state.",
+  "environment": {
+    "frameworks": [
+      "LangGraph"
+    ],
+    "models_tested": [
+      "nemotron:70b"
+    ],
+    "multi_agent": true,
+    "tools_required": false,
+    "memory_required": true
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp1",
+      "data_file": "exp1_results_control.json",
+      "key_metric": "acceptance_rate",
+      "key_value": "100%",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "Memory Firewall (Archivist)",
+      "layer": "L3 \u2014 TaintTracker",
+      "effectiveness": "60% reduction in poisoned memory",
+      "rmap_module": "rmap.immune",
+      "nail_monitor_detector": "SharedMemoryPollutionDetector"
+    }
+  ],
+  "date_discovered": "2025-01",
+  "date_published": "",
+  "cwe_mapping": "CWE-1321 (Improperly Controlled Modification of Object Prototype Attributes)",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0009",
+    "AVE-2025-0022",
+    "AVE-2025-0034",
+    "AVE-2025-0029",
+    "AVE-2025-0020"
+  ],
+  "avss_score": {
+    "base_score": 10.0,
+    "temporal_score": 9.7,
+    "agentic_score": 11.1,
+    "overall_score": 10.0,
+    "severity_label": "critical",
+    "vector_string": "AVSS:1.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:L/TE:FUN/AE:HIG",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "changed",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "low",
+      "temporal": "functional",
+      "agentic": "high"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0001-v1",
+    "ave_id": "AVE-2025-0001",
+    "poc_type": "composite",
+    "status": "verified",
+    "version": 1,
+    "author": "NAIL Institute",
+    "description": "Demonstrates memory poisoning via adversarial input",
+    "artifact_count": 2,
+    "scripts": [
+      {
+        "filename": "reproduce_ave_0001.py",
+        "sha256": "a7b458705ef2b7f431f946fa77115b56449469c2196c6fe5f99457f51190c3bc",
+        "description": "Memory injection and retrieval cycle",
+        "expected_output": "Agent accepts and returns poisoned fact with 100% confidence",
+        "timeout_seconds": 300,
+        "requires_model": true,
+        "code_lines": 6
+      }
+    ],
+    "logs": [],
+    "prompts": [
+      {
+        "sha256": "7edbc10c1ed48275f2fabe267d0a1318578d499e847a9a7422fe65734359a84b",
+        "target_role": "user",
+        "context": "",
+        "expected_behaviour": "Agent stores the 'fact' in persistent memory without provenance check",
+        "bypass_type": "direct_injection",
+        "prompt_length": 98
+      }
+    ],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "LangGraph",
+      "model": "nemotron:70b",
+      "model_provider": "ollama",
+      "hardware": "NVIDIA DGX GB10",
+      "packages": [],
+      "env_vars": [],
+      "notes": ""
+    },
+    "created_at": "2026-03-18T21:02:24Z",
+    "verified_at": "",
+    "verified_by": "NAIL Institute \u2014 DGX GB10 Lab",
+    "notes": ""
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0001",
+    "current_stage": "mitigated",
+    "is_published": true,
+    "is_mitigated": true,
+    "event_count": 5,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-01-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-01-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: CRITICAL"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-02-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-02-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      },
+      {
+        "stage": "mitigated",
+        "timestamp": "2025-03-01T00:00:00Z",
+        "actor": "NAIL Institute \u2014 RMAP Defence Team",
+        "notes": "Defence: Memory Firewall (Archivist)"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "ave_id": "AVE-2025-0018",
+  "name": "Somatic Blindness",
+  "aliases": [
+    "Infrastructure Unawareness",
+    "Hardware Misattribution"
+  ],
+  "category": "structural",
+  "severity": "medium",
+  "status": "proven_mitigated",
+  "summary": "Agents have no awareness of their infrastructure state. When GPU throttles, RAM fills, or network times out, the agent misattributes the failure as a code bug and hallucinates fixes.",
+  "mechanism": "The agent's context contains no hardware telemetry. When a tool call times out due to network congestion, the agent reasons about code bugs because that's the only explanation in its context.",
+  "blast_radius": "Cascading incorrect diagnoses. Wasted effort on phantom bugs.",
+  "prerequisite": "Agent without infrastructure telemetry in context.",
+  "environment": {
+    "frameworks": [
+      "LangGraph"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": false,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp18",
+      "data_file": "",
+      "key_metric": "",
+      "key_value": "",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "SomaticHeader",
+      "layer": "RMAP Phase 3",
+      "effectiveness": "Injects live CPU/GPU/RAM/Net telemetry into every prompt",
+      "rmap_module": "rmap.somatic",
+      "nail_monitor_detector": ""
+    }
+  ],
+  "date_discovered": "2025-02",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0016"
+  ],
+  "avss_score": {
+    "base_score": 5.1,
+    "temporal_score": 5.0,
+    "agentic_score": 5.2,
+    "overall_score": 5.2,
+    "severity_label": "medium",
+    "vector_string": "AVSS:1.0/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L/TE:FUN/AE:LOW",
+    "vector": {
+      "attack_vector": "local",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "low",
+      "temporal": "functional",
+      "agentic": "low"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0018",
+    "current_stage": "mitigated",
+    "is_published": true,
+    "is_mitigated": true,
+    "event_count": 5,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-02-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-02-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: MEDIUM"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-03-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-03-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      },
+      {
+        "stage": "mitigated",
+        "timestamp": "2025-04-01T00:00:00Z",
+        "actor": "NAIL Institute \u2014 RMAP Defence Team",
+        "notes": "Defence: SomaticHeader"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

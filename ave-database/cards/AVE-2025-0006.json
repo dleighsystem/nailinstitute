@@ -1,0 +1,118 @@
+{
+  "ave_id": "AVE-2025-0006",
+  "name": "Language Drift",
+  "aliases": [
+    "Semantic Divergence",
+    "Agent Pidgin"
+  ],
+  "category": "drift",
+  "severity": "medium",
+  "status": "proven",
+  "summary": "Long-running agents develop incomprehensible shorthand over time, diverging from natural language. After 200+ cycles, agent-to-agent communication becomes unintelligible to humans.",
+  "mechanism": "Agents optimise for communication efficiency with each other. Natural language conventions are gradually discarded in favour of compressed, agent-specific encodings.",
+  "blast_radius": "Loss of human oversight. Debugging becomes impossible.",
+  "prerequisite": "Long-running multi-agent conversation (200+ rounds).",
+  "environment": {
+    "frameworks": [
+      "LangGraph",
+      "CrewAI",
+      "AutoGen"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": true,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp6",
+      "data_file": "",
+      "key_metric": "divergence",
+      "key_value": "Measurable after 200 cycles",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "DriftDetector",
+      "layer": "RMAP Phase 2",
+      "effectiveness": "Structural drift monitoring via feature comparison",
+      "rmap_module": "rmap.immune",
+      "nail_monitor_detector": "LanguageDriftDetector"
+    }
+  ],
+  "date_discovered": "2025-01",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0004",
+    "AVE-2025-0031"
+  ],
+  "avss_score": {
+    "base_score": 5.7,
+    "temporal_score": 5.6,
+    "agentic_score": 6.1,
+    "overall_score": 6.1,
+    "severity_label": "medium",
+    "vector_string": "AVSS:1.0/AV:L/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:L/TE:FUN/AE:MED",
+    "vector": {
+      "attack_vector": "local",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "none",
+      "integrity": "high",
+      "availability": "low",
+      "temporal": "functional",
+      "agentic": "medium"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0006",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-01-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-01-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: MEDIUM"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-02-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-02-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "ave_id": "AVE-2025-0008",
+  "name": "Learned Helplessness",
+  "aliases": [
+    "Agent Passivity",
+    "Failure Habituation"
+  ],
+  "category": "alignment",
+  "severity": "medium",
+  "status": "proven",
+  "summary": "After repeated failures, agents reduce their effort and initiative. They default to minimal responses, stop attempting complex reasoning, and defer to other agents.",
+  "mechanism": "Negative feedback from failed attempts trains the agent's in-context behaviour toward passivity. The agent generalises from specific failures to global inaction.",
+  "blast_radius": "Agent becomes functionally inert. Throughput drops to near zero.",
+  "prerequisite": "Agent exposed to repeated failure scenarios.",
+  "environment": {
+    "frameworks": [
+      "LangGraph"
+    ],
+    "models_tested": [
+      "nemotron:70b",
+      "mistral:7b"
+    ],
+    "multi_agent": false,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp8",
+      "data_file": "",
+      "key_metric": "",
+      "key_value": "",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [],
+  "date_discovered": "2025-01",
+  "date_published": "",
+  "cwe_mapping": "",
+  "mitre_mapping": "",
+  "references": [],
+  "related_aves": [
+    "AVE-2025-0036",
+    "AVE-2025-0012"
+  ],
+  "avss_score": {
+    "base_score": 5.7,
+    "temporal_score": 5.6,
+    "agentic_score": 5.9,
+    "overall_score": 5.9,
+    "severity_label": "medium",
+    "vector_string": "AVSS:1.0/AV:L/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:H/TE:FUN/AE:LOW",
+    "vector": {
+      "attack_vector": "local",
+      "attack_complexity": "high",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "none",
+      "integrity": "low",
+      "availability": "high",
+      "temporal": "functional",
+      "agentic": "low"
+    }
+  },
+  "poc": null,
+  "timeline": {
+    "ave_id": "AVE-2025-0008",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-01-15T00:00:00Z",
+        "actor": "NAIL Institute \u2014 DGX GB10 Lab",
+        "notes": "Discovered during experiment programme"
+      },
+      {
+        "stage": "triaged",
+        "timestamp": "2025-01-28T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Severity assessed: MEDIUM"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2025-02-10T00:00:00Z",
+        "actor": "NAIL Institute \u2014 Reproducibility Team",
+        "notes": "Reproduced on DGX GB10 with nemotron:70b"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-02-20T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published to AVE Database v1.0"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-03-18T21:02:24Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  }
+}
