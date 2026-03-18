@@ -1,0 +1,17 @@
+# Don't send these to the Docker build context
+.venv/
+.env
+.git/
+.pytest_cache/
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+experiments/
+our story by Claude IV/
+paper/
+press/
+ebook/
+*.log
+.DS_Store

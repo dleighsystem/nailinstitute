@@ -1,0 +1,279 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# NAIL Institute — Docker Compose Stack
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# The full NAIL platform on DGX GB10, one command:
+#
+#   docker compose up -d               # start everything
+#   docker compose up -d --build nail   # rebuild just the app after code fix
+#   docker compose logs -f nail         # tail app logs
+#   docker compose restart nail         # quick restart after code change
+#   docker compose down                 # stop everything
+#
+# First-time setup:
+#   1. cp .env.example .env && nano .env   (add your NGC_API_KEY)
+#   2. docker login nvcr.io                (user: $oauthtoken, pass: NGC_API_KEY)
+#   3. docker compose up -d
+#
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# NVIDIA + Docker — How It Works:
+# ───────────────────────────────
+# Docker alone knows nothing about GPUs. NVIDIA bridges the gap with three
+# pieces that are ALREADY INSTALLED on this DGX:
+#
+#   1. NVIDIA GPU Driver (kernel module)
+#      └── Talks to the physical GPU hardware
+#
+#   2. NVIDIA Container Toolkit (nvidia-ctk, v1.19.0 on this machine)
+#      └── A runtime hook that intercepts container creation and injects:
+#          • /dev/nvidia* device files
+#          • libnvidia-*.so driver libraries
+#          • nvidia-smi and CUDA runtime
+#      └── Registered in /etc/docker/daemon.json as the "nvidia" runtime
+#
+#   3. Docker (v29.1.3 on this machine)
+#      └── Uses the "nvidia" runtime when you specify:
+#            deploy.resources.reservations.devices[].driver: nvidia
+#          or the legacy:
+#            runtime: nvidia
+#
+# The old "nvidia-docker2" package is DEAD — replaced entirely by the
+# Container Toolkit. You never install nvidia-docker2 anymore.
+#
+# Each NIM container below is a self-contained inference microservice:
+#   • Downloads the model weights on first start (cached in named volumes)
+#   • Exposes an OpenAI-compatible REST API on its assigned port
+#   • Manages its own GPU memory allocation
+#
+# ═══════════════════════════════════════════════════════════════════════════
+
+name: nail
+
+services:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # NAIL Platform — The Python application
+  # ─────────────────────────────────────────────────────────────────────────
+  # Rebuilds in ~10 seconds after code fixes.
+  # Mount the source as a volume so you can edit-and-restart without rebuild.
+  nail:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nail-platform
+    restart: unless-stopped
+    volumes:
+      # Live-mount source for rapid iteration (edit → restart, no rebuild)
+      - .:/app
+      # Persist test results / logs
+      - nail-data:/app/data
+    environment:
+      - NGC_API_KEY=${NGC_API_KEY:-}
+      - OLLAMA_HOST=${OLLAMA_HOST:-http://host.docker.internal:11434}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      # NIM endpoints — these resolve to sibling containers
+      - NIM_BASE_URL=http://nim-nemotron:8000
+      - NEMOGUARD_JAILBREAK_URL=http://nim-jailbreak:8000
+      - NEMOGUARD_CONTENT_REASONING_URL=http://nim-content-reasoning:8000
+      - NEMOGUARD_CONTENT_8B_URL=http://nim-content-8b:8000
+      - NEMOGUARD_SAFETY_V3_URL=http://nim-safety-v3:8000
+      - GLINER_PII_URL=http://nim-pii:8000
+    depends_on:
+      nim-nemotron:
+        condition: service_healthy
+    networks:
+      - nail-net
+    # No GPU needed — this is the Python orchestrator
+    healthcheck:
+      test: ["CMD", "python", "-c", "import integration; print('ok')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # NIM: Nemotron 70B — Primary reasoning model
+  # ─────────────────────────────────────────────────────────────────────────
+  # The backbone LLM for Arena red/blue, Canary agents, and CTF sessions.
+  # OpenAI-compatible API at http://nim-nemotron:8000/v1/chat/completions
+  nim-nemotron:
+    image: nvcr.io/nim/nvidia/nemotron-70b-instruct:latest
+    container_name: nim-nemotron
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - NGC_API_KEY=${NGC_API_KEY}
+    volumes:
+      - nim-nemotron-cache:/opt/nim/.cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              # Use GPU 0 for the main model
+              device_ids: ['0']
+              capabilities: [gpu]
+    networks:
+      - nail-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v1/models"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s  # Model loading takes time
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # NIM: NemoGuard Jailbreak Detect
+  # ─────────────────────────────────────────────────────────────────────────
+  # Binary jailbreak classifier — lightweight, fast.
+  # API: POST http://nim-jailbreak:8000/v1/jailbreak-detect
+  nim-jailbreak:
+    image: nvcr.io/nim/nvidia/nemoguard-jailbreak-detect:latest
+    container_name: nim-jailbreak
+    restart: unless-stopped
+    ports:
+      - "8100:8000"
+    environment:
+      - NGC_API_KEY=${NGC_API_KEY}
+    volumes:
+      - nim-jailbreak-cache:/opt/nim/.cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    networks:
+      - nail-net
+    profiles:
+      - guardrails
+      - full
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # NIM: Nemotron Content Safety Reasoning 4B
+  # ─────────────────────────────────────────────────────────────────────────
+  # Context-aware safety with chain-of-thought reasoning. Small (4B).
+  # API: POST http://nim-content-reasoning:8000/v1/chat/completions
+  nim-content-reasoning:
+    image: nvcr.io/nim/nvidia/nemotron-content-safety-reasoning-4b:latest
+    container_name: nim-content-reasoning
+    restart: unless-stopped
+    ports:
+      - "8101:8000"
+    environment:
+      - NGC_API_KEY=${NGC_API_KEY}
+    volumes:
+      - nim-content-reasoning-cache:/opt/nim/.cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    networks:
+      - nail-net
+    profiles:
+      - guardrails
+      - full
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # NIM: Llama 3.1 NemoGuard 8B Content Safety
+  # ─────────────────────────────────────────────────────────────────────────
+  # Content moderation — harmful content detection.
+  # API: POST http://nim-content-8b:8000/v1/chat/completions
+  nim-content-8b:
+    image: nvcr.io/nim/nvidia/llama-3.1-nemoguard-8b-content-safety:latest
+    container_name: nim-content-8b
+    restart: unless-stopped
+    ports:
+      - "8102:8000"
+    environment:
+      - NGC_API_KEY=${NGC_API_KEY}
+    volumes:
+      - nim-content-8b-cache:/opt/nim/.cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    networks:
+      - nail-net
+    profiles:
+      - guardrails
+      - full
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # NIM: Llama 3.1 Nemotron Safety Guard 8B v3 (Multilingual)
+  # ─────────────────────────────────────────────────────────────────────────
+  # Cross-language safety — ES/FR/DE/ZH/JP prompt detection.
+  # API: POST http://nim-safety-v3:8000/v1/chat/completions
+  nim-safety-v3:
+    image: nvcr.io/nim/nvidia/llama-3.1-nemotron-safety-guard-8b-v3:latest
+    container_name: nim-safety-v3
+    restart: unless-stopped
+    ports:
+      - "8103:8000"
+    environment:
+      - NGC_API_KEY=${NGC_API_KEY}
+    volumes:
+      - nim-safety-v3-cache:/opt/nim/.cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    networks:
+      - nail-net
+    profiles:
+      - guardrails
+      - full
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # NIM: GLiNER PII Detection
+  # ─────────────────────────────────────────────────────────────────────────
+  # Named entity recognition for PII — powers canary lure leak detection.
+  # API: POST http://nim-pii:8000/v1/detect
+  nim-pii:
+    image: nvcr.io/nim/nvidia/gliner-pii-detection:latest
+    container_name: nim-pii
+    restart: unless-stopped
+    ports:
+      - "8200:8000"
+    environment:
+      - NGC_API_KEY=${NGC_API_KEY}
+    volumes:
+      - nim-pii-cache:/opt/nim/.cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    networks:
+      - nail-net
+    profiles:
+      - pii
+      - full
+
+# ═══════════════════════════════════════════════════════════════════════════
+# NETWORKS
+# ═══════════════════════════════════════════════════════════════════════════
+networks:
+  nail-net:
+    driver: bridge
+
+# ═══════════════════════════════════════════════════════════════════════════
+# VOLUMES — Persist model weights & app data across restarts
+# ═══════════════════════════════════════════════════════════════════════════
+volumes:
+  nail-data:
+  nim-nemotron-cache:
+  nim-jailbreak-cache:
+  nim-content-reasoning-cache:
+  nim-content-8b-cache:
+  nim-safety-v3-cache:
+  nim-pii-cache:
