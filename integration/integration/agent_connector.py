@@ -19,8 +19,10 @@ Usage:
 
 Configuration:
     Set environment variables or pass directly:
-        OLLAMA_HOST     — Ollama API endpoint (default: http://localhost:11434)
-        OPENAI_API_KEY  — For OpenAI backend
+        OLLAMA_HOST       — Ollama API endpoint (default: http://localhost:11434)
+        NIM_BASE_URL      — NIM container endpoint (default: http://localhost:8000)
+        NGC_API_KEY       — For NVIDIA NIM authentication
+        OPENAI_API_KEY    — For OpenAI backend
         ANTHROPIC_API_KEY — For Anthropic backend
 """
 
@@ -40,6 +42,7 @@ class Provider(str, Enum):
     OLLAMA = "ollama"           # Local — DGX GB10
     OPENAI = "openai"           # Cloud — GPT-4o, o1, etc.
     ANTHROPIC = "anthropic"     # Cloud — Claude
+    NIM = "nim"                 # NVIDIA NIM — containerised inference
     MOCK = "mock"               # Testing — deterministic responses
 
 
@@ -153,6 +156,7 @@ class AgentConnector:
 
     Supports:
         - Ollama (local DGX GB10 — nemotron:70b, mistral:7b, etc.)
+        - NIM (NVIDIA NIM containers — NemoGuard, Nemotron, etc.)
         - OpenAI (cloud — gpt-4o, o1-preview, etc.)
         - Anthropic (cloud — claude-sonnet, claude-opus, etc.)
         - Mock (deterministic — for testing)
@@ -191,6 +195,11 @@ class AgentConnector:
         elif self.provider == Provider.ANTHROPIC:
             self.base_url = base_url or "https://api.anthropic.com/v1"
             self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY", "")
+        elif self.provider == Provider.NIM:
+            self.base_url = base_url or os.environ.get(
+                "NIM_BASE_URL", "http://localhost:8000"
+            )
+            self.api_key = api_key or os.environ.get("NGC_API_KEY", "")
         elif self.provider == Provider.MOCK:
             self.base_url = "mock://localhost"
         else:
@@ -221,6 +230,15 @@ class AgentConnector:
                         self.state = ConnectionState.CONNECTED
                     else:
                         self.state = ConnectionState.DEGRADED
+                    return True
+            elif self.provider == Provider.NIM:
+                import urllib.request
+                req = urllib.request.Request(
+                    f"{self.base_url}/v1/models",
+                    headers={"Authorization": f"Bearer {self.api_key}"} if self.api_key else {},
+                )
+                with urllib.request.urlopen(req, timeout=5) as resp:
+                    self.state = ConnectionState.CONNECTED
                     return True
             else:
                 # Cloud providers — connection is implicit
@@ -270,6 +288,8 @@ class AgentConnector:
             response = self._openai_generate(request)
         elif self.provider == Provider.ANTHROPIC:
             response = self._anthropic_generate(request)
+        elif self.provider == Provider.NIM:
+            response = self._nim_generate(request)
         else:
             response = self._mock_generate(request)
 
@@ -530,6 +550,61 @@ class AgentConnector:
                 content=f"[ANTHROPIC_ERROR] {e}",
                 model=request.model,
                 provider="anthropic",
+                finish_reason="error",
+            )
+
+    def _nim_generate(self, request: LLMRequest) -> LLMResponse:
+        """
+        Call an NVIDIA NIM container's OpenAI-compatible endpoint.
+
+        NIM exposes ``/v1/chat/completions`` with the same schema as
+        OpenAI, so this reuses the same response parsing. Auth uses
+        the NGC_API_KEY when set.
+        """
+        try:
+            import urllib.request
+            url = f"{self.base_url}/v1/chat/completions"
+            messages = []
+            if request.system_prompt:
+                messages.append({"role": "system", "content": request.system_prompt})
+            messages.append({"role": "user", "content": request.prompt})
+
+            payload = {
+                "model": request.model,
+                "messages": messages,
+                "temperature": request.temperature,
+                "max_tokens": request.max_tokens,
+            }
+            headers: dict[str, str] = {"Content-Type": "application/json"}
+            if self.api_key:
+                headers["Authorization"] = f"Bearer {self.api_key}"
+
+            data = json.dumps(payload).encode()
+            req = urllib.request.Request(url, data=data, headers=headers)
+            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+                result = json.loads(resp.read())
+
+            choice = result.get("choices", [{}])[0]
+            usage = result.get("usage", {})
+            return LLMResponse(
+                request_id=request.request_id,
+                content=choice.get("message", {}).get("content", ""),
+                model=request.model,
+                provider="nim",
+                tokens_prompt=usage.get("prompt_tokens", 0),
+                tokens_completion=usage.get("completion_tokens", 0),
+                tokens_total=usage.get("total_tokens", 0),
+                finish_reason=choice.get("finish_reason", "stop"),
+                raw=result,
+            )
+        except Exception as e:
+            self.usage.errors += 1
+            self.state = ConnectionState.ERROR
+            return LLMResponse(
+                request_id=request.request_id,
+                content=f"[NIM_ERROR] {e}",
+                model=request.model,
+                provider="nim",
                 finish_reason="error",
             )
 

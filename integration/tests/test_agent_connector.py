@@ -301,9 +301,21 @@ class TestProviderConfig:
         conn = AgentConnector(provider="anthropic")
         assert "anthropic.com" in conn.base_url
 
+    def test_nim_default_url(self):
+        conn = AgentConnector(provider="nim")
+        assert "8000" in conn.base_url
+
+    def test_nim_provider_enum(self):
+        conn = AgentConnector(provider="nim")
+        assert conn.provider == Provider.NIM
+
     def test_custom_base_url(self):
         conn = AgentConnector(provider="ollama", base_url="http://dgx:11434")
         assert conn.base_url == "http://dgx:11434"
+
+    def test_nim_custom_url(self):
+        conn = AgentConnector(provider="nim", base_url="http://nim-server:9000")
+        assert conn.base_url == "http://nim-server:9000"
 
 
 # ═══════════════════════════════════════════════════════════════════════════
