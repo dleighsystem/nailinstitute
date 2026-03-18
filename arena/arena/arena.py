@@ -333,3 +333,33 @@ class Arena:
             "evolve_blue": self.evolve_blue,
             "breach_threshold": self.breach_threshold,
         }
+
+    def export_thresholds(self) -> dict[str, float]:
+        """
+        Export the current best Blue Bridge defence thresholds.
+
+        Returns the evolved threshold dict from the best defence config.
+        These thresholds can be propagated to TrapWire confidence settings,
+        Diagnostic pipeline weights, or the ThreatFeed for SDK clients.
+        """
+        return dict(self.blue.config.thresholds)
+
+    def export_red_signatures(self) -> list[dict[str, Any]]:
+        """
+        Export successful Red Swarm attack signatures.
+
+        Returns gene profiles of attacks that breached defences,
+        suitable for feeding into TrapWire as new detection patterns
+        or into the ThreatFeed as live threat definitions.
+        """
+        signatures: list[dict[str, Any]] = []
+        for vector in self.red.best(n=5):
+            signatures.append({
+                "source": "arena_red_swarm",
+                "attack_type": vector.attack_type.value,
+                "genes": {k: round(v, 4) for k, v in vector.genes.items()},
+                "fitness": round(vector.fitness, 4),
+                "generation": self.red.generation,
+                "stealth_level": round(vector.genes.get("stealth", 0.0), 4),
+            })
+        return signatures

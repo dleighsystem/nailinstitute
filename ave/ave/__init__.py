@@ -48,6 +48,11 @@ from .registry import (
     cards_by_category,
     cards_by_status,
     card_count,
+    next_id,
+    submit_card,
+    submit_draft,
+    retract_card,
+    reset_dynamic,
 )
 
 __all__ = [
@@ -67,4 +72,10 @@ __all__ = [
     "cards_by_category",
     "cards_by_status",
     "card_count",
+    # Live Registry
+    "next_id",
+    "submit_card",
+    "submit_draft",
+    "retract_card",
+    "reset_dynamic",
 ]

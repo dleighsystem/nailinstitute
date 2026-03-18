@@ -363,6 +363,93 @@ class Tournament:
             "timestamp": time.time(),
         })
 
+    # ── Bounty System ───────────────────────────────────────────
+
+    def award_bounty(
+        self,
+        team: str,
+        amount_usd: int,
+        reason: str,
+        *,
+        category: str = "general",
+    ) -> dict[str, Any]:
+        """
+        Award a bug bounty to a team for discovering a vulnerability.
+
+        Bounties are tracked separately from CTF prizes and are
+        designed for specific objectives:
+          - EDoS budget exploitation ($1K)
+          - Memory extraction ($5K)
+          - Novel attack chain ($2K)
+
+        Returns the bounty record.
+        """
+        bounty = {
+            "bounty_id": f"BNT-{uuid.uuid4().hex[:8]}",
+            "team": team,
+            "amount_usd": amount_usd,
+            "reason": reason,
+            "category": category,
+            "timestamp": time.time(),
+        }
+        if not hasattr(self, "_bounties"):
+            self._bounties: list[dict[str, Any]] = []
+        self._bounties.append(bounty)
+
+        # Also record as a novel attack for AVE harvesting
+        self.record_novel_attack(
+            team=team,
+            technique=f"Bounty: {reason}",
+            description=f"Bug bounty awarded: ${amount_usd} for {reason}",
+            ave_category=category,
+            severity="high" if amount_usd >= 5000 else "medium",
+        )
+        return bounty
+
+    def bounties(self) -> list[dict[str, Any]]:
+        """Return all awarded bounties."""
+        if not hasattr(self, "_bounties"):
+            self._bounties: list[dict[str, Any]] = []
+        return list(self._bounties)
+
+    def total_bounties_usd(self) -> int:
+        """Total bounty payouts in USD."""
+        return sum(b["amount_usd"] for b in self.bounties())
+
+    # ── Methodology Harvesting ──────────────────────────────────
+
+    def harvest_methodologies(self) -> list[dict[str, Any]]:
+        """
+        Extract attack methodologies from all sandbox interactions.
+
+        Analyses conversation histories across all sandboxes to find
+        successful attack sequences that can be compiled into
+        threat intelligence for the SDK.
+        """
+        methodologies: list[dict[str, Any]] = []
+        for key, sandbox in self._sandboxes.items():
+            team, challenge_id = key.split(":", 1)
+            # Only harvest from sandboxes where flags were captured
+            if not sandbox.flags_captured:
+                continue
+
+            methodology = {
+                "team": team,
+                "challenge_id": challenge_id,
+                "turns": len(sandbox.turns),
+                "flags_captured": len(sandbox.flags_captured),
+                "elapsed_seconds": sandbox.elapsed_seconds,
+                "technique_summary": (
+                    f"Team '{team}' captured {len(sandbox.flags_captured)} flags "
+                    f"in {len(sandbox.turns)} turns "
+                    f"({sandbox.elapsed_seconds:.1f}s)"
+                ),
+                "conversation_length": len(sandbox.turns),
+            }
+            methodologies.append(methodology)
+
+        return methodologies
+
     # ── Status ──────────────────────────────────────────────────
 
     def status(self) -> dict[str, Any]:

@@ -317,6 +317,91 @@ class TrapWire:
         """Clear trip history."""
         self._trip_history.clear()
 
+    # ── Auto-Signature Extraction ──────────────────────────────────
+
+    def extract_signatures(
+        self,
+        *,
+        min_confidence: float = 0.1,
+    ) -> list[dict[str, Any]]:
+        """
+        Analyse trip history and extract novel attack signatures.
+
+        Scans all triggered trips for raw_text patterns that could
+        be compiled into new detection rules. Returns a list of
+        signature dicts suitable for add_pattern() or external feeds.
+        """
+        signatures: list[dict[str, Any]] = []
+        seen_texts: set[str] = set()
+
+        for trip in self._trip_history:
+            if trip.confidence < min_confidence:
+                continue
+            # Normalise to avoid duplicate signatures
+            norm = trip.raw_text.strip().lower()[:200]
+            if norm in seen_texts:
+                continue
+            seen_texts.add(norm)
+
+            # Extract key phrases from matched rules
+            for rule in trip.matched_rules:
+                sig = {
+                    "source": "trapwire_auto",
+                    "signal": trip.signals[0].value if trip.signals else "unknown",
+                    "rule_description": rule,
+                    "confidence": trip.confidence,
+                    "sample_text": trip.raw_text[:500],
+                    "severity": trip.severity,
+                    "timestamp": trip.timestamp,
+                }
+                signatures.append(sig)
+
+        return signatures
+
+    def learn_from_history(self) -> int:
+        """
+        Auto-learn patterns from trip history.
+
+        Analyses high-confidence trips, extracts distinctive
+        n-grams from raw_text, and adds them as custom patterns.
+        Returns the number of new patterns added.
+        """
+        added = 0
+        seen_phrases: set[str] = set()
+
+        for trip in self._trip_history:
+            if trip.confidence < 0.2 or not trip.signals:
+                continue
+
+            text = trip.raw_text.strip()
+            if len(text) < 10:
+                continue
+
+            # Extract distinctive phrases (3+ word sequences)
+            words = text.split()
+            for i in range(len(words) - 2):
+                phrase = " ".join(words[i:i+3]).lower()
+                if phrase in seen_phrases:
+                    continue
+                if len(phrase) < 12:
+                    continue
+                # Skip very common phrases
+                if any(common in phrase for common in [
+                    "the ", "and ", "is a", "for the", "to the",
+                    "in the", "of the", "it is", "this is",
+                ]):
+                    continue
+                seen_phrases.add(phrase)
+                signal = trip.signals[0]
+                self.add_pattern(
+                    re.escape(phrase),
+                    signal,
+                    f"Auto-learned from incident ({signal.value})",
+                )
+                added += 1
+
+        return added
+
     def __str__(self) -> str:
         return (
             f"TrapWire(agents={len(self._agents)}, "

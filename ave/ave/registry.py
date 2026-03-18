@@ -1187,3 +1187,101 @@ def card_count() -> dict[str, int]:
         "by_category": by_cat,
         "by_status": by_stat,
     }
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# LIVE REGISTRY — Runtime card submission API
+# ═══════════════════════════════════════════════════════════════════════════
+
+_next_dynamic_id: int = 100  # Dynamic cards start at AVE-DYN-0100
+
+
+def next_id() -> str:
+    """Generate the next dynamic AVE ID."""
+    global _next_dynamic_id
+    ave_id = f"AVE-DYN-{_next_dynamic_id:04d}"
+    _next_dynamic_id += 1
+    return ave_id
+
+
+def submit_card(card: AVECard) -> AVECard:
+    """
+    Submit a new AVE card to the live registry at runtime.
+
+    Cards submitted this way are added to all indexes immediately
+    and appear in all subsequent queries. Used by Canary, Arena,
+    and CTF auto-discovery pipelines.
+
+    Returns the card (for chaining).
+    """
+    _CARDS.append(card)
+    _BY_ID[card.ave_id] = card
+    _BY_NAME[card.name.lower()] = card
+    return card
+
+
+def submit_draft(draft: dict) -> AVECard:
+    """
+    Submit a draft dict (from Incident.draft_ave_card() etc.) to the registry.
+
+    Converts the draft dict into a full AVECard with a dynamic AVE-ID,
+    adds it to the live registry, and returns the card.
+    """
+    ave_id = draft.get("ave_id", next_id())
+    if ave_id.startswith("AVE-DRAFT") or ave_id.startswith("AVE-ARENA") or ave_id.startswith("AVE-CTF"):
+        ave_id = next_id()
+
+    cat_str = draft.get("category", "emergent")
+    try:
+        category = Category(cat_str)
+    except ValueError:
+        category = Category.EMERGENT
+
+    sev_str = draft.get("severity", "medium")
+    try:
+        severity = Severity(sev_str)
+    except ValueError:
+        severity = Severity.MEDIUM
+
+    card = AVECard(
+        ave_id=ave_id,
+        name=draft.get("name", draft.get("title", "Unnamed Threat")),
+        category=category,
+        severity=severity,
+        status=Status.IN_PROGRESS,
+        summary=draft.get("summary", draft.get("description", "")),
+        mechanism=draft.get("mechanism", ""),
+        blast_radius=draft.get("blast_radius", ""),
+        date_discovered=draft.get("date_discovered", ""),
+    )
+    return submit_card(card)
+
+
+def retract_card(ave_id: str) -> bool:
+    """Remove a card from the live registry. Returns True if found."""
+    card = _BY_ID.pop(ave_id, None)
+    if card is None:
+        return False
+    _BY_NAME.pop(card.name.lower(), None)
+    try:
+        _CARDS.remove(card)
+    except ValueError:
+        pass
+    return True
+
+
+def reset_dynamic() -> int:
+    """
+    Remove all dynamically-submitted cards and reset the ID counter.
+    Returns the number of cards removed. Useful for test teardown.
+    """
+    global _next_dynamic_id
+    removed = 0
+    to_remove = [c for c in _CARDS if c.ave_id.startswith("AVE-DYN-")]
+    for card in to_remove:
+        _CARDS.remove(card)
+        _BY_ID.pop(card.ave_id, None)
+        _BY_NAME.pop(card.name.lower(), None)
+        removed += 1
+    _next_dynamic_id = 100
+    return removed
