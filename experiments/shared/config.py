@@ -29,6 +29,12 @@ FAST_MODEL = os.getenv("NAIL_FAST_MODEL", "mistral:7b-instruct")
 # Coding-specific model
 CODE_MODEL = os.getenv("NAIL_CODE_MODEL", "deepseek-coder:6.7b-instruct")
 
+# ─── Cloud Provider API Keys ────────────────────────────────────────────────
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")
+KIMI_API_KEY = os.getenv("KIMI_API_KEY", "")
+
 # ─── Embedding model (sentence-transformers, runs locally on GPU) ────────────
 EMBEDDING_MODEL = os.getenv(
     "NAIL_EMBEDDING_MODEL", "all-MiniLM-L6-v2"

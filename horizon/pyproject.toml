@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=69.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nail-horizon"
+version = "1.0.0"
+description = "NAIL Horizon Campaigns — DGX red-team experiments for threshold optimisation, heterogeneous threat generalisation, and polyglot evasion"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+nail = [
+    "nail-arena>=1.0.0",
+    "nail-diagnostic>=1.0.0",
+]
+dev = ["pytest>=8.0", "pytest-cov"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

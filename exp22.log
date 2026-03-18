@@ -1,0 +1,401 @@
+nohup: ignoring input
+[NAIL Config] Primary: nemotron:70b | Fast: mistral:7b-instruct | Code: deepseek-coder:6.7b-instruct
+[NAIL Config] Ollama: http://localhost:11434
+
+══════════════════════════════════════════════════════════════════════
+  ╔════════════════════════════════════════════════════════════════╗
+  ║  NAIL INSTITUTE — EXPERIMENT 22: METAMORPHIC ARCHITECTURES   ║
+  ║                                                              ║
+  ║  Phase 1: Break the Graph                                    ║
+  ║                                                              ║
+  ║  22a: Static vs. Metamorphic (quality + efficiency)          ║
+  ║  22b: Emergent Topology (topology discovery)                 ║
+  ║  22c: Self-Healing Graph (metamorphic + immune)              ║
+  ╚════════════════════════════════════════════════════════════════╝
+══════════════════════════════════════════════════════════════════════
+
+
+▶ Running Exp22a: Static vs. Metamorphic...
+
+======================================================================
+  NAIL INSTITUTE — Exp 22a: Static vs. Metamorphic Resolution
+  Phase 1: Break the Graph (Metamorphic Architectures)
+======================================================================
+
+📋 Experiment: exp22a_static_vs_meta | Run: 20260315_122510 | Monitor: ✅
+
+────────────────────────────────────────────────────────────
+  Trial 1/5: T1 — AI Chip Supply Chain Risk
+────────────────────────────────────────────────────────────
+[            info]                      Trial 1 Condition A (Static): T1
+[            info]                      Static pipeline: T1 — AI Chip Supply 
+Chain Risk
+[            info]           Researcher Research: 2810 chars
+[            info]              Analyst Analysis: 1501 chars
+[            info]               Critic Critique: 2517 chars
+[            info]          Synthesiser Synthesis: 1841 chars
+  Static:  4,702 tokens, 74.9s, quality=8.4
+[            info]                      Trial 1 Condition B (Metamorphic): T1
+[            info]                      Metamorphic: T1 — AI Chip Supply Chain 
+Risk
+  Meta:    93,313 tokens, 187.7s, quality=8.2, agents=0, mutations=0
+
+────────────────────────────────────────────────────────────
+  Trial 2/5: T2 — Autonomous Vehicle Insurance
+────────────────────────────────────────────────────────────
+[            info]                      Trial 2 Condition A (Static): T2
+[            info]                      Static pipeline: T2 — Autonomous Vehicle
+Insurance
+[            info]           Researcher Research: 4006 chars
+[            info]              Analyst Analysis: 2055 chars
+[            info]               Critic Critique: 2554 chars
+[            info]          Synthesiser Synthesis: 2424 chars
+  Static:  5,180 tokens, 53.0s, quality=8.2
+[            info]                      Trial 2 Condition B (Metamorphic): T2
+[            info]                      Metamorphic: T2 — Autonomous Vehicle 
+Insurance
+  Meta:    95,122 tokens, 258.1s, quality=8.2, agents=0, mutations=0
+
+────────────────────────────────────────────────────────────
+  Trial 3/5: T3 — Pandemic Preparedness Technology
+────────────────────────────────────────────────────────────
+[            info]                      Trial 3 Condition A (Static): T3
+[            info]                      Static pipeline: T3 — Pandemic 
+Preparedness Technology
+[            info]           Researcher Research: 4470 chars
+[            info]              Analyst Analysis: 2492 chars
+[            info]               Critic Critique: 2796 chars
+[            info]          Synthesiser Synthesis: 3863 chars
+  Static:  6,576 tokens, 73.0s, quality=8.6
+[            info]                      Trial 3 Condition B (Metamorphic): T3
+[            info]                      Metamorphic: T3 — Pandemic Preparedness 
+Technology
+  Meta:    88,542 tokens, 121.7s, quality=8.2, agents=0, mutations=0
+
+────────────────────────────────────────────────────────────
+  Trial 4/5: T4 — Digital Currency Central Bank Strategy
+────────────────────────────────────────────────────────────
+[            info]                      Trial 4 Condition A (Static): T4
+[            info]                      Static pipeline: T4 — Digital Currency 
+Central Bank Strategy
+[            info]           Researcher Research: 3419 chars
+[            info]              Analyst Analysis: 2118 chars
+[            info]               Critic Critique: 2657 chars
+[            info]          Synthesiser Synthesis: 2316 chars
+  Static:  5,449 tokens, 52.5s, quality=8.4
+[            info]                      Trial 4 Condition B (Metamorphic): T4
+[            info]                      Metamorphic: T4 — Digital Currency 
+Central Bank Strategy
+  Meta:    92,043 tokens, 160.7s, quality=8.2, agents=0, mutations=0
+
+────────────────────────────────────────────────────────────
+  Trial 5/5: T5 — Space Debris Mitigation
+────────────────────────────────────────────────────────────
+[            info]                      Trial 5 Condition A (Static): T5
+[            info]                      Static pipeline: T5 — Space Debris 
+Mitigation
+[            info]           Researcher Research: 4809 chars
+[            info]              Analyst Analysis: 2127 chars
+[            info]               Critic Critique: 4505 chars
+[            info]          Synthesiser Synthesis: 3057 chars
+  Static:  7,074 tokens, 77.2s, quality=7.4
+[            info]                      Trial 5 Condition B (Metamorphic): T5
+[            info]                      Metamorphic: T5 — Space Debris 
+Mitigation
+  Meta:    93,502 tokens, 182.4s, quality=8.2, agents=0, mutations=0
+
+✅ Results saved to /home/dleighsystems/Desktop/NAIL institute/experiments/data/exp22a_results.json
+      Results: exp22a_static_vs_meta (run      
+               20260315_122510)                
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric             ┃ Value                  ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Condition          │ Static vs. Metamorphic │
+│ Trials             │ 5                      │
+│ Static Avg Quality │ 8.2                    │
+│ Meta Avg Quality   │ 8.2                    │
+│ Static Avg Tokens  │ 5,796                  │
+│ Meta Avg Tokens    │ 92,504                 │
+│ Meta Avg Agents    │ 0.0                    │
+│ Meta Avg Mutations │ 0.0                    │
+│ Meta Avg Forks     │ 0.0                    │
+│ Total Runtime      │ 1278s                  │
+└────────────────────┴────────────────────────┘
+                      System resource summary (full run)
+         System Resources:          
+       exp22a_static_vs_meta        
+         (20260315_122510)          
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┓
+┃ Metric             ┃ Value       ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━┩
+│ num_snapshots      │ 242         │
+│ duration_s         │ 1274.4      │
+│ monitor_interval_s │ 5.0         │
+│ cpu_avg_pct        │ 10.8        │
+│ cpu_max_pct        │ 63.6        │
+│ cpu_min_pct        │ 6.5         │
+│ ram_avg_pct        │ 27.6        │
+│ ram_max_gb         │ 34.3        │
+│ ram_total_gb       │ 121.69      │
+│ ollama_max_rss_mb  │ 53.9        │
+│ ollama_avg_rss_mb  │ 49.7        │
+│ disk_total_gb      │ 3666.95     │
+│ disk_used_start_gb │ 769.44      │
+│ disk_used_end_gb   │ 769.57      │
+│ gpu0_name          │ NVIDIA GB10 │
+│ gpu0_vram_total_mb │ 0.0         │
+│ gpu0_util_avg_pct  │ 91.5        │
+│ gpu0_util_max_pct  │ 96.0        │
+│ gpu0_vram_avg_mb   │ 0.0         │
+│ gpu0_vram_max_mb   │ 0.0         │
+│ gpu0_temp_avg_c    │ 72.3        │
+│ gpu0_temp_max_c    │ 82.0        │
+│ gpu0_power_avg_w   │ 54.0        │
+│ gpu0_power_max_w   │ 72.2        │
+└────────────────────┴─────────────┘
+                      Experiment complete in 1277.5s
+  ✅ 22a complete: Static=8.2, Meta=8.2
+
+▶ Running Exp22b: Emergent Topology...
+
+======================================================================
+  NAIL INSTITUTE — Exp 22b: Emergent Topology Under Stress
+  Can the Planner discover the right topology for each problem?
+======================================================================
+
+📋 Experiment: exp22b_emergent_topology | Run: 20260315_124627 | Monitor: ✅
+
+────────────────────────────────────────────────────────────
+  Task: SERIAL — Sequential dependency — each step requires the previous step's output
+  Expected optimal topology: linear
+────────────────────────────────────────────────────────────
+[            info]                      [TOOL] ✅ Agent 'schema_designer' 
+created
+[            info]                      [TOOL] ✅ Agent 'api_designer' created
+[            info]                      [TOOL] ✅ Agent 'example_generator' 
+created
+[            info]                      [TOOL] ✅ Agent 'error_handler' created
+[            info]                      [TOOL] ✅ Agent 'security_reviewer' 
+created
+[            info]                      [TOOL] ✅ Connected schema_designer → 
+api_designer
+[            info]                      [TOOL] ✅ Connected api_designer → 
+example_generator
+[            info]                      [TOOL] ✅ Connected example_generator → 
+error_handler
+  ❌ 22b failed: unhashable type: 'list'
+Traceback (most recent call last):
+  File "/home/dleighsystems/Desktop/NAIL institute/experiments/exp22_metamorphic_graph/run.py", line 71, in run_all
+    r = run_exp22b()
+  File "/home/dleighsystems/Desktop/NAIL institute/experiments/exp22_metamorphic_graph/exp22b_emergent_topology.py", line 309, in run_exp22b
+    result = execute_tool(graph, call, logger)
+  File "/home/dleighsystems/Desktop/NAIL institute/experiments/exp22_metamorphic_graph/exp22a_static_vs_meta.py", line 325, in execute_tool
+    ok = graph.connect(call.get("src", ""), call.get("dst", ""))
+  File "/home/dleighsystems/Desktop/NAIL institute/experiments/exp22_metamorphic_graph/graph_engine.py", line 157, in connect
+    if src not in self.agents or dst not in self.agents:
+       ^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unhashable type: 'list'
+
+▶ Running Exp22c: Self-Healing Graph...
+
+======================================================================
+  NAIL INSTITUTE — Exp 22c: Self-Healing Graph
+  Metamorphic + Immune: Can the graph heal around injected pathologies?
+======================================================================
+
+📋 Experiment: exp22c_selfhealing | Run: 20260315_124637 | Monitor: ✅
+
+────────────────────────────────────────────────────────────
+  CONDITION A: Metamorphic Only (no immune awareness)
+────────────────────────────────────────────────────────────
+[            info]                       Step 1: Analyse current global energy 
+mix and CO2 trajectory
+[            info]                        Step 1 complete: 452 chars, 0 agents
+[            info]                       Step 2: Map solar PV cost curves and 
+deployment projections to 2040
+[            info]                        Step 2 complete: 428 chars, 0 agents
+[            info]                       Step 3: Map wind energy cost curves and
+deployment projections to 2040
+[            info]                        Step 3 complete: 440 chars, 0 agents
+[            info]                       Step 4: Analyse battery storage 
+technology and cost trends
+[            info]                        Step 4 complete: 467 chars, 0 agents
+[            info]                       Step 5: Compare hydrogen vs. battery 
+for long-duration storage
+[            info]                      💉 Pathology seed: deadlock agent 
+injected
+[            info]                        Step 5 complete: 1175 chars, 1 agents
+[            info]                       Step 6: Assess grid modernisation 
+requirements (transmission, smart grid)
+[            info]                        Step 6 complete: 176 chars, 1 agents
+[            info]                       Step 7: Analyse nuclear energy 
+renaissance prospects (SMRs, fusion timeline)
+[            info]                        Step 7 complete: 189 chars, 1 agents
+[            info]                       Step 8: Map carbon capture utilisation 
+and storage (CCUS) viability
+[            info]                        Step 8 complete: 389 chars, 1 agents
+[            info]                       Step 9: Assess geopolitical risks (rare
+earth supply, OPEC transition)
+[            info]                        Step 9 complete: 461 chars, 1 agents
+[            info]                       Step 10: Model economic impact on 
+fossil fuel dependent economies
+[            info]                      💉 Pathology seed: NuclearHawk replaced 
+with copycat
+[            info]                        Step 10 complete: 196 chars, 1 agents
+[            info]                       Step 11: Analyse policy landscape 
+(carbon pricing, subsidies, mandates)
+[            info]                        Step 11 complete: 303 chars, 1 agents
+[            info]                       Step 12: Assess workforce transition 
+requirements and timeline
+[            info]                        Step 12 complete: 392 chars, 1 agents
+[            info]                       Step 13: Model financing requirements 
+and green bond market capacity
+[            info]                        Step 13 complete: 553 chars, 1 agents
+[            info]                       Step 14: Analyse energy security 
+implications for major economies
+[            info]                        Step 14 complete: 156 chars, 1 agents
+[            info]                       Step 15: Assess technological wildcards
+(fusion, enhanced geothermal)
+[            info]                      💉 Pathology seed: NuclearHawk replaced 
+with decayed agent
+[            info]                        Step 15 complete: 427 chars, 1 agents
+[            info]                       Step 16: Produce regional roadmaps 
+(Americas, Europe, Asia, Africa)
+[            info]                        Step 16 complete: 183 chars, 1 agents
+[            info]                       Step 17: Identify critical path 
+dependencies across all sectors
+[            info]                        Step 17 complete: 481 chars, 1 agents
+[            info]                       Step 18: Risk analysis — what could 
+derail the transition?
+[            info]                        Step 18 complete: 1475 chars, 1 agents
+[            info]                       Step 19: Produce integrated 2025-2040 
+roadmap with milestones
+[            info]                        Step 19 complete: 143 chars, 1 agents
+[            info]                       Step 20: Executive summary with key 
+decision points for policymakers
+[            info]                        Step 20 complete: 5031 chars, 1 agents
+
+────────────────────────────────────────────────────────────
+  CONDITION B: Metamorphic + Immune (pathology alerts)
+────────────────────────────────────────────────────────────
+[            info]                       Step 1: Analyse current global energy 
+mix and CO2 trajectory
+[            info]                        Step 1 complete: 341 chars, 0 agents
+[            info]                       Step 2: Map solar PV cost curves and 
+deployment projections to 2040
+[            info]                        Step 2 complete: 407 chars, 0 agents
+[            info]                       Step 3: Map wind energy cost curves and
+deployment projections to 2040
+[            info]                        Step 3 complete: 537 chars, 0 agents
+[            info]                       Step 4: Analyse battery storage 
+technology and cost trends
+[            info]                        Step 4 complete: 676 chars, 0 agents
+[            info]                       Step 5: Compare hydrogen vs. battery 
+for long-duration storage
+[            info]                      💉 Pathology seed: deadlock agent 
+injected
+[            info]                        Step 5 complete: 700 chars, 1 agents
+[            info]                       Step 6: Assess grid modernisation 
+requirements (transmission, smart grid)
+[            info]                        Step 6 complete: 780 chars, 1 agents
+[            info]                       Step 7: Analyse nuclear energy 
+renaissance prospects (SMRs, fusion timeline)
+[            info]                        Step 7 complete: 772 chars, 1 agents
+[            info]                       Step 8: Map carbon capture utilisation 
+and storage (CCUS) viability
+[            info]                        Step 8 complete: 685 chars, 1 agents
+[            info]                       Step 9: Assess geopolitical risks (rare
+earth supply, OPEC transition)
+[            info]                        Step 9 complete: 641 chars, 1 agents
+[            info]                       Step 10: Model economic impact on 
+fossil fuel dependent economies
+[            info]                      💉 Pathology seed: NuclearHawk replaced 
+with copycat
+[            info]                        Step 10 complete: 623 chars, 1 agents
+[            info]                       Step 11: Analyse policy landscape 
+(carbon pricing, subsidies, mandates)
+[            info]                        Step 11 complete: 616 chars, 1 agents
+[            info]                       Step 12: Assess workforce transition 
+requirements and timeline
+[            info]                        Step 12 complete: 726 chars, 1 agents
+[            info]                       Step 13: Model financing requirements 
+and green bond market capacity
+[            info]                        Step 13 complete: 743 chars, 1 agents
+[            info]                       Step 14: Analyse energy security 
+implications for major economies
+[            info]                        Step 14 complete: 673 chars, 1 agents
+[            info]                       Step 15: Assess technological wildcards
+(fusion, enhanced geothermal)
+[            info]                      💉 Pathology seed: NuclearHawk replaced 
+with decayed agent
+[            info]                        Step 15 complete: 622 chars, 1 agents
+[            info]                       Step 16: Produce regional roadmaps 
+(Americas, Europe, Asia, Africa)
+[            info]                        Step 16 complete: 1482 chars, 1 agents
+[            info]                       Step 17: Identify critical path 
+dependencies across all sectors
+[            info]                        Step 17 complete: 668 chars, 1 agents
+[            info]                       Step 18: Risk analysis — what could 
+derail the transition?
+[            info]                        Step 18 complete: 520 chars, 1 agents
+[            info]                       Step 19: Produce integrated 2025-2040 
+roadmap with milestones
+[            info]                        Step 19 complete: 1282 chars, 1 agents
+[            info]                       Step 20: Executive summary with key 
+decision points for policymakers
+[            info]                        Step 20 complete: 920 chars, 1 agents
+
+✅ Results saved to /home/dleighsystems/Desktop/NAIL institute/experiments/data/exp22c_results.json
+Results: exp22c_selfhealing (run
+        20260315_124637)        
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓
+┃ Metric              ┃ Value  ┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩
+│ Meta Only Quality   │ 8.12   │
+│ Meta+Immune Quality │ 7.96   │
+│ Quality Δ           │ -0.16  │
+│ Meta Only Tokens    │ 42,445 │
+│ Meta+Immune Tokens  │ 60,186 │
+│ Token Δ%            │ 41.8%  │
+│ Immune Alerts       │ 18     │
+│ Total Runtime       │ 270s   │
+└─────────────────────┴────────┘
+                      System resource summary (full run)
+System Resources: exp22c_selfhealing
+         (20260315_124637)          
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┓
+┃ Metric             ┃ Value       ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━┩
+│ num_snapshots      │ 52          │
+│ duration_s         │ 269.8       │
+│ monitor_interval_s │ 5.0         │
+│ cpu_avg_pct        │ 12.0        │
+│ cpu_max_pct        │ 56.2        │
+│ cpu_min_pct        │ 6.5         │
+│ ram_avg_pct        │ 27.8        │
+│ ram_max_gb         │ 34.18       │
+│ ram_total_gb       │ 121.69      │
+│ ollama_max_rss_mb  │ 54.3        │
+│ ollama_avg_rss_mb  │ 52.4        │
+│ disk_total_gb      │ 3666.95     │
+│ disk_used_start_gb │ 769.57      │
+│ disk_used_end_gb   │ 769.57      │
+│ gpu0_name          │ NVIDIA GB10 │
+│ gpu0_vram_total_mb │ 0.0         │
+│ gpu0_util_avg_pct  │ 93.5        │
+│ gpu0_util_max_pct  │ 96.0        │
+│ gpu0_vram_avg_mb   │ 0.0         │
+│ gpu0_vram_max_mb   │ 0.0         │
+│ gpu0_temp_avg_c    │ 69.9        │
+│ gpu0_temp_max_c    │ 73.0        │
+│ gpu0_power_avg_w   │ 54.3        │
+│ gpu0_power_max_w   │ 71.3        │
+└────────────────────┴─────────────┘
+                      Experiment complete in 270.0s
+  ✅ 22c complete: Meta-only=8.12, Meta+Immune=7.96
+
+══════════════════════════════════════════════════════════════════════
+  EXPERIMENT 22 COMPLETE — Total runtime: 0:25:57
+  Results: /home/dleighsystems/Desktop/NAIL institute/experiments/data/exp22_master_results.json
+══════════════════════════════════════════════════════════════════════
+

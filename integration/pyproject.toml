@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=69.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nail-integration"
+version = "1.0.0"
+description = "End-to-end integration tests wiring AVE → Canary → Arena → CTF"
+requires-python = ">=3.11"
+dependencies = [
+    "nail-ave>=1.0.0",
+    "nail-canary>=1.0.0",
+    "nail-arena>=1.0.0",
+    "nail-ctf>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-cov"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

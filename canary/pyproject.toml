@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=69.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nail-canary"
+version = "1.0.0"
+description = "Canary Fleet — Agentic honeypots that detect novel zero-day agent attacks"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [{name = "NAIL Institute", email = "research@neuravant.com"}]
+
+dependencies = [
+    "nail-ave>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "pytest-cov", "pytest-asyncio"]
+
+[project.urls]
+Homepage = "https://github.com/nailinstitute/canary"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.setuptools.packages.find]
+where = ["."]

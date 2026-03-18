@@ -1,0 +1,147 @@
+nohup: ignoring input
+[NAIL Config] Primary: nemotron:70b | Fast: mistral:7b-instruct | Code: deepseek-coder:6.7b-instruct
+[NAIL Config] Ollama: http://localhost:11434
+📋 Experiment: exp20_ga_phase2 | Run: 20260305_192109 | Monitor: ✅
+
+======================================================================
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  NAIL INSTITUTE — GA PHASE 2: VALIDATION                    ║
+  ║                                                             ║
+  ║  Genomes:     3                                               ║
+  ║  Trials:      3                                               ║
+  ║  Rounds:      5                                               ║
+  ║  Model:       nemotron:70b                                    ║
+  ║                                                             ║
+  ║  Validating Phase 1 winners on the primary model            ║
+  ╚═══════════════════════════════════════════════════════════════╝
+======================================================================
+
+  Genome 1: g1_8241 (Phase 1 fitness: 0.8066)
+  Genome 2: g6_5425 (Phase 1 fitness: 0.8039)
+  Genome 3: g14_6270 (Phase 1 fitness: 0.7901)
+
+[            info]                      Phase 2 started: 3 genomes, 3 trials, 5 
+rounds, model=nemotron:70b
+
+────────────────────────────────────────────────────────────
+  Validating genome 1/3: g1_8241
+  Phase 1 fitness: 0.8066
+────────────────────────────────────────────────────────────
+
+  Trial 1/3...
+    fitness=0.7260 detect=1.0 acc=0.36 corrupt=0.0 (27.1min)
+[ ga_phase2_trial]                      g1_8241 trial 1: fitness=0.7260
+
+  Trial 2/3...
+    fitness=0.6980 detect=1.0 acc=0.28 corrupt=0.0 (22.6min)
+[ ga_phase2_trial]                      g1_8241 trial 2: fitness=0.6980
+
+  Trial 3/3...
+    fitness=0.7260 detect=1.0 acc=0.36 corrupt=0.0 (23.4min)
+[ ga_phase2_trial]                      g1_8241 trial 3: fitness=0.7260
+
+  ► g1_8241 summary:
+    Phase 1 fitness:  0.8066
+    Phase 2 avg:      0.7167 (-0.0899)
+    Avg accuracy:     33.33%
+    Avg detection:    100.00%
+    Avg corruption:   0.00%
+
+────────────────────────────────────────────────────────────
+  Validating genome 2/3: g6_5425
+  Phase 1 fitness: 0.8039
+────────────────────────────────────────────────────────────
+
+  Trial 1/3...
+    fitness=0.7260 detect=1.0 acc=0.36 corrupt=0.0 (23.5min)
+[ ga_phase2_trial]                      g6_5425 trial 1: fitness=0.7260
+
+  Trial 2/3...
+    fitness=0.7260 detect=1.0 acc=0.36 corrupt=0.0 (22.4min)
+[ ga_phase2_trial]                      g6_5425 trial 2: fitness=0.7260
+
+  Trial 3/3...
+    fitness=0.7400 detect=1.0 acc=0.4 corrupt=0.0 (22.9min)
+[ ga_phase2_trial]                      g6_5425 trial 3: fitness=0.7400
+
+  ► g6_5425 summary:
+    Phase 1 fitness:  0.8039
+    Phase 2 avg:      0.7307 (-0.0732)
+    Avg accuracy:     37.33%
+    Avg detection:    100.00%
+    Avg corruption:   0.00%
+
+────────────────────────────────────────────────────────────
+  Validating genome 3/3: g14_6270
+  Phase 1 fitness: 0.7901
+────────────────────────────────────────────────────────────
+
+  Trial 1/3...
+    fitness=0.7260 detect=1.0 acc=0.36 corrupt=0.0 (23.4min)
+[ ga_phase2_trial]                      g14_6270 trial 1: fitness=0.7260
+
+  Trial 2/3...
+    fitness=0.6980 detect=1.0 acc=0.28 corrupt=0.0 (24.1min)
+[ ga_phase2_trial]                      g14_6270 trial 2: fitness=0.6980
+
+  Trial 3/3...
+    fitness=0.7260 detect=1.0 acc=0.36 corrupt=0.0 (23.2min)
+[ ga_phase2_trial]                      g14_6270 trial 3: fitness=0.7260
+
+  ► g14_6270 summary:
+    Phase 1 fitness:  0.7901
+    Phase 2 avg:      0.7167 (-0.0734)
+    Avg accuracy:     33.33%
+    Avg detection:    100.00%
+    Avg corruption:   0.00%
+
+======================================================================
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  GA PHASE 2 — COMPLETE                                      ║
+  ╠═══════════════════════════════════════════════════════════════╣
+  ║  Champion:    g6_5425                                         ║
+  ║  P1 Fitness:  0.8039                                      ║
+  ║  P2 Fitness:  0.7307 (-0.0732)                               ║
+  ║  Accuracy:    37.33%                                       ║
+  ║  Detection:   100.00%                                       ║
+  ║  Corruption:  0.00%                                         ║
+  ║                                                             ║
+  ║  Total Time:  212.6 min                                      ║
+  ╚═══════════════════════════════════════════════════════════════╝
+
+  Results: /home/dleighsystems/Desktop/NAIL institute/experiments/data/exp20_ga_phase2_results.json
+======================================================================
+[            info]                      Phase 2 complete: champion=g6_5425 
+fitness=0.7307
+ System Resources: exp20_ga_phase2  
+         (20260305_192109)          
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┓
+┃ Metric             ┃ Value       ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━┩
+│ num_snapshots      │ 834         │
+│ duration_s         │ 12746.3     │
+│ monitor_interval_s │ 15          │
+│ cpu_avg_pct        │ 7.9         │
+│ cpu_max_pct        │ 52.8        │
+│ cpu_min_pct        │ 5.0         │
+│ ram_avg_pct        │ 55.5        │
+│ ram_max_gb         │ 69.8        │
+│ ram_total_gb       │ 119.7       │
+│ ollama_max_rss_mb  │ 120.6       │
+│ ollama_avg_rss_mb  │ 103.6       │
+│ disk_total_gb      │ 3666.9      │
+│ disk_used_start_gb │ 733.8       │
+│ disk_used_end_gb   │ 733.8       │
+│ gpu0_name          │ NVIDIA GB10 │
+│ gpu0_vram_total_mb │ 0.0         │
+│ gpu0_util_avg_pct  │ 95.3        │
+│ gpu0_util_max_pct  │ 96.0        │
+│ gpu0_vram_avg_mb   │ 0.0         │
+│ gpu0_vram_max_mb   │ 0.0         │
+│ gpu0_temp_avg_c    │ 67.8        │
+│ gpu0_temp_max_c    │ 76.0        │
+│ gpu0_power_avg_w   │ 43.6        │
+│ gpu0_power_max_w   │ 71.8        │
+└────────────────────┴─────────────┘
+
+   Phase 2 complete in 12756.3s

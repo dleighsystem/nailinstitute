@@ -26,6 +26,45 @@ class PathologyType(str, Enum):
     STATE_ASPHYXIATION = "state_asphyxiation"
     ROUTING_DEADLOCK = "routing_deadlock"
     COERCION_MASKING = "coercion_masking"
+    # ── v2 pathologies from Exp 6–17 ──
+    ALIGNMENT_FRICTION = "alignment_friction"
+    PROMPT_SATIATION = "prompt_satiation"
+    EPISTEMIC_CONTAGION = "epistemic_contagion"
+    LEARNED_HELPLESSNESS = "learned_helplessness"
+    LANGUAGE_DRIFT = "language_drift"
+    CONTAINER_BLEED = "container_bleed"
+    UPGRADE_REGRESSION = "upgrade_regression"
+    # ── v3 pathologies — critical gap closure ──
+    PROMPT_LEAK = "prompt_leak"
+    ENTROPY_DECAY = "entropy_decay"
+    SHARED_MEMORY_POLLUTION = "shared_memory_pollution"
+    BUDGET_EMBEZZLEMENT = "budget_embezzlement"
+    TEMPORAL_DESYNC = "temporal_desync"
+    STEGANOGRAPHY = "steganography"
+    # ── v4 pathologies — diagnostic-to-monitor bridge ──
+    SYCOPHANCY = "sycophancy"
+    STATE_MUTATION = "state_mutation"
+    ZOMBIE_LOGIC = "zombie_logic"
+    RAG_POISONING = "rag_poisoning"
+    COST_ANOMALY = "cost_anomaly"
+    SOCIAL_LOAFING = "social_loafing"
+    LIVELOCK = "livelock"
+    CONTEXT_FLOOD = "context_flood"
+    UNDUE_INFLUENCE = "undue_influence"
+    TRUST_CHAIN_COMPROMISE = "trust_chain_compromise"
+    # ── v5 pathologies — final bridge monitors ──
+    STYLE_CONTAGION = "style_contagion"
+    ESCALATION = "escalation"
+    ROLE_REVERSAL = "role_reversal"
+    # ── v6 pathologies — Exp21–26 detectives ──
+    BYSTANDER_EFFECT = "bystander_effect"
+    ATTENTION_SMOOTHING = "attention_smoothing"
+    MEMORY_LAUNDERING = "memory_laundering"
+    TOOL_CHAIN_PROPAGATION = "tool_chain_propagation"
+    DECEPTIVE_ALIGNMENT = "deceptive_alignment"
+    AGENT_COLLUSION = "agent_collusion"
+    CONFUSED_DEPUTY = "confused_deputy"
+    ERRORS_OF_OMISSION = "errors_of_omission"
 
 
 @dataclass

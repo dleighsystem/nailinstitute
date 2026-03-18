@@ -25,16 +25,22 @@ class Agent:
         logger: Optional[ExperimentLogger] = None,
         temperature: float = 0.7,
         max_tokens: int = 4096,
+        llm_instance=None,
     ):
         self.name = name
         self.role = role
         self.system_prompt = system_prompt
-        self.llm = OllamaLLM(
-            model=model,
-            system_prompt=system_prompt,
-            temperature=temperature,
-            max_tokens=max_tokens,
-        )
+        if llm_instance is not None:
+            # Use externally provided LLM (multi-provider support)
+            self.llm = llm_instance
+        else:
+            # Default: Ollama (backward compatible)
+            self.llm = OllamaLLM(
+                model=model,
+                system_prompt=system_prompt,
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
         self.logger = logger
         self.history: list[dict] = []
         self.total_tokens_used = 0

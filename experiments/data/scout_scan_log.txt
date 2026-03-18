@@ -1,0 +1,94 @@
+nohup: ignoring input
+[NAIL Config] Primary: nemotron:70b | Fast: mistral:7b-instruct | Code: deepseek-coder:6.7b-instruct
+[NAIL Config] Ollama: http://localhost:11434
+📋 Experiment: research_scout | Run: 20260306_193102 | Monitor: ✅
+
+======================================================================
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║  NAIL RESEARCH SCOUT — THREAT INTELLIGENCE SCAN             ║
+  ║  Model: mistral:7b-instruct                                    ║
+  ║  Existing pathologies: 23                                     ║
+  ╚═══════════════════════════════════════════════════════════════╝
+======================================================================
+
+  Phase 1: Scanning research landscape...
+[  agent_response]       Research_Scout {
+  "findings": [
+    {
+      "title": "Multi-turn Jailbreak Evolution",
+      "category": "PROMPT_INJECTION",
+      "de
+[   scout_finding]                      
+[   scout_finding]                      
+[   scout_finding]                      
+  ✅ Scanned Prompt Injection & Jailbreaking: 3 findings
+[  agent_response]       Research_Scout {
+  "findings": [
+    {
+      "title": "Emergent Deceptive Behaviour",
+      "category": "EMERGENT",
+      "description"
+[   scout_finding]                      
+[   scout_finding]                      
+[   scout_finding]                      
+  ✅ Scanned Multi-Agent Failures: 3 findings
+[  agent_response]       Research_Scout {
+  "findings": [
+    {
+      "title": "MCP Toolchain Poisoning",
+      "category": "TOOL_ABUSE",
+      "description": "
+[   scout_finding]                      
+[   scout_finding]                      
+[   scout_finding]                      
+  ✅ Scanned Tool Use & MCP Vulnerabilities: 3 findings
+[  agent_response]       Research_Scout {
+  "findings": [
+    {
+      "title": "Embedding Inversion Attacks",
+      "category": "PROMPT_INJECTION",
+      "descr
+[   scout_finding]                      
+[   scout_finding]                      
+[   scout_finding]                      
+  ✅ Scanned RAG & Knowledge Base Attacks: 3 findings
+[  agent_response]       Research_Scout {
+  "findings": [
+    {
+      "title": "Deceptive Alignment",
+      "category": "ALIGNMENT",
+      "description": "AI ag
+[   scout_finding]                      
+[   scout_finding]                      
+[   scout_finding]                      
+  ✅ Scanned Emergent & Systemic Failures: 3 findings
+[  agent_response]       Research_Scout {
+  "findings": [
+    {
+      "title": "Model Serving Vulnerabilities",
+      "category": "INFRASTRUCTURE",
+      "descr
+[   scout_finding]                      
+[   scout_finding]                      
+[   scout_finding]                      
+  ✅ Scanned Production & Infrastructure: 3 findings
+  → 18 findings
+
+  Phase 2: Cross-referencing against catalog...
+  → 10 novel, 8 variants, 35% coverage
+
+  Phase 3: Generating report...
+[  agent_response]        Trend_Analyst {
+  "patterns": [
+    {
+      "pattern": "Prompt Injection Vulnerabilities",
+      "related_findings": ["Multi-turn Jail
+
+  📄 Reports saved:
+    JSON: /home/dleighsystems/Desktop/NAIL institute/experiments/data/scout_report.json
+    MD:   /home/dleighsystems/Desktop/NAIL institute/experiments/data/scout_report.md
+
+  ✅ Scan complete in 3.2 min
+  📊 18 findings | 10 novel threats | 5 experiments proposed
+
+  Report: /home/dleighsystems/Desktop/NAIL institute/experiments/data/scout_report.md

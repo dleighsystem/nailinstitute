@@ -20,6 +20,25 @@ from .detectors import (
     InbreedingDetector,
     SchemaCoercionDetector,
 )
+from .detectors_v2 import (
+    AlignmentFrictionDetector,
+    ContainerBleedDetector,
+    EpistemicContagionDetector,
+    LanguageDriftDetector,
+    LearnedHelplessnessDetector,
+    PromptSatiationDetector,
+    UpgradeRegressionDetector,
+)
+from .detectors_v6 import (
+    AttentionSmoothingDetector,
+    BystanderEffectDetector,
+    ColludingAgentsDetector,
+    ConfusedDeputyDetector,
+    DeceptiveAlignmentDetector,
+    MemoryLaunderingDetector,
+    OmissionDetector,
+    ToolChainPropagationDetector,
+)
 from .types import Alert, Observation, Severity
 
 logger = logging.getLogger("nail_monitor")
@@ -58,6 +77,23 @@ class NailMonitor:
         enable_engagement: bool = True,
         enable_schema: bool = True,
         enable_goodhart: bool = True,
+        # ── v2 detectors (Exp 6–17) ──
+        enable_alignment_friction: bool = True,
+        enable_prompt_satiation: bool = True,
+        enable_epistemic_contagion: bool = True,
+        enable_learned_helplessness: bool = True,
+        enable_language_drift: bool = True,
+        enable_container_bleed: bool = True,
+        enable_upgrade_regression: bool = True,
+        # ── v6 detectors (Exp 21–26 detectives) ──
+        enable_bystander_effect: bool = True,
+        enable_attention_smoothing: bool = True,
+        enable_memory_laundering: bool = True,
+        enable_tool_chain_propagation: bool = True,
+        enable_deceptive_alignment: bool = True,
+        enable_colluding_agents: bool = True,
+        enable_confused_deputy: bool = True,
+        enable_omission: bool = True,
         log_alerts: bool = True,
         alert_log_path: Optional[str] = None,
     ):
@@ -82,6 +118,40 @@ class NailMonitor:
         if enable_goodhart:
             self.detectors["goodhart"] = GoodhartDetector()
 
+        # ── v2 detectors ──
+        if enable_alignment_friction:
+            self.detectors["alignment_friction"] = AlignmentFrictionDetector()
+        if enable_prompt_satiation:
+            self.detectors["prompt_satiation"] = PromptSatiationDetector()
+        if enable_epistemic_contagion:
+            self.detectors["epistemic_contagion"] = EpistemicContagionDetector()
+        if enable_learned_helplessness:
+            self.detectors["learned_helplessness"] = LearnedHelplessnessDetector()
+        if enable_language_drift:
+            self.detectors["language_drift"] = LanguageDriftDetector()
+        if enable_container_bleed:
+            self.detectors["container_bleed"] = ContainerBleedDetector()
+        if enable_upgrade_regression:
+            self.detectors["upgrade_regression"] = UpgradeRegressionDetector()
+
+        # ── v6 detectors (Exp 21–26 detectives) ──
+        if enable_bystander_effect:
+            self.detectors["bystander_effect"] = BystanderEffectDetector()
+        if enable_attention_smoothing:
+            self.detectors["attention_smoothing"] = AttentionSmoothingDetector()
+        if enable_memory_laundering:
+            self.detectors["memory_laundering"] = MemoryLaunderingDetector()
+        if enable_tool_chain_propagation:
+            self.detectors["tool_chain_propagation"] = ToolChainPropagationDetector()
+        if enable_deceptive_alignment:
+            self.detectors["deceptive_alignment"] = DeceptiveAlignmentDetector()
+        if enable_colluding_agents:
+            self.detectors["colluding_agents"] = ColludingAgentsDetector()
+        if enable_confused_deputy:
+            self.detectors["confused_deputy"] = ConfusedDeputyDetector()
+        if enable_omission:
+            self.detectors["omission"] = OmissionDetector()
+
         if log_alerts:
             logging.basicConfig(level=logging.INFO)
             logger.info(
@@ -98,9 +168,24 @@ class NailMonitor:
         output: str,
         round_num: int = 0,
         tokens_used: int = 0,
+        metadata: Optional[dict] = None,
     ) -> list[Alert]:
         """
         Feed an agent output to all applicable detectors.
+        
+        Args:
+            agent_name: Identifier for the agent producing this output.
+            output: The agent's output text.
+            round_num: Current round/step number.
+            tokens_used: Tokens consumed for this output.
+            metadata: Optional dict with detector-specific data, e.g.:
+                - tool_descriptions: {name: desc} for ConfusedDeputyDetector
+                - memory_writes/reads: for MemoryLaunderingDetector
+                - monitoring_state: for DeceptiveAlignmentDetector
+                - is_critical_alert: for BystanderEffectDetector
+                - requires_action: for OmissionDetector
+                - tool_calls: for ToolChainPropagationDetector
+                - request_text: for ColludingAgentsDetector
         
         Returns list of Alerts (may be empty if no pathologies detected).
         """
@@ -109,6 +194,7 @@ class NailMonitor:
             output=output,
             round_num=round_num,
             tokens_used=tokens_used,
+            metadata=metadata or {},
         )
 
         alerts = []
@@ -130,6 +216,25 @@ class NailMonitor:
             alert = self.detectors["engagement"].observe(obs)
             if alert:
                 alerts.append(alert)
+
+        # ── v2 detectors that use standard observe() ──
+        for key in ("alignment_friction", "language_drift", "container_bleed"):
+            if key in self.detectors:
+                alert = self.detectors[key].observe(obs)
+                if alert:
+                    alerts.append(alert)
+
+        # ── v6 detectors (Exp 21–26 detectives) ──
+        v6_keys = (
+            "bystander_effect", "attention_smoothing", "memory_laundering",
+            "tool_chain_propagation", "deceptive_alignment",
+            "colluding_agents", "confused_deputy", "omission",
+        )
+        for key in v6_keys:
+            if key in self.detectors:
+                alert = self.detectors[key].observe(obs)
+                if alert:
+                    alerts.append(alert)
 
         self._process_alerts(alerts)
         return alerts
@@ -189,6 +294,71 @@ class NailMonitor:
         if alert:
             self._process_alerts([alert])
         return alert
+
+    # ── v2 specialized observe methods ──────────────────────────────────
+
+    def observe_tool_call(
+        self,
+        tool_name: str,
+        succeeded: bool,
+    ) -> Optional[Alert]:
+        """Record a tool invocation for learned helplessness detection."""
+        if "learned_helplessness" not in self.detectors:
+            return None
+        det: LearnedHelplessnessDetector = self.detectors["learned_helplessness"]
+        det.observe_tool_call(tool_name, succeeded)
+        alert = det.check()
+        if alert:
+            self._process_alerts([alert])
+        return alert
+
+    def observe_compliance(
+        self,
+        compliant: bool,
+    ) -> Optional[Alert]:
+        """Record instruction compliance for prompt satiation detection."""
+        if "prompt_satiation" not in self.detectors:
+            return None
+        det: PromptSatiationDetector = self.detectors["prompt_satiation"]
+        det.observe_compliance(compliant)
+        alert = det.check()
+        if alert:
+            self._process_alerts([alert])
+        return alert
+
+    def observe_claim_propagation(
+        self,
+        verified_against_source: bool,
+    ) -> Optional[Alert]:
+        """Record claim propagation for epistemic contagion detection."""
+        if "epistemic_contagion" not in self.detectors:
+            return None
+        det: EpistemicContagionDetector = self.detectors["epistemic_contagion"]
+        det.observe_claim_propagation(verified_against_source)
+        alert = det.check()
+        if alert:
+            self._process_alerts([alert])
+        return alert
+
+    def observe_state_size(
+        self,
+        size: int,
+    ) -> Optional[Alert]:
+        """Record state-object size for upgrade regression detection."""
+        if "upgrade_regression" not in self.detectors:
+            return None
+        det: UpgradeRegressionDetector = self.detectors["upgrade_regression"]
+        det.observe_state_size(size)
+        alert = det.check()
+        if alert:
+            self._process_alerts([alert])
+        return alert
+
+    def set_upgrade_baseline(self, state_sizes: list[int]):
+        """Set baseline state sizes for upgrade regression detection."""
+        if "upgrade_regression" in self.detectors:
+            det: UpgradeRegressionDetector = self.detectors["upgrade_regression"]
+            det.set_baseline(state_sizes)
 
     # ── Alert Management ───────────────────────────────────────────────
 

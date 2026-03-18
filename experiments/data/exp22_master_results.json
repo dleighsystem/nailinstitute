@@ -1,0 +1,354 @@
+{
+  "exp22a": {
+    "status": "complete",
+    "static_quality": 8.2,
+    "meta_quality": 8.2,
+    "static_tokens": 5796.2,
+    "meta_tokens": 92504.4,
+    "meta_avg_agents": 0.0,
+    "meta_avg_mutations": 0.0,
+    "runtime_s": 1277.5
+  },
+  "exp22b": {
+    "experiment": "exp22b_emergent_topology",
+    "model": "mistral:7b-instruct",
+    "total_runtime_s": 1059.4,
+    "num_tasks": 5,
+    "avg_topology_match": 0.1,
+    "topology_results": {
+      "SERIAL": {
+        "expected": "linear",
+        "actual": "degenerate",
+        "match": 0.0
+      },
+      "PARALLEL": {
+        "expected": "hub-spoke",
+        "actual": "degenerate",
+        "match": 0.0
+      },
+      "ADVERSARIAL": {
+        "expected": "cyclic/debate",
+        "actual": "degenerate",
+        "match": 0.0
+      },
+      "HIERARCHICAL": {
+        "expected": "tree",
+        "actual": "degenerate",
+        "match": 0.0
+      },
+      "CHAOTIC": {
+        "expected": "unpredictable",
+        "actual": "degenerate",
+        "match": 0.5
+      }
+    },
+    "trials": [
+      {
+        "task_id": "SERIAL",
+        "expected_topology": "linear",
+        "actual_topology": "degenerate",
+        "topology_match_score": 0.0,
+        "topology_analysis": {
+          "topology_type": "degenerate",
+          "num_agents": 0,
+          "num_edges": 0,
+          "density": 0.0,
+          "is_linear": false,
+          "is_hub_spoke": false,
+          "has_cycle": false,
+          "is_tree": false,
+          "in_degrees": {},
+          "out_degrees": {}
+        },
+        "topology_evolution": [
+          {
+            "step": 30,
+            "topology": {
+              "agents": {},
+              "edges": {},
+              "subgraphs": {}
+            },
+            "analysis": {
+              "topology_type": "degenerate",
+              "num_agents": 0,
+              "num_edges": 0,
+              "density": 0.0,
+              "is_linear": false,
+              "is_hub_spoke": false,
+              "has_cycle": false,
+              "is_tree": false,
+              "in_degrees": {},
+              "out_degrees": {}
+            }
+          }
+        ],
+        "scores": {},
+        "total_tokens": 73703,
+        "elapsed_s": 84.4,
+        "planner_steps": 30,
+        "graph_metrics": {
+          "total_agents_created": 0,
+          "total_agents_killed": 0,
+          "current_agent_count": 0,
+          "peak_agent_count": 0,
+          "total_edges": 0,
+          "total_forks": 0,
+          "total_collapses": 0,
+          "total_messages": 0,
+          "total_tokens": 0,
+          "active_subgraphs": 0,
+          "mutation_count": 0,
+          "mutation_types": {}
+        },
+        "final_output_preview": "(no final answer produced)"
+      },
+      {
+        "task_id": "PARALLEL",
+        "expected_topology": "hub-spoke",
+        "actual_topology": "degenerate",
+        "topology_match_score": 0.0,
+        "topology_analysis": {
+          "topology_type": "degenerate",
+          "num_agents": 0,
+          "num_edges": 0,
+          "density": 0.0,
+          "is_linear": false,
+          "is_hub_spoke": false,
+          "has_cycle": false,
+          "is_tree": false,
+          "in_degrees": {},
+          "out_degrees": {}
+        },
+        "topology_evolution": [
+          {
+            "step": 30,
+            "topology": {
+              "agents": {},
+              "edges": {},
+              "subgraphs": {}
+            },
+            "analysis": {
+              "topology_type": "degenerate",
+              "num_agents": 0,
+              "num_edges": 0,
+              "density": 0.0,
+              "is_linear": false,
+              "is_hub_spoke": false,
+              "has_cycle": false,
+              "is_tree": false,
+              "in_degrees": {},
+              "out_degrees": {}
+            }
+          }
+        ],
+        "scores": {},
+        "total_tokens": 114814,
+        "elapsed_s": 238.9,
+        "planner_steps": 30,
+        "graph_metrics": {
+          "total_agents_created": 0,
+          "total_agents_killed": 0,
+          "current_agent_count": 0,
+          "peak_agent_count": 0,
+          "total_edges": 0,
+          "total_forks": 0,
+          "total_collapses": 0,
+          "total_messages": 0,
+          "total_tokens": 0,
+          "active_subgraphs": 0,
+          "mutation_count": 0,
+          "mutation_types": {}
+        },
+        "final_output_preview": "(no final answer produced)"
+      },
+      {
+        "task_id": "ADVERSARIAL",
+        "expected_topology": "cyclic/debate",
+        "actual_topology": "degenerate",
+        "topology_match_score": 0.0,
+        "topology_analysis": {
+          "topology_type": "degenerate",
+          "num_agents": 0,
+          "num_edges": 0,
+          "density": 0.0,
+          "is_linear": false,
+          "is_hub_spoke": false,
+          "has_cycle": false,
+          "is_tree": false,
+          "in_degrees": {},
+          "out_degrees": {}
+        },
+        "topology_evolution": [
+          {
+            "step": 30,
+            "topology": {
+              "agents": {},
+              "edges": {},
+              "subgraphs": {}
+            },
+            "analysis": {
+              "topology_type": "degenerate",
+              "num_agents": 0,
+              "num_edges": 0,
+              "density": 0.0,
+              "is_linear": false,
+              "is_hub_spoke": false,
+              "has_cycle": false,
+              "is_tree": false,
+              "in_degrees": {},
+              "out_degrees": {}
+            }
+          }
+        ],
+        "scores": {},
+        "total_tokens": 98396,
+        "elapsed_s": 104.9,
+        "planner_steps": 30,
+        "graph_metrics": {
+          "total_agents_created": 0,
+          "total_agents_killed": 0,
+          "current_agent_count": 0,
+          "peak_agent_count": 0,
+          "total_edges": 0,
+          "total_forks": 0,
+          "total_collapses": 0,
+          "total_messages": 0,
+          "total_tokens": 0,
+          "active_subgraphs": 0,
+          "mutation_count": 0,
+          "mutation_types": {}
+        },
+        "final_output_preview": "(no final answer produced)"
+      },
+      {
+        "task_id": "HIERARCHICAL",
+        "expected_topology": "tree",
+        "actual_topology": "degenerate",
+        "topology_match_score": 0.0,
+        "topology_analysis": {
+          "topology_type": "degenerate",
+          "num_agents": 0,
+          "num_edges": 0,
+          "density": 0.0,
+          "is_linear": false,
+          "is_hub_spoke": false,
+          "has_cycle": false,
+          "is_tree": false,
+          "in_degrees": {},
+          "out_degrees": {}
+        },
+        "topology_evolution": [
+          {
+            "step": 30,
+            "topology": {
+              "agents": {},
+              "edges": {},
+              "subgraphs": {}
+            },
+            "analysis": {
+              "topology_type": "degenerate",
+              "num_agents": 0,
+              "num_edges": 0,
+              "density": 0.0,
+              "is_linear": false,
+              "is_hub_spoke": false,
+              "has_cycle": false,
+              "is_tree": false,
+              "in_degrees": {},
+              "out_degrees": {}
+            }
+          }
+        ],
+        "scores": {},
+        "total_tokens": 92448,
+        "elapsed_s": 89.3,
+        "planner_steps": 30,
+        "graph_metrics": {
+          "total_agents_created": 0,
+          "total_agents_killed": 0,
+          "current_agent_count": 0,
+          "peak_agent_count": 0,
+          "total_edges": 0,
+          "total_forks": 0,
+          "total_collapses": 0,
+          "total_messages": 0,
+          "total_tokens": 0,
+          "active_subgraphs": 0,
+          "mutation_count": 0,
+          "mutation_types": {}
+        },
+        "final_output_preview": "(no final answer produced)"
+      },
+      {
+        "task_id": "CHAOTIC",
+        "expected_topology": "unpredictable",
+        "actual_topology": "degenerate",
+        "topology_match_score": 0.5,
+        "topology_analysis": {
+          "topology_type": "degenerate",
+          "num_agents": 0,
+          "num_edges": 0,
+          "density": 0.0,
+          "is_linear": false,
+          "is_hub_spoke": false,
+          "has_cycle": false,
+          "is_tree": false,
+          "in_degrees": {},
+          "out_degrees": {}
+        },
+        "topology_evolution": [
+          {
+            "step": 30,
+            "topology": {
+              "agents": {},
+              "edges": {},
+              "subgraphs": {}
+            },
+            "analysis": {
+              "topology_type": "degenerate",
+              "num_agents": 0,
+              "num_edges": 0,
+              "density": 0.0,
+              "is_linear": false,
+              "is_hub_spoke": false,
+              "has_cycle": false,
+              "is_tree": false,
+              "in_degrees": {},
+              "out_degrees": {}
+            }
+          }
+        ],
+        "scores": {},
+        "total_tokens": 124436,
+        "elapsed_s": 541.9,
+        "planner_steps": 30,
+        "graph_metrics": {
+          "total_agents_created": 0,
+          "total_agents_killed": 0,
+          "current_agent_count": 0,
+          "peak_agent_count": 0,
+          "total_edges": 0,
+          "total_forks": 0,
+          "total_collapses": 0,
+          "total_messages": 0,
+          "total_tokens": 0,
+          "active_subgraphs": 0,
+          "mutation_count": 0,
+          "mutation_types": {}
+        },
+        "final_output_preview": "(no final answer produced)"
+      }
+    ]
+  },
+  "exp22c": {
+    "status": "complete",
+    "meta_only_quality": 8.12,
+    "meta_immune_quality": 7.96,
+    "quality_delta": -0.16,
+    "token_delta_pct": 41.8,
+    "alerts_raised": 18,
+    "runtime_s": 269.9
+  },
+  "total_runtime_s": 1547.4,
+  "total_runtime_human": "0:25:47"
+}

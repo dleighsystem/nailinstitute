@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rmap"
+version = "1.0.0"
+description = "Resilient Multi-Agent Protocol — production framework for self-healing, self-aware agentic systems"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "NAIL Institute (Neuravant AI Limited)", email = "research@neuravant.com"}]
+requires-python = ">=3.10"
+keywords = [
+    "llm", "agents", "multi-agent", "agentic", "resilience",
+    "metamorphic", "immune-system", "somatic-awareness",
+    "genetic-algorithm", "ai-safety", "self-healing",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Typing :: Typed",
+]
+
+dependencies = [
+    "psutil>=5.9",
+]
+
+[project.optional-dependencies]
+ollama = ["requests>=2.28"]
+monitor = ["nail-monitor>=0.6"]
+dev = ["pytest>=7.0", "pytest-cov>=4.0"]
+full = ["requests>=2.28", "numpy>=1.24", "matplotlib>=3.7"]
+
+[project.urls]
+Homepage = "https://github.com/dleighsystem/nailinstitute"
+Repository = "https://github.com/dleighsystem/nailinstitute"
+Documentation = "https://github.com/dleighsystem/nailinstitute/tree/main/rmap"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

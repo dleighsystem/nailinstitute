@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=69.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nail-arena"
+version = "1.0.0"
+description = "DGX Arena — Continuous Red/Blue adversarial evolution for AI agent security"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.11"
+authors = [{name = "NAIL Institute", email = "research@neuravant.com"}]
+
+dependencies = [
+    "nail-ave>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "pytest-cov"]
+
+[project.urls]
+Homepage = "https://github.com/nailinstitute/arena"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+where = ["."]

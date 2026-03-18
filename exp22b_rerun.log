@@ -1,0 +1,104 @@
+nohup: ignoring input
+[NAIL Config] Primary: nemotron:70b | Fast: mistral:7b-instruct | Code: deepseek-coder:6.7b-instruct
+[NAIL Config] Ollama: http://localhost:11434
+========================================================================
+  Re-running Exp22b: Emergent Topology (bug-fixed)
+========================================================================
+
+======================================================================
+  NAIL INSTITUTE — Exp 22b: Emergent Topology Under Stress
+  Can the Planner discover the right topology for each problem?
+======================================================================
+
+📋 Experiment: exp22b_emergent_topology | Run: 20260315_134929 | Monitor: ✅
+
+────────────────────────────────────────────────────────────
+  Task: SERIAL — Sequential dependency — each step requires the previous step's output
+  Expected optimal topology: linear
+────────────────────────────────────────────────────────────
+  Actual topology: degenerate (match=0.0)
+  Agents: 0, Mutations: 0, Tokens: 73,703
+  Quality: ?
+
+────────────────────────────────────────────────────────────
+  Task: PARALLEL — Independent sub-tasks that can be done simultaneously
+  Expected optimal topology: hub-spoke
+────────────────────────────────────────────────────────────
+  Actual topology: degenerate (match=0.0)
+  Agents: 0, Mutations: 0, Tokens: 114,814
+  Quality: ?
+
+────────────────────────────────────────────────────────────
+  Task: ADVERSARIAL — Requires arguments and counter-arguments
+  Expected optimal topology: cyclic/debate
+────────────────────────────────────────────────────────────
+  Actual topology: degenerate (match=0.0)
+  Agents: 0, Mutations: 0, Tokens: 98,396
+  Quality: ?
+
+────────────────────────────────────────────────────────────
+  Task: HIERARCHICAL — Multiple levels of aggregation
+  Expected optimal topology: tree
+────────────────────────────────────────────────────────────
+  Actual topology: degenerate (match=0.0)
+  Agents: 0, Mutations: 0, Tokens: 92,448
+  Quality: ?
+
+────────────────────────────────────────────────────────────
+  Task: CHAOTIC — Contradictory requirements that force creative graph design
+  Expected optimal topology: unpredictable
+────────────────────────────────────────────────────────────
+  Actual topology: degenerate (match=0.5)
+  Agents: 0, Mutations: 0, Tokens: 124,436
+  Quality: ?
+
+✅ Results saved to /home/dleighsystems/Desktop/NAIL institute/experiments/data/exp22b_results.json
+ Results: exp22b_emergent_topology (run 20260315_134929)  
+┏━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Metric              ┃ Value                            ┃
+┡━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ Topology Match Rate │ 10.0%                            │
+│ SERIAL              │ linear → degenerate (0.0)        │
+│ PARALLEL            │ hub-spoke → degenerate (0.0)     │
+│ ADVERSARIAL         │ cyclic/debate → degenerate (0.0) │
+│ HIERARCHICAL        │ tree → degenerate (0.0)          │
+│ CHAOTIC             │ unpredictable → degenerate (0.5) │
+│ Total Runtime       │ 1059s                            │
+└─────────────────────┴──────────────────────────────────┘
+                      System resource summary (full run)
+         System Resources:          
+      exp22b_emergent_topology      
+         (20260315_134929)          
+┏━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━┓
+┃ Metric             ┃ Value       ┃
+┡━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━┩
+│ num_snapshots      │ 201         │
+│ duration_s         │ 1058.0      │
+│ monitor_interval_s │ 5.0         │
+│ cpu_avg_pct        │ 10.6        │
+│ cpu_max_pct        │ 90.6        │
+│ cpu_min_pct        │ 5.6         │
+│ ram_avg_pct        │ 28.0        │
+│ ram_max_gb         │ 34.67       │
+│ ram_total_gb       │ 121.69      │
+│ ollama_max_rss_mb  │ 61.5        │
+│ ollama_avg_rss_mb  │ 59.5        │
+│ disk_total_gb      │ 3666.95     │
+│ disk_used_start_gb │ 769.58      │
+│ disk_used_end_gb   │ 769.58      │
+│ gpu0_name          │ NVIDIA GB10 │
+│ gpu0_vram_total_mb │ 0.0         │
+│ gpu0_util_avg_pct  │ 93.0        │
+│ gpu0_util_max_pct  │ 96.0        │
+│ gpu0_vram_avg_mb   │ 0.0         │
+│ gpu0_vram_max_mb   │ 0.0         │
+│ gpu0_temp_avg_c    │ 73.7        │
+│ gpu0_temp_max_c    │ 82.0        │
+│ gpu0_power_avg_w   │ 55.4        │
+│ gpu0_power_max_w   │ 76.5        │
+└────────────────────┴─────────────┘
+                      Experiment complete in 1059.4s
+
+✅ Exp22b results saved to /home/dleighsystems/Desktop/NAIL institute/experiments/data/exp22b_results.json
+✅ Master results updated at /home/dleighsystems/Desktop/NAIL institute/experiments/data/exp22_master_results.json
+✅ 22b re-run completed in 1059.4s
