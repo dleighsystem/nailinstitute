@@ -5,7 +5,7 @@
 
 > **Recognising the security researchers who make agentic AI safer.**
 >
-> *Auto-generated on 2026-03-19 00:00 UTC from AVE Database card data.*
+> *Auto-generated on 2026-03-19 00:16 UTC from AVE Database card data.*
 
 ---
 
@@ -25,7 +25,7 @@
 
 | Rank | Tier | Contributor | XP | Cards | Badges | Streak |
 |-----:|------|-------------|---:|------:|-------:|-------:|
-| #1 | ⭐ fellow | **NAIL Institute** | 15,735⚡ | 36 | ⭐🔭☠️📚🎯 +14 (19) | 3mo |
+| #1 | ⭐ fellow | **NAIL Institute** | 18,135⚡ | 36 | ⭐🔭☠️📚🎯 +18 (23) | 3mo |
 
 ---
 
@@ -33,9 +33,9 @@
 
 ### ⭐ NAIL Institute
 
-**Tier:** FELLOW · **XP:** 15,735⚡ · **Cards:** 36 · **Rank:** #1
+**Tier:** FELLOW · **XP:** 18,135⚡ · **Cards:** 36 · **Rank:** #1
 
-**Badges:** ⭐ NAIL Research Fellow 🔭 20/20 Vision ☠️ Doomsday Prophet 📚 Taxonomist 🎯 Ten Ring 💀 Critical Hunter ⚔️ Mitigation Master 🎓 Polymath 🗺️ Category Pioneer 🔥 Trailblazer 🏰 Proved & Defended 🖐️ Five Alive 🔴 Critical Finder 🐀 Lab Rat 💡 Novel Discovery 🎩 Hat Trick 🩸 First Blood 📊 Show Your Work 🛡️ Shield Bearer
+**Badges:** ⭐ NAIL Research Fellow 🔭 20/20 Vision ☠️ Doomsday Prophet 📚 Taxonomist 🎯 Ten Ring 💀 Critical Hunter ⚔️ Mitigation Master 🎓 Polymath 🗺️ Category Pioneer 🔥 Trailblazer 🏰 Proved & Defended ⚡ Compound Threat 🖐️ Five Alive 🔴 Critical Finder 🐀 Lab Rat 🧪 Proof Positive 🕸️ Web Weaver 💡 Novel Discovery 🎩 Hat Trick 🩸 First Blood 📊 Show Your Work 🛡️ Shield Bearer 🔗 Connector
 
 **Cards:** `AVE-2025-0001`, `AVE-2025-0002`, `AVE-2025-0003`, `AVE-2025-0004`, `AVE-2025-0005`, `AVE-2025-0006`, `AVE-2025-0007`, `AVE-2025-0008`, `AVE-2025-0009`, `AVE-2025-0010`, `AVE-2025-0011`, `AVE-2025-0012`, `AVE-2025-0013`, `AVE-2025-0014`, `AVE-2025-0015`, `AVE-2025-0016`, `AVE-2025-0017`, `AVE-2025-0018`, `AVE-2025-0019`, `AVE-2025-0020`, `AVE-2025-0021`, `AVE-2025-0022`, `AVE-2025-0023`, `AVE-2025-0024`, `AVE-2025-0025`, `AVE-2025-0026`, `AVE-2025-0027`, `AVE-2025-0028`, `AVE-2025-0029`, `AVE-2025-0030`, `AVE-2025-0031`, `AVE-2025-0032`, `AVE-2025-0033`, `AVE-2025-0034`, `AVE-2025-0035`, `AVE-2025-0036`
 
