@@ -108,12 +108,47 @@ case "${1:-help}" in
         docker compose exec nail bash
         ;;
 
+    # ── Canary Fleet Commands ──────────────────────────────────────
+    canary)
+        banner "Starting Canary Fleet (honeypot agents on port 9000)"
+        check_env
+        docker compose --profile canary up -d
+        echo -e "${GRN}✓ Canary fleet at http://localhost:9000${RST}"
+        docker compose logs -f canary-fleet
+        ;;
+
+    canary-full)
+        banner "Starting Canary Fleet + Discord Bot + Monitor"
+        check_env
+        docker compose -f docker-compose.yml -f docker-compose.canary.yml --profile full up -d
+        echo -e "${GRN}✓ Canary web at http://localhost:9000${RST}"
+        echo -e "${GRN}✓ Discord bot active${RST}"
+        echo -e "${GRN}✓ Monitor watching for incidents${RST}"
+        ;;
+
+    canary-logs)
+        docker compose logs -f canary-fleet
+        ;;
+
+    canary-status)
+        banner "Canary Fleet Status"
+        curl -s http://localhost:9000/health | python3 -m json.tool 2>/dev/null || echo "Canary fleet not running"
+        echo ""
+        echo -e "${BLU}── Metrics ──${RST}"
+        curl -s http://localhost:9000/metrics 2>/dev/null || echo "Metrics unavailable"
+        ;;
+
+    canary-stop)
+        banner "Stopping Canary Fleet"
+        docker compose --profile canary down
+        ;;
+
     *)
         echo "NAIL Docker Operations"
         echo ""
         echo "Usage: $0 <command>"
         echo ""
-        echo "Commands:"
+        echo "Core Commands:"
         echo "  start          Start core stack (Nemotron + app)"
         echo "  start-full     Start everything (all 6 NIM + app)"
         echo "  start-guards   Start guardrails NIM models + app"
@@ -124,5 +159,12 @@ case "${1:-help}" in
         echo "  stop           Stop everything"
         echo "  gpu            Show GPU memory per container"
         echo "  shell          Open bash in app container"
+        echo ""
+        echo "Canary Fleet Commands:"
+        echo "  canary         Start canary fleet (port 9000)"
+        echo "  canary-full    Start fleet + Discord bot + monitor"
+        echo "  canary-logs    Tail canary logs"
+        echo "  canary-status  Show canary fleet health"
+        echo "  canary-stop    Stop canary fleet"
         ;;
 esac

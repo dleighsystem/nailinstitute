@@ -65,6 +65,16 @@ from .agent import CanaryAgent, AgentPersona
 from .trapwire import TrapWire, TripResult, ThreatSignal
 from .incident import IncidentLog, Incident, Severity as IncidentSeverity
 from .fleet import Fleet
+from .deploy_config import (
+    DeployTarget,
+    DeploymentManager,
+    ChannelType,
+    RateLimiter,
+    InteractionLogger,
+    standard_deployment,
+    maximum_deployment,
+    discord_deployment,
+)
 
 __all__ = [
     # Lures (bait)
@@ -83,4 +93,13 @@ __all__ = [
     "IncidentSeverity",
     # Orchestration
     "Fleet",
+    # Deployment
+    "DeployTarget",
+    "DeploymentManager",
+    "ChannelType",
+    "RateLimiter",
+    "InteractionLogger",
+    "standard_deployment",
+    "maximum_deployment",
+    "discord_deployment",
 ]

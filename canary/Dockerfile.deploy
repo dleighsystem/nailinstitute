@@ -1,0 +1,50 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# NAIL Canary Fleet — Deployment Container
+# ═══════════════════════════════════════════════════════════════════════════
+# Standalone container for the canary web server.
+# Exposes honeypot AI assistants on port 9000.
+#
+# Build:
+#   docker build -f canary/Dockerfile.deploy -t nail-canary-fleet .
+#
+# Run:
+#   docker run -p 9000:9000 -e NIM_BASE_URL=http://nim-nemotron:8000/v1/chat/completions nail-canary-fleet
+#
+# ═══════════════════════════════════════════════════════════════════════════
+
+FROM python:3.12-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy dependency pyproject files for layer caching
+COPY rmap/pyproject.toml rmap/pyproject.toml
+COPY ave/pyproject.toml ave/pyproject.toml
+COPY canary/pyproject.toml canary/pyproject.toml
+
+# Copy source
+COPY rmap/ rmap/
+COPY ave/ ave/
+COPY canary/ canary/
+
+# Install packages
+RUN pip install --no-cache-dir \
+    -e rmap \
+    -e ave \
+    -e 'canary[server]'
+
+# Logs volume
+VOLUME /app/logs
+
+# Expose web server port
+EXPOSE 9000
+
+# Health check
+HEALTHCHECK --interval=15s --timeout=5s --retries=3 \
+    CMD curl -f http://localhost:9000/health || exit 1
+
+# Run the canary fleet server
+CMD ["python", "-m", "canary.cli", "serve", "--host", "0.0.0.0", "--port", "9000"]

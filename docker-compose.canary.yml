@@ -1,0 +1,139 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# NAIL Canary Fleet — Docker Compose Overlay
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# Usage (standalone):
+#   docker compose -f docker-compose.canary.yml up -d
+#
+# Usage (with main stack):
+#   docker compose -f docker-compose.yml -f docker-compose.canary.yml up -d
+#
+# This deploys:
+#   1. canary-web      — FastAPI server with 3 canary agents (web chat + REST API)
+#   2. canary-discord   — Discord bot with 3 canary agents (optional, needs DISCORD_TOKEN)
+#   3. canary-monitor   — Background service that watches incidents and auto-generates AVE cards
+#
+# All three connect to the NIM model for LLM response generation.
+# If NIM is not available, they fall back to bait mode (pattern responses).
+#
+# ═══════════════════════════════════════════════════════════════════════════
+
+name: nail-canary
+
+services:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Canary Web Server — Public-facing honeypot endpoints
+  # ─────────────────────────────────────────────────────────────────────────
+  # Exposes:
+  #   - http://localhost:9000/          Landing page
+  #   - http://localhost:9000/chat/X    Web chat interface
+  #   - http://localhost:9000/v1/chat/completions   OpenAI-compatible API
+  #   - http://localhost:9000/health    Health dashboard
+  #   - http://localhost:9000/metrics   Prometheus metrics
+  #   - http://localhost:9000/incidents SSE incident stream
+  canary-web:
+    build:
+      context: .
+      dockerfile: canary/Dockerfile.deploy
+    container_name: canary-web
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    volumes:
+      - canary-logs:/app/logs
+      - ./canary:/app/canary  # Live-mount for development
+      - ./rmap:/app/rmap
+      - ./ave:/app/ave
+    environment:
+      - NIM_BASE_URL=${NIM_BASE_URL:-http://nim-nemotron:8000/v1/chat/completions}
+      - CANARY_FLEET_MODE=${CANARY_FLEET_MODE:-standard}
+      - CANARY_LOG_DIR=/app/logs/canary
+    networks:
+      - nail-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Canary Discord Bot — Deploys canary agents to Discord servers
+  # ─────────────────────────────────────────────────────────────────────────
+  # Requires DISCORD_TOKEN to be set.
+  # Without it, this service will exit immediately.
+  canary-discord:
+    build:
+      context: .
+      dockerfile: canary/Dockerfile.deploy
+    container_name: canary-discord
+    restart: unless-stopped
+    command: ["python", "-m", "canary.discord_bot"]
+    volumes:
+      - canary-logs:/app/logs
+      - ./canary:/app/canary
+      - ./rmap:/app/rmap
+      - ./ave:/app/ave
+    environment:
+      - DISCORD_TOKEN=${DISCORD_TOKEN:-}
+      - DISCORD_ADMIN_CH=${DISCORD_ADMIN_CH:-}
+      - DISCORD_GUILD_IDS=${DISCORD_GUILD_IDS:-}
+      - NIM_BASE_URL=${NIM_BASE_URL:-http://nim-nemotron:8000/v1/chat/completions}
+    networks:
+      - nail-net
+    profiles:
+      - discord
+      - full
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Canary Monitor — Background incident processor
+  # ─────────────────────────────────────────────────────────────────────────
+  # Watches the canary log directory for new incidents and:
+  #   1. Extracts attack signatures
+  #   2. Auto-generates draft AVE cards
+  #   3. Pushes updates to the threat feed
+  canary-monitor:
+    build:
+      context: .
+      dockerfile: canary/Dockerfile.deploy
+    container_name: canary-monitor
+    restart: unless-stopped
+    command: >
+      python -c "
+      import time, json, os
+      from pathlib import Path
+      from canary.deploy_config import InteractionLogger
+
+      log_dir = os.environ.get('CANARY_LOG_DIR', '/app/logs/canary')
+      logger = InteractionLogger(log_dir=log_dir)
+      print(f'📡 Canary Monitor watching {log_dir}')
+
+      seen = 0
+      while True:
+          total = logger.interaction_count()
+          if total > seen:
+              new = total - seen
+              print(f'📊 {new} new interactions detected (total: {total})')
+              seen = total
+          time.sleep(5)
+      "
+    volumes:
+      - canary-logs:/app/logs
+      - ./canary:/app/canary
+      - ./rmap:/app/rmap
+      - ./ave:/app/ave
+    environment:
+      - CANARY_LOG_DIR=/app/logs/canary
+    networks:
+      - nail-net
+    profiles:
+      - monitor
+      - full
+
+networks:
+  nail-net:
+    driver: bridge
+
+volumes:
+  canary-logs:

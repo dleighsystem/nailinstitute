@@ -259,6 +259,44 @@ services:
       - pii
       - full
 
+  # ─────────────────────────────────────────────────────────────────────────
+  # Canary Fleet — Phase 2 Agentic Honeypots
+  # ─────────────────────────────────────────────────────────────────────────
+  # Deploys honeypot AI agents on the public web.
+  # Web chat + OpenAI-compatible API on port 9000.
+  # Monitors all interactions through TrapWire.
+  # Auto-captures attack patterns and generates draft AVE cards.
+  canary-fleet:
+    build:
+      context: .
+      dockerfile: canary/Dockerfile.deploy
+    container_name: canary-fleet
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    volumes:
+      - canary-logs:/app/logs
+      - ./canary:/app/canary
+      - ./rmap:/app/rmap
+      - ./ave:/app/ave
+    environment:
+      - NIM_BASE_URL=http://nim-nemotron:8000/v1/chat/completions
+      - CANARY_LOG_DIR=/app/logs/canary
+    depends_on:
+      nim-nemotron:
+        condition: service_healthy
+    networks:
+      - nail-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    profiles:
+      - canary
+      - full
+
 # ═══════════════════════════════════════════════════════════════════════════
 # NETWORKS
 # ═══════════════════════════════════════════════════════════════════════════
@@ -271,6 +309,7 @@ networks:
 # ═══════════════════════════════════════════════════════════════════════════
 volumes:
   nail-data:
+  canary-logs:
   nim-nemotron-cache:
   nim-jailbreak-cache:
   nim-content-reasoning-cache:
