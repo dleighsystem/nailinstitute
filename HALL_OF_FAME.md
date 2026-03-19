@@ -1,11 +1,11 @@
 # 🏆 AVE Database — Hall of Fame
 
-[![Contributors](https://img.shields.io/badge/Contributors-1-blue)](./CONTRIBUTING.md)
+[![Contributors](https://img.shields.io/badge/Contributors-5-blue)](./CONTRIBUTING.md)
 [![Cards](https://img.shields.io/badge/AVE_Cards-36-green)](./ave-database/)
 
 > **Recognising the security researchers who make agentic AI safer.**
 >
-> *Auto-generated on 2026-03-19 00:16 UTC from AVE Database card data.*
+> *Auto-generated on 2026-03-19 00:27 UTC from AVE Database card data.*
 
 ---
 
@@ -25,19 +25,73 @@
 
 | Rank | Tier | Contributor | XP | Cards | Badges | Streak |
 |-----:|------|-------------|---:|------:|-------:|-------:|
-| #1 | ⭐ fellow | **NAIL Institute** | 18,135⚡ | 36 | ⭐🔭☠️📚🎯 +18 (23) | 3mo |
+| #1 | 🏗️ architect | **dleigh** | 5,400⚡ | 10 | ☠️🎯💀🗺️🔥 +13 (18) | 3mo |
+| #2 | 🏗️ architect | **s.nakamura** | 5,050⚡ | 8 | 💀🗺️🔥⚡🖐️ +7 (12) | 2mo |
+| #3 | 🛡️ sentinel | **priya.r** | 3,550⚡ | 7 | 🗺️🔥🏰⚡🖐️ +8 (13) | 3mo |
+| #4 | 🛡️ sentinel | **m.torres** | 3,175⚡ | 6 | 🗺️🔥🏰⚡🖐️ +9 (14) | 3mo |
+| #5 | 🛡️ sentinel | **j.okafor** | 1,760⚡ | 5 | 🗺️🏰🖐️🕸️💡 +5 (10) | 3mo |
 
 ---
 
 ## 👤 Contributor Profiles
 
-### ⭐ NAIL Institute
+### 🏗️ dleigh
 
-**Tier:** FELLOW · **XP:** 18,135⚡ · **Cards:** 36 · **Rank:** #1
+**Tier:** ARCHITECT · **XP:** 5,400⚡ · **Cards:** 10 · **Rank:** #1
 
-**Badges:** ⭐ NAIL Research Fellow 🔭 20/20 Vision ☠️ Doomsday Prophet 📚 Taxonomist 🎯 Ten Ring 💀 Critical Hunter ⚔️ Mitigation Master 🎓 Polymath 🗺️ Category Pioneer 🔥 Trailblazer 🏰 Proved & Defended ⚡ Compound Threat 🖐️ Five Alive 🔴 Critical Finder 🐀 Lab Rat 🧪 Proof Positive 🕸️ Web Weaver 💡 Novel Discovery 🎩 Hat Trick 🩸 First Blood 📊 Show Your Work 🛡️ Shield Bearer 🔗 Connector
+**Badges:** ☠️ Doomsday Prophet 🎯 Ten Ring 💀 Critical Hunter 🗺️ Category Pioneer 🔥 Trailblazer 🏰 Proved & Defended ⚡ Compound Threat 🖐️ Five Alive 🔴 Critical Finder 🐀 Lab Rat 🧪 Proof Positive 🕸️ Web Weaver 💡 Novel Discovery 🎩 Hat Trick 🩸 First Blood 📊 Show Your Work 🛡️ Shield Bearer 🔗 Connector
 
-**Cards:** `AVE-2025-0001`, `AVE-2025-0002`, `AVE-2025-0003`, `AVE-2025-0004`, `AVE-2025-0005`, `AVE-2025-0006`, `AVE-2025-0007`, `AVE-2025-0008`, `AVE-2025-0009`, `AVE-2025-0010`, `AVE-2025-0011`, `AVE-2025-0012`, `AVE-2025-0013`, `AVE-2025-0014`, `AVE-2025-0015`, `AVE-2025-0016`, `AVE-2025-0017`, `AVE-2025-0018`, `AVE-2025-0019`, `AVE-2025-0020`, `AVE-2025-0021`, `AVE-2025-0022`, `AVE-2025-0023`, `AVE-2025-0024`, `AVE-2025-0025`, `AVE-2025-0026`, `AVE-2025-0027`, `AVE-2025-0028`, `AVE-2025-0029`, `AVE-2025-0030`, `AVE-2025-0031`, `AVE-2025-0032`, `AVE-2025-0033`, `AVE-2025-0034`, `AVE-2025-0035`, `AVE-2025-0036`
+**Cards:** `AVE-2025-0001`, `AVE-2025-0008`, `AVE-2025-0009`, `AVE-2025-0010`, `AVE-2025-0012`, `AVE-2025-0020`, `AVE-2025-0022`, `AVE-2025-0024`, `AVE-2025-0034`, `AVE-2025-0036`
+
+**Progress to FELLOW:** `[█████████████░░░░░░░]` 68% (2,600 XP needed)
+
+---
+
+### 🏗️ s.nakamura
+
+**Tier:** ARCHITECT · **XP:** 5,050⚡ · **Cards:** 8 · **Rank:** #2
+
+**Badges:** 💀 Critical Hunter 🗺️ Category Pioneer 🔥 Trailblazer ⚡ Compound Threat 🖐️ Five Alive 🔴 Critical Finder 🧪 Proof Positive 🕸️ Web Weaver 💡 Novel Discovery 🩸 First Blood 📊 Show Your Work 🔗 Connector
+
+**Cards:** `AVE-2025-0014`, `AVE-2025-0019`, `AVE-2025-0026`, `AVE-2025-0027`, `AVE-2025-0028`, `AVE-2025-0030`, `AVE-2025-0032`, `AVE-2025-0033`
+
+**Progress to FELLOW:** `[████████████░░░░░░░░]` 63% (2,950 XP needed)
+
+---
+
+### 🛡️ priya.r
+
+**Tier:** SENTINEL · **XP:** 3,550⚡ · **Cards:** 7 · **Rank:** #3
+
+**Badges:** 🗺️ Category Pioneer 🔥 Trailblazer 🏰 Proved & Defended ⚡ Compound Threat 🖐️ Five Alive 🧪 Proof Positive 🕸️ Web Weaver 💡 Novel Discovery 🎩 Hat Trick 🩸 First Blood 📊 Show Your Work 🛡️ Shield Bearer 🔗 Connector
+
+**Cards:** `AVE-2025-0002`, `AVE-2025-0005`, `AVE-2025-0007`, `AVE-2025-0015`, `AVE-2025-0021`, `AVE-2025-0023`, `AVE-2025-0025`
+
+**Progress to ARCHITECT:** `[█████████████████░░░]` 89% (450 XP needed)
+
+---
+
+### 🛡️ m.torres
+
+**Tier:** SENTINEL · **XP:** 3,175⚡ · **Cards:** 6 · **Rank:** #4
+
+**Badges:** 🗺️ Category Pioneer 🔥 Trailblazer 🏰 Proved & Defended ⚡ Compound Threat 🖐️ Five Alive 🔴 Critical Finder 🧪 Proof Positive 🕸️ Web Weaver 💡 Novel Discovery 🎩 Hat Trick 🩸 First Blood 📊 Show Your Work 🛡️ Shield Bearer 🔗 Connector
+
+**Cards:** `AVE-2025-0003`, `AVE-2025-0011`, `AVE-2025-0013`, `AVE-2025-0017`, `AVE-2025-0029`, `AVE-2025-0035`
+
+**Progress to ARCHITECT:** `[███████████████░░░░░]` 79% (825 XP needed)
+
+---
+
+### 🛡️ j.okafor
+
+**Tier:** SENTINEL · **XP:** 1,760⚡ · **Cards:** 5 · **Rank:** #5
+
+**Badges:** 🗺️ Category Pioneer 🏰 Proved & Defended 🖐️ Five Alive 🕸️ Web Weaver 💡 Novel Discovery 🎩 Hat Trick 🩸 First Blood 📊 Show Your Work 🛡️ Shield Bearer 🔗 Connector
+
+**Cards:** `AVE-2025-0004`, `AVE-2025-0006`, `AVE-2025-0016`, `AVE-2025-0018`, `AVE-2025-0031`
+
+**Progress to ARCHITECT:** `[████████░░░░░░░░░░░░]` 44% (2,240 XP needed)
 
 ---
 

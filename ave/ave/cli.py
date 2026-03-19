@@ -17,6 +17,7 @@ Usage:
     python -m ave.cli leaderboard              # Show contributor leaderboard
     python -m ave.cli profile <handle>         # Show contributor profile
     python -m ave.cli badges                   # Show badge catalog
+    python -m ave.cli redact ./cards/ ./public/ # Generate public-tier cards
 """
 
 from __future__ import annotations
@@ -317,6 +318,22 @@ def cmd_badges(args: argparse.Namespace) -> None:
     print(format_badges_catalog())
 
 
+def cmd_redact(args: argparse.Namespace) -> None:
+    """Generate public-tier (redacted) AVE cards."""
+    from .redact import generate_public_cards
+
+    stats = generate_public_cards(
+        source_dir=args.source,
+        output_dir=args.output,
+        overwrite=args.overwrite,
+    )
+    print(f"\n  Redaction complete:")
+    print(f"    Processed: {stats['processed']}")
+    print(f"    Written:   {stats['written']}")
+    print(f"    Skipped:   {stats['skipped']}")
+    print()
+
+
 def cmd_hall_of_fame(args: argparse.Namespace) -> None:
     """Generate/update the HALL_OF_FAME.md file."""
     from .gamification import format_hall_of_fame
@@ -412,6 +429,13 @@ def build_parser() -> argparse.ArgumentParser:
                        help="Output file path")
     p_hof.add_argument("--cards-dir", help="Path to cards directory")
 
+    # redact
+    p_redact = sub.add_parser("redact", help="Generate public-tier (redacted) cards")
+    p_redact.add_argument("source", help="Source directory with full cards")
+    p_redact.add_argument("output", help="Output directory for redacted cards")
+    p_redact.add_argument("--overwrite", action="store_true",
+                          help="Overwrite existing files")
+
     return parser
 
 
@@ -437,6 +461,7 @@ def main(argv: list[str] | None = None) -> None:
         "profile": cmd_profile,
         "badges": cmd_badges,
         "hall-of-fame": cmd_hall_of_fame,
+        "redact": cmd_redact,
     }
     commands[args.command](args)
 
