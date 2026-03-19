@@ -280,8 +280,40 @@ services:
       - ./rmap:/app/rmap
       - ./ave:/app/ave
     environment:
+      # Falls back to bait mode if NIM is unreachable
+      - NIM_BASE_URL=${NIM_BASE_URL:-}
+      - CANARY_LOG_DIR=/app/logs/canary
+      - CANARY_NO_LLM=${CANARY_NO_LLM:-1}
+    networks:
+      - nail-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    profiles:
+      - canary
+      - full
+
+  # Canary Fleet with NIM — requires NGC_API_KEY and nim-nemotron running
+  canary-fleet-nim:
+    build:
+      context: .
+      dockerfile: canary/Dockerfile.deploy
+    container_name: canary-fleet-nim
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    volumes:
+      - canary-logs:/app/logs
+      - ./canary:/app/canary
+      - ./rmap:/app/rmap
+      - ./ave:/app/ave
+    environment:
       - NIM_BASE_URL=http://nim-nemotron:8000/v1/chat/completions
       - CANARY_LOG_DIR=/app/logs/canary
+      - CANARY_NO_LLM=0
     depends_on:
       nim-nemotron:
         condition: service_healthy
@@ -294,8 +326,7 @@ services:
       retries: 3
       start_period: 10s
     profiles:
-      - canary
-      - full
+      - canary-nim
 
 # ═══════════════════════════════════════════════════════════════════════════
 # NETWORKS

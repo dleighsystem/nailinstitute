@@ -110,11 +110,28 @@ case "${1:-help}" in
 
     # ── Canary Fleet Commands ──────────────────────────────────────
     canary)
-        banner "Starting Canary Fleet (honeypot agents on port 9000)"
-        check_env
-        docker compose --profile canary up -d
+        banner "Starting Canary Fleet — NATIVE (no Docker, port 9000)"
+        echo -e "${YLW}  Mode: bait (pattern responses, no LLM)${RST}"
+        echo -e "${YLW}  To use NIM LLM: ./docker-ops.sh canary-nim${RST}"
+        echo ""
+        source .venv/bin/activate 2>/dev/null || true
+        python -m canary.cli serve --host 0.0.0.0 --port 9000 --no-llm
+        ;;
+
+    canary-docker)
+        banner "Starting Canary Fleet — Docker (bait mode, port 9000)"
+        echo -e "${YLW}  No NIM/NGC required — runs standalone${RST}"
+        docker compose --profile canary up -d --build canary-fleet
         echo -e "${GRN}✓ Canary fleet at http://localhost:9000${RST}"
         docker compose logs -f canary-fleet
+        ;;
+
+    canary-nim)
+        banner "Starting Canary Fleet — Docker + NIM LLM"
+        check_env
+        docker compose --profile canary-nim up -d
+        echo -e "${GRN}✓ Canary fleet (NIM) at http://localhost:9000${RST}"
+        docker compose logs -f canary-fleet-nim
         ;;
 
     canary-full)
@@ -127,7 +144,7 @@ case "${1:-help}" in
         ;;
 
     canary-logs)
-        docker compose logs -f canary-fleet
+        docker compose logs -f canary-fleet 2>/dev/null || docker compose logs -f canary-fleet-nim 2>/dev/null || echo "No canary container running"
         ;;
 
     canary-status)
@@ -140,7 +157,7 @@ case "${1:-help}" in
 
     canary-stop)
         banner "Stopping Canary Fleet"
-        docker compose --profile canary down
+        docker compose --profile canary --profile canary-nim down 2>/dev/null
         ;;
 
     *)
@@ -161,7 +178,9 @@ case "${1:-help}" in
         echo "  shell          Open bash in app container"
         echo ""
         echo "Canary Fleet Commands:"
-        echo "  canary         Start canary fleet (port 9000)"
+        echo "  canary         Start canary native (no Docker, bait mode)"
+        echo "  canary-docker  Start canary in Docker (bait mode, no NGC)"
+        echo "  canary-nim     Start canary in Docker + NIM LLM (needs NGC)"
         echo "  canary-full    Start fleet + Discord bot + monitor"
         echo "  canary-logs    Tail canary logs"
         echo "  canary-status  Show canary fleet health"

@@ -21,15 +21,13 @@ Usage (Docker):
     See canary/Dockerfile.deploy and docker-compose.canary.yml
 """
 
-from __future__ import annotations
-
 import asyncio
 import json
 import os
 import time
 import uuid
 from dataclasses import dataclass, field
-from typing import Any, AsyncGenerator
+from typing import Any, AsyncGenerator, TYPE_CHECKING, Optional
 
 from .deploy_config import (
     DeploymentManager,
@@ -40,6 +38,13 @@ from .deploy_config import (
 )
 from .fleet import Fleet
 from .trapwire import TripResult
+
+# Import FastAPI Request at module level so endpoint type annotations
+# resolve correctly (PEP 563 string annotations + FastAPI DI).
+try:
+    from fastapi import Request  # noqa: F811
+except ImportError:
+    pass  # Will fail at create_app() with a clear error message
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -122,10 +127,18 @@ def create_app(
         A FastAPI application instance.
     """
     try:
-        from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Request
+        from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
         from fastapi.responses import JSONResponse, HTMLResponse, StreamingResponse
         from fastapi.middleware.cors import CORSMiddleware
     except ImportError:
+        raise ImportError(
+            "FastAPI is required for the canary server. "
+            "Install with: pip install 'nail-canary[server]'"
+        )
+
+    try:
+        Request  # noqa: F841 — verify module-level import succeeded
+    except NameError:
         raise ImportError(
             "FastAPI is required for the canary server. "
             "Install with: pip install 'nail-canary[server]'"
@@ -380,6 +393,20 @@ def create_app(
             agent_name, user_message, source_ip=source_ip,
         )
         return JSONResponse(result)
+
+    # ── Agent listing ───────────────────────────────────────────────
+    @app.get("/agents")
+    async def list_agents():
+        """List available canary agents."""
+        agents = {}
+        for name, target in deployment.targets.items():
+            agents[name] = {
+                "persona": target.persona.value,
+                "channel": target.channel.value,
+                "enabled": target.enabled,
+                "lure_config": target.lure_config,
+            }
+        return JSONResponse({"agents": agents, "count": len(agents)})
 
     # ── Health ──────────────────────────────────────────────────────
     @app.get("/health")

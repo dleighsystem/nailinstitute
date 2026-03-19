@@ -237,6 +237,8 @@ def _cmd_cards() -> None:
 
 def _cmd_serve(args: Any) -> None:
     """Start the FastAPI server."""
+    import os
+
     try:
         import uvicorn
     except ImportError:
@@ -246,12 +248,15 @@ def _cmd_serve(args: Any) -> None:
     from .deploy_config import standard_deployment, maximum_deployment
     from .server import create_app
 
+    # --no-llm flag OR CANARY_NO_LLM env var (used by Docker container)
+    no_llm = args.no_llm or os.environ.get("CANARY_NO_LLM", "0") == "1"
+
     deployment = maximum_deployment() if args.max else standard_deployment()
-    app = create_app(deployment, enable_llm=not args.no_llm)
+    app = create_app(deployment, enable_llm=not no_llm)
 
     print(f"🚀 Starting Canary Fleet server on {args.host}:{args.port}")
     print(f"   Fleet: {'maximum' if args.max else 'standard'}")
-    print(f"   LLM: {'enabled' if not args.no_llm else 'disabled (bait mode)'}")
+    print(f"   LLM: {'enabled' if not no_llm else 'disabled (bait mode)'}")
     print(f"   Agents: {list(deployment.targets.keys())}")
     print()
 
