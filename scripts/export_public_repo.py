@@ -46,9 +46,9 @@ from ave.redact import redact_card, generate_public_markdown
 
 
 # ── Public repo identity ──────────────────────────────────────────────────
-# As specified in Agent-CVE.md Phase 1:
-#   "Create a public GitHub organization (e.g., Agentic-Security-Project)"
-PUBLIC_ORG = "Agentic-Security-Project"
+# GitHub Organization created at:
+#   https://github.com/NAIL-INTITUTE-FOR-AGENTIC-SECURITY
+PUBLIC_ORG = "NAIL-INTITUTE-FOR-AGENTIC-SECURITY"
 PUBLIC_REPO = "ave-database"
 PUBLIC_SLUG = f"{PUBLIC_ORG}/{PUBLIC_REPO}"
 PUBLIC_URL = f"https://github.com/{PUBLIC_SLUG}"
@@ -57,6 +57,8 @@ PUBLIC_URL = f"https://github.com/{PUBLIC_SLUG}"
 PRIVATE_SLUGS = [
     "dleighsystem/nailinstitute",
     "nailinstitute/ave-database",
+    "Agentic-Security-Project/ave-database",
+    "Agentic-Security-Project",
 ]
 
 
@@ -946,7 +948,7 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md) for how to submit new vulnerability ca
 
 ---
 
-*Maintained by the [NAIL Institute](https://github.com/Agentic-Security-Project)*
+*Maintained by the [NAIL Institute](https://github.com/{PUBLIC_ORG})*
 '''
     (ave_dir / "README.md").write_text(content)
 
