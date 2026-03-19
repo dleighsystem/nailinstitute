@@ -32,3 +32,6 @@ experiments/exp1_memory_pollution/chroma_*/
 
 # Keep data results (they're small and important)
 # experiments/data/ is tracked
+
+# Public repo export (generated, separate git repo)
+public-repo/
