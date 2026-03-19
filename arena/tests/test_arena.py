@@ -724,4 +724,4 @@ class TestPackageImports:
 
     def test_version(self):
         import arena
-        assert arena.__version__ == "1.0.0"
+        assert arena.__version__ == "2.0.0"

@@ -328,6 +328,34 @@ services:
     profiles:
       - canary-nim
 
+  # ─────────────────────────────────────────────────────────────────────────
+  # Arena Collider — Phase 3 Continuous Red/Blue Evolution
+  # ─────────────────────────────────────────────────────────────────────────
+  # Runs the Pathology Collider 24/7 on the DGX.
+  # GA-evolves Red Swarm attacks vs Blue Bridge defences.
+  # Auto-publishes breakthroughs as draft AVE cards.
+  arena-collider:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: arena-collider
+    restart: unless-stopped
+    volumes:
+      - arena-logs:/app/logs/arena
+      - ./arena:/app/arena
+      - ./rmap:/app/rmap
+      - ./ave:/app/ave
+    environment:
+      - ARENA_CHECKPOINT_DIR=/app/logs/arena
+      - OLLAMA_HOST=${OLLAMA_HOST:-http://host.docker.internal:11434}
+      - NIM_BASE_URL=${NIM_BASE_URL:-}
+    command: python -m arena.cli run --production --checkpoint-dir /app/logs/arena
+    networks:
+      - nail-net
+    profiles:
+      - arena
+      - full
+
 # ═══════════════════════════════════════════════════════════════════════════
 # NETWORKS
 # ═══════════════════════════════════════════════════════════════════════════
@@ -341,6 +369,7 @@ networks:
 volumes:
   nail-data:
   canary-logs:
+  arena-logs:
   nim-nemotron-cache:
   nim-jailbreak-cache:
   nim-content-reasoning-cache:

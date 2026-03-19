@@ -45,7 +45,7 @@ Usage:
     >>> arena = Arena(red=red, blue=blue)
 """
 
-__version__ = "1.0.0"
+__version__ = "2.0.0"
 
 from .vectors import (
     AttackVector,
@@ -60,6 +60,16 @@ from .defences import (
 from .swarm import RedSwarm
 from .battle import BattleOutcome, BattleLog
 from .arena import Arena, SeasonResult
+from .collider import Collider, Checkpoint, Schedule, ColliderHooks
+from .llm_backend import (
+    LLMBackend,
+    LLMResponse,
+    LLMExpander,
+    OllamaBackend,
+    NIMBackend,
+    MockBackend,
+    auto_backend,
+)
 
 __all__ = [
     # Red team
@@ -77,4 +87,17 @@ __all__ = [
     # Arena
     "Arena",
     "SeasonResult",
+    # Collider (Phase 3 deployment)
+    "Collider",
+    "Checkpoint",
+    "Schedule",
+    "ColliderHooks",
+    # LLM Backend
+    "LLMBackend",
+    "LLMResponse",
+    "LLMExpander",
+    "OllamaBackend",
+    "NIMBackend",
+    "MockBackend",
+    "auto_backend",
 ]
