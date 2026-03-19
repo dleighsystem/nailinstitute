@@ -14,6 +14,9 @@ Usage:
     python -m ave.cli score AVE-2025-0001     # Show AVSS score
     python -m ave.cli validate ./cards/       # Validate card JSON files
     python -m ave.cli submit --name "..."     # Generate a draft card skeleton
+    python -m ave.cli leaderboard              # Show contributor leaderboard
+    python -m ave.cli profile <handle>         # Show contributor profile
+    python -m ave.cli badges                   # Show badge catalog
 """
 
 from __future__ import annotations
@@ -287,6 +290,48 @@ def cmd_submit(args: argparse.Namespace) -> None:
     print()
 
 
+def cmd_leaderboard(args: argparse.Namespace) -> None:
+    """Show the contributor leaderboard."""
+    from .gamification import leaderboard, format_leaderboard
+
+    cards_dir = getattr(args, 'cards_dir', None)
+    top_n = getattr(args, 'top', 25)
+    ranked = leaderboard(cards_dir=cards_dir, use_registry=True, top_n=top_n)
+    print(format_leaderboard(ranked))
+
+
+def cmd_profile(args: argparse.Namespace) -> None:
+    """Show a contributor's profile."""
+    from .gamification import get_profile, format_profile
+
+    profile = get_profile(args.handle, use_registry=True)
+    if profile is None:
+        print(f"Contributor not found: {args.handle}")
+        sys.exit(1)
+    print(format_profile(profile))
+
+
+def cmd_badges(args: argparse.Namespace) -> None:
+    """Show the badge catalog."""
+    from .gamification import format_badges_catalog
+    print(format_badges_catalog())
+
+
+def cmd_hall_of_fame(args: argparse.Namespace) -> None:
+    """Generate/update the HALL_OF_FAME.md file."""
+    from .gamification import format_hall_of_fame
+
+    output = getattr(args, 'output', 'HALL_OF_FAME.md')
+    content = format_hall_of_fame(
+        cards_dir=getattr(args, 'cards_dir', None),
+        use_registry=True,
+    )
+    with open(output, 'w') as f:
+        f.write(content)
+    print(f"\n  \u2713 Generated {output}")
+    print()
+
+
 def build_parser() -> argparse.ArgumentParser:
     """Build the CLI argument parser."""
     parser = argparse.ArgumentParser(
@@ -348,6 +393,25 @@ def build_parser() -> argparse.ArgumentParser:
     p_submit.add_argument("--interactive", "-i", action="store_true",
                           help="Interactive mode with prompts")
 
+    # leaderboard
+    p_lb = sub.add_parser("leaderboard", help="Show contributor leaderboard")
+    p_lb.add_argument("--top", "-n", type=int, default=25,
+                      help="Number of contributors to show (default: 25)")
+    p_lb.add_argument("--cards-dir", help="Path to cards directory")
+
+    # profile
+    p_prof = sub.add_parser("profile", help="Show contributor profile")
+    p_prof.add_argument("handle", help="Contributor handle or name")
+
+    # badges
+    sub.add_parser("badges", help="Show badge catalog")
+
+    # hall-of-fame
+    p_hof = sub.add_parser("hall-of-fame", help="Generate HALL_OF_FAME.md")
+    p_hof.add_argument("--output", "-o", default="HALL_OF_FAME.md",
+                       help="Output file path")
+    p_hof.add_argument("--cards-dir", help="Path to cards directory")
+
     return parser
 
 
@@ -369,6 +433,10 @@ def main(argv: list[str] | None = None) -> None:
         "score": cmd_score,
         "validate": cmd_validate,
         "submit": cmd_submit,
+        "leaderboard": cmd_leaderboard,
+        "profile": cmd_profile,
+        "badges": cmd_badges,
+        "hall-of-fame": cmd_hall_of_fame,
     }
     commands[args.command](args)
 

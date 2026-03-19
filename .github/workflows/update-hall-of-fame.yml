@@ -1,0 +1,51 @@
+name: Update Hall of Fame
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ave-database/cards/**'
+      - 'ave/ave/gamification.py'
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-hall-of-fame:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install AVE package
+        run: pip install -e ave/
+
+      - name: Generate Hall of Fame
+        run: |
+          python -c "
+          from ave.gamification import format_hall_of_fame
+          content = format_hall_of_fame(cards_dir='ave-database/cards')
+          with open('HALL_OF_FAME.md', 'w') as f:
+              f.write(content)
+          print('Hall of Fame updated')
+          "
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git diff --quiet HALL_OF_FAME.md && echo "changed=false" >> "$GITHUB_OUTPUT" || echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add HALL_OF_FAME.md
+          git commit -m "docs: auto-update Hall of Fame [skip ci]"
+          git push

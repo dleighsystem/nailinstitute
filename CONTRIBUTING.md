@@ -253,15 +253,69 @@ The NAIL platform **source code** (Python packages) is separately licensed — s
 
 ---
 
-## Recognition
+## 🏆 Recognition & Gamification
 
-All accepted contributors are credited:
+We believe contributions to agentic AI safety should be **visible, rewarding, and fun**.
+Every accepted card earns you XP, unlocks badges, and climbs the leaderboard.
 
-- **In the AVE card** — `contributor` field with your name/handle
-- **In the README** — Listed in the Contributors section
-- **In NAIL publications** — Academic papers cite contributing researchers
+### ⚡ Experience Points (XP)
 
-For significant contributions (5+ accepted cards, novel category creation, or critical findings), we offer **NAIL Research Fellow** recognition.
+Every AVE card earns XP based on severity, evidence quality, and impact:
+
+| Severity | Base XP | | Bonus | XP |
+|----------|--------:|-|-------|---:|
+| 🔴 Critical | 500 | | First card ever | +200 |
+| 🟠 High | 300 | | Evidence with data | +50 (each) |
+| 🟡 Medium | 150 | | Proof of Concept | +100 |
+| 🟢 Low | 75 | | Defence/mitigation | +75 |
+| ℹ️ Info | 50 | | Cross-references | +25 |
+|  |  | | Novel discovery | +150 |
+|  |  | | First in new category | +300 |
+
+Cards with `proven_mitigated` status earn a **1.2× multiplier** — you found it AND helped fix it.
+
+### 🎖️ Tier System
+
+| Icon | Tier | XP Required | Perks |
+|------|------|-------------|-------|
+| 👁️ | **WATCHER** | 0+ | Joined the hunt |
+| 🏹 | **HUNTER** | 500+ | Proven contributor — listed in Hall of Fame |
+| 🛡️ | **SENTINEL** | 1,500+ | Trusted researcher — fast-track review |
+| 🏗️ | **ARCHITECT** | 4,000+ | Shaping the taxonomy — invited to review PRs |
+| ⭐ | **FELLOW** | 8,000+ | NAIL Research Fellow — named in publications |
+
+### 🏅 Badges
+
+Unlock achievements for specific milestones:
+
+| Badge | How to Earn | Rarity |
+|-------|-------------|--------|
+| 🩸 First Blood | Submit your first AVE card | Common |
+| 🖐️ Five Alive | 5 accepted cards | Uncommon |
+| 🎯 Ten Ring | 10 accepted cards | Rare |
+| 🔴 Critical Finder | Find a CRITICAL vulnerability | Uncommon |
+| 💀 Critical Hunter | Find 3+ CRITICAL vulnerabilities | Rare |
+| 📊 Show Your Work | Submit with empirical evidence | Common |
+| 🛡️ Shield Bearer | Submit with a known defence | Common |
+| 🗺️ Category Pioneer | First card in a new category | Rare |
+| 🎓 Polymath | Cards across 5+ categories | Rare |
+| 💡 Novel Discovery | Report an undocumented vulnerability | Uncommon |
+| 🎩 Hat Trick | 3 months consecutive submissions | Uncommon |
+| 🏆 Year of Living Dangerously | 12 months consecutive | Legendary |
+| ⭐ NAIL Research Fellow | Achieve Fellow tier | Legendary |
+
+See the full catalog: `python -m ave badges`
+
+### 📊 Track Your Progress
+
+```bash
+python -m ave leaderboard           # See the rankings
+python -m ave profile "Your Handle"  # View your full profile
+python -m ave badges                 # Browse all earnable badges
+python -m ave hall-of-fame           # Generate HALL_OF_FAME.md
+```
+
+See the live [**Hall of Fame**](./HALL_OF_FAME.md) for current standings.
 
 ---
 

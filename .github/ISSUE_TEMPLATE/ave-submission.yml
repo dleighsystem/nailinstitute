@@ -190,6 +190,15 @@ body:
     validations:
       required: false
 
+  - type: input
+    id: contributor_handle
+    attributes:
+      label: "Contributor Handle"
+      description: "Your preferred name or handle for the Hall of Fame leaderboard. Leave blank to use your GitHub username."
+      placeholder: "e.g., @alice, Dr. Alice Smith, alice_security"
+    validations:
+      required: false
+
   - type: checkboxes
     id: terms
     attributes:
