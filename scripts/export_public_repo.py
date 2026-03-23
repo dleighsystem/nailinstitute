@@ -47,8 +47,8 @@ from ave.redact import redact_card, generate_public_markdown
 
 # ── Public repo identity ──────────────────────────────────────────────────
 # GitHub Organization created at:
-#   https://github.com/NAIL-INTITUTE-FOR-AGENTIC-SECURITY
-PUBLIC_ORG = "NAIL-INTITUTE-FOR-AGENTIC-SECURITY"
+#   https://github.com/NAIL-INSTITUTE-FOR-AGENTIC-SECURITY
+PUBLIC_ORG = "NAIL-INSTITUTE-FOR-AGENTIC-SECURITY"
 PUBLIC_REPO = "ave-database"
 PUBLIC_SLUG = f"{PUBLIC_ORG}/{PUBLIC_REPO}"
 PUBLIC_URL = f"https://github.com/{PUBLIC_SLUG}"

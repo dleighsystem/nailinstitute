@@ -25,7 +25,7 @@ dev = ["pytest>=7.0", "pytest-cov", "pytest-asyncio"]
 canary = "canary.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/NAIL-INTITUTE-FOR-AGENTIC-SECURITY/ave-database"
+Homepage = "https://github.com/NAIL-INSTITUTE-FOR-AGENTIC-SECURITY/ave-database"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
