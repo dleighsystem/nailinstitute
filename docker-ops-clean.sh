@@ -247,6 +247,48 @@ case "${1:-help}" in
         docker compose --profile ctf down 2>/dev/null
         ;;
 
+    # ── ThreatFeed Commands ────────────────────────────────────
+    feed)
+        banner "Starting ThreatFeed Server (native, port 9300)"
+        source .venv/bin/activate 2>/dev/null || true
+        python -m threatfeed.cli serve --port 9300
+        ;;
+
+    feed-docker)
+        banner "Starting ThreatFeed Server in Docker"
+        docker compose --profile threatfeed up -d --build threatfeed-server
+        echo -e "${GRN}✓ ThreatFeed running on http://localhost:9300${RST}"
+        docker compose logs -f threatfeed-server
+        ;;
+
+    feed-simulate)
+        banner "Running ThreatFeed Pipeline Simulation"
+        source .venv/bin/activate 2>/dev/null || true
+        python -m threatfeed.cli simulate --incidents 3 --breakthroughs 2 --clients 2
+        ;;
+
+    feed-signatures)
+        banner "Listing Compiled Signatures"
+        source .venv/bin/activate 2>/dev/null || true
+        python -m threatfeed.cli signatures
+        ;;
+
+    feed-status)
+        banner "ThreatFeed Server Status"
+        curl -s http://localhost:9300/health 2>/dev/null | python3 -m json.tool 2>/dev/null || echo "ThreatFeed server not running"
+        ;;
+
+    feed-clients)
+        banner "ThreatFeed SDK Clients"
+        source .venv/bin/activate 2>/dev/null || true
+        python -m threatfeed.cli clients
+        ;;
+
+    feed-stop)
+        banner "Stopping ThreatFeed Server"
+        docker compose --profile threatfeed down 2>/dev/null
+        ;;
+
     *)
         echo "NAIL Docker Operations"
         echo ""
@@ -290,5 +332,14 @@ case "${1:-help}" in
         echo "  ctf-challenges  List available CTF challenges"
         echo "  ctf-status      Show CTF server health"
         echo "  ctf-stop        Stop CTF server"
+        echo ""
+        echo "ThreatFeed Commands:"
+        echo "  feed            Start ThreatFeed server (native, port 9300)"
+        echo "  feed-docker     Start ThreatFeed server in Docker"
+        echo "  feed-simulate   Run pipeline simulation (incidents + breakthroughs)"
+        echo "  feed-signatures List compiled detection signatures"
+        echo "  feed-clients    List registered SDK clients"
+        echo "  feed-status     Show ThreatFeed server health"
+        echo "  feed-stop       Stop ThreatFeed server"
         ;;
 esac

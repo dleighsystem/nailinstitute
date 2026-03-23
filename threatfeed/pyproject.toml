@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nail-threatfeed"
-version = "1.0.0"
+version = "2.0.0"
 description = "Live Threat Intelligence Pipeline — Discover → Publish → Protect"
 readme = "README.md"
 license = {text = "MIT"}
@@ -25,6 +25,11 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest>=7.0", "pytest-cov"]
+server = ["fastapi>=0.100", "uvicorn>=0.20"]
+all = ["nail-threatfeed[dev,server]"]
+
+[project.scripts]
+threatfeed = "threatfeed.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/nailinstitute/threatfeed"

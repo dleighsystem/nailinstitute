@@ -1071,14 +1071,15 @@ class TestPackageMeta:
 
     def test_threatfeed_version(self):
         import threatfeed
-        assert threatfeed.__version__ == "1.0.0"
+        assert threatfeed.__version__ == "2.0.0"
 
     def test_threatfeed_all_exports(self):
         import threatfeed
         expected = [
             "Signature", "SignatureType", "SignatureSource", "SignatureCompiler",
             "DefinitionUpdate", "UpdatePriority", "UpdateChannel", "ClientEndpoint",
-            "FeedEvent", "FeedEventType", "FeedSubscriber", "ThreatFeed",
+            "FeedEvent", "FeedEventType", "FeedSubscriber", "FeedCallback", "ThreatFeed",
+            "FeedServerConfig",
         ]
         for name in expected:
             assert hasattr(threatfeed, name), f"Missing export: {name}"

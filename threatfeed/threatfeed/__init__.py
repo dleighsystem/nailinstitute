@@ -43,7 +43,7 @@ Architecture:
           (Bank)      (Insurer)       (FinTech) (...)
 """
 
-__version__ = "1.0.0"
+__version__ = "2.0.0"
 
 from .signature import (
     Signature,
@@ -67,6 +67,12 @@ from .feed import (
     ThreatFeed,
 )
 
+# Server (optional — requires pip install nail-threatfeed[server])
+try:
+    from .server import FeedServerConfig
+except ImportError:
+    FeedServerConfig = None  # type: ignore[assignment,misc]
+
 __all__ = [
     # Signatures
     "Signature",
@@ -84,4 +90,6 @@ __all__ = [
     "FeedSubscriber",
     "FeedCallback",
     "ThreatFeed",
+    # Server
+    "FeedServerConfig",
 ]

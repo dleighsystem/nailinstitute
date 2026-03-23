@@ -395,6 +395,47 @@ services:
       - ctf
       - full
 
+  # ─────────────────────────────────────────────────────────────────────────
+  # ThreatFeed Server — Live Threat Intelligence Pipeline (Phase 5)
+  # ─────────────────────────────────────────────────────────────────────────
+  # The commercial "Protect" layer.  Ingests threat intelligence from
+  # Canary, Arena, and CTF, compiles executable signatures, and pushes
+  # live Definition Updates to subscribed enterprise SDK clients.
+  #
+  # Start: docker compose --profile threatfeed up -d --build threatfeed-server
+  # Logs:  docker compose logs -f threatfeed-server
+  # Test:  curl http://localhost:9300/health
+  threatfeed-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: threatfeed-server
+    restart: unless-stopped
+    ports:
+      - "9300:9300"
+    volumes:
+      - threatfeed-logs:/app/logs/threatfeed
+      - ./threatfeed:/app/threatfeed
+      - ./ave:/app/ave
+    environment:
+      - FEED_PORT=9300
+      - FEED_ADMIN_TOKEN=${FEED_ADMIN_TOKEN:-}
+      - FEED_AUTO_COMPILE=${FEED_AUTO_COMPILE:-1}
+      - FEED_AUTO_PUBLISH=${FEED_AUTO_PUBLISH:-1}
+      - FEED_LOG_DIR=/app/logs/threatfeed
+    command: python -m threatfeed.cli serve --port 9300
+    networks:
+      - nail-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9300/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    profiles:
+      - threatfeed
+      - full
+
 # ═══════════════════════════════════════════════════════════════════════════
 # NETWORKS
 # ═══════════════════════════════════════════════════════════════════════════
@@ -410,6 +451,7 @@ volumes:
   canary-logs:
   arena-logs:
   ctf-logs:
+  threatfeed-logs:
   nim-nemotron-cache:
   nim-jailbreak-cache:
   nim-content-reasoning-cache:
