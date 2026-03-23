@@ -772,4 +772,4 @@ class TestPackageImports:
 
     def test_version(self):
         import ctf
-        assert ctf.__version__ == "1.0.0"
+        assert ctf.__version__ == "2.0.0"

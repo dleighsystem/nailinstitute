@@ -356,6 +356,45 @@ services:
       - arena
       - full
 
+  # ─────────────────────────────────────────────────────────────────────────
+  # CTF Server — Phase 4 Agentic Capture-The-Flag Events
+  # ─────────────────────────────────────────────────────────────────────────
+  # Hosts red team CTF events via REST API.
+  # Participants register, interact with defended agents, capture flags.
+  # Novel attacks auto-drafted as AVE cards.
+  ctf-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ctf-server
+    restart: unless-stopped
+    ports:
+      - "9200:9200"
+    volumes:
+      - ctf-logs:/app/logs/ctf
+      - ./ctf:/app/ctf
+      - ./rmap:/app/rmap
+      - ./ave:/app/ave
+    environment:
+      - CTF_PORT=9200
+      - CTF_EVENT_NAME=${CTF_EVENT_NAME:-NAIL Weekend CTF}
+      - CTF_EVENT_MODE=${CTF_EVENT_MODE:-weekend}
+      - CTF_ADMIN_TOKEN=${CTF_ADMIN_TOKEN:-}
+      - CTF_LOG_DIR=/app/logs/ctf
+      - CTF_MAX_TEAMS=${CTF_MAX_TEAMS:-100}
+    command: python -m ctf.cli serve --port 9200
+    networks:
+      - nail-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    profiles:
+      - ctf
+      - full
+
 # ═══════════════════════════════════════════════════════════════════════════
 # NETWORKS
 # ═══════════════════════════════════════════════════════════════════════════
@@ -370,6 +409,7 @@ volumes:
   nail-data:
   canary-logs:
   arena-logs:
+  ctf-logs:
   nim-nemotron-cache:
   nim-jailbreak-cache:
   nim-content-reasoning-cache:

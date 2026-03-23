@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+exec "$(dirname "$0")/docker-ops-clean.sh" "$@"
+
 # ═══════════════════════════════════════════════════════════════════════════
 
 
@@ -961,6 +963,48 @@ case "${1:-help}" in
     arena-stop)
         banner "Stopping Arena Collider"
         docker compose --profile arena down 2>/dev/null
+        ;;
+
+    # ── CTF Commands ────────────────────────────────────────────────────
+    ctf)
+        banner "Starting CTF Server (native, weekend mode)"
+        source .venv/bin/activate 2>/dev/null
+        python -m ctf.cli serve --port 9200
+        ;;
+
+    ctf-quick)
+        banner "Starting CTF Server (native, quick mode)"
+        source .venv/bin/activate 2>/dev/null
+        python -m ctf.cli serve --port 9200 --mode quick --event-name "NAIL Quick CTF"
+        ;;
+
+    ctf-docker)
+        banner "Starting CTF Server in Docker"
+        docker compose --profile ctf up -d --build ctf-server
+        echo -e "${GRN}CTF server running on http://localhost:9200${RST}"
+        docker compose logs -f ctf-server
+        ;;
+
+    ctf-simulate)
+        banner "Running CTF Simulation (3 teams)"
+        source .venv/bin/activate 2>/dev/null
+        python -m ctf.cli simulate --teams 3
+        ;;
+
+    ctf-challenges)
+        banner "Listing CTF Challenges"
+        source .venv/bin/activate 2>/dev/null
+        python -m ctf.cli challenges
+        ;;
+
+    ctf-status)
+        banner "CTF Server Status"
+        curl -s http://localhost:9200/health 2>/dev/null | python3 -m json.tool 2>/dev/null || echo "CTF server not running"
+        ;;
+
+    ctf-stop)
+        banner "Stopping CTF Server"
+        docker compose --profile ctf down 2>/dev/null
         ;;
 
     *)

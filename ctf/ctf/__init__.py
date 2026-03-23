@@ -50,7 +50,7 @@ Usage:
     ...     print(entry.team, entry.total_points)
 """
 
-__version__ = "1.0.0"
+__version__ = "2.0.0"
 
 from .challenge import (
     Challenge,
@@ -77,6 +77,16 @@ from .tournament import (
     TournamentState,
     EventResult,
 )
+from .event_config import (
+    EventTemplate,
+    weekend_ctf_template,
+    quick_demo_template,
+    enterprise_ctf_template,
+    arena_seeded_template,
+    get_template,
+    list_templates,
+)
+from .server import CTFServerConfig
 
 __all__ = [
     # Challenges
@@ -99,4 +109,14 @@ __all__ = [
     "Tournament",
     "TournamentState",
     "EventResult",
+    # Event Config (v2.0)
+    "EventTemplate",
+    "weekend_ctf_template",
+    "quick_demo_template",
+    "enterprise_ctf_template",
+    "arena_seeded_template",
+    "get_template",
+    "list_templates",
+    # Server (v2.0)
+    "CTFServerConfig",
 ]
