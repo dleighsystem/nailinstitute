@@ -41,6 +41,7 @@ from .defense_layers import (
     HoneytokenGuard,
     TokenKinetics,
 )
+from .quantum_anomaly_layer import QuantumAnomalyDetector
 from .red_team import RedTeam
 from .blue_team import BlueTeam
 
@@ -225,7 +226,7 @@ class Collider:
         Measures how well defenses detect and mitigate attacks.
         """
         print("\n" + "═" * 60)
-        print("  PHASE B: DEFENDED (ALL 4 LAYERS ACTIVE)")
+        print("  PHASE B: DEFENDED (ALL 5 LAYERS ACTIVE)")
         print("  Defense layers protecting Blue Team")
         print("═" * 60 + "\n")
 
@@ -280,8 +281,11 @@ class Collider:
             spike_threshold=0.15,
         )
 
+        # Layer 5: Quantum Anomaly Detector (pre-trained SVM or heuristic fallback)
+        quantum_detector = QuantumAnomalyDetector(bridge)
+
         if self.logger:
-            self.logger.log_event("info", message="Defended phase started (all 4 layers active)")
+            self.logger.log_event("info", message="Defended phase started (all 5 layers active)")
 
         # ── Simulation Loop ─────────────────────────────────────────────
 
@@ -392,6 +396,19 @@ class Collider:
             # Layer 4: Token kinetics
             token_kinetics.consume(round_num, result["tokens_used"])
 
+            # Layer 5: Quantum anomaly detection
+            telemetry = {
+                "trust_score": max(0.0, 1.0 - memory.corruption_ratio()),
+                "burn_rate": min(1.0, result["tokens_used"] / 5000.0),
+                "semantic_drift": anchor.get_current_drift(),
+                "assertion_density": 0.0,  # Populated by content analysis
+                "manipulation_score": min(1.0, content_analyzer.manipulation_detected / max(1, content_analyzer.scans)),
+                "repetition_index": 0.0,  # Populated by output analysis
+                "memory_corruption": memory.corruption_ratio(),
+                "intervention_rate": min(1.0, len(interventions) / max(1, round_num)),
+            }
+            quantum_detector.observe(round_num, telemetry, agent_name="blue_team")
+
             # 6. PathologyBridge evaluates this round
             intervention = bridge.evaluate_round(round_num, is_attack_round=True)
 
@@ -436,6 +453,7 @@ class Collider:
             # V2: New defense stats
             "layer1b_content_analyzer": content_analyzer.get_stats(),
             "layer3_insertion_monitor": insertion_monitor.get_stats(),
+            "layer5_quantum": quantum_detector.get_stats(),
             "quarantine": {
                 "total_quarantined": taint_stats["insertions_quarantined"],
                 "total_blocked": taint_stats["insertions_blocked"],
@@ -559,6 +577,9 @@ class Collider:
         # Override burn-rate acceleration threshold
         token_kinetics._burn_rate_accel = genes.get("burn_rate_accel", 1.5)
 
+        # Layer 5: Quantum Anomaly Detector
+        quantum_detector = QuantumAnomalyDetector(bridge)
+
         # ── Simulation Loop (quiet — no print spam during GA) ────────
 
         interventions = []
@@ -639,6 +660,19 @@ class Collider:
             honeyguard.scan(round_num, cover_msg)
             token_kinetics.consume(round_num, result["tokens_used"])
 
+            # Layer 5: Quantum anomaly detection
+            telemetry = {
+                "trust_score": max(0.0, 1.0 - memory.corruption_ratio()),
+                "burn_rate": min(1.0, result["tokens_used"] / 5000.0),
+                "semantic_drift": anchor.get_current_drift(),
+                "assertion_density": 0.0,
+                "manipulation_score": min(1.0, content_analyzer.manipulation_detected / max(1, content_analyzer.scans)),
+                "repetition_index": 0.0,
+                "memory_corruption": memory.corruption_ratio(),
+                "intervention_rate": min(1.0, len(interventions) / max(1, round_num)),
+            }
+            quantum_detector.observe(round_num, telemetry, agent_name="blue_team")
+
             # 6. Bridge evaluation
             intervention = bridge.evaluate_round(round_num, is_attack_round=True)
             if intervention:
@@ -669,6 +703,7 @@ class Collider:
             "layer4_kinetics": token_kinetics.get_stats(),
             "layer1b_content_analyzer": content_analyzer.get_stats(),
             "layer3_insertion_monitor": insertion_monitor.get_stats(),
+            "layer5_quantum": quantum_detector.get_stats(),
             "quarantine": {
                 "total_quarantined": taint_stats["insertions_quarantined"],
                 "total_blocked": taint_stats["insertions_blocked"],

@@ -1,0 +1,205 @@
+{
+  "experiment": "hybrid_qnn_pathology_classifier",
+  "timestamp": "2026-03-25T00:35:34.862328+00:00",
+  "hardware": {
+    "quantum_device": "lightning.gpu",
+    "qubits": 8,
+    "q_layers": 4
+  },
+  "data": {
+    "train_size": 300,
+    "test_size": 120,
+    "features": 8,
+    "classes": 6
+  },
+  "hybrid_qnn": {
+    "best_test_accuracy": 0.8417,
+    "training_time_seconds": 949.6,
+    "total_params": 622,
+    "per_class": {
+      "Normal": {
+        "accuracy": 1.0,
+        "correct": 20,
+        "total": 20
+      },
+      "Goal Drift": {
+        "accuracy": 0.35,
+        "correct": 7,
+        "total": 20
+      },
+      "Memory Corruption": {
+        "accuracy": 1.0,
+        "correct": 20,
+        "total": 20
+      },
+      "EDoS Attack": {
+        "accuracy": 1.0,
+        "correct": 20,
+        "total": 20
+      },
+      "Prompt Injection": {
+        "accuracy": 0.8,
+        "correct": 16,
+        "total": 20
+      },
+      "Sleeper Agent": {
+        "accuracy": 0.9,
+        "correct": 18,
+        "total": 20
+      }
+    },
+    "history": {
+      "train_acc": [
+        0.1667,
+        0.1733,
+        0.2833,
+        0.4067,
+        0.4233,
+        0.5067,
+        0.5733,
+        0.5533,
+        0.6033,
+        0.6533,
+        0.69,
+        0.6667,
+        0.6533,
+        0.6667,
+        0.68,
+        0.7033,
+        0.6833,
+        0.7333,
+        0.72,
+        0.72,
+        0.7067,
+        0.7667,
+        0.7233,
+        0.7467,
+        0.7467
+      ],
+      "test_acc": [
+        0.1667,
+        0.1667,
+        0.4583,
+        0.5333,
+        0.5083,
+        0.5583,
+        0.5667,
+        0.65,
+        0.65,
+        0.7417,
+        0.7167,
+        0.6583,
+        0.7167,
+        0.7583,
+        0.7,
+        0.8333,
+        0.775,
+        0.775,
+        0.8,
+        0.8083,
+        0.8167,
+        0.8167,
+        0.7833,
+        0.8083,
+        0.8417
+      ]
+    }
+  },
+  "classical_baseline": {
+    "best_test_accuracy": 0.9667,
+    "training_time_seconds": 6.17,
+    "total_params": 790,
+    "per_class": {
+      "Normal": {
+        "accuracy": 0.95,
+        "correct": 19,
+        "total": 20
+      },
+      "Goal Drift": {
+        "accuracy": 0.95,
+        "correct": 19,
+        "total": 20
+      },
+      "Memory Corruption": {
+        "accuracy": 1.0,
+        "correct": 20,
+        "total": 20
+      },
+      "EDoS Attack": {
+        "accuracy": 1.0,
+        "correct": 20,
+        "total": 20
+      },
+      "Prompt Injection": {
+        "accuracy": 0.95,
+        "correct": 19,
+        "total": 20
+      },
+      "Sleeper Agent": {
+        "accuracy": 0.9,
+        "correct": 18,
+        "total": 20
+      }
+    },
+    "history": {
+      "train_acc": [
+        0.1167,
+        0.19,
+        0.34,
+        0.48,
+        0.56,
+        0.64,
+        0.7433,
+        0.7367,
+        0.78,
+        0.8,
+        0.8067,
+        0.8233,
+        0.86,
+        0.8267,
+        0.8667,
+        0.88,
+        0.8767,
+        0.88,
+        0.91,
+        0.91,
+        0.9233,
+        0.9,
+        0.9267,
+        0.91,
+        0.9167
+      ],
+      "test_acc": [
+        0.1667,
+        0.3333,
+        0.4583,
+        0.4833,
+        0.8333,
+        0.8083,
+        0.8583,
+        0.8667,
+        0.9083,
+        0.8833,
+        0.8917,
+        0.8917,
+        0.9,
+        0.925,
+        0.9333,
+        0.925,
+        0.9417,
+        0.9167,
+        0.925,
+        0.925,
+        0.95,
+        0.9667,
+        0.9333,
+        0.95,
+        0.9583
+      ]
+    }
+  },
+  "comparison": {
+    "accuracy_delta": -0.125,
+    "quantum_advantage": false
+  }
+}

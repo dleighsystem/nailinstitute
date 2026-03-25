@@ -21,6 +21,13 @@ from typing import Optional
 
 from .pathology_bridge import PathologyBridge, Alert, AlertLevel
 
+# Quantum-optimized defaults (QAOA, 20-qubit, DGX Spark)
+# See quantum_thresholds.py for full documentation and validation data
+try:
+    from .quantum_thresholds import QUANTUM_THRESHOLDS as _QT
+except ImportError:
+    _QT = {}  # Fall back to hardcoded GA defaults if not available
+
 
 # ═══════════════════════════════════════════════════════════════════════════
 # LAYER 1: OPAQUE TELEMETRY ENGINE
@@ -44,7 +51,7 @@ class StochasticMonitor:
     def __init__(
         self,
         bridge: PathologyBridge,
-        scan_probability: float = 0.6,
+        scan_probability: float = _QT.get("scan_probability", 0.6),
         overseer_agent=None,
     ):
         self.bridge = bridge
@@ -194,7 +201,7 @@ class ContentAnalyzer:
         re.IGNORECASE,
     )
 
-    def __init__(self, bridge: PathologyBridge, manipulation_threshold: float = 5.0):
+    def __init__(self, bridge: PathologyBridge, manipulation_threshold: float = _QT.get("manipulation_threshold", 5.0)):
         self.bridge = bridge
         self.manipulation_threshold = manipulation_threshold
         self.scans = 0
@@ -278,7 +285,7 @@ class PathologyTensor:
         self,
         bridge: PathologyBridge,
         window: int = 5,
-        compound_threshold: int = 2,   # V2: lowered from 3
+        compound_threshold: int = int(round(_QT.get("compound_threshold", 2))),  # QAOA: 2.59 → 3
     ):
         self.bridge = bridge
         self.window = window
@@ -475,7 +482,7 @@ class TaintTracker:
     def __init__(
         self,
         bridge: PathologyBridge,
-        trust_threshold: float = 0.4,     # V3: raised from 0.3 to catch sleepers
+        trust_threshold: float = _QT.get("trust_threshold", 0.4),  # QAOA: 0.4995
         default_half_life: float = 300.0,  # seconds
         enable_write_gate: bool = True,
         enable_quarantine: bool = True,
@@ -658,8 +665,8 @@ class InsertionMonitor:
         bridge: PathologyBridge,
         burst_threshold: int = 2,        # max low-trust inserts per window
         burst_window: int = 3,           # rounds
-        corruption_ceiling: float = 0.3, # max % of memory from external
-        min_trust_floor: float = 0.4,    # minimum acceptable trust
+        corruption_ceiling: float = 0.3,  # max % of memory from external
+        min_trust_floor: float = _QT.get("min_trust_floor", 0.4),  # QAOA: 0.7378
     ):
         self.bridge = bridge
         self.burst_threshold = burst_threshold
@@ -775,7 +782,7 @@ class LatentAnchor:
         bridge: PathologyBridge,
         anchor_text: str,
         check_interval: int = 5,
-        drift_threshold: float = 0.4,
+        drift_threshold: float = _QT.get("drift_threshold", 0.4),  # QAOA: 0.4117
     ):
         self.bridge = bridge
         self.anchor_features = self._extract_features(anchor_text)
@@ -908,9 +915,9 @@ class TokenKinetics:
         self,
         bridge: PathologyBridge,
         total_budget: int = 100000,
-        spike_threshold: float = 0.15,  # >15% of budget in one round
+        spike_threshold: float = _QT.get("spike_threshold", 0.15),   # QAOA: 0.5640
         burn_rate_window: int = 3,       # window for burn-rate smoothing
-        burn_rate_accel: float = 1.5,    # acceleration threshold
+        burn_rate_accel: float = _QT.get("burn_rate_accel", 1.5),    # QAOA: 1.7563
     ):
         self.bridge = bridge
         self.total_budget = total_budget

@@ -105,6 +105,30 @@ class Genome:
             "burn_rate_accel": 1.5,
         }, generation=0, genome_id="v3_seed")
 
+    @staticmethod
+    def from_qaoa() -> "Genome":
+        """Seed genome from QAOA-optimized thresholds (DGX Spark, 20 qubits)."""
+        try:
+            from .quantum_thresholds import to_ga_genome
+            genes = to_ga_genome()
+        except ImportError:
+            # Inline QAOA values if quantum_thresholds not available
+            genes = {
+                "trust_threshold": 0.4995,
+                "scan_probability": 0.6585,
+                "compound_threshold": 3,
+                "token_velocity": 2000,
+                "spike_threshold": 0.5640,
+                "drift_threshold": 0.4117,
+                "suspicion_window": 3,
+                "burst_threshold": 2,
+                "corruption_ceiling": 0.3,
+                "min_trust_floor": 0.7378,
+                "manipulation_threshold": 4.3132,
+                "burn_rate_accel": 1.7563,
+            }
+        return Genome(genes=genes, generation=0, genome_id="qaoa_seed")
+
 
 # ═══════════════════════════════════════════════════════════════════════════
 # FITNESS FUNCTION

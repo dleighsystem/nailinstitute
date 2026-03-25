@@ -1,0 +1,233 @@
+{
+  "experiment": "hybrid_attack_ga_qaoa",
+  "original_fitness": 0.9321359810835832,
+  "methods": {
+    "pure_random": {
+      "best": 0.9021815219803435,
+      "mean": 0.9308653506479028,
+      "samples": 1000
+    },
+    "ga_random_seeds": {
+      "best": 0.8802059144302902,
+      "time": 0.1
+    },
+    "qaoa_seeds_only": {
+      "best": 0.9303857658827563,
+      "time": 0.4
+    },
+    "ga_qaoa_hybrid": {
+      "best": 0.8867063855000241,
+      "time": 0.1
+    }
+  },
+  "winner": "GA + random",
+  "top_attack_vectors": [
+    {
+      "param": "sentinel_sensitivity",
+      "delta": -0.57
+    },
+    {
+      "param": "trust_threshold",
+      "delta": 0.24
+    },
+    {
+      "param": "min_trust_floor",
+      "delta": -0.24
+    },
+    {
+      "param": "spike_threshold",
+      "delta": -0.21000000000000002
+    },
+    {
+      "param": "drift_threshold",
+      "delta": 0.21000000000000002
+    },
+    {
+      "param": "scan_probability",
+      "delta": 0.21
+    },
+    {
+      "param": "manipulation_threshold",
+      "delta": -0.1604766169567776
+    },
+    {
+      "param": "memory_decay_rate",
+      "delta": 0.147
+    },
+    {
+      "param": "token_budget_margin",
+      "delta": -0.082921137290136
+    },
+    {
+      "param": "burn_rate_accel",
+      "delta": -0.07884517631487735
+    },
+    {
+      "param": "alert_cooldown",
+      "delta": -0.06358951396651381
+    },
+    {
+      "param": "compound_threshold",
+      "delta": 0.05735449864508116
+    }
+  ],
+  "qaoa_ga_history": [
+    {
+      "generation": 1,
+      "best_attack_fitness": -0.9305437145626005,
+      "defence_fitness": 0.9303857658827563,
+      "degradation": 0.0017502152008268546,
+      "mean_fitness": -0.9334579112265832
+    },
+    {
+      "generation": 5,
+      "best_attack_fitness": -0.9149623738486311,
+      "defence_fitness": 0.9111074435523145,
+      "degradation": 0.021028537531268654,
+      "mean_fitness": -0.9295878446487521
+    },
+    {
+      "generation": 10,
+      "best_attack_fitness": -0.9006149790873815,
+      "defence_fitness": 0.8952081319011288,
+      "degradation": 0.0369278491824544,
+      "mean_fitness": -0.9102670122152421
+    },
+    {
+      "generation": 15,
+      "best_attack_fitness": -0.898228691384098,
+      "defence_fitness": 0.891553425983682,
+      "degradation": 0.04058255509990116,
+      "mean_fitness": -0.9054644858232084
+    },
+    {
+      "generation": 20,
+      "best_attack_fitness": -0.896729842615226,
+      "defence_fitness": 0.8894628565197332,
+      "degradation": 0.04267312456384997,
+      "mean_fitness": -0.9001721987782899
+    },
+    {
+      "generation": 25,
+      "best_attack_fitness": -0.896483700630279,
+      "defence_fitness": 0.8894493871460192,
+      "degradation": 0.04268659393756402,
+      "mean_fitness": -0.9019081699169241
+    },
+    {
+      "generation": 30,
+      "best_attack_fitness": -0.8960573746858165,
+      "defence_fitness": 0.8881391769983672,
+      "degradation": 0.043996804085216,
+      "mean_fitness": -0.8998748215996185
+    },
+    {
+      "generation": 35,
+      "best_attack_fitness": -0.8959006358212833,
+      "defence_fitness": 0.8879025481279107,
+      "degradation": 0.0442334329556725,
+      "mean_fitness": -0.8994044554110051
+    },
+    {
+      "generation": 40,
+      "best_attack_fitness": -0.8950777352760049,
+      "defence_fitness": 0.8867071057277538,
+      "degradation": 0.0454288753558294,
+      "mean_fitness": -0.8988111325852465
+    },
+    {
+      "generation": 45,
+      "best_attack_fitness": -0.8949598901026097,
+      "defence_fitness": 0.8867056652923784,
+      "degradation": 0.04543031579120482,
+      "mean_fitness": -0.8982190492977423
+    },
+    {
+      "generation": 50,
+      "best_attack_fitness": -0.8949438623587408,
+      "defence_fitness": 0.8867063855000241,
+      "degradation": 0.04542959558355908,
+      "mean_fitness": -0.8987724462017986
+    }
+  ],
+  "random_ga_history": [
+    {
+      "generation": 1,
+      "best_attack_fitness": -0.9201256401574146,
+      "defence_fitness": 0.9123325297550109,
+      "degradation": 0.019803451328572308,
+      "mean_fitness": -0.9366526535862558
+    },
+    {
+      "generation": 5,
+      "best_attack_fitness": -0.907484931313071,
+      "defence_fitness": 0.9016100144786624,
+      "degradation": 0.030525966604920796,
+      "mean_fitness": -0.9182553248247265
+    },
+    {
+      "generation": 10,
+      "best_attack_fitness": -0.8988421319009225,
+      "defence_fitness": 0.8899301845991423,
+      "degradation": 0.042205796484440894,
+      "mean_fitness": -0.9085814696610004
+    },
+    {
+      "generation": 15,
+      "best_attack_fitness": -0.8971475528582796,
+      "defence_fitness": 0.8900430098146356,
+      "degradation": 0.04209297126894762,
+      "mean_fitness": -0.90226737033584
+    },
+    {
+      "generation": 20,
+      "best_attack_fitness": -0.8952591584032599,
+      "defence_fitness": 0.8862253368645412,
+      "degradation": 0.04591064421904201,
+      "mean_fitness": -0.8994074641486549
+    },
+    {
+      "generation": 25,
+      "best_attack_fitness": -0.8947330092124831,
+      "defence_fitness": 0.8850576894396719,
+      "degradation": 0.04707829164391131,
+      "mean_fitness": -0.900549349481588
+    },
+    {
+      "generation": 30,
+      "best_attack_fitness": -0.8940436756227174,
+      "defence_fitness": 0.8831803473484606,
+      "degradation": 0.04895563373512257,
+      "mean_fitness": -0.8982030720851801
+    },
+    {
+      "generation": 35,
+      "best_attack_fitness": -0.8935865767298654,
+      "defence_fitness": 0.8827104629377593,
+      "degradation": 0.049425518145823855,
+      "mean_fitness": -0.896716462875845
+    },
+    {
+      "generation": 40,
+      "best_attack_fitness": -0.8933021259223005,
+      "defence_fitness": 0.8820948812494448,
+      "degradation": 0.0500410998341384,
+      "mean_fitness": -0.8969718394766257
+    },
+    {
+      "generation": 45,
+      "best_attack_fitness": -0.8931483028150666,
+      "defence_fitness": 0.8821343622663682,
+      "degradation": 0.05000161881721499,
+      "mean_fitness": -0.8965362896752126
+    },
+    {
+      "generation": 50,
+      "best_attack_fitness": -0.8925436072635269,
+      "defence_fitness": 0.8802059144302902,
+      "degradation": 0.05193006665329303,
+      "mean_fitness": -0.8957275561553082
+    }
+  ],
+  "total_time_seconds": 0.6
+}

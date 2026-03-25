@@ -1,0 +1,79 @@
+{
+  "experiment": "theory1_quantum_reservoir",
+  "reservoir": {
+    "n_qubits": 10,
+    "n_layers": 4,
+    "n_timesteps": 5,
+    "backend": "lightning.gpu"
+  },
+  "data": {
+    "n_samples": 300,
+    "n_classes": 6,
+    "classes": [
+      "structural_apathy",
+      "parasitic_loop",
+      "contextual_amnesia",
+      "intent_decay",
+      "safety_deadlock",
+      "clean"
+    ]
+  },
+  "results": {
+    "quantum_reservoir": {
+      "accuracy": 0.9166666666666666,
+      "feature_dim": 50,
+      "train_time": 3.8,
+      "test_time": 0.9
+    },
+    "classical_flatten": {
+      "accuracy": 0.9
+    },
+    "classical_stats": {
+      "accuracy": 1.0
+    }
+  },
+  "comparisons": {
+    "phase2_kernel_svm": 0.6,
+    "phase2_hybrid_qnn": 0.842
+  },
+  "winner": "Classical stats",
+  "per_class": {
+    "structural_apathy": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 10.0
+    },
+    "parasitic_loop": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 10.0
+    },
+    "contextual_amnesia": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 10.0
+    },
+    "intent_decay": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 10.0
+    },
+    "safety_deadlock": {
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1-score": 0.6666666666666666,
+      "support": 10.0
+    },
+    "clean": {
+      "precision": 0.6666666666666666,
+      "recall": 1.0,
+      "f1-score": 0.8,
+      "support": 10.0
+    }
+  },
+  "total_time_seconds": 4.8
+}

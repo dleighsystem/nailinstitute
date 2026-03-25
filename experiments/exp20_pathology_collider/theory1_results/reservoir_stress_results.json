@@ -1,0 +1,137 @@
+{
+  "experiment": "reservoir_stress_test",
+  "results": {
+    "clean": {
+      "quantum": 0.9166666666666666,
+      "flatten": 0.9,
+      "stats": 1.0
+    },
+    "gaussian_noise": {
+      "sigma_0.05": {
+        "quantum": 0.9166666666666666,
+        "flatten": 0.9,
+        "stats": 1.0
+      },
+      "sigma_0.1": {
+        "quantum": 0.9333333333333333,
+        "flatten": 0.9166666666666666,
+        "stats": 1.0
+      },
+      "sigma_0.15": {
+        "quantum": 0.9333333333333333,
+        "flatten": 0.9166666666666666,
+        "stats": 0.9166666666666666
+      },
+      "sigma_0.2": {
+        "quantum": 0.8166666666666667,
+        "flatten": 0.8,
+        "stats": 0.8666666666666667
+      },
+      "sigma_0.25": {
+        "quantum": 0.6166666666666667,
+        "flatten": 0.7666666666666667,
+        "stats": 0.7833333333333333
+      },
+      "sigma_0.3": {
+        "quantum": 0.5166666666666667,
+        "flatten": 0.6666666666666666,
+        "stats": 0.65
+      }
+    },
+    "feature_dropout": {
+      "drop_0.1": {
+        "quantum": 0.9333333333333333,
+        "flatten": 0.8166666666666667,
+        "stats": 0.8666666666666667
+      },
+      "drop_0.2": {
+        "quantum": 0.85,
+        "flatten": 0.7,
+        "stats": 0.7666666666666667
+      },
+      "drop_0.3": {
+        "quantum": 0.8,
+        "flatten": 0.55,
+        "stats": 0.7333333333333333
+      },
+      "drop_0.4": {
+        "quantum": 0.6166666666666667,
+        "flatten": 0.4,
+        "stats": 0.65
+      }
+    },
+    "temporal_jitter": {
+      "jitter_0.1": {
+        "quantum": 0.9,
+        "flatten": 0.8666666666666667,
+        "stats": 0.9833333333333333
+      },
+      "jitter_0.2": {
+        "quantum": 0.9333333333333333,
+        "flatten": 0.9166666666666666,
+        "stats": 0.9833333333333333
+      },
+      "jitter_0.3": {
+        "quantum": 0.9,
+        "flatten": 0.8666666666666667,
+        "stats": 0.9666666666666667
+      },
+      "jitter_0.5": {
+        "quantum": 0.8833333333333333,
+        "flatten": 0.8833333333333333,
+        "stats": 0.9333333333333333
+      },
+      "jitter_0.7": {
+        "quantum": 0.8333333333333334,
+        "flatten": 0.75,
+        "stats": 0.9166666666666666
+      }
+    },
+    "adversarial": {
+      "eps_0.05": {
+        "quantum": 0.9833333333333333,
+        "flatten": 0.9166666666666666,
+        "stats": 1.0
+      },
+      "eps_0.1": {
+        "quantum": 0.9666666666666667,
+        "flatten": 0.9166666666666666,
+        "stats": 0.9833333333333333
+      },
+      "eps_0.15": {
+        "quantum": 0.95,
+        "flatten": 0.9,
+        "stats": 0.9333333333333333
+      },
+      "eps_0.2": {
+        "quantum": 0.7666666666666667,
+        "flatten": 0.8333333333333334,
+        "stats": 0.85
+      },
+      "eps_0.3": {
+        "quantum": 0.6,
+        "flatten": 0.7166666666666667,
+        "stats": 0.8333333333333334
+      }
+    }
+  },
+  "summary": {
+    "clean_accuracy": {
+      "quantum": 0.9166666666666666,
+      "flatten": 0.9,
+      "stats": 1.0
+    },
+    "avg_noisy_accuracy": {
+      "quantum": 0.8324999999999999,
+      "flatten": 0.8,
+      "stats": 0.8808333333333331
+    },
+    "degradation_pct": {
+      "quantum": 9.18,
+      "flatten": 11.11,
+      "stats": 11.92
+    },
+    "most_robust": "Quantum"
+  },
+  "total_time_seconds": 18.5
+}

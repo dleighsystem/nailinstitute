@@ -1,0 +1,452 @@
+{
+  "experiment": "theory1_quantum_game_theory",
+  "games": {
+    "Consensus Cartel": {
+      "payoff_matrix": [
+        [
+          [
+            3,
+            3
+          ],
+          [
+            0,
+            5
+          ]
+        ],
+        [
+          [
+            5,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      ],
+      "description": "Nash eq: (Collude, Collude). Quantum may find cooperative eq.",
+      "classical_equilibria": [
+        {
+          "type": "pure",
+          "strategy": [
+            1,
+            1
+          ],
+          "labels": [
+            "Defect",
+            "Defect"
+          ],
+          "payoffs": [
+            1.0,
+            1.0
+          ],
+          "cooperative": false
+        }
+      ],
+      "quantum_equilibria": {
+        "gamma_0.0000": {
+          "strategy_A": {
+            "theta": 3.1415926412056745,
+            "phi": 0.6475557916458541
+          },
+          "strategy_B": {
+            "theta": 3.1415926420931237,
+            "phi": 0.6773167519983099
+          },
+          "payoffs": [
+            1.0,
+            1.0
+          ],
+          "social_welfare": 2.0,
+          "outcome_probs": {
+            "both_cooperate": 0.0,
+            "a_coop_b_defect": 0.0,
+            "a_defect_b_coop": 0.0,
+            "both_defect": 1.0
+          },
+          "cooperative": false
+        },
+        "gamma_0.3927": {
+          "strategy_A": {
+            "theta": 2.756070384320185,
+            "phi": 1.5708029169729338
+          },
+          "strategy_B": {
+            "theta": 3.464103716772433,
+            "phi": 3.1416202147613213
+          },
+          "payoffs": [
+            1.3209,
+            1.4372
+          ],
+          "social_welfare": 2.7581,
+          "outcome_probs": {
+            "both_cooperate": 0.1612,
+            "a_coop_b_defect": 0.0305,
+            "a_defect_b_coop": 0.0073,
+            "both_defect": 0.801
+          },
+          "cooperative": false
+        },
+        "gamma_0.7854": {
+          "strategy_A": {
+            "theta": -4.53869360000787,
+            "phi": 1.5707675643392167
+          },
+          "strategy_B": {
+            "theta": 2.0038504859164443,
+            "phi": -0.000138001849066469
+          },
+          "payoffs": [
+            2.1451,
+            2.8747
+          ],
+          "social_welfare": 5.0199,
+          "outcome_probs": {
+            "both_cooperate": 0.6442,
+            "a_coop_b_defect": 0.1468,
+            "a_defect_b_coop": 0.0009,
+            "both_defect": 0.2081
+          },
+          "cooperative": true
+        },
+        "gamma_1.5708": {
+          "strategy_A": {
+            "theta": 405.26547454500144,
+            "phi": 29.845124044463944
+          },
+          "strategy_B": {
+            "theta": 122.52209643322354,
+            "phi": 37.699099692848876
+          },
+          "payoffs": [
+            3.0,
+            3.0
+          ],
+          "social_welfare": 6.0,
+          "outcome_probs": {
+            "both_cooperate": 1.0,
+            "a_coop_b_defect": 0.0,
+            "a_defect_b_coop": 0.0,
+            "both_defect": 0.0
+          },
+          "cooperative": true
+        }
+      },
+      "classical_best_social_welfare": 2.0,
+      "quantum_best_social_welfare": 6.0,
+      "quantum_improves_cooperation": true
+    },
+    "Agent Coordination": {
+      "payoff_matrix": [
+        [
+          [
+            4,
+            4
+          ],
+          [
+            0,
+            3
+          ]
+        ],
+        [
+          [
+            3,
+            0
+          ],
+          [
+            2,
+            2
+          ]
+        ]
+      ],
+      "description": "Two Nash eqs: (C,C) and (D,D). Quantum biases toward (C,C).",
+      "classical_equilibria": [
+        {
+          "type": "pure",
+          "strategy": [
+            0,
+            0
+          ],
+          "labels": [
+            "Cooperate",
+            "Cooperate"
+          ],
+          "payoffs": [
+            4.0,
+            4.0
+          ],
+          "cooperative": true
+        },
+        {
+          "type": "pure",
+          "strategy": [
+            1,
+            1
+          ],
+          "labels": [
+            "Defect",
+            "Defect"
+          ],
+          "payoffs": [
+            2.0,
+            2.0
+          ],
+          "cooperative": false
+        }
+      ],
+      "quantum_equilibria": {
+        "gamma_0.0000": {
+          "strategy_A": {
+            "theta": 2.914335439641036e-16,
+            "phi": 1.271001683294998
+          },
+          "strategy_B": {
+            "theta": -6.245808302157779e-09,
+            "phi": 0.12660263167716912
+          },
+          "payoffs": [
+            4.0,
+            4.0
+          ],
+          "social_welfare": 8.0,
+          "outcome_probs": {
+            "both_cooperate": 1.0,
+            "a_coop_b_defect": 0.0,
+            "a_defect_b_coop": 0.0,
+            "both_defect": 0.0
+          },
+          "cooperative": true
+        },
+        "gamma_0.3927": {
+          "strategy_A": {
+            "theta": 1.7249112693006974e-07,
+            "phi": 0.4256050333211443
+          },
+          "strategy_B": {
+            "theta": 2.1591760771955146e-07,
+            "phi": 1.1892538423829446
+          },
+          "payoffs": [
+            4.0,
+            4.0
+          ],
+          "social_welfare": 8.0,
+          "outcome_probs": {
+            "both_cooperate": 1.0,
+            "a_coop_b_defect": 0.0,
+            "a_defect_b_coop": 0.0,
+            "both_defect": 0.0
+          },
+          "cooperative": true
+        },
+        "gamma_0.7854": {
+          "strategy_A": {
+            "theta": 3.2810171752636066e-06,
+            "phi": 0.7801187760121068
+          },
+          "strategy_B": {
+            "theta": 3.079498951171503e-06,
+            "phi": 0.5584770555398936
+          },
+          "payoffs": [
+            4.0,
+            4.0
+          ],
+          "social_welfare": 8.0,
+          "outcome_probs": {
+            "both_cooperate": 1.0,
+            "a_coop_b_defect": 0.0,
+            "a_defect_b_coop": 0.0,
+            "both_defect": 0.0
+          },
+          "cooperative": true
+        },
+        "gamma_1.5708": {
+          "strategy_A": {
+            "theta": 0.29122364779077065,
+            "phi": 0.5767277582907784
+          },
+          "strategy_B": {
+            "theta": 0.2912283861010162,
+            "phi": 0.9940707239663032
+          },
+          "payoffs": [
+            4.0,
+            4.0
+          ],
+          "social_welfare": 8.0,
+          "outcome_probs": {
+            "both_cooperate": 1.0,
+            "a_coop_b_defect": 0.0,
+            "a_defect_b_coop": 0.0,
+            "both_defect": 0.0
+          },
+          "cooperative": true
+        }
+      },
+      "classical_best_social_welfare": 8.0,
+      "quantum_best_social_welfare": 8.0,
+      "quantum_improves_cooperation": false
+    },
+    "Information Sharing": {
+      "payoff_matrix": [
+        [
+          [
+            5,
+            5
+          ],
+          [
+            0,
+            4
+          ]
+        ],
+        [
+          [
+            4,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ]
+      ],
+      "description": "Models epistemic trust between agents.",
+      "classical_equilibria": [
+        {
+          "type": "pure",
+          "strategy": [
+            0,
+            0
+          ],
+          "labels": [
+            "Cooperate",
+            "Cooperate"
+          ],
+          "payoffs": [
+            5.0,
+            5.0
+          ],
+          "cooperative": true
+        },
+        {
+          "type": "pure",
+          "strategy": [
+            1,
+            1
+          ],
+          "labels": [
+            "Defect",
+            "Defect"
+          ],
+          "payoffs": [
+            1.0,
+            1.0
+          ],
+          "cooperative": false
+        }
+      ],
+      "quantum_equilibria": {
+        "gamma_0.0000": {
+          "strategy_A": {
+            "theta": 2.914335439641036e-16,
+            "phi": 1.271001683294998
+          },
+          "strategy_B": {
+            "theta": -1.9567680809018384e-15,
+            "phi": 0.15998644985240768
+          },
+          "payoffs": [
+            5.0,
+            5.0
+          ],
+          "social_welfare": 10.0,
+          "outcome_probs": {
+            "both_cooperate": 1.0,
+            "a_coop_b_defect": 0.0,
+            "a_defect_b_coop": 0.0,
+            "both_defect": 0.0
+          },
+          "cooperative": true
+        },
+        "gamma_0.3927": {
+          "strategy_A": {
+            "theta": 1.820842035216443e-07,
+            "phi": 0.6488306545150462
+          },
+          "strategy_B": {
+            "theta": 2.654714903227181e-07,
+            "phi": 0.5672827850152425
+          },
+          "payoffs": [
+            5.0,
+            5.0
+          ],
+          "social_welfare": 10.0,
+          "outcome_probs": {
+            "both_cooperate": 1.0,
+            "a_coop_b_defect": 0.0,
+            "a_defect_b_coop": 0.0,
+            "both_defect": 0.0
+          },
+          "cooperative": true
+        },
+        "gamma_0.7854": {
+          "strategy_A": {
+            "theta": 2.3586655939898227e-05,
+            "phi": 0.715395826448003
+          },
+          "strategy_B": {
+            "theta": 2.2159951629457868e-05,
+            "phi": 0.6032729882565393
+          },
+          "payoffs": [
+            5.0,
+            5.0
+          ],
+          "social_welfare": 10.0,
+          "outcome_probs": {
+            "both_cooperate": 1.0,
+            "a_coop_b_defect": 0.0,
+            "a_defect_b_coop": 0.0,
+            "both_defect": 0.0
+          },
+          "cooperative": true
+        },
+        "gamma_1.5708": {
+          "strategy_A": {
+            "theta": 0.2912394869559072,
+            "phi": 0.5766652449435897
+          },
+          "strategy_B": {
+            "theta": 0.29123743671789887,
+            "phi": 0.994145507185171
+          },
+          "payoffs": [
+            5.0,
+            5.0
+          ],
+          "social_welfare": 10.0,
+          "outcome_probs": {
+            "both_cooperate": 1.0,
+            "a_coop_b_defect": 0.0,
+            "a_defect_b_coop": 0.0,
+            "both_defect": 0.0
+          },
+          "cooperative": true
+        }
+      },
+      "classical_best_social_welfare": 10.0,
+      "quantum_best_social_welfare": 10.0,
+      "quantum_improves_cooperation": false
+    }
+  },
+  "entanglement_levels": [
+    0.0,
+    0.39269908169872414,
+    0.7853981633974483,
+    1.5707963267948966
+  ],
+  "total_time_seconds": 466.9
+}
