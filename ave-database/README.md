@@ -187,6 +187,26 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md#ave-card-schema) for the full specifica
 
 ---
 
+## 📖 Citation
+
+If you use this database in your research, please cite:
+
+```bibtex
+@dataset{leigh2026ave,
+  author    = {Leigh, Dillman},
+  title     = {{AVE Database}: Agentic Vulnerabilities \& Exposures},
+  year      = {2026},
+  publisher = {NAIL Institute, Neuravant AI Limited},
+  url       = {https://github.com/NAIL-INSTITUTE-FOR-AGENTIC-SECURITY/ave-database},
+  version   = {1.0.0},
+  note      = {36 documented AI agent vulnerability cards}
+}
+```
+
+A `CITATION.cff` file is included for automatic citation tooling (GitHub "Cite this repository" button).
+
+---
+
 ## 📜 Licensing
 
 All AVE Database content is licensed under

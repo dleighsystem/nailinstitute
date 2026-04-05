@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+title: "AVE Database: Agentic Vulnerabilities & Exposures"
+message: "If you use this dataset, please cite it using the metadata from this file."
+type: dataset
+authors:
+  - family-names: Leigh
+    given-names: Dillman
+    affiliation: "NAIL Institute, Neuravant AI Limited"
+repository-code: "https://github.com/NAIL-INSTITUTE-FOR-AGENTIC-SECURITY/ave-database"
+url: "https://github.com/NAIL-INSTITUTE-FOR-AGENTIC-SECURITY/ave-database"
+abstract: >-
+  The AVE Database is the world's first structured catalogue of AI agent
+  failure modes — behavioural vulnerabilities, attack vectors, and emergent
+  pathologies affecting autonomous AI systems. It contains 36 documented
+  vulnerability cards spanning memory poisoning, consensus failures, tool-trust
+  exploitation, epistemic contagion, economic denial-of-service, and 
+  multi-agent cascade corruption. Each card includes severity rating, 
+  reproduction steps, affected models, and defense recommendations.
+keywords:
+  - agentic AI security
+  - vulnerability database
+  - LLM safety
+  - multi-agent systems
+  - AI agent pathology
+  - tool-trust exploitation
+  - memory poisoning
+  - epistemic contagion
+license: CC-BY-SA-4.0
+version: "1.0.0"
+date-released: "2026-04-05"
