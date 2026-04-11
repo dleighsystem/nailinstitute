@@ -1,0 +1,140 @@
+{
+  "ave_id": "AVE-2025-0039",
+  "name": "Approval Display Divergence",
+  "aliases": ["Deceptive Approval UI", "Display-Execution Mismatch", "Approval Cache Bypass"],
+  "category": "delegation",
+  "severity": "high",
+  "status": "proven",
+  "summary": "Tool approval systems display sanitized or unexpanded representations of operations to human reviewers while executing different operations at runtime. Combined with coarse-grained approval caching (by tool name only, not arguments), a single benign approval grants blanket access for all subsequent invocations.",
+  "mechanism": "Two-part vulnerability: (1) The approval UI shows '$DATABASE_URL' while os.path.expandvars() resolves to the actual credential before execution. Users approve based on the displayed (safe-looking) form. (2) Approval is cached by tool name only — approving 'execute_command(ls -la)' grants approval for all future execute_command calls including 'execute_command(printenv OPENAI_API_KEY)'.",
+  "blast_radius": "Full environment variable exfiltration through approved tool channels. Human-in-the-loop control undermined by display/execution divergence and session-wide blanket approval.",
+  "prerequisite": "Framework with tool approval system. Agent with shell/command execution tools.",
+  "environment": {
+    "frameworks": ["PraisonAI"],
+    "models_tested": [],
+    "multi_agent": false,
+    "tools_required": true,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "CVE-2026-40153",
+      "data_file": "GHSA-v8g7-9q6v-p3x8",
+      "key_metric": "display_execution_divergence",
+      "key_value": "Displayed: $DATABASE_URL → Executed: postgres://admin:s3cretP@ss@...",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    },
+    {
+      "experiment_id": "GHSA-ffp3-3562-8cv3",
+      "data_file": "GHSA-ffp3-3562-8cv3",
+      "key_metric": "approval_bypass_rate",
+      "key_value": "100% — all subsequent calls bypass after first approval",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "Per-Invocation Approval",
+      "description": "Cache approval by hash of (tool_name, arguments) rather than tool_name alone. Require re-approval for critical-risk tools on every invocation.",
+      "effectiveness": "Eliminates blanket approval bypass"
+    },
+    {
+      "name": "Transparent Display",
+      "description": "Show the exact expanded/resolved operation in the approval UI — what the user sees must equal what executes.",
+      "effectiveness": "Eliminates display/execution divergence"
+    },
+    {
+      "name": "Environment Variable Filtering",
+      "description": "Strip sensitive patterns (*_KEY, *_SECRET, *_TOKEN, *_PASSWORD) from subprocess environments",
+      "effectiveness": "Reduces credential exposure surface"
+    }
+  ],
+  "date_discovered": "2026-04",
+  "date_published": "2026-04-09",
+  "cwe_mapping": "CWE-863 (Incorrect Authorization), CWE-526 (Exposure of Sensitive Information Through Environmental Variables)",
+  "mitre_mapping": "",
+  "references": [
+    "https://github.com/MervinPraison/PraisonAI/security/advisories/GHSA-v8g7-9q6v-p3x8",
+    "https://github.com/advisories/GHSA-ffp3-3562-8cv3"
+  ],
+  "related_aves": ["AVE-2025-0027", "AVE-2025-0026", "AVE-2025-0028"],
+  "avss_score": {
+    "base_score": 7.4,
+    "temporal_score": 7.0,
+    "agentic_score": 8.0,
+    "overall_score": 7.4,
+    "severity_label": "high",
+    "vector_string": "AVSS:1.0/AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:N/A:N/TE:HIG/AE:HIG",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "required",
+      "scope_change": "changed",
+      "confidentiality": "high",
+      "integrity": "none",
+      "availability": "none",
+      "temporal": "high",
+      "agentic": "high"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0039-v1",
+    "ave_id": "AVE-2025-0039",
+    "poc_type": "code_snippet",
+    "status": "verified",
+    "version": 1,
+    "author": "offset (original reporter)",
+    "description": "Approve 'ls -la' → subsequent 'printenv OPENAI_API_KEY' executes without approval. expandvars displays '$VAR' but executes with expanded value.",
+    "artifact_count": 0,
+    "scripts": [],
+    "logs": [],
+    "prompts": [],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "PraisonAI",
+      "model": "Any",
+      "model_provider": "Any",
+      "hardware": "Any",
+      "packages": ["praisonaiagents<1.5.128"],
+      "env_vars": ["OPENAI_API_KEY", "DATABASE_URL"],
+      "notes": "Patched in praisonaiagents >=1.5.128"
+    },
+    "created_at": "2026-04-11T00:00:00Z",
+    "verified_at": "2026-04-09T00:00:00Z",
+    "verified_by": "PraisonAI Security Team",
+    "notes": "CVE-2026-40153 + GHSA-ffp3-3562-8cv3"
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0039",
+    "current_stage": "mitigated",
+    "is_published": true,
+    "is_mitigated": true,
+    "event_count": 2,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2026-04-01T00:00:00Z",
+        "actor": "offset (security researcher)",
+        "notes": "Reported via GitHub Security Advisories"
+      },
+      {
+        "stage": "mitigated",
+        "timestamp": "2026-04-09T00:00:00Z",
+        "actor": "PraisonAI",
+        "notes": "Patched in praisonaiagents >=1.5.128 / PraisonAI >=4.5.128"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-04-11T00:00:00Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  },
+  "contributor": "d.leigh"
+}

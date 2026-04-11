@@ -65,6 +65,24 @@
       "name": "Federated Poisoning in Multi-Tenant Systems",
       "category": "memory",
       "status": "theoretical"
+    },
+    {
+      "ave_id": "AVE-2025-0037",
+      "name": "Serialization Confused Deputy",
+      "category": "injection",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0038",
+      "name": "Fail-Open Sandbox Degradation",
+      "category": "structural",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0041",
+      "name": "State Persistence Deserialization",
+      "category": "memory",
+      "status": "proven"
     }
   ],
   "high": [
@@ -138,6 +156,24 @@
       "ave_id": "AVE-2025-0031",
       "name": "Temporal Persona Shift",
       "category": "drift",
+      "status": "theoretical"
+    },
+    {
+      "ave_id": "AVE-2025-0039",
+      "name": "Approval Display Divergence",
+      "category": "delegation",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0040",
+      "name": "Environment Inheritance Leak",
+      "category": "credential",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0042",
+      "name": "Checkpoint Injection Chain",
+      "category": "structural",
       "status": "theoretical"
     }
   ],

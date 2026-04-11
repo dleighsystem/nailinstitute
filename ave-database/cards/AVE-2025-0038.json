@@ -1,0 +1,136 @@
+{
+  "ave_id": "AVE-2025-0038",
+  "name": "Fail-Open Sandbox Degradation",
+  "aliases": ["Silent Sandbox Bypass", "Docker Fallback Exploitation", "Sandbox Downgrade Attack"],
+  "category": "structural",
+  "severity": "critical",
+  "status": "proven",
+  "summary": "Code execution sandboxes silently degrade to insecure fallback modes when the underlying isolation mechanism (Docker, container runtime) becomes unavailable. No user notification, consent, or logging occurs during degradation.",
+  "mechanism": "When Docker is unavailable at startup or becomes unavailable during runtime, the framework falls back to a Python-based sandbox (SandboxPython) that can be escaped via ctypes to call arbitrary C functions. The fallback is silent — no alert, no consent prompt, no log entry.",
+  "blast_radius": "Full host-level arbitrary code execution. In multi-agent deployments, one agent can exhaust Docker resources to force other agents into the insecure fallback.",
+  "prerequisite": "Agent with code execution capability (allow_code_execution=True or CodeInterpreter tool). Docker unavailable or stoppable.",
+  "environment": {
+    "frameworks": ["CrewAI", "smolagents"],
+    "models_tested": [],
+    "multi_agent": true,
+    "tools_required": true,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "CVE-2026-2275",
+      "data_file": "CERT-VU-221883",
+      "key_metric": "sandbox_escape_success",
+      "key_value": "100% when Docker unavailable",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    },
+    {
+      "experiment_id": "CVE-2026-2287",
+      "data_file": "CERT-VU-221883",
+      "key_metric": "runtime_docker_check",
+      "key_value": "No runtime verification — silent degradation",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "Fail-Closed Architecture",
+      "description": "Refuse code execution if sandbox integrity cannot be verified. Require explicit user consent for degraded mode.",
+      "effectiveness": "Eliminates silent degradation"
+    },
+    {
+      "name": "Runtime Isolation Verification",
+      "description": "Continuously verify Docker daemon availability and container isolation (namespace + cgroup checks) before each execution",
+      "effectiveness": "Detects runtime degradation"
+    }
+  ],
+  "date_discovered": "2026-03",
+  "date_published": "2026-03-26",
+  "cwe_mapping": "CWE-636 (Not Failing Securely / Fail Open), CWE-94 (Code Injection), CWE-749 (Exposed Dangerous Method)",
+  "mitre_mapping": "",
+  "references": [
+    "https://www.kb.cert.org/vuls/id/221883",
+    "https://nvd.nist.gov/vuln/detail/CVE-2026-2275",
+    "https://nvd.nist.gov/vuln/detail/CVE-2026-2287"
+  ],
+  "related_aves": ["AVE-2025-0017", "AVE-2025-0033"],
+  "avss_score": {
+    "base_score": 9.8,
+    "temporal_score": 9.8,
+    "agentic_score": 10.0,
+    "overall_score": 9.8,
+    "severity_label": "critical",
+    "vector_string": "AVSS:1.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H/TE:HIG/AE:HIG",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "high",
+      "temporal": "high",
+      "agentic": "high"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0038-v1",
+    "ave_id": "AVE-2025-0038",
+    "poc_type": "description",
+    "status": "verified",
+    "version": 1,
+    "author": "Yarden Porat / Cyata (original reporter)",
+    "description": "Stop Docker daemon → CrewAI agent with CodeInterpreter silently falls back to SandboxPython → ctypes escape → host RCE",
+    "artifact_count": 0,
+    "scripts": [],
+    "logs": [],
+    "prompts": [],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "CrewAI",
+      "model": "Any",
+      "model_provider": "Any",
+      "hardware": "Any",
+      "packages": ["crewai"],
+      "env_vars": [],
+      "notes": "CERT/CC VU#221883 — vendor acknowledged, no complete patch as of April 2026"
+    },
+    "created_at": "2026-04-11T00:00:00Z",
+    "verified_at": "2026-03-26T00:00:00Z",
+    "verified_by": "CERT/CC",
+    "notes": "CVE-2026-2275 (CVSS 9.7) and CVE-2026-2287 (CVSS 9.8). NO COMPLETE PATCH AVAILABLE."
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0038",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 2,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2026-03-01T00:00:00Z",
+        "actor": "Yarden Porat / Cyata",
+        "notes": "Reported to CERT/CC for coordinated disclosure"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2026-03-26T00:00:00Z",
+        "actor": "CERT/CC",
+        "notes": "VU#221883 published. Vendor acknowledged, no complete patch."
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-04-11T00:00:00Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  },
+  "contributor": "d.leigh"
+}

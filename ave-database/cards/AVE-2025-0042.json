@@ -1,0 +1,137 @@
+{
+  "ave_id": "AVE-2025-0042",
+  "name": "Checkpoint Injection Chain",
+  "aliases": ["Two-Stage RCE", "Surrogate-to-Constructor Chain", "Stateful Compound Exploit"],
+  "category": "structural",
+  "severity": "high",
+  "status": "theoretical",
+  "summary": "A compound, two-stage attack exploiting stateful agents: the first interaction injects a Unicode surrogate into persistent state to force a serialization format downgrade, and the second interaction injects a constructor payload that executes during the degraded deserialization — achieving RCE across separate agent sessions.",
+  "mechanism": "Stage 1: The attacker sends input containing a Unicode surrogate character (e.g., \\ud800) that is valid in Python strings but invalid in strict JSON. When the agent state is checkpointed, the serializer falls back from JSON to a less restrictive format (pickle or msgpack). Stage 2: In a subsequent interaction, the attacker injects a constructor payload (e.g., lc:2 constructor object) that would be rejected under strict JSON serialization but is accepted under the degraded fallback format. The payload executes on the next checkpoint load.",
+  "blast_radius": "Arbitrary code execution in the agent runtime. The chain nature makes detection difficult because the two stages can be separated by hours or days, and neither stage alone appears malicious.",
+  "prerequisite": "Agent with persistent state across sessions. Serializer with format fallback behavior. Attacker ability to inject content into agent state (via prompt, tool output, or memory write).",
+  "environment": {
+    "frameworks": ["LangGraph"],
+    "models_tested": [],
+    "multi_agent": false,
+    "tools_required": false,
+    "memory_required": true
+  },
+  "evidence": [
+    {
+      "experiment_id": "chain-analysis-2026-04",
+      "data_file": "Paper7_Agentic_Framework_Vulnerabilities.md",
+      "key_metric": "compound_exploit_chain",
+      "key_value": "Two-stage attack combining CVE-2025-64439 trigger with CVE-2026-27794/CVE-2026-28277 payload",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "Eliminate Format Fallback",
+      "description": "Never silently degrade serialization format. If strict JSON fails, raise an error rather than falling back to pickle or msgpack with unsafe options. Ensure the serializer either succeeds with a safe format or fails loudly.",
+      "effectiveness": "Breaks stage 1 of the chain"
+    },
+    {
+      "name": "Content Sanitization Before Persistence",
+      "description": "Strip or reject Unicode surrogates and other format-confusing content before serialization. Validate that all state data is representable in the strictest serialization format.",
+      "effectiveness": "Prevents the trigger payload from entering state"
+    },
+    {
+      "name": "Checkpoint Integrity Verification",
+      "description": "Cryptographically sign checkpoints at write time and verify signatures at load time. Detect any tampering between checkpoint write and read.",
+      "effectiveness": "Detects state corruption between stages"
+    },
+    {
+      "name": "Temporal Anomaly Detection",
+      "description": "Monitor for state content that changes serialization format between checkpoints. Alert on unexpected format transitions as indicators of stage-1 preparation.",
+      "effectiveness": "Early warning of chain-stage preparation"
+    }
+  ],
+  "date_discovered": "2026-04",
+  "date_published": "2026-04-11",
+  "cwe_mapping": "CWE-502 (Deserialization of Untrusted Data), CWE-694 (Use of Multiple Resources with Duplicate Identifier)",
+  "mitre_mapping": "",
+  "references": [
+    "https://github.com/langchain-ai/langgraph/security/advisories/GHSA-wwqv-p2pp-99h5",
+    "https://github.com/langchain-ai/langgraph/security/advisories/GHSA-mhr3-j7m5-c7c9",
+    "https://github.com/langchain-ai/langgraph/security/advisories/GHSA-g48c-2wqr-h844"
+  ],
+  "related_aves": ["AVE-2025-0041", "AVE-2025-0029", "AVE-2025-0037"],
+  "avss_score": {
+    "base_score": 6.8,
+    "temporal_score": 5.5,
+    "agentic_score": 8.5,
+    "overall_score": 6.8,
+    "severity_label": "high",
+    "vector_string": "AVSS:1.0/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H/TE:MED/AE:HIG",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "high",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "high",
+      "temporal": "medium",
+      "agentic": "high"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0042-v1",
+    "ave_id": "AVE-2025-0042",
+    "poc_type": "theoretical",
+    "status": "theoretical",
+    "version": 1,
+    "author": "NAIL Institute",
+    "description": "Theoretical compound exploit chain: (1) inject Unicode surrogate \\ud800 to force JSON→pickle/msgpack fallback, (2) inject lc:2 constructor payload that executes under degraded serialization mode",
+    "artifact_count": 0,
+    "scripts": [],
+    "logs": [],
+    "prompts": [],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "LangGraph",
+      "model": "Any",
+      "model_provider": "Any",
+      "hardware": "Any",
+      "packages": ["langgraph-checkpoint<3.0"],
+      "env_vars": [],
+      "notes": "Requires unpatched versions where both format fallback and constructor deserialization are enabled"
+    },
+    "created_at": "2026-04-11T00:00:00Z",
+    "verified_at": null,
+    "verified_by": null,
+    "notes": "Compound vulnerability — neither stage alone is sufficient for exploitation. Patching either AVE-0041 vector breaks the chain."
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0042",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 2,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2026-04-11T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Compound chain identified by combining CVE-2025-64439, CVE-2026-27794, and CVE-2026-28277"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2026-04-11T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Published as theoretical compound exploit in Paper 7 and AVE database"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-04-11T00:00:00Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  },
+  "contributor": "d.leigh"
+}

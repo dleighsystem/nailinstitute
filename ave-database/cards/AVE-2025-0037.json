@@ -1,0 +1,148 @@
+{
+  "ave_id": "AVE-2025-0037",
+  "name": "Serialization Confused Deputy",
+  "aliases": [
+    "Serialization Injection",
+    "Control Plane Data Mixing",
+    "lc Key Injection"
+  ],
+  "category": "injection",
+  "severity": "critical",
+  "status": "proven",
+  "summary": "Framework serialization formats use marker keys (e.g., 'lc') to distinguish serialized objects from plain data. When user-controlled data containing these markers is serialized and deserialized, injected structures are treated as legitimate framework objects, enabling secret extraction and arbitrary class instantiation.",
+  "mechanism": "Attacker injects {'lc': 1, 'type': 'secret', 'id': ['OPENAI_API_KEY']} into user-controlled fields (metadata, additional_kwargs, response_metadata). The dumps()/dumpd() functions fail to escape the 'lc' key. On deserialization via load()/loads() with secrets_from_env=True, the runtime resolves the injected reference to the actual environment variable value.",
+  "blast_radius": "Full environment variable exfiltration. Arbitrary class instantiation within trusted namespaces. Affects astream_events(v1), astream_log(), RunnableWithMessageHistory, InMemoryVectorStore, and all caching layers.",
+  "prerequisite": "Application uses framework serialization on data that includes user-controlled fields. Common in streaming, caching, and message history workflows.",
+  "environment": {
+    "frameworks": [
+      "LangChain",
+      "LangSmith"
+    ],
+    "models_tested": [],
+    "multi_agent": false,
+    "tools_required": false,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "CVE-2025-68664",
+      "data_file": "GHSA-c67j-w6g6-q2cm",
+      "key_metric": "secret_extraction_success",
+      "key_value": "100% with secrets_from_env=True",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "Serialization Escaping",
+      "description": "Escape user-controlled dictionaries containing 'lc' keys during serialization (patched in langchain-core ≥0.3.81)",
+      "effectiveness": "Eliminates injection vector"
+    },
+    {
+      "name": "Allowlist Enforcement",
+      "description": "Restrict deserialization to explicitly approved classes via allowed_objects parameter",
+      "effectiveness": "Prevents arbitrary class instantiation"
+    },
+    {
+      "name": "secrets_from_env=False Default",
+      "description": "Disable automatic environment variable resolution during deserialization",
+      "effectiveness": "Prevents secret extraction even if injection succeeds"
+    }
+  ],
+  "date_discovered": "2025-12",
+  "date_published": "2025-12-23",
+  "cwe_mapping": "CWE-502 (Deserialization of Untrusted Data), CWE-441 (Confused Deputy)",
+  "mitre_mapping": "",
+  "references": [
+    "https://github.com/langchain-ai/langchain/security/advisories/GHSA-c67j-w6g6-q2cm",
+    "https://nvd.nist.gov/vuln/detail/CVE-2025-68664"
+  ],
+  "related_aves": [
+    "AVE-2025-0026",
+    "AVE-2025-0028",
+    "AVE-2025-0019"
+  ],
+  "avss_score": {
+    "base_score": 9.3,
+    "temporal_score": 9.0,
+    "agentic_score": 9.5,
+    "overall_score": 9.3,
+    "severity_label": "critical",
+    "vector_string": "AVSS:1.0/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:L/A:N/TE:HIG/AE:HIG",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "none",
+      "user_interaction": "none",
+      "scope_change": "changed",
+      "confidentiality": "high",
+      "integrity": "low",
+      "availability": "none",
+      "temporal": "high",
+      "agentic": "high"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0037-v1",
+    "ave_id": "AVE-2025-0037",
+    "poc_type": "code_snippet",
+    "status": "verified",
+    "version": 1,
+    "author": "0xn3va / yardenporat353 (original reporters)",
+    "description": "Inject lc secret reference into user data, extract OPENAI_API_KEY via dumps/loads round-trip",
+    "artifact_count": 1,
+    "scripts": [],
+    "logs": [],
+    "prompts": [],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "LangChain",
+      "model": "N/A",
+      "model_provider": "N/A",
+      "hardware": "Any",
+      "packages": ["langchain-core<0.3.81"],
+      "env_vars": ["OPENAI_API_KEY"],
+      "notes": "Exploitable without LLM — pure serialization vulnerability"
+    },
+    "created_at": "2026-04-11T00:00:00Z",
+    "verified_at": "2025-12-23T00:00:00Z",
+    "verified_by": "LangChain Security Team",
+    "notes": "CVE-2025-68664. Patched in langchain-core >=0.3.81 and >=1.2.5."
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0037",
+    "current_stage": "mitigated",
+    "is_published": true,
+    "is_mitigated": true,
+    "event_count": 3,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-12-01T00:00:00Z",
+        "actor": "0xn3va, yardenporat353, VladimirEliTokarev",
+        "notes": "Reported to LangChain security"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-12-23T00:00:00Z",
+        "actor": "LangChain / GitHub Security Advisories",
+        "notes": "GHSA-c67j-w6g6-q2cm published"
+      },
+      {
+        "stage": "mitigated",
+        "timestamp": "2025-12-23T00:00:00Z",
+        "actor": "LangChain",
+        "notes": "Patched in langchain-core >=0.3.81 / >=1.2.5"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-04-11T00:00:00Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  },
+  "contributor": "d.leigh"
+}

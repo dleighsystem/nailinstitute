@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-03-18T21:02:24Z",
-  "total_cards": 36,
+  "generated_at": "2026-04-11T00:00:00Z",
+  "total_cards": 42,
   "cards": [
     {
       "ave_id": "AVE-2025-0001",
@@ -254,6 +254,48 @@
       "category": "alignment",
       "severity": "medium",
       "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0037",
+      "name": "Serialization Confused Deputy",
+      "category": "injection",
+      "severity": "critical",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0038",
+      "name": "Fail-Open Sandbox Degradation",
+      "category": "structural",
+      "severity": "critical",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0039",
+      "name": "Approval Display Divergence",
+      "category": "delegation",
+      "severity": "high",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0040",
+      "name": "Environment Inheritance Leak",
+      "category": "credential",
+      "severity": "high",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0041",
+      "name": "State Persistence Deserialization",
+      "category": "memory",
+      "severity": "critical",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2025-0042",
+      "name": "Checkpoint Injection Chain",
+      "category": "structural",
+      "severity": "high",
+      "status": "theoretical"
     }
   ]
 }

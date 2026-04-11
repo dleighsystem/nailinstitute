@@ -1,0 +1,162 @@
+{
+  "ave_id": "AVE-2025-0041",
+  "name": "State Persistence Deserialization",
+  "aliases": ["Checkpoint RCE", "Unsafe State Reload", "Persistence Layer Code Execution"],
+  "category": "memory",
+  "severity": "critical",
+  "status": "proven",
+  "summary": "Agentic frameworks that persist agent state (checkpoints, caches, stores) use unsafe deserialization by default — including pickle fallbacks, msgpack object reconstruction, and JSON constructor modes — enabling arbitrary code execution when the persistence layer is compromised.",
+  "mechanism": "Agent state serializers default to maximum flexibility: pickle.loads() for binary fallback, msgpack ext types for object reconstruction, and JSON constructor mode for custom class instantiation. An attacker with write access to the persistence backend (database, Redis, filesystem) injects a crafted payload that executes arbitrary code when the checkpoint is loaded.",
+  "blast_radius": "Arbitrary code execution in the agent runtime. Escalation from 'persistence layer write access' to full application compromise, including environment variable exfiltration and lateral movement.",
+  "prerequisite": "Agent with persistent state (checkpointer, cache, or store). Attacker with write access to the persistence backend.",
+  "environment": {
+    "frameworks": ["LangGraph", "smolagents"],
+    "models_tested": [],
+    "multi_agent": false,
+    "tools_required": false,
+    "memory_required": true
+  },
+  "evidence": [
+    {
+      "experiment_id": "CVE-2025-64439",
+      "data_file": "GHSA-wwqv-p2pp-99h5",
+      "key_metric": "rce_via_json_constructor",
+      "key_value": "os.system() execution via lc:2/constructor payload",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    },
+    {
+      "experiment_id": "CVE-2026-27794",
+      "data_file": "GHSA-mhr3-j7m5-c7c9",
+      "key_metric": "rce_via_pickle_fallback",
+      "key_value": "pickle.loads() on cache entries with pickle_fallback=True",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    },
+    {
+      "experiment_id": "CVE-2026-28277",
+      "data_file": "GHSA-g48c-2wqr-h844",
+      "key_metric": "object_reconstruction_via_msgpack",
+      "key_value": "Arbitrary object reconstruction during checkpoint load",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "Strict Serialization Mode",
+      "description": "Serialize only explicitly allowed types via schema-derived allowlists. Set LANGGRAPH_STRICT_MSGPACK=true. Default to pickle_fallback=False.",
+      "effectiveness": "Blocks arbitrary type reconstruction"
+    },
+    {
+      "name": "Persistence Layer Integrity",
+      "description": "Cryptographic integrity tags on serialized state. Restrict write access to persistence backends. Rotate credentials on suspected compromise.",
+      "effectiveness": "Prevents tampering with stored state"
+    },
+    {
+      "name": "Safe-by-Default Serialization",
+      "description": "Use allowlist-only serialization as the default, requiring explicit opt-out for unsafe modes",
+      "effectiveness": "Eliminates unsafe defaults"
+    }
+  ],
+  "date_discovered": "2025-10",
+  "date_published": "2025-11-05",
+  "cwe_mapping": "CWE-502 (Deserialization of Untrusted Data)",
+  "mitre_mapping": "",
+  "references": [
+    "https://github.com/langchain-ai/langgraph/security/advisories/GHSA-wwqv-p2pp-99h5",
+    "https://github.com/langchain-ai/langgraph/security/advisories/GHSA-mhr3-j7m5-c7c9",
+    "https://github.com/langchain-ai/langgraph/security/advisories/GHSA-g48c-2wqr-h844"
+  ],
+  "related_aves": ["AVE-2025-0001", "AVE-2025-0022", "AVE-2025-0029", "AVE-2025-0042"],
+  "avss_score": {
+    "base_score": 7.4,
+    "temporal_score": 7.0,
+    "agentic_score": 9.0,
+    "overall_score": 7.4,
+    "severity_label": "critical",
+    "vector_string": "AVSS:1.0/AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H/TE:HIG/AE:HIG",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "high",
+      "user_interaction": "none",
+      "scope_change": "unchanged",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "high",
+      "temporal": "high",
+      "agentic": "high"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2025-0041-v1",
+    "ave_id": "AVE-2025-0041",
+    "poc_type": "code_snippet",
+    "status": "verified",
+    "version": 1,
+    "author": "joernchen (original reporter for CVE-2025-64439)",
+    "description": "Inject Unicode surrogate to trigger JSON fallback → inject lc:2 constructor payload → os.system() executes on checkpoint load",
+    "artifact_count": 0,
+    "scripts": [],
+    "logs": [],
+    "prompts": [],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "LangGraph",
+      "model": "Any",
+      "model_provider": "Any",
+      "hardware": "Any",
+      "packages": ["langgraph-checkpoint<3.0"],
+      "env_vars": [],
+      "notes": "Patched in langgraph-checkpoint >=3.0 (JSON constructor), >=4.0 (pickle fallback), langgraph >=1.0.10 (msgpack)"
+    },
+    "created_at": "2026-04-11T00:00:00Z",
+    "verified_at": "2025-11-05T00:00:00Z",
+    "verified_by": "LangGraph Security Team",
+    "notes": "Three distinct deserialization vectors in the same serializer (JsonPlusSerializer)"
+  },
+  "timeline": {
+    "ave_id": "AVE-2025-0041",
+    "current_stage": "mitigated",
+    "is_published": true,
+    "is_mitigated": true,
+    "event_count": 4,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2025-10-01T00:00:00Z",
+        "actor": "joernchen",
+        "notes": "JSON constructor mode RCE reported"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2025-11-05T00:00:00Z",
+        "actor": "LangGraph / GitHub Security",
+        "notes": "GHSA-wwqv-p2pp-99h5 (CVE-2025-64439)"
+      },
+      {
+        "stage": "published",
+        "timestamp": "2026-02-23T00:00:00Z",
+        "actor": "Trend Micro ZDI",
+        "notes": "ZDI-CAN-28385 / GHSA-mhr3-j7m5-c7c9 (CVE-2026-27794)"
+      },
+      {
+        "stage": "mitigated",
+        "timestamp": "2026-03-05T00:00:00Z",
+        "actor": "LangGraph",
+        "notes": "All three vectors patched across checkpoint >=3.0, >=4.0, langgraph >=1.0.10"
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-04-11T00:00:00Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  },
+  "contributor": "d.leigh"
+}
