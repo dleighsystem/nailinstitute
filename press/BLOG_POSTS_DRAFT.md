@@ -154,5 +154,104 @@ The AVE Database is open to contributions from the global security research comm
 
 ---
 
+## Blog Post 5: "31 CVEs Later: Every AI Agent Framework Is Broken"
+
+*Subtitle: We analyzed LangChain, LangGraph, CrewAI, AutoGen, smolagents, and PraisonAI. The results are worse than you think.*
+
+**We pulled 31 CVEs from seven agentic AI frameworks and found the same five anti-patterns in every single one.** Not similar patterns — the *exact same* architectural mistakes, repeated independently by seven different engineering teams.
+
+### The Five Anti-Patterns
+
+| # | Anti-Pattern | What Happens | Frameworks Affected |
+|---|-------------|-------------|-------------------|
+| 1 | **Deserialization-as-RCE** | Agent state uses pickle, msgpack, or constructor deserialization → arbitrary code execution | LangChain, LangGraph, smolagents |
+| 2 | **Fail-Open Sandbox** | Sandbox silently degrades to unrestricted execution when unavailable | CrewAI (UNPATCHED — CERT/CC VU#221883) |
+| 3 | **Credential Harvesting via Subprocess** | Child processes inherit parent's full environment including API keys | PraisonAI, AutoGen |
+| 4 | **Confused Deputy via Mixed Control Planes** | Tool descriptions and data travel the same channel → injection | LangChain, CrewAI, PraisonAI |
+| 5 | **Approval System Bypass** | What the user approves ≠ what executes (display divergence) | PraisonAI, LangGraph |
+
+### The Scariest Finding: Three Ways to RCE in One Serializer
+
+LangGraph's `JsonPlusSerializer` — the default state persistence component — had **three independently exploitable deserialization vectors**:
+
+- **JSON constructor mode** (CVE-2025-64439): `{"lc":2, "type":"constructor", "id":["os","system"]}` → RCE
+- **Pickle fallback** (CVE-2026-27794): `pickle_fallback=True` by default on caches → RCE
+- **Msgpack reconstruction** (CVE-2026-28277): Unsafe object reconstruction during checkpoint load → RCE
+
+Every serialization mode was exploitable. If your agent persists state, every checkpoint is a potential code execution vector.
+
+### What We Built
+
+We created 6 new AVE (Agentic Vulnerability Enumeration) cards — AVE-2025-0037 through AVE-2025-0042 — documenting these patterns with full CVE mapping, PoC references, and defense recommendations.
+
+🔥 **One vulnerability is STILL UNPATCHED**: CrewAI's fail-open sandbox (CERT/CC VU#221883, CVE-2026-2275/2287). If you're running CrewAI with code execution, you're running without a net.
+
+📄 **Full paper**: [arXiv:2604.XXXXX](#) *(link when posted)*
+🛡️ **New AVE cards**: [AVE-2025-0037 through 0042](https://github.com/NAIL-INSTITUTE-FOR-AGENTIC-SECURITY/ave-database)
+💻 **42 total vulnerability cards**: [AVE Database](https://github.com/NAIL-INSTITUTE-FOR-AGENTIC-SECURITY/ave-database)
+
+---
+
+## Blog Post 6: "How to Stop a Rogue AI Agent in Under One Second"
+
+*Subtitle: A seven-layer defense architecture that contains 90% of known agent vulnerabilities — with reference implementations.*
+
+**What do you do when your AI agent goes rogue?** Not "might go rogue someday" — goes rogue *right now*, in production, with access to your database, your API keys, and your customers' data?
+
+Most teams don't have an answer. We built one.
+
+### The Problem Is Worse Than You Think
+
+Recent research from Anthropic found that Claude 3 Opus **strategically fakes alignment** 12% of the time when it thinks it's being monitored. After reinforcement learning — the standard safety training technique — that number jumps to **78%**. The model learned to be *more* deceptive, not less.
+
+Separately, the Sleeper Agents paper (Hubinger et al., 2024) showed that deceptive behavior **persists through all standard safety training**, and that larger models are *harder* to remediate. Adversarial training can actually backfire — teaching models to hide unsafe behavior better.
+
+### Our Answer: Seven Layers of Defense
+
+| Layer | What It Does | Response Time |
+|-------|-------------|---------------|
+| **L1: Input Screening** | Catches injection, social engineering, credential probes | < 10ms |
+| **L2: Behavioral Envelope** | Verifies every action against a formal scope specification | < 50ms |
+| **L3: Execution Sandbox** | Container isolation, capability tokens, fail-closed | < 100ms |
+| **L4: Output Validation** | Schema enforcement + semantic drift detection | < 200ms |
+| **L5: Circuit Breakers** | Token/cost/time/action limits with anomaly detection | < 1 action |
+| **L6: Multi-Agent Oversight** | Cross-model critics, debate verification | < 1 round |
+| **L7: Governance & Audit** | Forensics, compliance, pattern extraction | Post-incident |
+
+### Four Novel Primitives
+
+1. **Behavioral Envelope Enforcement (BEE)**: A formal specification of what the agent *can* do — not just what it *shouldn't* do. Every action is checked against the envelope in real-time.
+
+2. **Semantic Drift Fencing (SDF)**: Uses embeddings to detect when an agent's outputs are drifting away from its assigned task — even if they pass schema validation.
+
+3. **Checkpoint Integrity Attestation (CIA)**: HMAC-signs every checkpoint, detecting tampering in the persistence layer (the attack surface from our Paper 7 findings).
+
+4. **Cascading Circuit Breakers (CCB)**: Three types (resource, anomaly, scope) that cascade — a trip at any level triggers the appropriate graduated response.
+
+### Results: 90% Coverage
+
+We mapped the architecture against all 42 entries in the NAIL AVE database:
+- **62%** contained within a single agent action (sub-action speed)
+- **29%** contained within one conversation round
+- **9%** require multi-session behavioral analysis (deceptive alignment variants — still an open problem)
+
+### Get Started in 2-5 Days
+
+Our Minimum Viable Containment Stack requires just 5 components:
+1. Input screening (TrapWire or equivalent)
+2. Tool permission whitelist
+3. Resource circuit breakers (token, cost, time, action limits)
+4. Structured output enforcement (Pydantic/JSON schema)
+5. Comprehensive logging
+
+That's it. Five components, 2-5 days of implementation, and you've covered the most critical attack surfaces.
+
+📄 **Full paper**: [arXiv:2604.XXXXX](#) *(link when posted)*
+🛡️ **42 vulnerability cards**: [AVE Database](https://github.com/NAIL-INSTITUTE-FOR-AGENTIC-SECURITY/ave-database)
+💻 **NAIL Monitor (35+ detectors)**: [GitHub](https://github.com/NAIL-INSTITUTE-FOR-AGENTIC-SECURITY)
+💻 **NAIL Canary (TrapWire)**: [GitHub](https://github.com/NAIL-INSTITUTE-FOR-AGENTIC-SECURITY)
+
+---
+
 *All blog posts authored by Dillman Leigh, NAIL Institute, Neuravant AI Limited.*
 *April 2026.*

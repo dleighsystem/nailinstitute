@@ -16,6 +16,9 @@
 | 🔴 **URGENT** | Submit full papers to **ACM CCS Cycle B** | **April 29, 2026** | ~3 weeks |
 | 🟡 **CRITICAL** | Register abstracts at **NeurIPS 2026** | **May 4, 2026 AoE** | ~4 weeks |
 | 🟡 **CRITICAL** | Submit full papers to **NeurIPS 2026** | **May 6, 2026 AoE** | ~4.5 weeks |
+| 🔴 **IMMEDIATE** | Post Papers 7 & 8 to **arXiv** | NOW | 0 |
+| 🔴 **IMMEDIATE** | Publish blog summaries for Papers 7 & 8 | NOW | 0 |
+| 🔴 **IMMEDIATE** | Push AVE-0037–0042 to **org repo** | NOW | 0 |
 | ⬜ FUTURE | **USENIX Security '27 Cycle 1** | ~Aug 2026 (est.) | ~4 months |
 | ⬜ FUTURE | **AAAI 2027** | ~Aug 2026 (est.) | ~4 months |
 | ⬜ FUTURE | **IEEE S&P 2027** | TBD | TBD |
@@ -98,6 +101,22 @@
 **Primary Target: arXiv (IMMEDIATE)** → then **JAIR** (extended version)
 - **Why arXiv first**: Establishes priority NOW, no review delay, citeable immediately
 - **Category**: cs.CR (Cryptography and Security) + cs.AI + cs.MA
+
+### Paper 7: Systematic Analysis of Agentic Framework Vulnerabilities (31 CVEs)
+**Primary Target: ACM CCS 2026 Cycle C** or **USENIX Security '27 Cycle 1**
+- **Track**: "Security and Privacy of Machine Learning" or "Software Security"
+- **Why**: First systematic CVE-backed analysis of agentic frameworks, 31 real CVEs across 7 frameworks, 5 novel anti-patterns, 6 new AVE classes
+- **Deadline**: CCS Cycle C (~July 2026) or USENIX Security '27 Cycle 1 (~Aug 2026)
+- **Backup**: IEEE S&P 2027
+- **PDF**: ✅ Generated (124KB)
+
+### Paper 8: Real-Time Detection, Prevention, and Containment of Rogue Autonomous Agents
+**Primary Target: IEEE S&P 2027** or **USENIX Security '27 Cycle 1**
+- **Track**: Systems security, AI safety
+- **Why**: Novel seven-layer defense architecture, four new containment primitives (BEE, SDF, CIA, CCB), 90% AVE coverage, reference implementations
+- **Deadline**: IEEE S&P 2027 (TBD) or USENIX Security '27 Cycle 1 (~Aug 2026)
+- **Backup**: ACM CCS 2026 Cycle C
+- **PDF**: ✅ Generated (150KB)
 - **Extended journal version**: JAIR or ACM Computing Surveys (6-12 month timeline)
 
 ---
@@ -204,6 +223,8 @@ Publish accessible summaries (not the full academic papers) that drive traffic t
 | "We Built the MITRE ATT&CK for AI Agents" | AVE Database | Industry standard framing | Security community, CISOs |
 | "The Complete Map: 13 Ways AI Agents Fail" | Paper 6 (Taxonomy TR) | Comprehensive overview | Everyone |
 | "Quantum Computing Meets AI Security" | Paper 3 (Quantum Defenses) | Novel tech angle | Quantum + AI audience |
+| "31 CVEs Later: Every AI Agent Framework Is Broken" | Paper 7 (Framework CVEs) | CVE-backed exposé | Security teams, developers, press |
+| "How to Stop a Rogue AI Agent in Under One Second" | Paper 8 (Rogue Containment) | Practical defense architecture | CISOs, ML engineers, regulators |
 
 ### Blog SEO Keywords
 
@@ -275,6 +296,8 @@ This creates a discovery funnel: industry practitioners find the blog via search
 | Paper 4 (Active Forgetting) | arXiv:2604.02280 (Fofadiya & Tiwari) | +22.8pp accuracy, 97.99% less memory |
 | Paper 5 (Contagion) | arXiv:2604.01350 (Yang et al.) | First to show defense (R₀ 35.7→3.5) |
 | Paper 6 (Taxonomy TR) | Multiple partial overlaps | Only comprehensive 13-pathology taxonomy |
+| Paper 7 (Framework CVEs) | No direct competitor yet | First systematic CVE analysis of agentic frameworks |
+| Paper 8 (Rogue Containment) | Partial overlaps (guardrail papers) | First unified seven-layer containment architecture |
 
 ---
 
