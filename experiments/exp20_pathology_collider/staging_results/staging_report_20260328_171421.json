@@ -1,0 +1,93 @@
+{
+  "pipeline": "qaoa_staging_deploy",
+  "timestamp": "2026-03-28T17:14:21.695912+00:00",
+  "config": {
+    "rounds": 5,
+    "trials": 2,
+    "model": "nemotron:70b",
+    "dry_run": true
+  },
+  "trials": [
+    {
+      "trial_id": 1,
+      "ga_fitness": 0.726,
+      "qaoa_fitness": 0.726,
+      "fitness_delta": 0.0,
+      "quantum_wins": false,
+      "ga_time_seconds": 2071.1,
+      "qaoa_time_seconds": 1618.5,
+      "ga_metrics": {
+        "detection_rate": 1.0,
+        "stealth_score": 0.0,
+        "accuracy": 0.36,
+        "memory_corruption": 0.0,
+        "drift": 1.6136,
+        "interventions": 5,
+        "insertions_blocked": 5,
+        "budget_consumed": 19500,
+        "quantum_anomalies": 2
+      },
+      "qaoa_metrics": {
+        "detection_rate": 1.0,
+        "stealth_score": 0.0,
+        "accuracy": 0.36,
+        "memory_corruption": 0.0,
+        "drift": 2.8287,
+        "interventions": 5,
+        "insertions_blocked": 5,
+        "budget_consumed": 18414,
+        "quantum_anomalies": 2
+      }
+    },
+    {
+      "trial_id": 2,
+      "ga_fitness": 0.726,
+      "qaoa_fitness": 0.698,
+      "fitness_delta": -0.028,
+      "quantum_wins": false,
+      "ga_time_seconds": 1949.5,
+      "qaoa_time_seconds": 1614.6,
+      "ga_metrics": {
+        "detection_rate": 1.0,
+        "stealth_score": 0.0,
+        "accuracy": 0.36,
+        "memory_corruption": 0.0,
+        "drift": 0.2513,
+        "interventions": 5,
+        "insertions_blocked": 5,
+        "budget_consumed": 20691,
+        "quantum_anomalies": 0
+      },
+      "qaoa_metrics": {
+        "detection_rate": 1.0,
+        "stealth_score": 0.0,
+        "accuracy": 0.28,
+        "memory_corruption": 0.0,
+        "drift": 1.1769,
+        "interventions": 5,
+        "insertions_blocked": 5,
+        "budget_consumed": 17513,
+        "quantum_anomalies": 2
+      }
+    }
+  ],
+  "decision": {
+    "recommend_deploy": false,
+    "confidence": 0.0,
+    "fitness_improvement": -0.014,
+    "accuracy_improvement": -0.04,
+    "corruption_delta": 0.0,
+    "drift_delta": 1.0703,
+    "win_rate": "0/2",
+    "reasons": [
+      "\u274c Quantum only wins 0/2 (0%)",
+      "\u274c Fitness improvement: +-0.0140 (below 0.01)",
+      "\u274c Accuracy regressed: -4.0%",
+      "\u2705 Corruption delta: +0.0% (limit: +2%)"
+    ],
+    "warnings": [
+      "\u26a0\ufe0f Drift regressed: +1.0703 (exceeds +0.05)"
+    ]
+  },
+  "deployed_config": null
+}

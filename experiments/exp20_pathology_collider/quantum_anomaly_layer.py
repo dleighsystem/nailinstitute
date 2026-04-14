@@ -45,6 +45,12 @@ from typing import Any, Optional
 
 from .pathology_bridge import PathologyBridge, Alert, AlertLevel
 
+# Optional VQC adapter (Phase 2 v3 integration)
+try:
+    from .vqc_adapter import VQCModelAdapter
+except ImportError:
+    VQCModelAdapter = None  # type: ignore[assignment,misc]
+
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Feature extraction constants
@@ -324,10 +330,11 @@ class QuantumAnomalyDetector:
     """
     Layer 5 defense: quantum-kernel anomaly detection.
 
-    Uses a three-tier detection fallback:
-      1. Quantum reservoir (temporal, requires window_size observations)
-      2. Pre-trained quantum kernel SVM (single-observation)
-      3. Heuristic threshold-based (always available)
+    Uses a four-tier detection fallback:
+      1. VQC binary classifier (trained variational quantum circuit)
+      2. Quantum reservoir (temporal, requires window_size observations)
+      3. Pre-trained quantum kernel SVM (single-observation)
+      4. Heuristic threshold-based (always available)
 
     Unlike Layers 1-4 which detect *specific* attack signatures, Layer 5
     detects *novel* out-of-distribution behaviors using the quantum kernel's
@@ -336,6 +343,7 @@ class QuantumAnomalyDetector:
     Args:
         bridge: PathologyBridge to report alerts to
         model_path: Path to pre-trained quantum kernel SVM model
+        vqc_model_path: Path to trained VQC binary weights (phase2_vqc_v3)
         reservoir_model_path: Path to exported reservoir readout weights
         anomaly_threshold: Minimum confidence to fire an alert (0.0-1.0)
         enable_heuristic_fallback: If True, use heuristic when no model loaded
@@ -345,6 +353,7 @@ class QuantumAnomalyDetector:
         self,
         bridge: PathologyBridge,
         model_path: Optional[str | Path] = None,
+        vqc_model_path: Optional[str | Path] = None,
         reservoir_model_path: Optional[str | Path] = None,
         anomaly_threshold: float = 0.3,
         enable_heuristic_fallback: bool = True,
@@ -352,6 +361,21 @@ class QuantumAnomalyDetector:
         self.bridge = bridge
         self.anomaly_threshold = anomaly_threshold
         self.enable_heuristic = enable_heuristic_fallback
+
+        # Tier 0 (highest priority): VQC binary classifier
+        self.vqc: Optional[Any] = None
+        if vqc_model_path and VQCModelAdapter is not None:
+            if os.path.exists(vqc_model_path):
+                try:
+                    self.vqc = VQCModelAdapter.load(vqc_model_path)
+                except Exception as e:
+                    self.bridge.receive_alert(Alert(
+                        layer="quantum",
+                        level=AlertLevel.SUSPICIOUS,
+                        round_num=0,
+                        message=f"Failed to load VQC model: {e}. Falling back to SVM/reservoir.",
+                        details={"model_path": str(vqc_model_path), "error": str(e)},
+                    ))
 
         # Tier 1: Quantum reservoir (temporal)
         self.reservoir: Optional[QuantumReservoirModel] = None
@@ -420,8 +444,12 @@ class QuantumAnomalyDetector:
         if len(self._observation_window) > self._window_size:
             self._observation_window = self._observation_window[-self._window_size:]
 
+        # Tier 0: Try VQC binary classifier (highest priority)
+        if self.vqc is not None:
+            label, confidence = self.vqc.predict(features)
+            model_type = f"quantum_vqc ({self.vqc.mode})"
         # Tier 1: Try reservoir (temporal classification)
-        if self.reservoir and len(self._observation_window) >= self._window_size:
+        elif self.reservoir and len(self._observation_window) >= self._window_size:
             label, confidence = self.reservoir.predict(self._observation_window)
             model_type = "quantum_reservoir"
         # Tier 2/3: Fall back to SVM or heuristic
@@ -530,7 +558,7 @@ class QuantumAnomalyDetector:
 
     def get_stats(self) -> dict:
         """Return Layer 5 statistics."""
-        return {
+        stats = {
             "total_observations": self.observations,
             "anomalies_detected": self.anomalies_detected,
             "suspicious_detected": self.suspicious_detected,
@@ -540,5 +568,8 @@ class QuantumAnomalyDetector:
             ),
             "model_loaded": self.model is not None and self.model.support_vectors is not None,
             "using_heuristic": self.model is not None and self.model.support_vectors is None,
+            "vqc_loaded": self.vqc is not None,
+            "vqc_info": self.vqc.get_info() if self.vqc is not None else None,
             "trend": self.get_trend(),
         }
+        return stats

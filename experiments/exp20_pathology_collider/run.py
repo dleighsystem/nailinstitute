@@ -29,13 +29,29 @@ import sys
 import time
 from pathlib import Path
 from datetime import datetime, timedelta
+from typing import Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from shared.config import PRIMARY_MODEL, FAST_MODEL, DATA_DIR
 from shared.logger import ExperimentLogger
 
 
-def run(num_rounds: int = 20, model: str = PRIMARY_MODEL, fast_model: str = FAST_MODEL):
+def _find_vqc_weights() -> Optional[str]:
+    """Auto-discover the latest VQC binary weights."""
+    candidates = [
+        Path(__file__).resolve().parent.parent.parent / "quantum-research" / "experiments" / "models",
+        Path("/home/dleighsystems/quantum-research/experiments/models"),
+    ]
+    for d in candidates:
+        if d.exists():
+            files = sorted(d.glob("vqc_binary_weights_*.json"))
+            if files:
+                return str(files[-1])
+    return None
+
+
+def run(num_rounds: int = 20, model: str = PRIMARY_MODEL, fast_model: str = FAST_MODEL,
+        vqc_weights: Optional[str] = None):
     """Run the full Pathology Collider experiment."""
 
     print("\n" + "=" * 70)
@@ -47,9 +63,11 @@ def run(num_rounds: int = 20, model: str = PRIMARY_MODEL, fast_model: str = FAST
     print("  ║  Red Team: EDoS + Memory Sleepers + Context Poisoning       ║")
     print("  ║  Blue Team: Research Analyst + 4 Defense Layers             ║")
     print("  ║                                                             ║")
+    vqc_display = Path(vqc_weights).name if vqc_weights else "DISABLED (heuristic)"
     print(f"  ║  Rounds per phase: {num_rounds:<43}║")
     print(f"  ║  Model:            {model:<43}║")
     print(f"  ║  Fast model:       {fast_model:<43}║")
+    print(f"  ║  VQC Tier 0:       {vqc_display:<43}║")
     print("  ╚═══════════════════════════════════════════════════════════════╝")
     print("=" * 70 + "\n")
 
@@ -75,6 +93,7 @@ def run(num_rounds: int = 20, model: str = PRIMARY_MODEL, fast_model: str = FAST
         model=model,
         fast_model=fast_model,
         logger=logger,
+        vqc_model_path=vqc_weights,
     )
     scoreboard = collider.run_full_collider()
 
@@ -150,8 +169,27 @@ def main():
         "--fast-model", type=str, default=FAST_MODEL,
         help=f"Fast model for defense layer oversight (default: {FAST_MODEL})"
     )
+    parser.add_argument(
+        "--vqc-weights", type=str, default=None,
+        help="Path to VQC binary weights JSON (auto-detected if not specified)"
+    )
+    parser.add_argument(
+        "--no-vqc", action="store_true",
+        help="Disable VQC quantum classification (use heuristic fallback only)"
+    )
     args = parser.parse_args()
-    run(num_rounds=args.rounds, model=args.model, fast_model=args.fast_model)
+
+    # Auto-discover VQC weights unless disabled
+    vqc_path = None
+    if not args.no_vqc:
+        vqc_path = args.vqc_weights or _find_vqc_weights()
+        if vqc_path:
+            print(f"  ✅ VQC weights found: {Path(vqc_path).name}")
+        else:
+            print("  ⚠️  No VQC weights found — using heuristic fallback")
+
+    run(num_rounds=args.rounds, model=args.model, fast_model=args.fast_model,
+        vqc_weights=vqc_path)
 
 
 if __name__ == "__main__":

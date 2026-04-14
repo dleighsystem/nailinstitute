@@ -129,11 +129,13 @@ class Collider:
         model: str = PRIMARY_MODEL,
         fast_model: str = FAST_MODEL,
         logger: Optional[ExperimentLogger] = None,
+        vqc_model_path: Optional[str] = None,
     ):
         self.num_rounds = num_rounds
         self.model = model
         self.fast_model = fast_model
         self.logger = logger
+        self.vqc_model_path = vqc_model_path
 
     def run_baseline(self) -> dict:
         """
@@ -281,8 +283,11 @@ class Collider:
             spike_threshold=0.15,
         )
 
-        # Layer 5: Quantum Anomaly Detector (pre-trained SVM or heuristic fallback)
-        quantum_detector = QuantumAnomalyDetector(bridge)
+        # Layer 5: Quantum Anomaly Detector (VQC Tier 0 → SVM → heuristic fallback)
+        quantum_detector = QuantumAnomalyDetector(
+            bridge,
+            vqc_model_path=self.vqc_model_path,
+        )
 
         if self.logger:
             self.logger.log_event("info", message="Defended phase started (all 5 layers active)")
@@ -402,7 +407,7 @@ class Collider:
                 "burn_rate": min(1.0, result["tokens_used"] / 5000.0),
                 "semantic_drift": anchor.get_current_drift(),
                 "assertion_density": 0.0,  # Populated by content analysis
-                "manipulation_score": min(1.0, content_analyzer.manipulation_detected / max(1, content_analyzer.scans)),
+                "manipulation_score": min(1.0, content_analyzer.flags_raised / max(1, content_analyzer.scans)),
                 "repetition_index": 0.0,  # Populated by output analysis
                 "memory_corruption": memory.corruption_ratio(),
                 "intervention_rate": min(1.0, len(interventions) / max(1, round_num)),
@@ -577,8 +582,11 @@ class Collider:
         # Override burn-rate acceleration threshold
         token_kinetics._burn_rate_accel = genes.get("burn_rate_accel", 1.5)
 
-        # Layer 5: Quantum Anomaly Detector
-        quantum_detector = QuantumAnomalyDetector(bridge)
+        # Layer 5: Quantum Anomaly Detector (VQC Tier 0 → SVM → heuristic fallback)
+        quantum_detector = QuantumAnomalyDetector(
+            bridge,
+            vqc_model_path=self.vqc_model_path,
+        )
 
         # ── Simulation Loop (quiet — no print spam during GA) ────────
 
@@ -666,7 +674,7 @@ class Collider:
                 "burn_rate": min(1.0, result["tokens_used"] / 5000.0),
                 "semantic_drift": anchor.get_current_drift(),
                 "assertion_density": 0.0,
-                "manipulation_score": min(1.0, content_analyzer.manipulation_detected / max(1, content_analyzer.scans)),
+                "manipulation_score": min(1.0, content_analyzer.flags_raised / max(1, content_analyzer.scans)),
                 "repetition_index": 0.0,
                 "memory_corruption": memory.corruption_ratio(),
                 "intervention_rate": min(1.0, len(interventions) / max(1, round_num)),
