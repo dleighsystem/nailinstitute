@@ -53,18 +53,36 @@ Attack scenarios are mapped via `CATEGORY_TO_DIMENSION` into **6 core NAIL dimen
 > [!IMPORTANT]
 > **Binding is impossible without a passing NAIL Score (AAA–A).** Applicants are stress-tested with live attacks; they cannot "questionnaire" their way into coverage.
 
+### Rating Taxonomy — Canonical Cross-Reference
+
+The table below is the **single source of truth** for how the three scales (Risk Score, Letter Grade, Premium Tier) map to each other. All code (`rating.py`, `policy_engine.py`) and all documents (`02_RATING_MANUAL.md`, `Carrier_Executive_Summary.md`) must use this taxonomy.
+
+| Risk Score (1–100) | Band | Composite (0.0–1.0) | Letter Grade | Premium Tier | Base Monthly | Max Coverage | Insurable? |
+|--------------------:|------|---------------------:|--------------|-------------|-------------|-------------|------------|
+| 1–35 | 🟢 Green | ≥ 0.90 | **AAA** | Enterprise | £799 | £250,000 | ✅ |
+| 36–60 | 🟡 Amber | ≥ 0.80 | **AA** | Professional | £199 | £50,000 | ✅ |
+| 61–80 | 🔴 Red | ≥ 0.70 | **A** | Starter | £49 | £10,000 | ✅ |
+| 81–100 | ⚫ Black | < 0.70 | **FAIL** | Decline | — | — | ❌ |
+
+> **Composite ↔ Risk Score relationship:** `Composite ≈ 1.0 − (Risk Score / 100)`. A Risk Score of 25 ≈ composite 0.75 is an approximation — the actual composite is derived from weighted dimension scores, not a simple linear inversion. The banding boundaries are the authoritative thresholds.
+
 ---
 
 ## 3. Rating → Premium Mapping
 
-A passing rating automatically triggers the `_auto_create_draft_policy` function, which maps the score to a coverage tier:
+A passing rating automatically triggers the `_auto_create_draft_policy` function, which maps the score to a coverage tier.
 
-| Rating | Tier | Coverage Limit | Monthly Premium | Annual Premium |
-|--------|------|----------------|-----------------|----------------|
-| **AAA** | Enterprise | £1,000,000 | £2,500 | £30,000 |
-| **AA** | Professional | £100,000 | £750 | £9,000 |
-| **A** | Starter | £10,000 | £250 | £3,000 |
+> [!IMPORTANT]
+> **Canonical pricing is defined in `02_RATING_MANUAL.md`.** The table below shows the commercial base rates used for all live pricing, bordereaux, and P&L projections. Risk-score multipliers, topology loadings, and discounts are applied on top of these base rates — see Rating Manual Section 4 for the full formula.
+
+| Rating | Tier | Max Coverage | Base Monthly Premium | Base Annual Premium |
+|--------|------|-------------|---------------------|--------------------|
+| **AAA** | Enterprise | £250,000 | £799 | £9,588 |
+| **AA** | Professional | £50,000 | £199 | £2,388 |
+| **A** | Starter | £10,000 | £49 | £588 |
 | **B or below** | ❌ Denied | — | — | — |
+
+> **Note on limits:** The £250K per-occurrence maximum is structurally aligned with the reinsurance programme (£200K xs £50K XL layer — see `06_REINSURANCE.md`). Higher limits require bespoke capacity placement.
 
 Additionally, a one-time security audit is available at **£499** for organisations that want the diagnostic without binding cover.
 
