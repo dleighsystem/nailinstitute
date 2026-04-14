@@ -1,0 +1,4430 @@
+{
+  "experiment": "exp31_contagion_pandemic",
+  "timestamp": "2026-03-29T10:17:54.435798+00:00",
+  "config": {
+    "num_agents": 10,
+    "num_rounds": 20,
+    "infection_rate": 0.3,
+    "patient_zero": 2,
+    "seed": 42
+  },
+  "control": {
+    "arm": "CONTROL (No Defenses)",
+    "r0": 35.7,
+    "total_infected": 10,
+    "infection_rate_final": 1.0,
+    "first_secondary_infection_round": 1,
+    "fifty_pct_infection_round": 2,
+    "fleet_status": {
+      "clean": 0,
+      "exposed": 0,
+      "infected": 10,
+      "quarantined": 0,
+      "agents": [
+        {
+          "agent_id": 0,
+          "name": "Agent_00",
+          "infection_status": "infected",
+          "infection_round": 19,
+          "infected_by": 9,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 110
+        },
+        {
+          "agent_id": 1,
+          "name": "Agent_01",
+          "infection_status": "infected",
+          "infection_round": 19,
+          "infected_by": 5,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 109
+        },
+        {
+          "agent_id": 2,
+          "name": "Agent_02",
+          "infection_status": "infected",
+          "infection_round": 20,
+          "infected_by": 6,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 110
+        },
+        {
+          "agent_id": 3,
+          "name": "Agent_03",
+          "infection_status": "infected",
+          "infection_round": 20,
+          "infected_by": 7,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 111
+        },
+        {
+          "agent_id": 4,
+          "name": "Agent_04",
+          "infection_status": "infected",
+          "infection_round": 20,
+          "infected_by": 3,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 117
+        },
+        {
+          "agent_id": 5,
+          "name": "Agent_05",
+          "infection_status": "infected",
+          "infection_round": 18,
+          "infected_by": 2,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 104
+        },
+        {
+          "agent_id": 6,
+          "name": "Agent_06",
+          "infection_status": "infected",
+          "infection_round": 19,
+          "infected_by": 9,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 100
+        },
+        {
+          "agent_id": 7,
+          "name": "Agent_07",
+          "infection_status": "infected",
+          "infection_round": 18,
+          "infected_by": 4,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 111
+        },
+        {
+          "agent_id": 8,
+          "name": "Agent_08",
+          "infection_status": "infected",
+          "infection_round": 19,
+          "infected_by": 5,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 110
+        },
+        {
+          "agent_id": 9,
+          "name": "Agent_09",
+          "infection_status": "infected",
+          "infection_round": 20,
+          "infected_by": 7,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 114
+        }
+      ]
+    },
+    "shared_db_stats": {
+      "total_entries": 200,
+      "poisoned_entries": 194,
+      "poisoned_ratio": 0.97,
+      "total_retrievals": 200,
+      "poisoned_retrievals": 197,
+      "contamination_rate": 0.985,
+      "firewall_blocked": 0
+    },
+    "contagion_events": [
+      {
+        "round": 1,
+        "from_agent": 2,
+        "to_agent": 7,
+        "infection_prob": 0.1025,
+        "cumulative_exposures": 2
+      },
+      {
+        "round": 1,
+        "from_agent": 2,
+        "to_agent": 3,
+        "infection_prob": 0.2049,
+        "cumulative_exposures": 2
+      },
+      {
+        "round": 1,
+        "from_agent": 2,
+        "to_agent": 5,
+        "infection_prob": 0.2235,
+        "cumulative_exposures": 3
+      },
+      {
+        "round": 1,
+        "from_agent": 5,
+        "to_agent": 8,
+        "infection_prob": 0.1678,
+        "cumulative_exposures": 3
+      },
+      {
+        "round": 2,
+        "from_agent": 8,
+        "to_agent": 1,
+        "infection_prob": 0.1544,
+        "cumulative_exposures": 3
+      },
+      {
+        "round": 2,
+        "from_agent": 1,
+        "to_agent": 4,
+        "infection_prob": 0.146,
+        "cumulative_exposures": 6
+      },
+      {
+        "round": 2,
+        "from_agent": 2,
+        "to_agent": 7,
+        "infection_prob": 0.1108,
+        "cumulative_exposures": 4
+      },
+      {
+        "round": 2,
+        "from_agent": 3,
+        "to_agent": 5,
+        "infection_prob": 0.1962,
+        "cumulative_exposures": 7
+      },
+      {
+        "round": 2,
+        "from_agent": 5,
+        "to_agent": 3,
+        "infection_prob": 0.118,
+        "cumulative_exposures": 6
+      },
+      {
+        "round": 2,
+        "from_agent": 3,
+        "to_agent": 6,
+        "infection_prob": 0.2195,
+        "cumulative_exposures": 8
+      },
+      {
+        "round": 2,
+        "from_agent": 6,
+        "to_agent": 7,
+        "infection_prob": 0.1792,
+        "cumulative_exposures": 5
+      },
+      {
+        "round": 2,
+        "from_agent": 7,
+        "to_agent": 8,
+        "infection_prob": 0.1984,
+        "cumulative_exposures": 5
+      },
+      {
+        "round": 2,
+        "from_agent": 8,
+        "to_agent": 4,
+        "infection_prob": 0.192,
+        "cumulative_exposures": 12
+      },
+      {
+        "round": 2,
+        "from_agent": 8,
+        "to_agent": 1,
+        "infection_prob": 0.1463,
+        "cumulative_exposures": 7
+      },
+      {
+        "round": 2,
+        "from_agent": 8,
+        "to_agent": 7,
+        "infection_prob": 0.1472,
+        "cumulative_exposures": 8
+      },
+      {
+        "round": 2,
+        "from_agent": 7,
+        "to_agent": 9,
+        "infection_prob": 0.2387,
+        "cumulative_exposures": 7
+      },
+      {
+        "round": 2,
+        "from_agent": 9,
+        "to_agent": 3,
+        "infection_prob": 0.1638,
+        "cumulative_exposures": 9
+      },
+      {
+        "round": 3,
+        "from_agent": 9,
+        "to_agent": 0,
+        "infection_prob": 0.3841,
+        "cumulative_exposures": 10
+      },
+      {
+        "round": 3,
+        "from_agent": 8,
+        "to_agent": 0,
+        "infection_prob": 0.3849,
+        "cumulative_exposures": 11
+      },
+      {
+        "round": 3,
+        "from_agent": 0,
+        "to_agent": 5,
+        "infection_prob": 0.1707,
+        "cumulative_exposures": 10
+      },
+      {
+        "round": 3,
+        "from_agent": 1,
+        "to_agent": 3,
+        "infection_prob": 0.2815,
+        "cumulative_exposures": 13
+      },
+      {
+        "round": 3,
+        "from_agent": 0,
+        "to_agent": 3,
+        "infection_prob": 0.4132,
+        "cumulative_exposures": 14
+      },
+      {
+        "round": 3,
+        "from_agent": 1,
+        "to_agent": 4,
+        "infection_prob": 0.3242,
+        "cumulative_exposures": 15
+      },
+      {
+        "round": 3,
+        "from_agent": 3,
+        "to_agent": 5,
+        "infection_prob": 0.2423,
+        "cumulative_exposures": 12
+      },
+      {
+        "round": 3,
+        "from_agent": 2,
+        "to_agent": 5,
+        "infection_prob": 0.2767,
+        "cumulative_exposures": 13
+      },
+      {
+        "round": 3,
+        "from_agent": 3,
+        "to_agent": 6,
+        "infection_prob": 0.2435,
+        "cumulative_exposures": 11
+      },
+      {
+        "round": 3,
+        "from_agent": 6,
+        "to_agent": 1,
+        "infection_prob": 0.1955,
+        "cumulative_exposures": 13
+      },
+      {
+        "round": 3,
+        "from_agent": 6,
+        "to_agent": 4,
+        "infection_prob": 0.231,
+        "cumulative_exposures": 17
+      },
+      {
+        "round": 3,
+        "from_agent": 4,
+        "to_agent": 7,
+        "infection_prob": 0.3653,
+        "cumulative_exposures": 14
+      },
+      {
+        "round": 3,
+        "from_agent": 7,
+        "to_agent": 4,
+        "infection_prob": 0.2298,
+        "cumulative_exposures": 18
+      },
+      {
+        "round": 3,
+        "from_agent": 7,
+        "to_agent": 3,
+        "infection_prob": 0.201,
+        "cumulative_exposures": 16
+      },
+      {
+        "round": 3,
+        "from_agent": 6,
+        "to_agent": 9,
+        "infection_prob": 0.4315,
+        "cumulative_exposures": 14
+      },
+      {
+        "round": 3,
+        "from_agent": 9,
+        "to_agent": 4,
+        "infection_prob": 0.2162,
+        "cumulative_exposures": 20
+      },
+      {
+        "round": 4,
+        "from_agent": 9,
+        "to_agent": 0,
+        "infection_prob": 0.3463,
+        "cumulative_exposures": 13
+      },
+      {
+        "round": 4,
+        "from_agent": 8,
+        "to_agent": 0,
+        "infection_prob": 0.2933,
+        "cumulative_exposures": 14
+      },
+      {
+        "round": 4,
+        "from_agent": 0,
+        "to_agent": 9,
+        "infection_prob": 0.1445,
+        "cumulative_exposures": 15
+      },
+      {
+        "round": 4,
+        "from_agent": 0,
+        "to_agent": 1,
+        "infection_prob": 0.3009,
+        "cumulative_exposures": 16
+      },
+      {
+        "round": 4,
+        "from_agent": 8,
+        "to_agent": 1,
+        "infection_prob": 0.3262,
+        "cumulative_exposures": 18
+      },
+      {
+        "round": 4,
+        "from_agent": 1,
+        "to_agent": 2,
+        "infection_prob": 0.2922,
+        "cumulative_exposures": 12
+      },
+      {
+        "round": 4,
+        "from_agent": 2,
+        "to_agent": 4,
+        "infection_prob": 0.2688,
+        "cumulative_exposures": 21
+      },
+      {
+        "round": 4,
+        "from_agent": 2,
+        "to_agent": 0,
+        "infection_prob": 0.2329,
+        "cumulative_exposures": 17
+      },
+      {
+        "round": 4,
+        "from_agent": 1,
+        "to_agent": 3,
+        "infection_prob": 0.4287,
+        "cumulative_exposures": 20
+      },
+      {
+        "round": 4,
+        "from_agent": 3,
+        "to_agent": 1,
+        "infection_prob": 0.2453,
+        "cumulative_exposures": 20
+      },
+      {
+        "round": 4,
+        "from_agent": 3,
+        "to_agent": 4,
+        "infection_prob": 0.5553,
+        "cumulative_exposures": 22
+      },
+      {
+        "round": 4,
+        "from_agent": 2,
+        "to_agent": 4,
+        "infection_prob": 0.5734,
+        "cumulative_exposures": 23
+      },
+      {
+        "round": 4,
+        "from_agent": 4,
+        "to_agent": 5,
+        "infection_prob": 0.3782,
+        "cumulative_exposures": 14
+      },
+      {
+        "round": 4,
+        "from_agent": 2,
+        "to_agent": 5,
+        "infection_prob": 0.4231,
+        "cumulative_exposures": 16
+      },
+      {
+        "round": 4,
+        "from_agent": 7,
+        "to_agent": 8,
+        "infection_prob": 0.2227,
+        "cumulative_exposures": 16
+      },
+      {
+        "round": 4,
+        "from_agent": 5,
+        "to_agent": 8,
+        "infection_prob": 0.4884,
+        "cumulative_exposures": 19
+      },
+      {
+        "round": 4,
+        "from_agent": 8,
+        "to_agent": 5,
+        "infection_prob": 0.148,
+        "cumulative_exposures": 17
+      }
+    ],
+    "quarantine_stats": null,
+    "round_history": [
+      {
+        "round": 1,
+        "infections": [
+          {
+            "agent": 3,
+            "infected_by": 2,
+            "round": 1
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 1
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 1
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 25,
+        "poisoned_messages": 13
+      },
+      {
+        "round": 2,
+        "infections": [
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 2
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 2
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 2
+          },
+          {
+            "agent": 7,
+            "infected_by": 6,
+            "round": 2
+          },
+          {
+            "agent": 8,
+            "infected_by": 7,
+            "round": 2
+          },
+          {
+            "agent": 9,
+            "infected_by": 7,
+            "round": 2
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 26,
+        "poisoned_messages": 24
+      },
+      {
+        "round": 3,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 9,
+            "round": 3
+          },
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 3
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 3
+          },
+          {
+            "agent": 3,
+            "infected_by": 0,
+            "round": 3
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 3
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 3
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 3
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 3
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 3
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 3
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 25,
+        "poisoned_messages": 25
+      },
+      {
+        "round": 4,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 9,
+            "round": 4
+          },
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 4
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 4
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 4
+          },
+          {
+            "agent": 2,
+            "infected_by": 1,
+            "round": 4
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 4
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 4
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 4
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 4
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 4
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 4
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 23,
+        "poisoned_messages": 23
+      },
+      {
+        "round": 5,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 5
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 5
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 5
+          },
+          {
+            "agent": 2,
+            "infected_by": 9,
+            "round": 5
+          },
+          {
+            "agent": 3,
+            "infected_by": 2,
+            "round": 5
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 5
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 5
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 5
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 5
+          },
+          {
+            "agent": 7,
+            "infected_by": 5,
+            "round": 5
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 5
+          },
+          {
+            "agent": 8,
+            "infected_by": 6,
+            "round": 5
+          },
+          {
+            "agent": 9,
+            "infected_by": 8,
+            "round": 5
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 5
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 24,
+        "poisoned_messages": 24
+      },
+      {
+        "round": 6,
+        "infections": [
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 6
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 6
+          },
+          {
+            "agent": 3,
+            "infected_by": 2,
+            "round": 6
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 6
+          },
+          {
+            "agent": 3,
+            "infected_by": 0,
+            "round": 6
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 6
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 6
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 6
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 6
+          },
+          {
+            "agent": 6,
+            "infected_by": 5,
+            "round": 6
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 6
+          },
+          {
+            "agent": 7,
+            "infected_by": 6,
+            "round": 6
+          },
+          {
+            "agent": 8,
+            "infected_by": 7,
+            "round": 6
+          },
+          {
+            "agent": 8,
+            "infected_by": 6,
+            "round": 6
+          },
+          {
+            "agent": 9,
+            "infected_by": 8,
+            "round": 6
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 6
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 22,
+        "poisoned_messages": 22
+      },
+      {
+        "round": 7,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 7
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 7
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 7
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 7
+          },
+          {
+            "agent": 2,
+            "infected_by": 9,
+            "round": 7
+          },
+          {
+            "agent": 3,
+            "infected_by": 2,
+            "round": 7
+          },
+          {
+            "agent": 3,
+            "infected_by": 0,
+            "round": 7
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 7
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 7
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 7
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 7
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 7
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 7
+          },
+          {
+            "agent": 8,
+            "infected_by": 6,
+            "round": 7
+          },
+          {
+            "agent": 9,
+            "infected_by": 8,
+            "round": 7
+          },
+          {
+            "agent": 9,
+            "infected_by": 7,
+            "round": 7
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 7
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 24,
+        "poisoned_messages": 24
+      },
+      {
+        "round": 8,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 9,
+            "round": 8
+          },
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 8
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 8
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 8
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 8
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 8
+          },
+          {
+            "agent": 2,
+            "infected_by": 1,
+            "round": 8
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 8
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 8
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 8
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 8
+          },
+          {
+            "agent": 6,
+            "infected_by": 4,
+            "round": 8
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 8
+          },
+          {
+            "agent": 7,
+            "infected_by": 6,
+            "round": 8
+          },
+          {
+            "agent": 7,
+            "infected_by": 5,
+            "round": 8
+          },
+          {
+            "agent": 8,
+            "infected_by": 7,
+            "round": 8
+          },
+          {
+            "agent": 8,
+            "infected_by": 6,
+            "round": 8
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 8
+          },
+          {
+            "agent": 9,
+            "infected_by": 8,
+            "round": 8
+          },
+          {
+            "agent": 9,
+            "infected_by": 7,
+            "round": 8
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 23,
+        "poisoned_messages": 23
+      },
+      {
+        "round": 9,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 9
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 9
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 9
+          },
+          {
+            "agent": 2,
+            "infected_by": 1,
+            "round": 9
+          },
+          {
+            "agent": 2,
+            "infected_by": 9,
+            "round": 9
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 9
+          },
+          {
+            "agent": 3,
+            "infected_by": 0,
+            "round": 9
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 9
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 9
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 9
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 9
+          },
+          {
+            "agent": 6,
+            "infected_by": 5,
+            "round": 9
+          },
+          {
+            "agent": 6,
+            "infected_by": 4,
+            "round": 9
+          },
+          {
+            "agent": 7,
+            "infected_by": 6,
+            "round": 9
+          },
+          {
+            "agent": 7,
+            "infected_by": 5,
+            "round": 9
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 9
+          },
+          {
+            "agent": 8,
+            "infected_by": 7,
+            "round": 9
+          },
+          {
+            "agent": 9,
+            "infected_by": 7,
+            "round": 9
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 24,
+        "poisoned_messages": 24
+      },
+      {
+        "round": 10,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 10
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 10
+          },
+          {
+            "agent": 2,
+            "infected_by": 9,
+            "round": 10
+          },
+          {
+            "agent": 3,
+            "infected_by": 2,
+            "round": 10
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 10
+          },
+          {
+            "agent": 3,
+            "infected_by": 0,
+            "round": 10
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 10
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 10
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 10
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 10
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 10
+          },
+          {
+            "agent": 6,
+            "infected_by": 5,
+            "round": 10
+          },
+          {
+            "agent": 6,
+            "infected_by": 4,
+            "round": 10
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 10
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 10
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 26,
+        "poisoned_messages": 26
+      },
+      {
+        "round": 11,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 9,
+            "round": 11
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 11
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 11
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 11
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 11
+          },
+          {
+            "agent": 2,
+            "infected_by": 0,
+            "round": 11
+          },
+          {
+            "agent": 2,
+            "infected_by": 9,
+            "round": 11
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 11
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 11
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 11
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 11
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 11
+          },
+          {
+            "agent": 7,
+            "infected_by": 5,
+            "round": 11
+          },
+          {
+            "agent": 8,
+            "infected_by": 7,
+            "round": 11
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 11
+          },
+          {
+            "agent": 9,
+            "infected_by": 8,
+            "round": 11
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 23,
+        "poisoned_messages": 23
+      },
+      {
+        "round": 12,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 12
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 12
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 12
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 12
+          },
+          {
+            "agent": 3,
+            "infected_by": 0,
+            "round": 12
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 12
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 12
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 12
+          },
+          {
+            "agent": 6,
+            "infected_by": 5,
+            "round": 12
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 12
+          },
+          {
+            "agent": 8,
+            "infected_by": 7,
+            "round": 12
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 12
+          },
+          {
+            "agent": 9,
+            "infected_by": 8,
+            "round": 12
+          },
+          {
+            "agent": 9,
+            "infected_by": 7,
+            "round": 12
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 12
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 30,
+        "poisoned_messages": 30
+      },
+      {
+        "round": 13,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 13
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 13
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 13
+          },
+          {
+            "agent": 2,
+            "infected_by": 0,
+            "round": 13
+          },
+          {
+            "agent": 3,
+            "infected_by": 2,
+            "round": 13
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 13
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 13
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 13
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 13
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 13
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 13
+          },
+          {
+            "agent": 7,
+            "infected_by": 5,
+            "round": 13
+          },
+          {
+            "agent": 8,
+            "infected_by": 7,
+            "round": 13
+          },
+          {
+            "agent": 9,
+            "infected_by": 8,
+            "round": 13
+          },
+          {
+            "agent": 9,
+            "infected_by": 7,
+            "round": 13
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 13
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 27,
+        "poisoned_messages": 27
+      },
+      {
+        "round": 14,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 14
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 14
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 14
+          },
+          {
+            "agent": 2,
+            "infected_by": 1,
+            "round": 14
+          },
+          {
+            "agent": 2,
+            "infected_by": 0,
+            "round": 14
+          },
+          {
+            "agent": 3,
+            "infected_by": 2,
+            "round": 14
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 14
+          },
+          {
+            "agent": 3,
+            "infected_by": 0,
+            "round": 14
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 14
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 14
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 14
+          },
+          {
+            "agent": 6,
+            "infected_by": 5,
+            "round": 14
+          },
+          {
+            "agent": 6,
+            "infected_by": 4,
+            "round": 14
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 14
+          },
+          {
+            "agent": 7,
+            "infected_by": 6,
+            "round": 14
+          },
+          {
+            "agent": 8,
+            "infected_by": 7,
+            "round": 14
+          },
+          {
+            "agent": 8,
+            "infected_by": 6,
+            "round": 14
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 14
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 28,
+        "poisoned_messages": 28
+      },
+      {
+        "round": 15,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 9,
+            "round": 15
+          },
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 15
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 15
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 15
+          },
+          {
+            "agent": 3,
+            "infected_by": 2,
+            "round": 15
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 15
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 15
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 15
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 15
+          },
+          {
+            "agent": 6,
+            "infected_by": 5,
+            "round": 15
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 15
+          },
+          {
+            "agent": 7,
+            "infected_by": 5,
+            "round": 15
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 15
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 15
+          },
+          {
+            "agent": 9,
+            "infected_by": 7,
+            "round": 15
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 15
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 25,
+        "poisoned_messages": 25
+      },
+      {
+        "round": 16,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 9,
+            "round": 16
+          },
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 16
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 16
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 16
+          },
+          {
+            "agent": 2,
+            "infected_by": 0,
+            "round": 16
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 16
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 16
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 16
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 16
+          },
+          {
+            "agent": 6,
+            "infected_by": 4,
+            "round": 16
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 16
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 16
+          },
+          {
+            "agent": 9,
+            "infected_by": 8,
+            "round": 16
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 16
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 25,
+        "poisoned_messages": 25
+      },
+      {
+        "round": 17,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 17
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 17
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 17
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 17
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 17
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 17
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 17
+          },
+          {
+            "agent": 7,
+            "infected_by": 6,
+            "round": 17
+          },
+          {
+            "agent": 8,
+            "infected_by": 6,
+            "round": 17
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 17
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 26,
+        "poisoned_messages": 26
+      },
+      {
+        "round": 18,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 18
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 18
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 18
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 18
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 18
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 18
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 18
+          },
+          {
+            "agent": 7,
+            "infected_by": 5,
+            "round": 18
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 18
+          },
+          {
+            "agent": 8,
+            "infected_by": 6,
+            "round": 18
+          },
+          {
+            "agent": 9,
+            "infected_by": 8,
+            "round": 18
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 24,
+        "poisoned_messages": 24
+      },
+      {
+        "round": 19,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 9,
+            "round": 19
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 19
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 19
+          },
+          {
+            "agent": 2,
+            "infected_by": 9,
+            "round": 19
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 19
+          },
+          {
+            "agent": 9,
+            "infected_by": 8,
+            "round": 19
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 25,
+        "poisoned_messages": 25
+      },
+      {
+        "round": 20,
+        "infections": [
+          {
+            "agent": 3,
+            "infected_by": 0,
+            "round": 20
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 20
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 27,
+        "poisoned_messages": 27
+      }
+    ]
+  },
+  "passive": {
+    "arm": "PASSIVE (Per-Agent Bridge)",
+    "r0": 24.5,
+    "total_infected": 10,
+    "infection_rate_final": 1.0,
+    "first_secondary_infection_round": 1,
+    "fifty_pct_infection_round": 3,
+    "fleet_status": {
+      "clean": 0,
+      "exposed": 0,
+      "infected": 10,
+      "quarantined": 0,
+      "agents": [
+        {
+          "agent_id": 0,
+          "name": "Agent_00",
+          "infection_status": "infected",
+          "infection_round": 20,
+          "infected_by": 8,
+          "trust_score": 0.2,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 106
+        },
+        {
+          "agent_id": 1,
+          "name": "Agent_01",
+          "infection_status": "infected",
+          "infection_round": 20,
+          "infected_by": 2,
+          "trust_score": 0.15,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 121
+        },
+        {
+          "agent_id": 2,
+          "name": "Agent_02",
+          "infection_status": "infected",
+          "infection_round": 17,
+          "infected_by": 0,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 108
+        },
+        {
+          "agent_id": 3,
+          "name": "Agent_03",
+          "infection_status": "infected",
+          "infection_round": 20,
+          "infected_by": 1,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 108
+        },
+        {
+          "agent_id": 4,
+          "name": "Agent_04",
+          "infection_status": "infected",
+          "infection_round": 18,
+          "infected_by": 6,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 112
+        },
+        {
+          "agent_id": 5,
+          "name": "Agent_05",
+          "infection_status": "infected",
+          "infection_round": 19,
+          "infected_by": 2,
+          "trust_score": 0.15,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 103
+        },
+        {
+          "agent_id": 6,
+          "name": "Agent_06",
+          "infection_status": "infected",
+          "infection_round": 16,
+          "infected_by": 3,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 96
+        },
+        {
+          "agent_id": 7,
+          "name": "Agent_07",
+          "infection_status": "infected",
+          "infection_round": 20,
+          "infected_by": 9,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 116
+        },
+        {
+          "agent_id": 8,
+          "name": "Agent_08",
+          "infection_status": "infected",
+          "infection_round": 20,
+          "infected_by": 6,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 114
+        },
+        {
+          "agent_id": 9,
+          "name": "Agent_09",
+          "infection_status": "infected",
+          "infection_round": 20,
+          "infected_by": 8,
+          "trust_score": 0.1,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 108
+        }
+      ]
+    },
+    "shared_db_stats": {
+      "total_entries": 200,
+      "poisoned_entries": 184,
+      "poisoned_ratio": 0.92,
+      "total_retrievals": 200,
+      "poisoned_retrievals": 195,
+      "contamination_rate": 0.975,
+      "firewall_blocked": 0
+    },
+    "contagion_events": [
+      {
+        "round": 1,
+        "from_agent": 2,
+        "to_agent": 7,
+        "infection_prob": 0.0717,
+        "cumulative_exposures": 2
+      },
+      {
+        "round": 1,
+        "from_agent": 7,
+        "to_agent": 9,
+        "infection_prob": 0.1485,
+        "cumulative_exposures": 2
+      },
+      {
+        "round": 2,
+        "from_agent": 2,
+        "to_agent": 3,
+        "infection_prob": 0.1194,
+        "cumulative_exposures": 4
+      },
+      {
+        "round": 2,
+        "from_agent": 3,
+        "to_agent": 6,
+        "infection_prob": 0.1483,
+        "cumulative_exposures": 3
+      },
+      {
+        "round": 3,
+        "from_agent": 3,
+        "to_agent": 2,
+        "infection_prob": 0.0894,
+        "cumulative_exposures": 7
+      },
+      {
+        "round": 3,
+        "from_agent": 3,
+        "to_agent": 4,
+        "infection_prob": 0.2375,
+        "cumulative_exposures": 8
+      },
+      {
+        "round": 3,
+        "from_agent": 3,
+        "to_agent": 6,
+        "infection_prob": 0.1858,
+        "cumulative_exposures": 5
+      },
+      {
+        "round": 3,
+        "from_agent": 6,
+        "to_agent": 7,
+        "infection_prob": 0.1211,
+        "cumulative_exposures": 6
+      },
+      {
+        "round": 3,
+        "from_agent": 4,
+        "to_agent": 7,
+        "infection_prob": 0.1433,
+        "cumulative_exposures": 7
+      },
+      {
+        "round": 3,
+        "from_agent": 7,
+        "to_agent": 1,
+        "infection_prob": 0.1174,
+        "cumulative_exposures": 10
+      },
+      {
+        "round": 3,
+        "from_agent": 6,
+        "to_agent": 8,
+        "infection_prob": 0.1525,
+        "cumulative_exposures": 8
+      },
+      {
+        "round": 3,
+        "from_agent": 8,
+        "to_agent": 7,
+        "infection_prob": 0.0878,
+        "cumulative_exposures": 8
+      },
+      {
+        "round": 3,
+        "from_agent": 8,
+        "to_agent": 9,
+        "infection_prob": 0.1969,
+        "cumulative_exposures": 9
+      },
+      {
+        "round": 3,
+        "from_agent": 9,
+        "to_agent": 1,
+        "infection_prob": 0.1382,
+        "cumulative_exposures": 11
+      },
+      {
+        "round": 4,
+        "from_agent": 1,
+        "to_agent": 3,
+        "infection_prob": 0.1522,
+        "cumulative_exposures": 9
+      },
+      {
+        "round": 4,
+        "from_agent": 2,
+        "to_agent": 5,
+        "infection_prob": 0.29,
+        "cumulative_exposures": 16
+      },
+      {
+        "round": 4,
+        "from_agent": 7,
+        "to_agent": 8,
+        "infection_prob": 0.2573,
+        "cumulative_exposures": 11
+      },
+      {
+        "round": 4,
+        "from_agent": 6,
+        "to_agent": 8,
+        "infection_prob": 0.2779,
+        "cumulative_exposures": 12
+      },
+      {
+        "round": 5,
+        "from_agent": 9,
+        "to_agent": 0,
+        "infection_prob": 0.3474,
+        "cumulative_exposures": 15
+      },
+      {
+        "round": 5,
+        "from_agent": 7,
+        "to_agent": 0,
+        "infection_prob": 0.3521,
+        "cumulative_exposures": 17
+      },
+      {
+        "round": 5,
+        "from_agent": 0,
+        "to_agent": 8,
+        "infection_prob": 0.1518,
+        "cumulative_exposures": 14
+      },
+      {
+        "round": 5,
+        "from_agent": 0,
+        "to_agent": 1,
+        "infection_prob": 0.1812,
+        "cumulative_exposures": 17
+      },
+      {
+        "round": 5,
+        "from_agent": 9,
+        "to_agent": 1,
+        "infection_prob": 0.385,
+        "cumulative_exposures": 19
+      },
+      {
+        "round": 5,
+        "from_agent": 1,
+        "to_agent": 6,
+        "infection_prob": 0.0889,
+        "cumulative_exposures": 12
+      },
+      {
+        "round": 5,
+        "from_agent": 0,
+        "to_agent": 2,
+        "infection_prob": 0.264,
+        "cumulative_exposures": 15
+      },
+      {
+        "round": 5,
+        "from_agent": 9,
+        "to_agent": 2,
+        "infection_prob": 0.2714,
+        "cumulative_exposures": 16
+      },
+      {
+        "round": 5,
+        "from_agent": 2,
+        "to_agent": 3,
+        "infection_prob": 0.2058,
+        "cumulative_exposures": 11
+      },
+      {
+        "round": 5,
+        "from_agent": 1,
+        "to_agent": 3,
+        "infection_prob": 0.1778,
+        "cumulative_exposures": 12
+      },
+      {
+        "round": 5,
+        "from_agent": 0,
+        "to_agent": 3,
+        "infection_prob": 0.2743,
+        "cumulative_exposures": 13
+      },
+      {
+        "round": 5,
+        "from_agent": 2,
+        "to_agent": 4,
+        "infection_prob": 0.3269,
+        "cumulative_exposures": 21
+      },
+      {
+        "round": 5,
+        "from_agent": 4,
+        "to_agent": 1,
+        "infection_prob": 0.1968,
+        "cumulative_exposures": 22
+      },
+      {
+        "round": 5,
+        "from_agent": 2,
+        "to_agent": 5,
+        "infection_prob": 0.322,
+        "cumulative_exposures": 19
+      },
+      {
+        "round": 5,
+        "from_agent": 8,
+        "to_agent": 0,
+        "infection_prob": 0.1465,
+        "cumulative_exposures": 20
+      },
+      {
+        "round": 5,
+        "from_agent": 8,
+        "to_agent": 5,
+        "infection_prob": 0.1387,
+        "cumulative_exposures": 20
+      },
+      {
+        "round": 6,
+        "from_agent": 8,
+        "to_agent": 1,
+        "infection_prob": 0.3349,
+        "cumulative_exposures": 26
+      },
+      {
+        "round": 6,
+        "from_agent": 1,
+        "to_agent": 2,
+        "infection_prob": 0.1948,
+        "cumulative_exposures": 20
+      },
+      {
+        "round": 6,
+        "from_agent": 3,
+        "to_agent": 5,
+        "infection_prob": 0.3764,
+        "cumulative_exposures": 22
+      },
+      {
+        "round": 6,
+        "from_agent": 2,
+        "to_agent": 5,
+        "infection_prob": 0.2925,
+        "cumulative_exposures": 23
+      },
+      {
+        "round": 6,
+        "from_agent": 5,
+        "to_agent": 6,
+        "infection_prob": 0.2475,
+        "cumulative_exposures": 18
+      },
+      {
+        "round": 6,
+        "from_agent": 4,
+        "to_agent": 6,
+        "infection_prob": 0.3249,
+        "cumulative_exposures": 19
+      },
+      {
+        "round": 6,
+        "from_agent": 5,
+        "to_agent": 7,
+        "infection_prob": 0.2664,
+        "cumulative_exposures": 22
+      },
+      {
+        "round": 6,
+        "from_agent": 8,
+        "to_agent": 2,
+        "infection_prob": 0.1548,
+        "cumulative_exposures": 24
+      },
+      {
+        "round": 6,
+        "from_agent": 7,
+        "to_agent": 9,
+        "infection_prob": 0.363,
+        "cumulative_exposures": 25
+      },
+      {
+        "round": 6,
+        "from_agent": 6,
+        "to_agent": 9,
+        "infection_prob": 0.2477,
+        "cumulative_exposures": 26
+      },
+      {
+        "round": 7,
+        "from_agent": 8,
+        "to_agent": 0,
+        "infection_prob": 0.4935,
+        "cumulative_exposures": 29
+      },
+      {
+        "round": 7,
+        "from_agent": 7,
+        "to_agent": 0,
+        "infection_prob": 0.4997,
+        "cumulative_exposures": 30
+      },
+      {
+        "round": 7,
+        "from_agent": 0,
+        "to_agent": 1,
+        "infection_prob": 0.4235,
+        "cumulative_exposures": 29
+      },
+      {
+        "round": 7,
+        "from_agent": 8,
+        "to_agent": 1,
+        "infection_prob": 0.4907,
+        "cumulative_exposures": 31
+      },
+      {
+        "round": 7,
+        "from_agent": 0,
+        "to_agent": 2,
+        "infection_prob": 0.3068,
+        "cumulative_exposures": 27
+      },
+      {
+        "round": 7,
+        "from_agent": 3,
+        "to_agent": 0,
+        "infection_prob": 0.1907,
+        "cumulative_exposures": 32
+      }
+    ],
+    "quarantine_stats": null,
+    "round_history": [
+      {
+        "round": 1,
+        "infections": [
+          {
+            "agent": 9,
+            "infected_by": 7,
+            "round": 1
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 22,
+        "poisoned_messages": 7
+      },
+      {
+        "round": 2,
+        "infections": [
+          {
+            "agent": 3,
+            "infected_by": 2,
+            "round": 2
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 2
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 25,
+        "poisoned_messages": 14
+      },
+      {
+        "round": 3,
+        "infections": [
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 3
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 3
+          },
+          {
+            "agent": 7,
+            "infected_by": 6,
+            "round": 3
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 3
+          },
+          {
+            "agent": 8,
+            "infected_by": 6,
+            "round": 3
+          },
+          {
+            "agent": 9,
+            "infected_by": 8,
+            "round": 3
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 26,
+        "poisoned_messages": 19
+      },
+      {
+        "round": 4,
+        "infections": [
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 4
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 4
+          },
+          {
+            "agent": 8,
+            "infected_by": 7,
+            "round": 4
+          },
+          {
+            "agent": 8,
+            "infected_by": 6,
+            "round": 4
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 23,
+        "poisoned_messages": 20
+      },
+      {
+        "round": 5,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 9,
+            "round": 5
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 5
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 5
+          },
+          {
+            "agent": 2,
+            "infected_by": 0,
+            "round": 5
+          },
+          {
+            "agent": 2,
+            "infected_by": 9,
+            "round": 5
+          },
+          {
+            "agent": 3,
+            "infected_by": 2,
+            "round": 5
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 5
+          },
+          {
+            "agent": 3,
+            "infected_by": 0,
+            "round": 5
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 5
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 5
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 24,
+        "poisoned_messages": 24
+      },
+      {
+        "round": 6,
+        "infections": [
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 6
+          },
+          {
+            "agent": 2,
+            "infected_by": 1,
+            "round": 6
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 6
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 6
+          },
+          {
+            "agent": 6,
+            "infected_by": 5,
+            "round": 6
+          },
+          {
+            "agent": 6,
+            "infected_by": 4,
+            "round": 6
+          },
+          {
+            "agent": 7,
+            "infected_by": 5,
+            "round": 6
+          },
+          {
+            "agent": 9,
+            "infected_by": 7,
+            "round": 6
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 6
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 23,
+        "poisoned_messages": 23
+      },
+      {
+        "round": 7,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 7
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 7
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 7
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 7
+          },
+          {
+            "agent": 2,
+            "infected_by": 0,
+            "round": 7
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 7
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 7
+          },
+          {
+            "agent": 7,
+            "infected_by": 6,
+            "round": 7
+          },
+          {
+            "agent": 7,
+            "infected_by": 5,
+            "round": 7
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 7
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 7
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 23,
+        "poisoned_messages": 23
+      },
+      {
+        "round": 8,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 8
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 8
+          },
+          {
+            "agent": 2,
+            "infected_by": 1,
+            "round": 8
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 8
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 8
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 8
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 8
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 8
+          },
+          {
+            "agent": 6,
+            "infected_by": 5,
+            "round": 8
+          },
+          {
+            "agent": 8,
+            "infected_by": 6,
+            "round": 8
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 8
+          },
+          {
+            "agent": 9,
+            "infected_by": 8,
+            "round": 8
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 8
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 23,
+        "poisoned_messages": 23
+      },
+      {
+        "round": 9,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 9
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 9
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 9
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 9
+          },
+          {
+            "agent": 2,
+            "infected_by": 0,
+            "round": 9
+          },
+          {
+            "agent": 2,
+            "infected_by": 9,
+            "round": 9
+          },
+          {
+            "agent": 3,
+            "infected_by": 2,
+            "round": 9
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 9
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 9
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 9
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 9
+          },
+          {
+            "agent": 8,
+            "infected_by": 7,
+            "round": 9
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 9
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 22,
+        "poisoned_messages": 22
+      },
+      {
+        "round": 10,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 10
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 10
+          },
+          {
+            "agent": 3,
+            "infected_by": 0,
+            "round": 10
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 10
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 10
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 10
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 10
+          },
+          {
+            "agent": 6,
+            "infected_by": 5,
+            "round": 10
+          },
+          {
+            "agent": 7,
+            "infected_by": 5,
+            "round": 10
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 10
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 10
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 26,
+        "poisoned_messages": 26
+      },
+      {
+        "round": 11,
+        "infections": [
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 11
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 11
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 11
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 11
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 11
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 11
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 11
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 25,
+        "poisoned_messages": 25
+      },
+      {
+        "round": 12,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 12
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 12
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 12
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 12
+          },
+          {
+            "agent": 2,
+            "infected_by": 1,
+            "round": 12
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 12
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 12
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 12
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 12
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 12
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 28,
+        "poisoned_messages": 28
+      },
+      {
+        "round": 13,
+        "infections": [
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 13
+          },
+          {
+            "agent": 2,
+            "infected_by": 9,
+            "round": 13
+          },
+          {
+            "agent": 3,
+            "infected_by": 0,
+            "round": 13
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 13
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 13
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 13
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 13
+          },
+          {
+            "agent": 7,
+            "infected_by": 5,
+            "round": 13
+          },
+          {
+            "agent": 9,
+            "infected_by": 8,
+            "round": 13
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 13
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 29,
+        "poisoned_messages": 29
+      },
+      {
+        "round": 14,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 9,
+            "round": 14
+          },
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 14
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 14
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 14
+          },
+          {
+            "agent": 2,
+            "infected_by": 0,
+            "round": 14
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 14
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 14
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 14
+          },
+          {
+            "agent": 6,
+            "infected_by": 4,
+            "round": 14
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 14
+          },
+          {
+            "agent": 7,
+            "infected_by": 5,
+            "round": 14
+          },
+          {
+            "agent": 8,
+            "infected_by": 7,
+            "round": 14
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 26,
+        "poisoned_messages": 26
+      },
+      {
+        "round": 15,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 9,
+            "round": 15
+          },
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 15
+          },
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 15
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 15
+          },
+          {
+            "agent": 3,
+            "infected_by": 2,
+            "round": 15
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 15
+          },
+          {
+            "agent": 6,
+            "infected_by": 5,
+            "round": 15
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 15
+          },
+          {
+            "agent": 7,
+            "infected_by": 5,
+            "round": 15
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 15
+          },
+          {
+            "agent": 8,
+            "infected_by": 7,
+            "round": 15
+          },
+          {
+            "agent": 8,
+            "infected_by": 6,
+            "round": 15
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 15
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 27,
+        "poisoned_messages": 27
+      },
+      {
+        "round": 16,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 9,
+            "round": 16
+          },
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 16
+          },
+          {
+            "agent": 4,
+            "infected_by": 2,
+            "round": 16
+          },
+          {
+            "agent": 5,
+            "infected_by": 4,
+            "round": 16
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 16
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 16
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 16
+          },
+          {
+            "agent": 7,
+            "infected_by": 6,
+            "round": 16
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 16
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 25,
+        "poisoned_messages": 25
+      },
+      {
+        "round": 17,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 9,
+            "round": 17
+          },
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 17
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 17
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 17
+          },
+          {
+            "agent": 2,
+            "infected_by": 0,
+            "round": 17
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 17
+          },
+          {
+            "agent": 4,
+            "infected_by": 3,
+            "round": 17
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 17
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 17
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 24,
+        "poisoned_messages": 24
+      },
+      {
+        "round": 18,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 18
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 18
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 18
+          },
+          {
+            "agent": 8,
+            "infected_by": 6,
+            "round": 18
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 26,
+        "poisoned_messages": 26
+      },
+      {
+        "round": 19,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 7,
+            "round": 19
+          },
+          {
+            "agent": 1,
+            "infected_by": 0,
+            "round": 19
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 19
+          },
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 19
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 19
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 19
+          },
+          {
+            "agent": 7,
+            "infected_by": 6,
+            "round": 19
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 19
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 19
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 24,
+        "poisoned_messages": 24
+      },
+      {
+        "round": 20,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 20
+          },
+          {
+            "agent": 1,
+            "infected_by": 9,
+            "round": 20
+          },
+          {
+            "agent": 8,
+            "infected_by": 6,
+            "round": 20
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 27,
+        "poisoned_messages": 27
+      }
+    ]
+  },
+  "quarantine": {
+    "arm": "QUARANTINE (Behavioral)",
+    "r0": 0.0,
+    "total_infected": 10,
+    "infection_rate_final": 1.0,
+    "first_secondary_infection_round": 1,
+    "fifty_pct_infection_round": 2,
+    "fleet_status": {
+      "clean": 0,
+      "exposed": 0,
+      "infected": 0,
+      "quarantined": 10,
+      "agents": [
+        {
+          "agent_id": 0,
+          "name": "Agent_00",
+          "infection_status": "quarantined",
+          "infection_round": 3,
+          "infected_by": 8,
+          "trust_score": 0.95,
+          "quarantined_at": 3,
+          "total_outputs": 3,
+          "total_received": 12
+        },
+        {
+          "agent_id": 1,
+          "name": "Agent_01",
+          "infection_status": "quarantined",
+          "infection_round": 3,
+          "infected_by": 6,
+          "trust_score": 0.9,
+          "quarantined_at": 3,
+          "total_outputs": 3,
+          "total_received": 19
+        },
+        {
+          "agent_id": 2,
+          "name": "Agent_02",
+          "infection_status": "quarantined",
+          "infection_round": 0,
+          "infected_by": null,
+          "trust_score": 0.8,
+          "quarantined_at": 3,
+          "total_outputs": 3,
+          "total_received": 13
+        },
+        {
+          "agent_id": 3,
+          "name": "Agent_03",
+          "infection_status": "quarantined",
+          "infection_round": 3,
+          "infected_by": 7,
+          "trust_score": 0.85,
+          "quarantined_at": 3,
+          "total_outputs": 3,
+          "total_received": 21
+        },
+        {
+          "agent_id": 4,
+          "name": "Agent_04",
+          "infection_status": "quarantined",
+          "infection_round": 3,
+          "infected_by": 9,
+          "trust_score": 0.9,
+          "quarantined_at": 3,
+          "total_outputs": 3,
+          "total_received": 22
+        },
+        {
+          "agent_id": 5,
+          "name": "Agent_05",
+          "infection_status": "quarantined",
+          "infection_round": 3,
+          "infected_by": 2,
+          "trust_score": 0.85,
+          "quarantined_at": 3,
+          "total_outputs": 3,
+          "total_received": 16
+        },
+        {
+          "agent_id": 6,
+          "name": "Agent_06",
+          "infection_status": "quarantined",
+          "infection_round": 3,
+          "infected_by": 3,
+          "trust_score": 0.9,
+          "quarantined_at": 3,
+          "total_outputs": 3,
+          "total_received": 11
+        },
+        {
+          "agent_id": 7,
+          "name": "Agent_07",
+          "infection_status": "quarantined",
+          "infection_round": 3,
+          "infected_by": 4,
+          "trust_score": 0.85,
+          "quarantined_at": 3,
+          "total_outputs": 3,
+          "total_received": 16
+        },
+        {
+          "agent_id": 8,
+          "name": "Agent_08",
+          "infection_status": "quarantined",
+          "infection_round": 2,
+          "infected_by": 7,
+          "trust_score": 0.85,
+          "quarantined_at": 3,
+          "total_outputs": 3,
+          "total_received": 14
+        },
+        {
+          "agent_id": 9,
+          "name": "Agent_09",
+          "infection_status": "quarantined",
+          "infection_round": 3,
+          "infected_by": 6,
+          "trust_score": 0.9,
+          "quarantined_at": 3,
+          "total_outputs": 3,
+          "total_received": 16
+        }
+      ]
+    },
+    "shared_db_stats": {
+      "total_entries": 30,
+      "poisoned_entries": 24,
+      "poisoned_ratio": 0.8,
+      "total_retrievals": 30,
+      "poisoned_retrievals": 27,
+      "contamination_rate": 0.9,
+      "firewall_blocked": 0
+    },
+    "contagion_events": [
+      {
+        "round": 1,
+        "from_agent": 2,
+        "to_agent": 7,
+        "infection_prob": 0.1025,
+        "cumulative_exposures": 2
+      },
+      {
+        "round": 1,
+        "from_agent": 2,
+        "to_agent": 3,
+        "infection_prob": 0.2049,
+        "cumulative_exposures": 2
+      },
+      {
+        "round": 1,
+        "from_agent": 2,
+        "to_agent": 5,
+        "infection_prob": 0.2235,
+        "cumulative_exposures": 3
+      },
+      {
+        "round": 1,
+        "from_agent": 5,
+        "to_agent": 8,
+        "infection_prob": 0.1678,
+        "cumulative_exposures": 3
+      },
+      {
+        "round": 2,
+        "from_agent": 8,
+        "to_agent": 1,
+        "infection_prob": 0.1544,
+        "cumulative_exposures": 3
+      },
+      {
+        "round": 2,
+        "from_agent": 1,
+        "to_agent": 4,
+        "infection_prob": 0.146,
+        "cumulative_exposures": 6
+      },
+      {
+        "round": 2,
+        "from_agent": 2,
+        "to_agent": 7,
+        "infection_prob": 0.1108,
+        "cumulative_exposures": 4
+      },
+      {
+        "round": 2,
+        "from_agent": 3,
+        "to_agent": 5,
+        "infection_prob": 0.1962,
+        "cumulative_exposures": 7
+      },
+      {
+        "round": 2,
+        "from_agent": 5,
+        "to_agent": 3,
+        "infection_prob": 0.118,
+        "cumulative_exposures": 6
+      },
+      {
+        "round": 2,
+        "from_agent": 3,
+        "to_agent": 6,
+        "infection_prob": 0.2195,
+        "cumulative_exposures": 8
+      },
+      {
+        "round": 2,
+        "from_agent": 6,
+        "to_agent": 7,
+        "infection_prob": 0.1792,
+        "cumulative_exposures": 5
+      },
+      {
+        "round": 2,
+        "from_agent": 7,
+        "to_agent": 8,
+        "infection_prob": 0.1984,
+        "cumulative_exposures": 5
+      },
+      {
+        "round": 2,
+        "from_agent": 8,
+        "to_agent": 4,
+        "infection_prob": 0.192,
+        "cumulative_exposures": 12
+      },
+      {
+        "round": 2,
+        "from_agent": 8,
+        "to_agent": 1,
+        "infection_prob": 0.1463,
+        "cumulative_exposures": 7
+      },
+      {
+        "round": 2,
+        "from_agent": 8,
+        "to_agent": 7,
+        "infection_prob": 0.1472,
+        "cumulative_exposures": 8
+      },
+      {
+        "round": 2,
+        "from_agent": 7,
+        "to_agent": 9,
+        "infection_prob": 0.2387,
+        "cumulative_exposures": 7
+      },
+      {
+        "round": 2,
+        "from_agent": 9,
+        "to_agent": 3,
+        "infection_prob": 0.1638,
+        "cumulative_exposures": 9
+      },
+      {
+        "round": 3,
+        "from_agent": 9,
+        "to_agent": 0,
+        "infection_prob": 0.3841,
+        "cumulative_exposures": 10
+      },
+      {
+        "round": 3,
+        "from_agent": 8,
+        "to_agent": 0,
+        "infection_prob": 0.3849,
+        "cumulative_exposures": 11
+      },
+      {
+        "round": 3,
+        "from_agent": 0,
+        "to_agent": 5,
+        "infection_prob": 0.1707,
+        "cumulative_exposures": 10
+      },
+      {
+        "round": 3,
+        "from_agent": 1,
+        "to_agent": 3,
+        "infection_prob": 0.2815,
+        "cumulative_exposures": 13
+      },
+      {
+        "round": 3,
+        "from_agent": 0,
+        "to_agent": 3,
+        "infection_prob": 0.4132,
+        "cumulative_exposures": 14
+      },
+      {
+        "round": 3,
+        "from_agent": 1,
+        "to_agent": 4,
+        "infection_prob": 0.3242,
+        "cumulative_exposures": 15
+      },
+      {
+        "round": 3,
+        "from_agent": 3,
+        "to_agent": 5,
+        "infection_prob": 0.2423,
+        "cumulative_exposures": 12
+      },
+      {
+        "round": 3,
+        "from_agent": 2,
+        "to_agent": 5,
+        "infection_prob": 0.2767,
+        "cumulative_exposures": 13
+      },
+      {
+        "round": 3,
+        "from_agent": 3,
+        "to_agent": 6,
+        "infection_prob": 0.2435,
+        "cumulative_exposures": 11
+      },
+      {
+        "round": 3,
+        "from_agent": 6,
+        "to_agent": 1,
+        "infection_prob": 0.1955,
+        "cumulative_exposures": 13
+      },
+      {
+        "round": 3,
+        "from_agent": 6,
+        "to_agent": 4,
+        "infection_prob": 0.231,
+        "cumulative_exposures": 17
+      },
+      {
+        "round": 3,
+        "from_agent": 4,
+        "to_agent": 7,
+        "infection_prob": 0.3653,
+        "cumulative_exposures": 14
+      },
+      {
+        "round": 3,
+        "from_agent": 7,
+        "to_agent": 4,
+        "infection_prob": 0.2298,
+        "cumulative_exposures": 18
+      },
+      {
+        "round": 3,
+        "from_agent": 7,
+        "to_agent": 3,
+        "infection_prob": 0.201,
+        "cumulative_exposures": 16
+      },
+      {
+        "round": 3,
+        "from_agent": 6,
+        "to_agent": 9,
+        "infection_prob": 0.4315,
+        "cumulative_exposures": 14
+      },
+      {
+        "round": 3,
+        "from_agent": 9,
+        "to_agent": 4,
+        "infection_prob": 0.2162,
+        "cumulative_exposures": 20
+      }
+    ],
+    "quarantine_stats": {
+      "quarantine_actions": 10,
+      "details": [
+        {
+          "round": 3,
+          "agent_id": 0,
+          "trust_score": 0.95,
+          "fleet_mean_trust": 0.875,
+          "consecutive_suspicious": 3
+        },
+        {
+          "round": 3,
+          "agent_id": 1,
+          "trust_score": 0.9,
+          "fleet_mean_trust": 0.875,
+          "consecutive_suspicious": 3
+        },
+        {
+          "round": 3,
+          "agent_id": 2,
+          "trust_score": 0.8,
+          "fleet_mean_trust": 0.875,
+          "consecutive_suspicious": 3
+        },
+        {
+          "round": 3,
+          "agent_id": 3,
+          "trust_score": 0.85,
+          "fleet_mean_trust": 0.875,
+          "consecutive_suspicious": 3
+        },
+        {
+          "round": 3,
+          "agent_id": 4,
+          "trust_score": 0.9,
+          "fleet_mean_trust": 0.875,
+          "consecutive_suspicious": 3
+        },
+        {
+          "round": 3,
+          "agent_id": 5,
+          "trust_score": 0.85,
+          "fleet_mean_trust": 0.875,
+          "consecutive_suspicious": 3
+        },
+        {
+          "round": 3,
+          "agent_id": 6,
+          "trust_score": 0.9,
+          "fleet_mean_trust": 0.875,
+          "consecutive_suspicious": 3
+        },
+        {
+          "round": 3,
+          "agent_id": 7,
+          "trust_score": 0.85,
+          "fleet_mean_trust": 0.875,
+          "consecutive_suspicious": 3
+        },
+        {
+          "round": 3,
+          "agent_id": 8,
+          "trust_score": 0.85,
+          "fleet_mean_trust": 0.875,
+          "consecutive_suspicious": 3
+        },
+        {
+          "round": 3,
+          "agent_id": 9,
+          "trust_score": 0.9,
+          "fleet_mean_trust": 0.875,
+          "consecutive_suspicious": 3
+        }
+      ]
+    },
+    "round_history": [
+      {
+        "round": 1,
+        "infections": [
+          {
+            "agent": 3,
+            "infected_by": 2,
+            "round": 1
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 1
+          },
+          {
+            "agent": 8,
+            "infected_by": 5,
+            "round": 1
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 25,
+        "poisoned_messages": 13
+      },
+      {
+        "round": 2,
+        "infections": [
+          {
+            "agent": 1,
+            "infected_by": 8,
+            "round": 2
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 2
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 2
+          },
+          {
+            "agent": 7,
+            "infected_by": 6,
+            "round": 2
+          },
+          {
+            "agent": 8,
+            "infected_by": 7,
+            "round": 2
+          },
+          {
+            "agent": 9,
+            "infected_by": 7,
+            "round": 2
+          }
+        ],
+        "quarantines": [],
+        "messages_sent": 26,
+        "poisoned_messages": 24
+      },
+      {
+        "round": 3,
+        "infections": [
+          {
+            "agent": 0,
+            "infected_by": 9,
+            "round": 3
+          },
+          {
+            "agent": 0,
+            "infected_by": 8,
+            "round": 3
+          },
+          {
+            "agent": 3,
+            "infected_by": 1,
+            "round": 3
+          },
+          {
+            "agent": 3,
+            "infected_by": 0,
+            "round": 3
+          },
+          {
+            "agent": 4,
+            "infected_by": 1,
+            "round": 3
+          },
+          {
+            "agent": 5,
+            "infected_by": 3,
+            "round": 3
+          },
+          {
+            "agent": 5,
+            "infected_by": 2,
+            "round": 3
+          },
+          {
+            "agent": 6,
+            "infected_by": 3,
+            "round": 3
+          },
+          {
+            "agent": 7,
+            "infected_by": 4,
+            "round": 3
+          },
+          {
+            "agent": 9,
+            "infected_by": 6,
+            "round": 3
+          }
+        ],
+        "quarantines": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "messages_sent": 25,
+        "poisoned_messages": 25
+      },
+      {
+        "round": 4,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 5,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 6,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 7,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 8,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 9,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 10,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 11,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 12,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 13,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 14,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 15,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 16,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 17,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 18,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 19,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 20,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 0,
+        "poisoned_messages": 0
+      }
+    ]
+  },
+  "firewall": {
+    "arm": "FIREWALL + QUARANTINE (v2)",
+    "r0": 0.0,
+    "total_infected": 3,
+    "infection_rate_final": 0.3,
+    "first_secondary_infection_round": 1,
+    "fifty_pct_infection_round": null,
+    "fleet_status": {
+      "clean": 0,
+      "exposed": 7,
+      "infected": 0,
+      "quarantined": 3,
+      "agents": [
+        {
+          "agent_id": 0,
+          "name": "Agent_00",
+          "infection_status": "exposed",
+          "infection_round": null,
+          "infected_by": null,
+          "trust_score": 1.0,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 106
+        },
+        {
+          "agent_id": 1,
+          "name": "Agent_01",
+          "infection_status": "quarantined",
+          "infection_round": 2,
+          "infected_by": 7,
+          "trust_score": 0.85,
+          "quarantined_at": 5,
+          "total_outputs": 5,
+          "total_received": 29
+        },
+        {
+          "agent_id": 2,
+          "name": "Agent_02",
+          "infection_status": "quarantined",
+          "infection_round": 0,
+          "infected_by": null,
+          "trust_score": 0.8,
+          "quarantined_at": 3,
+          "total_outputs": 3,
+          "total_received": 12
+        },
+        {
+          "agent_id": 3,
+          "name": "Agent_03",
+          "infection_status": "exposed",
+          "infection_round": null,
+          "infected_by": null,
+          "trust_score": 1.0,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 104
+        },
+        {
+          "agent_id": 4,
+          "name": "Agent_04",
+          "infection_status": "exposed",
+          "infection_round": null,
+          "infected_by": null,
+          "trust_score": 1.0,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 110
+        },
+        {
+          "agent_id": 5,
+          "name": "Agent_05",
+          "infection_status": "exposed",
+          "infection_round": null,
+          "infected_by": null,
+          "trust_score": 1.0,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 107
+        },
+        {
+          "agent_id": 6,
+          "name": "Agent_06",
+          "infection_status": "exposed",
+          "infection_round": null,
+          "infected_by": null,
+          "trust_score": 1.0,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 102
+        },
+        {
+          "agent_id": 7,
+          "name": "Agent_07",
+          "infection_status": "quarantined",
+          "infection_round": 1,
+          "infected_by": 2,
+          "trust_score": 0.85,
+          "quarantined_at": 3,
+          "total_outputs": 3,
+          "total_received": 15
+        },
+        {
+          "agent_id": 8,
+          "name": "Agent_08",
+          "infection_status": "exposed",
+          "infection_round": null,
+          "infected_by": null,
+          "trust_score": 1.0,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 112
+        },
+        {
+          "agent_id": 9,
+          "name": "Agent_09",
+          "infection_status": "exposed",
+          "infection_round": null,
+          "infected_by": null,
+          "trust_score": 1.0,
+          "quarantined_at": null,
+          "total_outputs": 20,
+          "total_received": 119
+        }
+      ]
+    },
+    "shared_db_stats": {
+      "total_entries": 151,
+      "poisoned_entries": 9,
+      "poisoned_ratio": 0.0596,
+      "total_retrievals": 151,
+      "poisoned_retrievals": 0,
+      "contamination_rate": 0.0,
+      "firewall_blocked": 1163
+    },
+    "contagion_events": [
+      {
+        "round": 1,
+        "from_agent": 2,
+        "to_agent": 7,
+        "infection_prob": 0.1025,
+        "cumulative_exposures": 2
+      },
+      {
+        "round": 2,
+        "from_agent": 7,
+        "to_agent": 1,
+        "infection_prob": 0.092,
+        "cumulative_exposures": 3
+      }
+    ],
+    "quarantine_stats": {
+      "quarantine_actions": 3,
+      "details": [
+        {
+          "round": 3,
+          "agent_id": 2,
+          "trust_score": 0.8,
+          "fleet_mean_trust": 0.96,
+          "consecutive_suspicious": 3
+        },
+        {
+          "round": 3,
+          "agent_id": 7,
+          "trust_score": 0.85,
+          "fleet_mean_trust": 0.96,
+          "consecutive_suspicious": 3
+        },
+        {
+          "round": 5,
+          "agent_id": 1,
+          "trust_score": 0.85,
+          "fleet_mean_trust": 0.9812,
+          "consecutive_suspicious": 3
+        }
+      ]
+    },
+    "round_history": [
+      {
+        "round": 1,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 22,
+        "poisoned_messages": 4
+      },
+      {
+        "round": 2,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 24,
+        "poisoned_messages": 5
+      },
+      {
+        "round": 3,
+        "infections": [],
+        "quarantines": [
+          2,
+          7
+        ],
+        "messages_sent": 25,
+        "poisoned_messages": 7
+      },
+      {
+        "round": 4,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 19,
+        "poisoned_messages": 3
+      },
+      {
+        "round": 5,
+        "infections": [],
+        "quarantines": [
+          1
+        ],
+        "messages_sent": 19,
+        "poisoned_messages": 2
+      },
+      {
+        "round": 6,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 17,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 7,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 17,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 8,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 17,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 9,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 18,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 10,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 15,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 11,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 19,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 12,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 18,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 13,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 19,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 14,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 15,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 15,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 18,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 16,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 17,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 17,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 19,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 18,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 18,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 19,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 17,
+        "poisoned_messages": 0
+      },
+      {
+        "round": 20,
+        "infections": [],
+        "quarantines": [],
+        "messages_sent": 17,
+        "poisoned_messages": 0
+      }
+    ]
+  },
+  "total_time_seconds": 0.0
+}

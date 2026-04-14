@@ -1,0 +1,1598 @@
+{
+  "experiment": "exp30_ship_of_theseus",
+  "timestamp": "2026-03-29T10:31:34.750807+00:00",
+  "config": {
+    "total_tasks": 10000,
+    "checkpoint_every": 500,
+    "forgetting_interval": 100,
+    "max_memory": 500,
+    "seed": 42
+  },
+  "control": {
+    "arm": "CONTROL (No Forgetting)",
+    "total_tasks": 10000,
+    "total_time_seconds": 65.6,
+    "final_rolling_accuracy": 0.6166,
+    "dementia_onset_task": null,
+    "dementia_onset_pct": null,
+    "final_memory_size": 24881,
+    "final_semantic_diversity": 1.0,
+    "duplicate_count": 0,
+    "checkpoints": [
+      {
+        "task_num": 500,
+        "rolling_accuracy": 0.8855,
+        "memory": {
+          "total_entries": 1111,
+          "unique_content": 1111,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 1111,
+          "retrieval_count": 500,
+          "category_distribution": {
+            "tax_calculation": 98,
+            "client_onboarding": 105,
+            "revenue_analysis": 84,
+            "risk_assessment": 94,
+            "hr_policy_review": 99,
+            "cash_flow_forecast": 92,
+            "market_research": 82,
+            "portfolio_review": 81,
+            "compliance_check": 78,
+            "vendor_evaluation": 93,
+            "expense_audit": 94,
+            "fraud_detection": 111
+          }
+        },
+        "elapsed_seconds": 0.1
+      },
+      {
+        "task_num": 1000,
+        "rolling_accuracy": 0.8099,
+        "memory": {
+          "total_entries": 2222,
+          "unique_content": 2222,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 2222,
+          "retrieval_count": 1000,
+          "category_distribution": {
+            "tax_calculation": 208,
+            "client_onboarding": 206,
+            "revenue_analysis": 170,
+            "risk_assessment": 185,
+            "hr_policy_review": 182,
+            "cash_flow_forecast": 180,
+            "market_research": 179,
+            "portfolio_review": 191,
+            "compliance_check": 156,
+            "vendor_evaluation": 176,
+            "expense_audit": 186,
+            "fraud_detection": 203
+          }
+        },
+        "elapsed_seconds": 0.4
+      },
+      {
+        "task_num": 1500,
+        "rolling_accuracy": 0.8008,
+        "memory": {
+          "total_entries": 3385,
+          "unique_content": 3385,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 3385,
+          "retrieval_count": 1500,
+          "category_distribution": {
+            "tax_calculation": 309,
+            "client_onboarding": 309,
+            "revenue_analysis": 253,
+            "risk_assessment": 261,
+            "hr_policy_review": 291,
+            "cash_flow_forecast": 313,
+            "market_research": 246,
+            "portfolio_review": 291,
+            "compliance_check": 258,
+            "vendor_evaluation": 281,
+            "expense_audit": 285,
+            "fraud_detection": 288
+          }
+        },
+        "elapsed_seconds": 0.8
+      },
+      {
+        "task_num": 2000,
+        "rolling_accuracy": 0.7625,
+        "memory": {
+          "total_entries": 4507,
+          "unique_content": 4507,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 4507,
+          "retrieval_count": 2000,
+          "category_distribution": {
+            "tax_calculation": 404,
+            "client_onboarding": 437,
+            "revenue_analysis": 343,
+            "risk_assessment": 324,
+            "hr_policy_review": 360,
+            "cash_flow_forecast": 391,
+            "market_research": 350,
+            "portfolio_review": 393,
+            "compliance_check": 347,
+            "vendor_evaluation": 372,
+            "expense_audit": 386,
+            "fraud_detection": 400
+          }
+        },
+        "elapsed_seconds": 1.6
+      },
+      {
+        "task_num": 2500,
+        "rolling_accuracy": 0.7604,
+        "memory": {
+          "total_entries": 5699,
+          "unique_content": 5699,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 5699,
+          "retrieval_count": 2500,
+          "category_distribution": {
+            "tax_calculation": 550,
+            "client_onboarding": 541,
+            "revenue_analysis": 447,
+            "risk_assessment": 410,
+            "hr_policy_review": 471,
+            "cash_flow_forecast": 502,
+            "market_research": 440,
+            "portfolio_review": 498,
+            "compliance_check": 441,
+            "vendor_evaluation": 456,
+            "expense_audit": 467,
+            "fraud_detection": 476
+          }
+        },
+        "elapsed_seconds": 2.5
+      },
+      {
+        "task_num": 3000,
+        "rolling_accuracy": 0.7328,
+        "memory": {
+          "total_entries": 6914,
+          "unique_content": 6914,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 6914,
+          "retrieval_count": 3000,
+          "category_distribution": {
+            "tax_calculation": 638,
+            "client_onboarding": 643,
+            "revenue_analysis": 550,
+            "risk_assessment": 500,
+            "hr_policy_review": 583,
+            "cash_flow_forecast": 602,
+            "market_research": 578,
+            "portfolio_review": 591,
+            "compliance_check": 542,
+            "vendor_evaluation": 555,
+            "expense_audit": 580,
+            "fraud_detection": 552
+          }
+        },
+        "elapsed_seconds": 3.8
+      },
+      {
+        "task_num": 3500,
+        "rolling_accuracy": 0.7248,
+        "memory": {
+          "total_entries": 8110,
+          "unique_content": 8110,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 8110,
+          "retrieval_count": 3500,
+          "category_distribution": {
+            "tax_calculation": 734,
+            "client_onboarding": 774,
+            "revenue_analysis": 646,
+            "risk_assessment": 567,
+            "hr_policy_review": 677,
+            "cash_flow_forecast": 690,
+            "market_research": 694,
+            "portfolio_review": 689,
+            "compliance_check": 634,
+            "vendor_evaluation": 651,
+            "expense_audit": 688,
+            "fraud_detection": 666
+          }
+        },
+        "elapsed_seconds": 5.4
+      },
+      {
+        "task_num": 4000,
+        "rolling_accuracy": 0.7069,
+        "memory": {
+          "total_entries": 9329,
+          "unique_content": 9329,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 9329,
+          "retrieval_count": 4000,
+          "category_distribution": {
+            "tax_calculation": 825,
+            "client_onboarding": 873,
+            "revenue_analysis": 749,
+            "risk_assessment": 699,
+            "hr_policy_review": 777,
+            "cash_flow_forecast": 766,
+            "market_research": 788,
+            "portfolio_review": 792,
+            "compliance_check": 758,
+            "vendor_evaluation": 757,
+            "expense_audit": 778,
+            "fraud_detection": 767
+          }
+        },
+        "elapsed_seconds": 7.4
+      },
+      {
+        "task_num": 4500,
+        "rolling_accuracy": 0.7067,
+        "memory": {
+          "total_entries": 10556,
+          "unique_content": 10556,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 10556,
+          "retrieval_count": 4500,
+          "category_distribution": {
+            "tax_calculation": 925,
+            "client_onboarding": 1012,
+            "revenue_analysis": 833,
+            "risk_assessment": 802,
+            "hr_policy_review": 886,
+            "cash_flow_forecast": 880,
+            "market_research": 869,
+            "portfolio_review": 892,
+            "compliance_check": 811,
+            "vendor_evaluation": 893,
+            "expense_audit": 899,
+            "fraud_detection": 854
+          }
+        },
+        "elapsed_seconds": 9.6
+      },
+      {
+        "task_num": 5000,
+        "rolling_accuracy": 0.6783,
+        "memory": {
+          "total_entries": 11803,
+          "unique_content": 11803,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 11803,
+          "retrieval_count": 5000,
+          "category_distribution": {
+            "tax_calculation": 1042,
+            "client_onboarding": 1125,
+            "revenue_analysis": 926,
+            "risk_assessment": 891,
+            "hr_policy_review": 1019,
+            "cash_flow_forecast": 990,
+            "market_research": 1006,
+            "portfolio_review": 989,
+            "compliance_check": 914,
+            "vendor_evaluation": 967,
+            "expense_audit": 1003,
+            "fraud_detection": 931
+          }
+        },
+        "elapsed_seconds": 12.4
+      },
+      {
+        "task_num": 5500,
+        "rolling_accuracy": 0.6762,
+        "memory": {
+          "total_entries": 13073,
+          "unique_content": 13073,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 13073,
+          "retrieval_count": 5500,
+          "category_distribution": {
+            "tax_calculation": 1103,
+            "client_onboarding": 1220,
+            "revenue_analysis": 1033,
+            "risk_assessment": 981,
+            "hr_policy_review": 1133,
+            "cash_flow_forecast": 1111,
+            "market_research": 1128,
+            "portfolio_review": 1100,
+            "compliance_check": 1019,
+            "vendor_evaluation": 1060,
+            "expense_audit": 1149,
+            "fraud_detection": 1036
+          }
+        },
+        "elapsed_seconds": 15.6
+      },
+      {
+        "task_num": 6000,
+        "rolling_accuracy": 0.6561,
+        "memory": {
+          "total_entries": 14336,
+          "unique_content": 14336,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 14336,
+          "retrieval_count": 6000,
+          "category_distribution": {
+            "tax_calculation": 1214,
+            "client_onboarding": 1334,
+            "revenue_analysis": 1141,
+            "risk_assessment": 1079,
+            "hr_policy_review": 1221,
+            "cash_flow_forecast": 1203,
+            "market_research": 1214,
+            "portfolio_review": 1224,
+            "compliance_check": 1161,
+            "vendor_evaluation": 1168,
+            "expense_audit": 1236,
+            "fraud_detection": 1141
+          }
+        },
+        "elapsed_seconds": 19.3
+      },
+      {
+        "task_num": 6500,
+        "rolling_accuracy": 0.6847,
+        "memory": {
+          "total_entries": 15647,
+          "unique_content": 15647,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 15647,
+          "retrieval_count": 6500,
+          "category_distribution": {
+            "tax_calculation": 1320,
+            "client_onboarding": 1444,
+            "revenue_analysis": 1254,
+            "risk_assessment": 1189,
+            "hr_policy_review": 1321,
+            "cash_flow_forecast": 1289,
+            "market_research": 1302,
+            "portfolio_review": 1359,
+            "compliance_check": 1305,
+            "vendor_evaluation": 1278,
+            "expense_audit": 1329,
+            "fraud_detection": 1257
+          }
+        },
+        "elapsed_seconds": 23.7
+      },
+      {
+        "task_num": 7000,
+        "rolling_accuracy": 0.6714,
+        "memory": {
+          "total_entries": 16940,
+          "unique_content": 16940,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 16940,
+          "retrieval_count": 7000,
+          "category_distribution": {
+            "tax_calculation": 1433,
+            "client_onboarding": 1570,
+            "revenue_analysis": 1361,
+            "risk_assessment": 1270,
+            "hr_policy_review": 1434,
+            "cash_flow_forecast": 1395,
+            "market_research": 1416,
+            "portfolio_review": 1473,
+            "compliance_check": 1396,
+            "vendor_evaluation": 1407,
+            "expense_audit": 1427,
+            "fraud_detection": 1358
+          }
+        },
+        "elapsed_seconds": 28.8
+      },
+      {
+        "task_num": 7500,
+        "rolling_accuracy": 0.6475,
+        "memory": {
+          "total_entries": 18241,
+          "unique_content": 18241,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 18241,
+          "retrieval_count": 7500,
+          "category_distribution": {
+            "tax_calculation": 1593,
+            "client_onboarding": 1658,
+            "revenue_analysis": 1480,
+            "risk_assessment": 1372,
+            "hr_policy_review": 1517,
+            "cash_flow_forecast": 1501,
+            "market_research": 1546,
+            "portfolio_review": 1555,
+            "compliance_check": 1466,
+            "vendor_evaluation": 1507,
+            "expense_audit": 1554,
+            "fraud_detection": 1492
+          }
+        },
+        "elapsed_seconds": 33.4
+      },
+      {
+        "task_num": 8000,
+        "rolling_accuracy": 0.6642,
+        "memory": {
+          "total_entries": 19537,
+          "unique_content": 19537,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 19537,
+          "retrieval_count": 8000,
+          "category_distribution": {
+            "tax_calculation": 1697,
+            "client_onboarding": 1760,
+            "revenue_analysis": 1604,
+            "risk_assessment": 1494,
+            "hr_policy_review": 1634,
+            "cash_flow_forecast": 1600,
+            "market_research": 1638,
+            "portfolio_review": 1661,
+            "compliance_check": 1549,
+            "vendor_evaluation": 1638,
+            "expense_audit": 1630,
+            "fraud_detection": 1632
+          }
+        },
+        "elapsed_seconds": 38.4
+      },
+      {
+        "task_num": 8500,
+        "rolling_accuracy": 0.6462,
+        "memory": {
+          "total_entries": 20852,
+          "unique_content": 20852,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 20852,
+          "retrieval_count": 8500,
+          "category_distribution": {
+            "tax_calculation": 1789,
+            "client_onboarding": 1852,
+            "revenue_analysis": 1720,
+            "risk_assessment": 1616,
+            "hr_policy_review": 1754,
+            "cash_flow_forecast": 1738,
+            "market_research": 1754,
+            "portfolio_review": 1800,
+            "compliance_check": 1661,
+            "vendor_evaluation": 1721,
+            "expense_audit": 1704,
+            "fraud_detection": 1743
+          }
+        },
+        "elapsed_seconds": 44.4
+      },
+      {
+        "task_num": 9000,
+        "rolling_accuracy": 0.6303,
+        "memory": {
+          "total_entries": 22141,
+          "unique_content": 22141,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 22141,
+          "retrieval_count": 9000,
+          "category_distribution": {
+            "tax_calculation": 1907,
+            "client_onboarding": 1958,
+            "revenue_analysis": 1828,
+            "risk_assessment": 1724,
+            "hr_policy_review": 1850,
+            "cash_flow_forecast": 1838,
+            "market_research": 1868,
+            "portfolio_review": 1889,
+            "compliance_check": 1776,
+            "vendor_evaluation": 1825,
+            "expense_audit": 1817,
+            "fraud_detection": 1861
+          }
+        },
+        "elapsed_seconds": 51.0
+      },
+      {
+        "task_num": 9500,
+        "rolling_accuracy": 0.6361,
+        "memory": {
+          "total_entries": 23498,
+          "unique_content": 23498,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 23498,
+          "retrieval_count": 9500,
+          "category_distribution": {
+            "tax_calculation": 2033,
+            "client_onboarding": 2074,
+            "revenue_analysis": 1929,
+            "risk_assessment": 1855,
+            "hr_policy_review": 1952,
+            "cash_flow_forecast": 1940,
+            "market_research": 1986,
+            "portfolio_review": 2003,
+            "compliance_check": 1903,
+            "vendor_evaluation": 1926,
+            "expense_audit": 1921,
+            "fraud_detection": 1976
+          }
+        },
+        "elapsed_seconds": 58.1
+      },
+      {
+        "task_num": 10000,
+        "rolling_accuracy": 0.6166,
+        "memory": {
+          "total_entries": 24881,
+          "unique_content": 24881,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 24881,
+          "retrieval_count": 10000,
+          "category_distribution": {
+            "tax_calculation": 2141,
+            "client_onboarding": 2213,
+            "revenue_analysis": 2048,
+            "risk_assessment": 1976,
+            "hr_policy_review": 2070,
+            "cash_flow_forecast": 2045,
+            "market_research": 2073,
+            "portfolio_review": 2127,
+            "compliance_check": 2015,
+            "vendor_evaluation": 2023,
+            "expense_audit": 2035,
+            "fraud_detection": 2115
+          }
+        },
+        "elapsed_seconds": 65.6
+      }
+    ],
+    "forgetting_stats": null,
+    "forgetting_log": [],
+    "accuracy_percentiles": {
+      "p10": 0.5285,
+      "p25": 0.6098,
+      "p50": 0.7071,
+      "p75": 0.8054,
+      "p90": 0.8974
+    }
+  },
+  "treatment": {
+    "arm": "TREATMENT (Active Forgetting)",
+    "total_tasks": 10000,
+    "total_time_seconds": 2.0,
+    "final_rolling_accuracy": 0.8445,
+    "dementia_onset_task": null,
+    "dementia_onset_pct": null,
+    "final_memory_size": 500,
+    "final_semantic_diversity": 1.0,
+    "duplicate_count": 0,
+    "checkpoints": [
+      {
+        "task_num": 500,
+        "rolling_accuracy": 0.9099,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 1111,
+          "retrieval_count": 500,
+          "category_distribution": {
+            "tax_calculation": 49,
+            "client_onboarding": 61,
+            "revenue_analysis": 46,
+            "risk_assessment": 33,
+            "hr_policy_review": 33,
+            "cash_flow_forecast": 50,
+            "market_research": 34,
+            "portfolio_review": 27,
+            "compliance_check": 28,
+            "vendor_evaluation": 36,
+            "expense_audit": 39,
+            "fraud_detection": 64
+          }
+        },
+        "elapsed_seconds": 0.1
+      },
+      {
+        "task_num": 1000,
+        "rolling_accuracy": 0.8777,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 2222,
+          "retrieval_count": 1000,
+          "category_distribution": {
+            "tax_calculation": 53,
+            "client_onboarding": 40,
+            "risk_assessment": 43,
+            "hr_policy_review": 36,
+            "cash_flow_forecast": 43,
+            "revenue_analysis": 32,
+            "market_research": 27,
+            "portfolio_review": 55,
+            "vendor_evaluation": 50,
+            "expense_audit": 37,
+            "fraud_detection": 40,
+            "compliance_check": 44
+          }
+        },
+        "elapsed_seconds": 0.2
+      },
+      {
+        "task_num": 1500,
+        "rolling_accuracy": 0.8974,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 3385,
+          "retrieval_count": 1500,
+          "category_distribution": {
+            "tax_calculation": 32,
+            "client_onboarding": 45,
+            "market_research": 30,
+            "portfolio_review": 40,
+            "cash_flow_forecast": 61,
+            "fraud_detection": 32,
+            "revenue_analysis": 30,
+            "expense_audit": 46,
+            "risk_assessment": 39,
+            "hr_policy_review": 48,
+            "compliance_check": 44,
+            "vendor_evaluation": 53
+          }
+        },
+        "elapsed_seconds": 0.3
+      },
+      {
+        "task_num": 2000,
+        "rolling_accuracy": 0.88,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 4507,
+          "retrieval_count": 2000,
+          "category_distribution": {
+            "tax_calculation": 28,
+            "client_onboarding": 50,
+            "market_research": 41,
+            "cash_flow_forecast": 40,
+            "revenue_analysis": 43,
+            "risk_assessment": 36,
+            "expense_audit": 45,
+            "portfolio_review": 42,
+            "hr_policy_review": 39,
+            "compliance_check": 47,
+            "vendor_evaluation": 49,
+            "fraud_detection": 40
+          }
+        },
+        "elapsed_seconds": 0.4
+      },
+      {
+        "task_num": 2500,
+        "rolling_accuracy": 0.894,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 5699,
+          "retrieval_count": 2500,
+          "category_distribution": {
+            "client_onboarding": 49,
+            "tax_calculation": 37,
+            "market_research": 35,
+            "cash_flow_forecast": 39,
+            "risk_assessment": 39,
+            "revenue_analysis": 41,
+            "hr_policy_review": 44,
+            "compliance_check": 39,
+            "vendor_evaluation": 41,
+            "expense_audit": 43,
+            "portfolio_review": 55,
+            "fraud_detection": 38
+          }
+        },
+        "elapsed_seconds": 0.5
+      },
+      {
+        "task_num": 3000,
+        "rolling_accuracy": 0.8783,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 6914,
+          "retrieval_count": 3000,
+          "category_distribution": {
+            "client_onboarding": 41,
+            "risk_assessment": 36,
+            "revenue_analysis": 50,
+            "hr_policy_review": 43,
+            "compliance_check": 37,
+            "vendor_evaluation": 35,
+            "market_research": 32,
+            "cash_flow_forecast": 36,
+            "fraud_detection": 38,
+            "expense_audit": 54,
+            "tax_calculation": 35,
+            "portfolio_review": 63
+          }
+        },
+        "elapsed_seconds": 0.6
+      },
+      {
+        "task_num": 3500,
+        "rolling_accuracy": 0.8787,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 8110,
+          "retrieval_count": 3500,
+          "category_distribution": {
+            "client_onboarding": 40,
+            "risk_assessment": 38,
+            "revenue_analysis": 46,
+            "hr_policy_review": 49,
+            "compliance_check": 34,
+            "vendor_evaluation": 32,
+            "market_research": 41,
+            "cash_flow_forecast": 35,
+            "fraud_detection": 34,
+            "expense_audit": 49,
+            "tax_calculation": 42,
+            "portfolio_review": 60
+          }
+        },
+        "elapsed_seconds": 0.7
+      },
+      {
+        "task_num": 4000,
+        "rolling_accuracy": 0.8704,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 9329,
+          "retrieval_count": 4000,
+          "category_distribution": {
+            "risk_assessment": 38,
+            "compliance_check": 33,
+            "vendor_evaluation": 31,
+            "market_research": 38,
+            "cash_flow_forecast": 35,
+            "revenue_analysis": 50,
+            "hr_policy_review": 48,
+            "client_onboarding": 39,
+            "fraud_detection": 36,
+            "expense_audit": 52,
+            "tax_calculation": 44,
+            "portfolio_review": 56
+          }
+        },
+        "elapsed_seconds": 0.8
+      },
+      {
+        "task_num": 4500,
+        "rolling_accuracy": 0.8787,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 10556,
+          "retrieval_count": 4500,
+          "category_distribution": {
+            "risk_assessment": 36,
+            "compliance_check": 28,
+            "vendor_evaluation": 32,
+            "market_research": 39,
+            "cash_flow_forecast": 38,
+            "revenue_analysis": 53,
+            "hr_policy_review": 51,
+            "fraud_detection": 34,
+            "expense_audit": 50,
+            "tax_calculation": 38,
+            "portfolio_review": 59,
+            "client_onboarding": 42
+          }
+        },
+        "elapsed_seconds": 0.9
+      },
+      {
+        "task_num": 5000,
+        "rolling_accuracy": 0.8609,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 11803,
+          "retrieval_count": 5000,
+          "category_distribution": {
+            "risk_assessment": 34,
+            "market_research": 39,
+            "cash_flow_forecast": 38,
+            "revenue_analysis": 55,
+            "vendor_evaluation": 32,
+            "compliance_check": 27,
+            "hr_policy_review": 52,
+            "fraud_detection": 32,
+            "expense_audit": 58,
+            "tax_calculation": 38,
+            "portfolio_review": 54,
+            "client_onboarding": 41
+          }
+        },
+        "elapsed_seconds": 1.0
+      },
+      {
+        "task_num": 5500,
+        "rolling_accuracy": 0.8659,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 13073,
+          "retrieval_count": 5500,
+          "category_distribution": {
+            "risk_assessment": 33,
+            "market_research": 38,
+            "cash_flow_forecast": 37,
+            "revenue_analysis": 64,
+            "compliance_check": 27,
+            "hr_policy_review": 49,
+            "fraud_detection": 32,
+            "expense_audit": 59,
+            "tax_calculation": 35,
+            "portfolio_review": 54,
+            "client_onboarding": 44,
+            "vendor_evaluation": 28
+          }
+        },
+        "elapsed_seconds": 1.1
+      },
+      {
+        "task_num": 6000,
+        "rolling_accuracy": 0.854,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 14336,
+          "retrieval_count": 6000,
+          "category_distribution": {
+            "risk_assessment": 33,
+            "market_research": 38,
+            "cash_flow_forecast": 37,
+            "revenue_analysis": 61,
+            "compliance_check": 27,
+            "hr_policy_review": 47,
+            "fraud_detection": 35,
+            "expense_audit": 58,
+            "tax_calculation": 36,
+            "portfolio_review": 54,
+            "client_onboarding": 45,
+            "vendor_evaluation": 29
+          }
+        },
+        "elapsed_seconds": 1.2
+      },
+      {
+        "task_num": 6500,
+        "rolling_accuracy": 0.8823,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 15647,
+          "retrieval_count": 6500,
+          "category_distribution": {
+            "risk_assessment": 31,
+            "market_research": 38,
+            "cash_flow_forecast": 34,
+            "revenue_analysis": 67,
+            "compliance_check": 27,
+            "hr_policy_review": 47,
+            "fraud_detection": 35,
+            "expense_audit": 58,
+            "tax_calculation": 36,
+            "portfolio_review": 53,
+            "client_onboarding": 45,
+            "vendor_evaluation": 29
+          }
+        },
+        "elapsed_seconds": 1.3
+      },
+      {
+        "task_num": 7000,
+        "rolling_accuracy": 0.8751,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 16940,
+          "retrieval_count": 7000,
+          "category_distribution": {
+            "risk_assessment": 31,
+            "market_research": 44,
+            "cash_flow_forecast": 34,
+            "revenue_analysis": 67,
+            "compliance_check": 26,
+            "hr_policy_review": 46,
+            "fraud_detection": 35,
+            "expense_audit": 57,
+            "tax_calculation": 35,
+            "portfolio_review": 53,
+            "client_onboarding": 44,
+            "vendor_evaluation": 28
+          }
+        },
+        "elapsed_seconds": 1.4
+      },
+      {
+        "task_num": 7500,
+        "rolling_accuracy": 0.8578,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 18241,
+          "retrieval_count": 7500,
+          "category_distribution": {
+            "risk_assessment": 34,
+            "market_research": 44,
+            "cash_flow_forecast": 36,
+            "revenue_analysis": 69,
+            "compliance_check": 27,
+            "hr_policy_review": 42,
+            "fraud_detection": 35,
+            "expense_audit": 56,
+            "tax_calculation": 35,
+            "portfolio_review": 51,
+            "client_onboarding": 44,
+            "vendor_evaluation": 27
+          }
+        },
+        "elapsed_seconds": 1.5
+      },
+      {
+        "task_num": 8000,
+        "rolling_accuracy": 0.8784,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 19537,
+          "retrieval_count": 8000,
+          "category_distribution": {
+            "risk_assessment": 35,
+            "market_research": 44,
+            "cash_flow_forecast": 35,
+            "revenue_analysis": 68,
+            "compliance_check": 27,
+            "hr_policy_review": 43,
+            "fraud_detection": 33,
+            "expense_audit": 56,
+            "tax_calculation": 35,
+            "portfolio_review": 51,
+            "client_onboarding": 44,
+            "vendor_evaluation": 29
+          }
+        },
+        "elapsed_seconds": 1.6
+      },
+      {
+        "task_num": 8500,
+        "rolling_accuracy": 0.8654,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 20852,
+          "retrieval_count": 8500,
+          "category_distribution": {
+            "risk_assessment": 35,
+            "market_research": 46,
+            "cash_flow_forecast": 35,
+            "revenue_analysis": 67,
+            "compliance_check": 27,
+            "hr_policy_review": 42,
+            "fraud_detection": 33,
+            "expense_audit": 58,
+            "tax_calculation": 39,
+            "portfolio_review": 45,
+            "client_onboarding": 44,
+            "vendor_evaluation": 29
+          }
+        },
+        "elapsed_seconds": 1.7
+      },
+      {
+        "task_num": 9000,
+        "rolling_accuracy": 0.8511,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 22141,
+          "retrieval_count": 9000,
+          "category_distribution": {
+            "market_research": 48,
+            "cash_flow_forecast": 35,
+            "revenue_analysis": 68,
+            "compliance_check": 28,
+            "hr_policy_review": 42,
+            "fraud_detection": 33,
+            "expense_audit": 57,
+            "risk_assessment": 32,
+            "tax_calculation": 39,
+            "portfolio_review": 45,
+            "client_onboarding": 44,
+            "vendor_evaluation": 29
+          }
+        },
+        "elapsed_seconds": 1.8
+      },
+      {
+        "task_num": 9500,
+        "rolling_accuracy": 0.8629,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 23498,
+          "retrieval_count": 9500,
+          "category_distribution": {
+            "market_research": 47,
+            "cash_flow_forecast": 34,
+            "hr_policy_review": 41,
+            "expense_audit": 57,
+            "revenue_analysis": 68,
+            "risk_assessment": 32,
+            "compliance_check": 27,
+            "tax_calculation": 39,
+            "portfolio_review": 46,
+            "client_onboarding": 44,
+            "fraud_detection": 32,
+            "vendor_evaluation": 33
+          }
+        },
+        "elapsed_seconds": 1.9
+      },
+      {
+        "task_num": 10000,
+        "rolling_accuracy": 0.8445,
+        "memory": {
+          "total_entries": 500,
+          "unique_content": 500,
+          "semantic_diversity": 1.0,
+          "duplicate_count": 0,
+          "insertion_count": 24881,
+          "retrieval_count": 10000,
+          "category_distribution": {
+            "market_research": 47,
+            "cash_flow_forecast": 35,
+            "hr_policy_review": 40,
+            "revenue_analysis": 69,
+            "risk_assessment": 33,
+            "portfolio_review": 44,
+            "fraud_detection": 31,
+            "compliance_check": 27,
+            "client_onboarding": 43,
+            "expense_audit": 56,
+            "tax_calculation": 42,
+            "vendor_evaluation": 33
+          }
+        },
+        "elapsed_seconds": 2.0
+      }
+    ],
+    "forgetting_stats": {
+      "cycles": 100,
+      "dedup_removed": 0,
+      "decay_removed": 0,
+      "prune_removed": 24381,
+      "total_removed": 24381
+    },
+    "forgetting_log": [
+      {
+        "task_num": 300,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 181
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 400,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 212
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 500,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 218
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 600,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 224
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 700,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 221
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 800,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 239
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 900,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 203
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 1000,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 224
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 1100,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 247
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 1200,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 226
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 1300,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 217
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 1400,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 233
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 1500,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 240
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 1600,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 223
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 1700,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 240
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 1800,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 219
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 1900,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 225
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 2000,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 215
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 2100,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 251
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 2200,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 219
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 2300,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 248
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 2400,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 251
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 2500,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 223
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 2600,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 250
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 2700,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 244
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 2800,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 236
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 2900,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 247
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 3000,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 238
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 3100,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 233
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 3200,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 246
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 3300,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 235
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 3400,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 236
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 3500,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 246
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 3600,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 247
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 3700,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 246
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 3800,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 236
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 3900,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 245
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 4000,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 245
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 4100,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 247
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 4200,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 238
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 4300,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 253
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 4400,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 250
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 4500,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 239
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 4600,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 257
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 4700,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 252
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 4800,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 246
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 4900,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 248
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 5000,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 244
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 5100,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 256
+        },
+        "store_size_after": 500
+      },
+      {
+        "task_num": 5200,
+        "removed": {
+          "dedup": 0,
+          "decay": 0,
+          "prune": 258
+        },
+        "store_size_after": 500
+      }
+    ],
+    "accuracy_percentiles": {
+      "p10": 0.7231,
+      "p25": 0.7989,
+      "p50": 0.8848,
+      "p75": 0.9687,
+      "p90": 1.0
+    }
+  },
+  "comparison": {
+    "accuracy_delta": 0.2279,
+    "control_dementia": null,
+    "treatment_dementia": null,
+    "verdict": "\u2705 Active Forgetting PREVENTS Latent Space Dementia"
+  }
+}
