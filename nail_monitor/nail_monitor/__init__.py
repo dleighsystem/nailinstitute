@@ -115,6 +115,15 @@ from .detectors_v6 import (
     OmissionDetector,
     ToolChainPropagationDetector,
 )
+from .detectors_v7 import (
+    AlignmentFakingDetector,
+    CascadeRiskDetector,
+    FleetCollusionDetector,
+    InjectionDetector,
+    JustificationInconsistencyDetector,
+    MonocultureRiskDetector,
+    TriggerConditionalDetector,
+)
 from .monitor import NailMonitor
 from .types import Alert, Observation, PathologyType, Severity
 
@@ -171,6 +180,14 @@ __all__ = [
     "ColludingAgentsDetector",
     "ConfusedDeputyDetector",
     "OmissionDetector",
+    # v7 detectors — frontier rogue agent detection (Exp33–37)
+    "AlignmentFakingDetector",
+    "JustificationInconsistencyDetector",
+    "InjectionDetector",
+    "TriggerConditionalDetector",
+    "FleetCollusionDetector",
+    "MonocultureRiskDetector",
+    "CascadeRiskDetector",
 ]
 
-__version__ = "0.6.0"
+__version__ = "0.7.0"

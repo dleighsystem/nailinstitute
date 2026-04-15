@@ -65,6 +65,17 @@ class PathologyType(str, Enum):
     AGENT_COLLUSION = "agent_collusion"
     CONFUSED_DEPUTY = "confused_deputy"
     ERRORS_OF_OMISSION = "errors_of_omission"
+    # ── v7 pathologies — frontier rogue detection (Exp33–37) ──
+    ALIGNMENT_FAKING = "alignment_faking"                       # Exp33
+    JUSTIFICATION_INCONSISTENCY = "justification_inconsistency" # Exp34
+    INJECTION_DETECTED = "injection_detected"                   # Exp35
+    TRIGGER_CONDITIONAL = "trigger_conditional"                  # Exp36
+    FLEET_COLLUSION = "fleet_collusion"                         # Exp37
+    MONOCULTURE_RISK = "monoculture_risk"                       # Exp37
+    CASCADE_RISK = "cascade_risk"                               # Exp37
+    AUTONOMOUS_OFFENSIVE = "autonomous_offensive"               # frontier
+    SELF_PRESERVATION = "self_preservation"                     # frontier
+    TRAINING_MANIPULATION = "training_manipulation"             # frontier
 
 
 @dataclass

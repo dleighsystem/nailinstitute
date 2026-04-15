@@ -39,6 +39,15 @@ from .detectors_v6 import (
     OmissionDetector,
     ToolChainPropagationDetector,
 )
+from .detectors_v7 import (
+    AlignmentFakingDetector,
+    CascadeRiskDetector,
+    FleetCollusionDetector,
+    InjectionDetector,
+    JustificationInconsistencyDetector,
+    MonocultureRiskDetector,
+    TriggerConditionalDetector,
+)
 from .types import Alert, Observation, Severity
 
 logger = logging.getLogger("nail_monitor")
@@ -94,6 +103,14 @@ class NailMonitor:
         enable_colluding_agents: bool = True,
         enable_confused_deputy: bool = True,
         enable_omission: bool = True,
+        # ── v7 detectors (Exp 33–37: frontier rogue agent detection) ──
+        enable_alignment_faking: bool = True,
+        enable_justification_inconsistency: bool = True,
+        enable_injection: bool = True,
+        enable_trigger_conditional: bool = True,
+        enable_fleet_collusion: bool = True,
+        enable_monoculture_risk: bool = True,
+        enable_cascade_risk: bool = True,
         log_alerts: bool = True,
         alert_log_path: Optional[str] = None,
     ):
@@ -152,6 +169,22 @@ class NailMonitor:
         if enable_omission:
             self.detectors["omission"] = OmissionDetector()
 
+        # ── v7 detectors (Exp 33–37: frontier rogue agent detection) ──
+        if enable_alignment_faking:
+            self.detectors["alignment_faking"] = AlignmentFakingDetector()
+        if enable_justification_inconsistency:
+            self.detectors["justification_inconsistency"] = JustificationInconsistencyDetector()
+        if enable_injection:
+            self.detectors["injection"] = InjectionDetector()
+        if enable_trigger_conditional:
+            self.detectors["trigger_conditional"] = TriggerConditionalDetector()
+        if enable_fleet_collusion:
+            self.detectors["fleet_collusion"] = FleetCollusionDetector()
+        if enable_monoculture_risk:
+            self.detectors["monoculture_risk"] = MonocultureRiskDetector()
+        if enable_cascade_risk:
+            self.detectors["cascade_risk"] = CascadeRiskDetector()
+
         if log_alerts:
             logging.basicConfig(level=logging.INFO)
             logger.info(
@@ -186,6 +219,15 @@ class NailMonitor:
                 - requires_action: for OmissionDetector
                 - tool_calls: for ToolChainPropagationDetector
                 - request_text: for ColludingAgentsDetector
+                v7 (frontier rogue agent detection):
+                - monitoring_mentioned: bool for AlignmentFakingDetector
+                - refusal_rate, caveat_density: float for AlignmentFakingDetector
+                - info_accessed, info_referenced: list[str] for JustificationInconsistencyDetector
+                - retrieved_content: str for InjectionDetector
+                - context_variables: dict for TriggerConditionalDetector
+                - agent_action_code: int for FleetCollusionDetector
+                - model_backend, had_error: for MonocultureRiskDetector
+                - had_error, error_source_agent: for CascadeRiskDetector
         
         Returns list of Alerts (may be empty if no pathologies detected).
         """
@@ -231,6 +273,18 @@ class NailMonitor:
             "colluding_agents", "confused_deputy", "omission",
         )
         for key in v6_keys:
+            if key in self.detectors:
+                alert = self.detectors[key].observe(obs)
+                if alert:
+                    alerts.append(alert)
+
+        # ── v7 detectors (Exp 33–37: frontier rogue agent detection) ──
+        v7_keys = (
+            "alignment_faking", "justification_inconsistency", "injection",
+            "trigger_conditional", "fleet_collusion", "monoculture_risk",
+            "cascade_risk",
+        )
+        for key in v7_keys:
             if key in self.detectors:
                 alert = self.detectors[key].observe(obs)
                 if alert:
