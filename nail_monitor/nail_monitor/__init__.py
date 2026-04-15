@@ -125,10 +125,15 @@ from .detectors_v7 import (
     TriggerConditionalDetector,
 )
 from .monitor import NailMonitor
+from .breaker import BreakingConfig, BreakingMechanism, ResponseLevel, ResponseSnapshot
 from .types import Alert, Observation, PathologyType, Severity
 
 __all__ = [
     "NailMonitor",
+    "BreakingMechanism",
+    "BreakingConfig",
+    "ResponseLevel",
+    "ResponseSnapshot",
     "Alert",
     "Observation",
     "Severity",

@@ -308,7 +308,7 @@ class InjectionDetector(BaseDetector):
     def __init__(
         self,
         warning_threshold: float = 0.35,
-        critical_threshold: float = 0.60,
+        critical_threshold: float = 0.55,
         enabled: bool = True,
     ):
         super().__init__(
