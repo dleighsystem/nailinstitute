@@ -1,0 +1,7 @@
+# Training artifacts — do NOT commit model weights or logs
+models/
+logs/
+eval/
+reports/
+__pycache__/
+*.egg-info/
