@@ -1,0 +1,29 @@
+# NAIL AVE Classification — Custom eval task for lm-eval-harness
+# Tests the model's ability to classify vulnerabilities into correct AVE categories
+
+task: nail_ave_classification
+dataset_path: json
+dataset_name: null
+dataset_kwargs:
+  data_files:
+    test: scripts/local_llm/data/nail_guard_eval.jsonl
+output_type: generate_until
+generation_kwargs:
+  until: ["<|im_end|>", "\n\n"]
+  max_gen_toks: 256
+  temperature: 0.1
+filter_list:
+  - name: "ave_only"
+    filter:
+      - function: "regex"
+        regex_pattern: "ave_classifier"
+        field: "task"
+doc_to_text: "{{messages[1].content}}"
+doc_to_target: "{{messages[2].content}}"
+metric_list:
+  - metric: exact_match
+    aggregation: mean
+    higher_is_better: true
+metadata:
+  version: 1.0
+  description: "NAIL AVE vulnerability classification accuracy"

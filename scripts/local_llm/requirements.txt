@@ -1,0 +1,19 @@
+# NAIL Local LLM Training Pipeline — Requirements
+# Install in a venv on DGX Spark: pip install -r requirements.txt
+
+# Core training stack
+unsloth[cu124-ampere-torch250]  # Unsloth with CUDA 12.4 for DGX Spark
+trl>=1.1.0                      # SFT, DPO, GRPO trainers
+transformers>=4.46.0
+datasets>=3.0.0
+accelerate>=1.0.0
+peft>=0.13.0
+
+# Evaluation
+lm-eval>=0.4.11                 # lm-eval-harness for benchmarks
+
+# Quantization & export
+llama-cpp-python                # GGUF support (fallback if Unsloth export unavailable)
+
+# Config & utilities
+pyyaml>=6.0
