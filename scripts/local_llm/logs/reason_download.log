@@ -1,0 +1,4 @@
+nohup: ignoring input
+Fetching 15 files:   0%|          | 0/15 [00:00<?, ?it/s]Fetching 15 files: 100%|██████████| 15/15 [00:00<00:00, 351477.99it/s]
+DONE: /home/dleighsystems/.cache/huggingface/hub/models--unsloth--Qwen2.5-32B-Instruct-bnb-4bit/snapshots/aa79e3472818bdec779075d80928602591d9f2a0
+DOWNLOAD_SUCCESS

@@ -1,0 +1,45 @@
+nohup: ignoring input
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+Unsloth: Your Flash Attention 2 installation seems to be broken. Using Xformers instead. No performance changes will be seen.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+
+════════════════════════════════════════════════════════════
+  SFT Training: reason
+  Base model: unsloth/Qwen2.5-32B-Instruct-bnb-4bit
+  LoRA: r=16, α=32
+════════════════════════════════════════════════════════════
+
+==((====))==  Unsloth 2026.4.5: Fast Qwen2 patching. Transformers: 5.5.0.
+   \\   /|    NVIDIA GB10. Num GPUs = 1. Max memory: 121.69 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.11.0+cu130. CUDA: 12.1. CUDA Toolkit: 13.0. Triton: 3.6.0
+\        /    Bfloat16 = TRUE. FA [Xformers = None. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Traceback (most recent call last):
+  File "/home/dleighsystems/Desktop/NAIL institute/scripts/local_llm/train.py", line 385, in <module>
+    main()
+  File "/home/dleighsystems/Desktop/NAIL institute/scripts/local_llm/train.py", line 369, in main
+    train_sft(args.model, model_cfg, hardware)
+  File "/home/dleighsystems/Desktop/NAIL institute/scripts/local_llm/train.py", line 65, in train_sft
+    model, tokenizer = FastLanguageModel.from_pretrained(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/unsloth/models/loader.py", line 721, in from_pretrained
+    model, tokenizer = dispatch_model.from_pretrained(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/unsloth/models/qwen2.py", line 88, in from_pretrained
+    return FastLlamaModel.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/unsloth/models/llama.py", line 2482, in from_pretrained
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py", line 387, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 4113, in from_pretrained
+    device_map = _get_device_map(model, device_map, max_memory, hf_quantizer)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/integrations/accelerate.py", line 373, in _get_device_map
+    hf_quantizer.validate_environment(device_map=device_map)
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/quantizers/quantizer_bnb_4bit.py", line 74, in validate_environment
+    raise ValueError(
+ValueError: Some modules are dispatched on the CPU or the disk. Make sure you have enough GPU RAM to fit the quantized model. If you want to dispatch the model on the CPU or the disk while keeping these modules in 32-bit, you need to set `llm_int8_enable_fp32_cpu_offload=True` and pass a custom `device_map` to `from_pretrained`. Check https://huggingface.co/docs/transformers/main/en/main_classes/quantization#offload-between-cpu-and-gpu for more details. 

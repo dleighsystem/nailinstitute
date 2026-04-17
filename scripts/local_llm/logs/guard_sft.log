@@ -1,0 +1,90 @@
+nohup: ignoring input
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+Unsloth: Your Flash Attention 2 installation seems to be broken. Using Xformers instead. No performance changes will be seen.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+
+════════════════════════════════════════════════════════════
+  SFT Training: guard
+  Base model: unsloth/Qwen2.5-7B-Instruct-bnb-4bit
+  LoRA: r=32, α=64
+════════════════════════════════════════════════════════════
+
+==((====))==  Unsloth 2026.4.5: Fast Qwen2 patching. Transformers: 5.5.0.
+   \\   /|    NVIDIA GB10. Num GPUs = 1. Max memory: 121.69 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.11.0+cu130. CUDA: 12.1. CUDA Toolkit: 13.0. Triton: 3.6.0
+\        /    Bfloat16 = TRUE. FA [Xformers = None. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:   0%|          | 1/339 [00:06<36:04,  6.40s/it]Loading weights:   1%|          | 2/339 [00:12<35:42,  6.36s/it]Loading weights:   1%|          | 4/339 [00:13<14:17,  2.56s/it]Loading weights:   3%|▎         | 10/339 [00:14<04:15,  1.29it/s]Loading weights:   5%|▌         | 18/339 [00:14<01:50,  2.90it/s]Loading weights:   6%|▌         | 21/339 [00:14<01:33,  3.40it/s]Loading weights:   8%|▊         | 26/339 [00:14<01:04,  4.84it/s]Loading weights:   8%|▊         | 28/339 [00:15<01:04,  4.83it/s]Loading weights:  11%|█         | 36/339 [00:15<00:40,  7.51it/s]Loading weights:  11%|█         | 38/339 [00:16<00:38,  7.73it/s]Loading weights:  15%|█▌        | 52/339 [00:16<00:20, 14.23it/s]Loading weights:  17%|█▋        | 58/339 [00:16<00:20, 13.90it/s]Loading weights:  18%|█▊        | 60/339 [00:17<00:20, 13.31it/s]Loading weights:  19%|█▉        | 65/339 [00:17<00:19, 14.23it/s]Loading weights:  20%|██        | 69/339 [00:17<00:17, 15.22it/s]Loading weights:  21%|██        | 71/339 [00:17<00:18, 14.11it/s]Loading weights:  25%|██▍       | 84/339 [00:18<00:14, 17.42it/s]Loading weights:  28%|██▊       | 94/339 [00:18<00:11, 21.83it/s]Loading weights:  29%|██▉       | 100/339 [00:18<00:10, 23.23it/s]Loading weights:  31%|███▏      | 106/339 [00:19<00:11, 19.85it/s]Loading weights:  32%|███▏      | 109/339 [00:19<00:11, 19.19it/s]Loading weights:  35%|███▍      | 118/339 [00:20<00:13, 16.99it/s]Loading weights:  37%|███▋      | 125/339 [00:20<00:12, 17.15it/s]Loading weights:  37%|███▋      | 127/339 [00:20<00:13, 15.88it/s]Loading weights:  40%|████      | 137/339 [00:21<00:09, 21.23it/s]Loading weights:  41%|████▏     | 140/339 [00:21<00:12, 16.07it/s]Loading weights:  42%|████▏     | 142/339 [00:21<00:14, 13.80it/s]Loading weights:  42%|████▏     | 144/339 [00:22<00:18, 10.67it/s]Loading weights:  45%|████▌     | 153/339 [00:22<00:15, 11.92it/s]Loading weights:  47%|████▋     | 160/339 [00:23<00:14, 12.68it/s]Loading weights:  49%|████▉     | 166/339 [00:23<00:11, 14.66it/s]Loading weights:  50%|████▉     | 168/339 [00:23<00:14, 11.69it/s]Loading weights:  51%|█████     | 172/339 [00:24<00:17,  9.45it/s]Loading weights:  52%|█████▏    | 177/339 [00:24<00:14, 11.42it/s]Loading weights:  53%|█████▎    | 179/339 [00:25<00:16,  9.74it/s]Loading weights:  55%|█████▍    | 185/339 [00:25<00:12, 12.46it/s]Loading weights:  55%|█████▌    | 187/339 [00:25<00:12, 12.08it/s]Loading weights:  57%|█████▋    | 192/339 [00:25<00:10, 13.78it/s]Loading weights:  57%|█████▋    | 194/339 [00:26<00:11, 13.04it/s]Loading weights:  58%|█████▊    | 196/339 [00:26<00:11, 12.22it/s]Loading weights:  60%|██████    | 204/339 [00:26<00:09, 14.35it/s]Loading weights:  62%|██████▏   | 210/339 [00:27<00:10, 11.95it/s]Loading weights:  66%|██████▋   | 225/339 [00:27<00:06, 18.26it/s]Loading weights:  67%|██████▋   | 227/339 [00:28<00:06, 17.17it/s]Loading weights:  70%|██████▉   | 237/339 [00:28<00:06, 16.66it/s]Loading weights:  72%|███████▏  | 244/339 [00:29<00:05, 15.88it/s]Loading weights:  73%|███████▎  | 246/339 [00:29<00:07, 12.35it/s]Loading weights:  73%|███████▎  | 249/339 [00:29<00:07, 12.78it/s]Loading weights:  74%|███████▍  | 252/339 [00:30<00:06, 13.28it/s]Loading weights: 100%|██████████| 339/339 [00:30<00:00, 11.23it/s]
+Unsloth: Dropout = 0 is supported for fast patching. You are using dropout = 0.05.
+Unsloth will patch all other layers, except LoRA matrices, causing a performance hit.
+Unsloth 2026.4.5 patched 28 layers with 0 QKV layers, 0 O layers and 0 MLP layers.
+warmup_ratio is deprecated and will be removed in v5.2. Use `warmup_steps` instead.
+warmup_ratio is deprecated and will be removed in v5.2. Use `warmup_steps` instead.
+num_proc must be <= 5. Reducing num_proc to 5 for dataset of size 5.
+[datasets.arrow_dataset|WARNING]num_proc must be <= 5. Reducing num_proc to 5 for dataset of size 5.
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None}.
+==((====))==  Unsloth - 2x faster free finetuning | Num GPUs used = 1
+   \\   /|    Num examples = 37 | Num Epochs = 3 | Total steps = 6
+O^O/ \_/ \    Batch size per device = 4 | Gradient accumulation steps = 8
+\        /    Data Parallel GPUs = 1 | Total batch size (4 x 8 x 1) = 32
+ "-____-"     Trainable parameters = 80,740,352 of 7,696,356,864 (1.05% trained)
+unsloth/Qwen2.5-7B-Instruct-bnb-4bit does not have a padding token! Will use pad_token = <|PAD_TOKEN|>.
+Starting SFT training...
+  0%|          | 0/6 [00:00<?, ?it/s]`use_return_dict` is deprecated! Use `return_dict` instead!
+ 17%|█▋        | 1/6 [00:12<01:00, 12.11s/it] 33%|███▎      | 2/6 [00:14<00:25,  6.32s/it]/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:71: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:281: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:172: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:202: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:254: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+
+  0%|          | 0/2 [00:00<?, ?it/s][A/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:71: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:281: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+
+100%|██████████| 2/2 [00:00<00:00, 13.40it/s][A                                             
+                                             [A 33%|███▎      | 2/6 [00:15<00:25,  6.32s/it]
+100%|██████████| 2/2 [00:00<00:00, 13.40it/s][A
+                                             [A 50%|█████     | 3/6 [00:24<00:24,  8.15s/it] 67%|██████▋   | 4/6 [00:26<00:11,  5.53s/it]/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:71: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:281: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:172: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:202: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:254: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+{'eval_loss': '2.646', 'eval_runtime': '0.8901', 'eval_samples_per_second': '5.618', 'eval_steps_per_second': '2.247', 'epoch': '1'}
+
+  0%|          | 0/2 [00:00<?, ?it/s][A
+100%|██████████| 2/2 [00:00<00:00,  6.35it/s][A                                             
+                                             [A 67%|██████▋   | 4/6 [00:26<00:11,  5.53s/it]
+100%|██████████| 2/2 [00:00<00:00,  6.35it/s][A
+                                             [A 83%|████████▎ | 5/6 [00:36<00:07,  7.18s/it]100%|██████████| 6/6 [00:37<00:00,  5.25s/it]/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:71: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:281: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:172: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:202: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_attn_mask_utils.py:254: FutureWarning: The attention mask API under `transformers.modeling_attn_mask_utils` (`AttentionMaskConverter`) is deprecated and will be removed in Transformers v5.10. Please use the new API in `transformers.masking_utils`.
+  warnings.warn(DEPRECATION_MESSAGE, FutureWarning)
+{'eval_loss': '1.888', 'eval_runtime': '0.7115', 'eval_samples_per_second': '7.027', 'eval_steps_per_second': '2.811', 'epoch': '2'}
+
+  0%|          | 0/2 [00:00<?, ?it/s][A
+100%|██████████| 2/2 [00:00<00:00,  6.12it/s][A                                             
+                                             [A100%|██████████| 6/6 [00:38<00:00,  5.25s/it]
+100%|██████████| 2/2 [00:00<00:00,  6.12it/s][A
+                                             [A                                             100%|██████████| 6/6 [00:39<00:00,  5.25s/it]100%|██████████| 6/6 [00:39<00:00,  6.59s/it]
+{'eval_loss': '1.696', 'eval_runtime': '0.7186', 'eval_samples_per_second': '6.958', 'eval_steps_per_second': '2.783', 'epoch': '3'}
+{'train_runtime': '39.53', 'train_samples_per_second': '2.808', 'train_steps_per_second': '0.152', 'train_loss': '2.523', 'epoch': '3'}
+
+✓ SFT complete. Model saved to /home/dleighsystems/Desktop/NAIL institute/scripts/local_llm/checkpoints/guard/sft/final

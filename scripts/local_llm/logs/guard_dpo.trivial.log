@@ -1,0 +1,32 @@
+nohup: ignoring input
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+Unsloth: Your Flash Attention 2 installation seems to be broken. Using Xformers instead. No performance changes will be seen.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+
+════════════════════════════════════════════════════════════
+  DPO Training: guard
+  From SFT checkpoint: /home/dleighsystems/Desktop/NAIL institute/scripts/local_llm/checkpoints/guard/sft/final
+════════════════════════════════════════════════════════════
+
+==((====))==  Unsloth 2026.4.5: Fast Qwen2 patching. Transformers: 5.5.0.
+   \\   /|    NVIDIA GB10. Num GPUs = 1. Max memory: 121.69 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.11.0+cu130. CUDA: 12.1. CUDA Toolkit: 13.0. Triton: 3.6.0
+\        /    Bfloat16 = TRUE. FA [Xformers = None. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Loading weights:   0%|          | 0/339 [00:00<?, ?it/s]Loading weights:   0%|          | 1/339 [00:06<34:38,  6.15s/it]Loading weights:   1%|          | 2/339 [00:12<34:59,  6.23s/it]Loading weights:   1%|          | 4/339 [00:13<13:58,  2.50s/it]Loading weights:   3%|▎         | 10/339 [00:13<03:54,  1.40it/s]Loading weights:   4%|▎         | 12/339 [00:13<03:08,  1.73it/s]Loading weights:   5%|▌         | 18/339 [00:14<01:39,  3.22it/s]Loading weights:   6%|▌         | 21/339 [00:14<01:18,  4.04it/s]Loading weights:   8%|▊         | 26/339 [00:14<00:57,  5.40it/s]Loading weights:   8%|▊         | 28/339 [00:14<00:52,  5.93it/s]Loading weights:  10%|▉         | 33/339 [00:15<00:41,  7.38it/s]Loading weights:  10%|█         | 35/339 [00:15<00:38,  7.91it/s]Loading weights:  12%|█▏        | 41/339 [00:15<00:26, 11.27it/s]Loading weights:  13%|█▎        | 43/339 [00:15<00:26, 11.10it/s]Loading weights:  14%|█▎        | 46/339 [00:16<00:25, 11.32it/s]Loading weights:  14%|█▍        | 48/339 [00:16<00:31,  9.14it/s]Loading weights:  18%|█▊        | 62/339 [00:17<00:19, 14.44it/s]Loading weights:  19%|█▉        | 66/339 [00:17<00:20, 13.50it/s]Loading weights:  20%|██        | 69/339 [00:17<00:19, 13.89it/s]Loading weights:  22%|██▏       | 74/339 [00:18<00:17, 15.15it/s]Loading weights:  22%|██▏       | 76/339 [00:18<00:19, 13.68it/s]Loading weights:  23%|██▎       | 78/339 [00:18<00:25, 10.26it/s]Loading weights:  24%|██▍       | 81/339 [00:18<00:22, 11.27it/s]Loading weights:  25%|██▌       | 86/339 [00:19<00:18, 13.71it/s]Loading weights:  26%|██▌       | 88/339 [00:19<00:19, 12.91it/s]Loading weights:  27%|██▋       | 90/339 [00:19<00:22, 11.27it/s]Loading weights:  28%|██▊       | 94/339 [00:20<00:22, 10.95it/s]Loading weights:  28%|██▊       | 96/339 [00:20<00:22, 10.96it/s]Loading weights:  31%|███▏      | 106/339 [00:20<00:11, 19.48it/s]Loading weights:  32%|███▏      | 108/339 [00:20<00:13, 17.20it/s]Loading weights:  32%|███▏      | 110/339 [00:20<00:14, 15.83it/s]Loading weights:  37%|███▋      | 124/339 [00:21<00:07, 29.19it/s]Loading weights:  37%|███▋      | 127/339 [00:21<00:10, 19.98it/s]Loading weights:  40%|████      | 137/339 [00:21<00:07, 25.30it/s]Loading weights:  41%|████▏     | 140/339 [00:21<00:08, 22.86it/s]Loading weights:  42%|████▏     | 143/339 [00:22<00:09, 21.32it/s]Loading weights:  45%|████▌     | 154/339 [00:22<00:08, 22.75it/s]Loading weights:  47%|████▋     | 160/339 [00:22<00:07, 24.70it/s]Loading weights:  48%|████▊     | 163/339 [00:23<00:08, 20.97it/s]Loading weights:  49%|████▉     | 166/339 [00:23<00:11, 14.87it/s]Loading weights:  51%|█████     | 172/339 [00:23<00:11, 15.16it/s]Loading weights:  51%|█████▏    | 174/339 [00:24<00:11, 14.18it/s]Loading weights:  53%|█████▎    | 180/339 [00:24<00:11, 13.84it/s]Loading weights:  54%|█████▎    | 182/339 [00:24<00:11, 13.20it/s]Loading weights:  56%|█████▌    | 190/339 [00:25<00:09, 15.24it/s]Loading weights:  57%|█████▋    | 192/339 [00:25<00:10, 14.10it/s]Loading weights:  58%|█████▊    | 196/339 [00:25<00:11, 12.20it/s]Loading weights:  58%|█████▊    | 198/339 [00:25<00:11, 11.89it/s]Loading weights:  60%|██████    | 204/339 [00:26<00:09, 15.00it/s]Loading weights:  61%|██████    | 206/339 [00:26<00:09, 13.83it/s]Loading weights:  62%|██████▏   | 210/339 [00:26<00:09, 14.32it/s]Loading weights:  63%|██████▎   | 213/339 [00:27<00:10, 11.72it/s]Loading weights:  64%|██████▍   | 218/339 [00:27<00:12,  9.67it/s]Loading weights:  66%|██████▋   | 225/339 [00:27<00:08, 13.34it/s]Loading weights:  67%|██████▋   | 227/339 [00:28<00:10, 10.70it/s]Loading weights:  68%|██████▊   | 230/339 [00:28<00:10, 10.85it/s]Loading weights:  68%|██████▊   | 232/339 [00:29<00:12,  8.56it/s]Loading weights:  69%|██████▊   | 233/339 [00:29<00:13,  8.04it/s]Loading weights:  69%|██████▉   | 234/339 [00:29<00:17,  6.11it/s]Loading weights: 100%|██████████| 339/339 [00:29<00:00, 11.40it/s]
+Unsloth 2026.4.5 patched 28 layers with 0 QKV layers, 0 O layers and 0 MLP layers.
+The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'bos_token_id': None}.
+==((====))==  Unsloth - 2x faster free finetuning | Num GPUs used = 1
+   \\   /|    Num examples = 37 | Num Epochs = 1 | Total steps = 3
+O^O/ \_/ \    Batch size per device = 2 | Gradient accumulation steps = 8
+\        /    Data Parallel GPUs = 1 | Total batch size (2 x 8 x 1) = 16
+ "-____-"     Trainable parameters = 80,740,352 of 7,696,356,864 (1.05% trained)
+unsloth/Qwen2.5-7B-Instruct-bnb-4bit does not have a padding token! Will use pad_token = <|PAD_TOKEN|>.
+Starting DPO training...
+  0%|          | 0/3 [00:00<?, ?it/s]`use_return_dict` is deprecated! Use `return_dict` instead!
+ 33%|███▎      | 1/3 [00:11<00:23, 11.54s/it] 67%|██████▋   | 2/3 [00:21<00:10, 10.64s/it]100%|██████████| 3/3 [00:25<00:00,  7.46s/it]                                             100%|██████████| 3/3 [00:26<00:00,  7.46s/it]100%|██████████| 3/3 [00:26<00:00,  8.72s/it]
+Unsloth: Will smartly offload gradients to save VRAM!
+{'train_runtime': '26.17', 'train_samples_per_second': '1.414', 'train_steps_per_second': '0.115', 'train_loss': '0.001176', 'epoch': '1'}
+
+✓ DPO complete. Model saved to /home/dleighsystems/Desktop/NAIL institute/scripts/local_llm/checkpoints/guard/dpo/final

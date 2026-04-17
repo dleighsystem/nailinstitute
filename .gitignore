@@ -36,3 +36,4 @@ experiments/exp1_memory_pollution/chroma_*/
 # Public repo export (generated, separate git repo)
 public-repo/
 .nail/
+scripts/local_llm/checkpoints/

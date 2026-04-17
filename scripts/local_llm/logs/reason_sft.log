@@ -1,0 +1,134 @@
+nohup: ignoring input
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+Unsloth: Your Flash Attention 2 installation seems to be broken. Using Xformers instead. No performance changes will be seen.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+
+════════════════════════════════════════════════════════════
+  SFT Training: reason
+  Base model: unsloth/Qwen2.5-32B-Instruct-bnb-4bit
+  LoRA: r=16, α=32
+════════════════════════════════════════════════════════════
+
+==((====))==  Unsloth 2026.4.5: Fast Qwen2 patching. Transformers: 5.5.0.
+   \\   /|    NVIDIA GB10. Num GPUs = 1. Max memory: 121.69 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.11.0+cu130. CUDA: 12.1. CUDA Toolkit: 13.0. Triton: 3.6.0
+\        /    Bfloat16 = TRUE. FA [Xformers = None. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Fetching 4 files:   0%|          | 0/4 [00:00<?, ?it/s]Fetching 4 files:   0%|          | 0/4 [06:54<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 127, in __iter__
+    for part in self._httpcore_stream:
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py", line 407, in __iter__
+    raise exc from None
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpcore/_sync/connection_pool.py", line 403, in __iter__
+    for part in self._stream:
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpcore/_sync/http11.py", line 342, in __iter__
+    raise exc
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpcore/_sync/http11.py", line 334, in __iter__
+    for chunk in self._connection._receive_response_body(**kwargs):
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpcore/_sync/http11.py", line 203, in _receive_response_body
+    event = self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpcore/_sync/http11.py", line 213, in _receive_event
+    with map_exceptions({h11.RemoteProtocolError: RemoteProtocolError}):
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.RemoteProtocolError: peer closed connection without sending complete message body (received 90159961 bytes, expected 4933190508)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/dleighsystems/Desktop/NAIL institute/scripts/local_llm/train.py", line 385, in <module>
+    main()
+  File "/home/dleighsystems/Desktop/NAIL institute/scripts/local_llm/train.py", line 375, in main
+    train_sft(args.model, model_cfg, hardware)
+  File "/home/dleighsystems/Desktop/NAIL institute/scripts/local_llm/train.py", line 65, in train_sft
+    model, tokenizer = FastLanguageModel.from_pretrained(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/unsloth/models/loader.py", line 721, in from_pretrained
+    model, tokenizer = dispatch_model.from_pretrained(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/unsloth/models/qwen2.py", line 88, in from_pretrained
+    return FastLlamaModel.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/unsloth/models/llama.py", line 2482, in from_pretrained
+    model = AutoModelForCausalLM.from_pretrained(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py", line 387, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 4054, in from_pretrained
+    checkpoint_files, sharded_metadata = _get_resolved_checkpoint_files(
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 737, in _get_resolved_checkpoint_files
+    checkpoint_files, sharded_metadata = get_checkpoint_shard_files(
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/utils/hub.py", line 879, in get_checkpoint_shard_files
+    cached_filenames = cached_files(
+                       ^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/utils/hub.py", line 512, in cached_files
+    raise e
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/transformers/utils/hub.py", line 437, in cached_files
+    snapshot_download(
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/huggingface_hub/_snapshot_download.py", line 455, in snapshot_download
+    thread_map(
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/tqdm/contrib/concurrent.py", line 69, in thread_map
+    return _executor_map(ThreadPoolExecutor, fn, *iterables, **tqdm_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/tqdm/contrib/concurrent.py", line 51, in _executor_map
+    return list(tqdm_class(ex.map(fn, *iterables, chunksize=chunksize), **kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/tqdm/std.py", line 1181, in __iter__
+    for obj in iterable:
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/huggingface_hub/_snapshot_download.py", line 435, in _inner_hf_hub_download
+    hf_hub_download(  # type: ignore
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 997, in hf_hub_download
+    return _hf_hub_download_to_cache_dir(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1216, in _hf_hub_download_to_cache_dir
+    _download_to_tmp_and_move(
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1858, in _download_to_tmp_and_move
+    http_get(
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 421, in http_get
+    for chunk in response.iter_bytes(chunk_size=constants.DOWNLOAD_CHUNK_SIZE):
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpx/_models.py", line 897, in iter_bytes
+    for raw_bytes in self.iter_raw():
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpx/_models.py", line 951, in iter_raw
+    for raw_stream_bytes in self.stream:
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpx/_client.py", line 153, in __iter__
+    for chunk in self._stream:
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 126, in __iter__
+    with map_httpcore_exceptions():
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/home/dleighsystems/Desktop/NAIL institute/.venv/lib/python3.12/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.RemoteProtocolError: peer closed connection without sending complete message body (received 90159961 bytes, expected 4933190508)

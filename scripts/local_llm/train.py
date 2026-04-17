@@ -50,22 +50,28 @@ def train_sft(model_name: str, cfg: dict, hardware: dict):
     from transformers import TrainingArguments
     from datasets import load_dataset
 
-    model_cfg = cfg
-    lora = model_cfg["lora"]
-    sft = model_cfg["training"]["sft"]
+    training = cfg["training"]
+    lora = training["lora"]
+    base_model = cfg["base_model"]
+    max_seq = training.get("max_seq_length", 4096)
 
     print(f"\n{'═' * 60}")
     print(f"  SFT Training: {model_name}")
-    print(f"  Base model: {model_cfg['base']}")
+    print(f"  Base model: {base_model}")
     print(f"  LoRA: r={lora['r']}, α={lora['alpha']}")
     print(f"{'═' * 60}\n")
 
     # Load model with Unsloth 4-bit
+    # On DGX Spark unified memory, explicitly tell transformers
+    # that GPU has enough memory to avoid false CPU offload detection
+    import torch
+    free_mem = torch.cuda.mem_get_info()[0]
     model, tokenizer = FastLanguageModel.from_pretrained(
-        model_name=model_cfg["base"],
-        max_seq_length=model_cfg.get("max_seq_length", 4096),
+        model_name=base_model,
+        max_seq_length=max_seq,
         dtype=None,  # auto-detect
         load_in_4bit=True,
+        device_map={"": 0},  # force all to GPU 0
     )
 
     # Apply LoRA
@@ -112,14 +118,14 @@ def train_sft(model_name: str, cfg: dict, hardware: dict):
     # Training arguments
     training_args = TrainingArguments(
         output_dir=str(output_dir),
-        per_device_train_batch_size=sft.get("batch_size", 4),
-        gradient_accumulation_steps=sft.get("gradient_accumulation", 4),
-        num_train_epochs=sft.get("epochs", 3),
-        learning_rate=float(sft.get("lr", 2e-4)),
-        lr_scheduler_type=sft.get("scheduler", "cosine"),
-        warmup_ratio=sft.get("warmup_ratio", 0.1),
-        fp16=not hardware.get("bf16", True),
-        bf16=hardware.get("bf16", True),
+        per_device_train_batch_size=training.get("batch_size", 4),
+        gradient_accumulation_steps=training.get("gradient_accumulation", 4),
+        num_train_epochs=training.get("epochs", 3),
+        learning_rate=float(training.get("learning_rate", 2e-4)),
+        lr_scheduler_type=training.get("scheduler", "cosine"),
+        warmup_ratio=training.get("warmup_ratio", 0.1),
+        fp16=not training.get("bf16", True),
+        bf16=training.get("bf16", True),
         logging_steps=10,
         save_strategy="epoch",
         eval_strategy="epoch",
@@ -134,7 +140,7 @@ def train_sft(model_name: str, cfg: dict, hardware: dict):
         eval_dataset=dataset["eval"],
         args=training_args,
         dataset_text_field="text",
-        max_seq_length=model_cfg.get("max_seq_length", 4096),
+        max_seq_length=max_seq,
     )
 
     print("Starting SFT training...")
@@ -148,7 +154,7 @@ def train_sft(model_name: str, cfg: dict, hardware: dict):
     meta = {
         "model": model_name,
         "stage": "sft",
-        "base": model_cfg["base"],
+        "base": base_model,
         "lora_r": lora["r"],
         "completed_at": datetime.now(timezone.utc).isoformat(),
         "output_dir": str(output_dir / "final"),
@@ -162,19 +168,25 @@ def train_sft(model_name: str, cfg: dict, hardware: dict):
 def train_dpo(model_name: str, cfg: dict, hardware: dict):
     """DPO alignment (for nail-guard)."""
     from unsloth import FastLanguageModel, PatchDPOTrainer
+    # Fix: llm_blender incompatible with transformers 5.x (TRANSFORMERS_CACHE removed)
+    import transformers.utils.hub as _hub
+    if not hasattr(_hub, "TRANSFORMERS_CACHE"):
+        import os
+        _hub.TRANSFORMERS_CACHE = os.path.join(os.path.expanduser("~"), ".cache", "huggingface", "hub")
     from trl import DPOTrainer, DPOConfig
     from datasets import load_dataset
 
     PatchDPOTrainer()
 
-    model_cfg = cfg
-    dpo = model_cfg["training"].get("dpo", {})
+    dpo = cfg.get("alignment", {})
 
     sft_path = OUTPUT_BASE / model_name / "sft" / "final"
     if not sft_path.exists():
         print(f"✗ SFT checkpoint not found: {sft_path}")
         print("  Run SFT first: --model guard --stage sft")
         sys.exit(1)
+
+    max_seq = cfg.get("training", {}).get("max_seq_length", 4096)
 
     print(f"\n{'═' * 60}")
     print(f"  DPO Training: {model_name}")
@@ -183,7 +195,7 @@ def train_dpo(model_name: str, cfg: dict, hardware: dict):
 
     model, tokenizer = FastLanguageModel.from_pretrained(
         model_name=str(sft_path),
-        max_seq_length=model_cfg.get("max_seq_length", 4096),
+        max_seq_length=max_seq,
         dtype=None,
         load_in_4bit=True,
     )
@@ -205,10 +217,10 @@ def train_dpo(model_name: str, cfg: dict, hardware: dict):
         per_device_train_batch_size=dpo.get("batch_size", 2),
         gradient_accumulation_steps=dpo.get("gradient_accumulation", 8),
         num_train_epochs=dpo.get("epochs", 1),
-        learning_rate=float(dpo.get("lr", 5e-5)),
+        learning_rate=float(dpo.get("learning_rate", 5e-5)),
         beta=dpo.get("beta", 0.1),
-        fp16=not hardware.get("bf16", True),
-        bf16=hardware.get("bf16", True),
+        fp16=not cfg.get("training", {}).get("bf16", True),
+        bf16=cfg.get("training", {}).get("bf16", True),
         logging_steps=10,
         save_strategy="epoch",
         report_to="none",
@@ -233,15 +245,20 @@ def train_dpo(model_name: str, cfg: dict, hardware: dict):
 def train_grpo(model_name: str, cfg: dict, hardware: dict):
     """GRPO alignment (for nail-reason)."""
     from unsloth import FastLanguageModel
+    import transformers.utils.hub as _hub
+    if not hasattr(_hub, "TRANSFORMERS_CACHE"):
+        import os
+        _hub.TRANSFORMERS_CACHE = os.path.join(os.path.expanduser("~"), ".cache", "huggingface", "hub")
     from trl import GRPOTrainer, GRPOConfig
 
-    model_cfg = cfg
-    grpo = model_cfg["training"].get("grpo", {})
+    grpo = cfg.get("alignment", {})
 
     sft_path = OUTPUT_BASE / model_name / "sft" / "final"
     if not sft_path.exists():
         print(f"✗ SFT checkpoint not found: {sft_path}")
         sys.exit(1)
+
+    max_seq = cfg.get("training", {}).get("max_seq_length", 4096)
 
     print(f"\n{'═' * 60}")
     print(f"  GRPO Training: {model_name}")
@@ -250,10 +267,39 @@ def train_grpo(model_name: str, cfg: dict, hardware: dict):
 
     model, tokenizer = FastLanguageModel.from_pretrained(
         model_name=str(sft_path),
-        max_seq_length=model_cfg.get("max_seq_length", 4096),
+        max_seq_length=max_seq,
         dtype=None,
         load_in_4bit=True,
     )
+
+    # Load prompts for GRPO (extract just the prompt portion from training data)
+    from datasets import Dataset
+    train_path = DATA_DIR / f"nail_{model_name}_train.jsonl"
+    prompts = []
+    with open(train_path) as f:
+        for line in f:
+            row = json.loads(line)
+            # Data may be in "messages" or "text" format
+            if "messages" in row:
+                msgs = row["messages"]
+                # Build prompt from system + user messages
+                prompt_parts = []
+                for m in msgs:
+                    if m["role"] in ("system", "user"):
+                        prompt_parts.append(f"<|im_start|>{m['role']}\n{m['content']}<|im_end|>")
+                if prompt_parts:
+                    prompt = "\n".join(prompt_parts) + "\n<|im_start|>assistant\n"
+                    prompts.append({"prompt": prompt[:2048]})  # truncate for GRPO
+            elif "text" in row:
+                text = row["text"]
+                if "<|im_start|>assistant" in text:
+                    prompt = text.split("<|im_start|>assistant")[0] + "<|im_start|>assistant\n"
+                    prompts.append({"prompt": prompt[:2048]})
+    dataset = Dataset.from_list(prompts) if prompts else None
+    if not dataset or len(dataset) == 0:
+        print("⚠ No GRPO prompts extracted. Skipping GRPO.")
+        return None
+    print(f"  GRPO prompts: {len(dataset)}")
 
     output_dir = OUTPUT_BASE / model_name / "grpo"
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -282,10 +328,10 @@ def train_grpo(model_name: str, cfg: dict, hardware: dict):
         per_device_train_batch_size=grpo.get("batch_size", 1),
         gradient_accumulation_steps=grpo.get("gradient_accumulation", 16),
         num_train_epochs=grpo.get("epochs", 1),
-        learning_rate=float(grpo.get("lr", 1e-5)),
+        learning_rate=float(grpo.get("learning_rate", 1e-5)),
         num_generations=grpo.get("num_generations", 4),
-        fp16=not hardware.get("bf16", True),
-        bf16=hardware.get("bf16", True),
+        fp16=not cfg.get("training", {}).get("bf16", True),
+        bf16=cfg.get("training", {}).get("bf16", True),
         logging_steps=10,
         report_to="none",
     )
@@ -294,6 +340,7 @@ def train_grpo(model_name: str, cfg: dict, hardware: dict):
         model=model,
         tokenizer=tokenizer,
         reward_funcs=[reward_fn],
+        train_dataset=dataset,
         args=grpo_config,
     )
 
