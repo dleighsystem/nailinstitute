@@ -86,7 +86,7 @@ def export_to_gguf(model_path: Path, model_name: str, quant: str) -> Path:
         model.save_pretrained_gguf(
             str(gguf_dir),
             tokenizer,
-            quantization_method=quant.lower().replace("_", "-"),
+            quantization_method=quant.lower(),
         )
 
         # Find the output GGUF file
@@ -132,7 +132,7 @@ def create_modelfile(model_name: str, gguf_path: Path, config: dict) -> Path:
 
     modelfile_content = f"""# NAIL {model_name} — Auto-generated Modelfile
 # Generated: {datetime.now(timezone.utc).isoformat()}
-# Base: {model_cfg['base']}
+# Base: {model_cfg.get('base_model', model_cfg.get('base', 'unknown'))}
 # Pipeline: SFT → {"DPO" if model_name == "guard" else "GRPO"} → GGUF
 
 FROM {gguf_path}

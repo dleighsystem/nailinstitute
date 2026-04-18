@@ -37,3 +37,4 @@ experiments/exp1_memory_pollution/chroma_*/
 public-repo/
 .nail/
 scripts/local_llm/checkpoints/
+scripts/local_llm/exports/

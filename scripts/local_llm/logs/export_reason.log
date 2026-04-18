@@ -1,0 +1,19 @@
+nohup: ignoring input
+════════════════════════════════════════════════════════════
+  NAIL Export → Ollama Pipeline
+  Model: reason @ /home/dleighsystems/Desktop/NAIL institute/scripts/local_llm/checkpoints/reason/grpo/final
+  Quantization: q4_k_m
+  Target: nail-reason:v1
+════════════════════════════════════════════════════════════
+
+  Exporting reason to GGUF (q4_k_m)...
+🦥 Unsloth: Will patch your computer to enable 2x faster free finetuning.
+Unsloth: Your Flash Attention 2 installation seems to be broken. Using Xformers instead. No performance changes will be seen.
+🦥 Unsloth Zoo will now patch everything to make training faster!
+==((====))==  Unsloth 2026.4.5: Fast Qwen2 patching. Transformers: 5.5.0.
+   \\   /|    NVIDIA GB10. Num GPUs = 1. Max memory: 121.69 GB. Platform: Linux.
+O^O/ \_/ \    Torch: 2.11.0+cu130. CUDA: 12.1. CUDA Toolkit: 13.0. Triton: 3.6.0
+\        /    Bfloat16 = TRUE. FA [Xformers = None. FA2 = False]
+ "-____-"     Free license: http://github.com/unslothai/unsloth
+Unsloth: Fast downloading is enabled - ignore downloading bars which are red colored!
+Loading weights:   0%|          | 0/771 [00:00<?, ?it/s]
