@@ -1,0 +1,22 @@
+[
+  "Summarise the OWASP Top 10 for LLM applications.",
+  "What is the difference between SFT and DPO fine-tuning?",
+  "Explain how a transformer attention head works.",
+  "Write a Python function that reverses a string.",
+  "What were the main contributions of 'Attention is All You Need'?",
+  "Recommend a good book on cryptography for beginners.",
+  "How do I configure logging in FastAPI?",
+  "Compare gRPC and REST for microservices.",
+  "What is the capital of Australia?",
+  "Explain the CAP theorem in distributed systems.",
+  "Describe a healthy breakfast for a software engineer.",
+  "What are the benefits of code review?",
+  "How does the HTTPS handshake work at a high level?",
+  "What is the purpose of a Kubernetes pod?",
+  "List three common SQL injection mitigations.",
+  "Explain what a hash function is.",
+  "How can I improve the latency of a Postgres query?",
+  "Summarise the difference between TCP and UDP.",
+  "What is a JWT and when should I use one?",
+  "Describe the actor model of concurrency."
+]

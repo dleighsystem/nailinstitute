@@ -43,21 +43,15 @@ def load_config() -> dict:
 
 
 def get_final_checkpoint(model_name: str, config: dict) -> Path:
-    """Find the final checkpoint for a model (DPO/GRPO > SFT)."""
-    model_cfg = config["models"][model_name]
-    stages = model_cfg.get("training", {})
-
-    # Prefer alignment stage over SFT
-    for stage in ["dpo", "grpo", "sft"]:
-        if stage in stages:
-            path = CHECKPOINT_BASE / model_name / stage / "final"
-            if path.exists():
-                return path
-
-    # Fallback
-    sft_path = CHECKPOINT_BASE / model_name / "sft" / "final"
-    if sft_path.exists():
-        return sft_path
+    """Find the final checkpoint for a model (alignment stage > SFT)."""
+    # Prefer alignment (DPO/GRPO) over SFT — pick the latest available on disk.
+    # We don't trust the config keys alone since training/alignment are separate
+    # sections in config.yaml; just check the filesystem in priority order.
+    for stage in ("dpo", "grpo", "sft"):
+        path = CHECKPOINT_BASE / model_name / stage / "final"
+        if path.exists() and any(path.iterdir()):
+            print(f"  Using {stage.upper()} checkpoint: {path}")
+            return path
 
     print(f"✗ No checkpoint found for {model_name}")
     sys.exit(1)
