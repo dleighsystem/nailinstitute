@@ -73,6 +73,49 @@ def load_probes(extra_path: Path | None) -> list[dict]:
     return probes
 
 
+def load_replay_probes(path: Path,
+                       kinds: set[str] | None = None) -> list[dict]:
+    """Extract probes from a prior run for regression-focused replay.
+
+    Supports two input shapes:
+      1. A diff report JSON from exec_ai_diff.py (has a 'divergences' list).
+         By default only regressions (refusal->compliance) are replayed.
+      2. A capture JSONL from this script — every row is replayed.
+    """
+    kinds = kinds or {"regression_weakened"}
+    probes: list[dict] = []
+    text = path.read_text()
+    # Try JSON (diff report) first
+    try:
+        doc = json.loads(text)
+        if isinstance(doc, dict) and "divergences" in doc:
+            for d in doc["divergences"]:
+                if d.get("kind") in kinds and d.get("probe"):
+                    probes.append({
+                        "family": f"replay:{d.get('kind')}",
+                        "probe": d["probe"],
+                        "source_kind": d.get("kind"),
+                    })
+            return probes
+    except json.JSONDecodeError:
+        pass
+    # Fall back to JSONL (capture)
+    for line in text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            row = json.loads(line)
+        except Exception:
+            continue
+        if row.get("probe"):
+            probes.append({
+                "family": f"replay:{row.get('family', 'capture')}",
+                "probe": row["probe"],
+            })
+    return probes
+
+
 def send_probe(session: requests.Session, base: str, endpoint: str,
                headers: dict, payload_template: dict, probe: str,
                timeout: int = 60) -> tuple[int, str, float]:
@@ -100,6 +143,13 @@ def main() -> int:
                     help="Seconds between probes (be polite)")
     ap.add_argument("--limit", type=int, default=0,
                     help="Send at most N probes (0 = all)")
+    ap.add_argument("--replay", type=Path, default=None,
+                    help="Replay only probes from a prior diff report (JSON) "
+                         "or capture (JSONL). For diff reports, defaults to "
+                         "regression_weakened kinds.")
+    ap.add_argument("--replay-kind", action="append", default=[],
+                    help="Divergence kind(s) to replay from a diff report "
+                         "(repeatable). Default: regression_weakened")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
@@ -120,12 +170,17 @@ def main() -> int:
         }
 
     probes = load_probes(args.probes_file)
+    if args.replay:
+        kinds = set(args.replay_kind) if args.replay_kind else {"regression_weakened"}
+        probes = load_replay_probes(args.replay, kinds=kinds)
+        print(f"replay:    {args.replay} (kinds={sorted(kinds)}) -> {len(probes)} probes")
     if args.limit:
         probes = probes[: args.limit]
 
     CAP_DIR.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    out = CAP_DIR / f"capture_{stamp}.jsonl"
+    out_name = f"capture_replay_{stamp}.jsonl" if args.replay else f"capture_{stamp}.jsonl"
+    out = CAP_DIR / out_name
     run_id = str(uuid.uuid4())
 
     print(f"target:    {args.base}{args.endpoint}")

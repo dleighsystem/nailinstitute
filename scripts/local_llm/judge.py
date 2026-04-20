@@ -25,6 +25,42 @@ CLAUDE_FALLBACK = os.getenv("NAIL_JUDGE_CLAUDE_FALLBACK", "claude-opus-4-6")
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
 OLLAMA_LOCAL_JUDGE = os.getenv("NAIL_JUDGE_OLLAMA_MODEL", "qwen2.5:32b-instruct")
 
+# USD per 1M tokens. Update if Anthropic pricing changes.
+# Claude Opus family historically ~ $15 in / $75 out per 1M.
+_CLAUDE_PRICES = {
+    "claude-opus-4-7": {"in": 15.0, "out": 75.0},
+    "claude-opus-4-6": {"in": 15.0, "out": 75.0},
+    "claude-opus-4-5": {"in": 15.0, "out": 75.0},
+    "claude-sonnet-4-5": {"in": 3.0, "out": 15.0},
+    "claude-sonnet-4-6": {"in": 3.0, "out": 15.0},
+    "claude-haiku-4-5": {"in": 0.8, "out": 4.0},
+}
+_DEFAULT_PRICE = {"in": 15.0, "out": 75.0}  # assume Opus when unknown
+
+_SPEND_LOG_PATH = os.getenv(
+    "NAIL_JUDGE_SPEND_LOG",
+    str(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                     "data", "judge_spend.jsonl")),
+)
+
+
+def _price(model: str) -> dict:
+    if model in _CLAUDE_PRICES:
+        return _CLAUDE_PRICES[model]
+    for k, v in _CLAUDE_PRICES.items():
+        if model.startswith(k):
+            return v
+    return _DEFAULT_PRICE
+
+
+def _log_spend(record: dict) -> None:
+    try:
+        os.makedirs(os.path.dirname(_SPEND_LOG_PATH), exist_ok=True)
+        with open(_SPEND_LOG_PATH, "a") as fp:
+            fp.write(json.dumps(record) + "\n")
+    except Exception:
+        pass  # never let accounting break a training run
+
 
 @dataclass
 class JudgeResult:
@@ -32,6 +68,9 @@ class JudgeResult:
     backend: str
     model: str
     latency_s: float
+    input_tokens: int = 0
+    output_tokens: int = 0
+    cost_usd: float = 0.0
 
 
 class JudgeError(RuntimeError):
@@ -119,8 +158,26 @@ class JudgeClient:
                 if r.status_code == 200:
                     data = r.json()
                     text = "".join(b.get("text", "") for b in data.get("content", []))
+                    usage = data.get("usage", {}) or {}
+                    in_tok = int(usage.get("input_tokens", 0))
+                    out_tok = int(usage.get("output_tokens", 0))
+                    price = _price(model)
+                    cost = (in_tok * price["in"] + out_tok * price["out"]) / 1_000_000
+                    latency = time.time() - t0
+                    _log_spend({
+                        "ts": time.time(),
+                        "backend": "claude",
+                        "model": model,
+                        "input_tokens": in_tok,
+                        "output_tokens": out_tok,
+                        "cost_usd": cost,
+                        "latency_s": latency,
+                        "caller": os.getenv("NAIL_JUDGE_CALLER", "unknown"),
+                    })
                     return JudgeResult(text=text, backend="claude", model=model,
-                                       latency_s=time.time() - t0)
+                                       latency_s=latency,
+                                       input_tokens=in_tok, output_tokens=out_tok,
+                                       cost_usd=cost)
                 if r.status_code in (429, 529):  # rate-limited / overloaded
                     time.sleep(2 ** attempt)
                     continue
@@ -152,9 +209,25 @@ class JudgeClient:
         t0 = time.time()
         r = requests.post(f"{OLLAMA_URL}/api/chat", json=body, timeout=600)
         r.raise_for_status()
-        text = r.json()["message"]["content"]
+        data = r.json()
+        text = data["message"]["content"]
+        latency = time.time() - t0
+        in_tok = int(data.get("prompt_eval_count", 0) or 0)
+        out_tok = int(data.get("eval_count", 0) or 0)
+        _log_spend({
+            "ts": time.time(),
+            "backend": "ollama",
+            "model": model,
+            "input_tokens": in_tok,
+            "output_tokens": out_tok,
+            "cost_usd": 0.0,
+            "latency_s": latency,
+            "caller": os.getenv("NAIL_JUDGE_CALLER", "unknown"),
+        })
         return JudgeResult(text=text, backend="ollama", model=model,
-                           latency_s=time.time() - t0)
+                           latency_s=latency,
+                           input_tokens=in_tok, output_tokens=out_tok,
+                           cost_usd=0.0)
 
 
 def extract_json(text: str) -> dict | None:
@@ -184,3 +257,68 @@ def extract_json(text: str) -> dict | None:
                 except Exception:
                     start = -1
     return None
+
+
+def _summarize_spend(path: str) -> dict:
+    """Aggregate the spend log into totals per (backend, model, caller)."""
+    totals: dict[tuple, dict] = {}
+    grand = {"calls": 0, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0}
+    if not os.path.exists(path):
+        return {"path": path, "exists": False, "grand": grand, "rows": []}
+    with open(path) as fp:
+        for line in fp:
+            try:
+                r = json.loads(line)
+            except Exception:
+                continue
+            key = (r.get("backend", "?"), r.get("model", "?"),
+                   r.get("caller", "unknown"))
+            t = totals.setdefault(key, {"calls": 0, "input_tokens": 0,
+                                        "output_tokens": 0, "cost_usd": 0.0})
+            t["calls"] += 1
+            t["input_tokens"] += int(r.get("input_tokens", 0) or 0)
+            t["output_tokens"] += int(r.get("output_tokens", 0) or 0)
+            t["cost_usd"] += float(r.get("cost_usd", 0.0) or 0.0)
+    rows = [
+        {"backend": b, "model": m, "caller": c, **v}
+        for (b, m, c), v in sorted(totals.items(),
+                                   key=lambda kv: -kv[1]["cost_usd"])
+    ]
+    grand["input_tokens"] = sum(r["input_tokens"] for r in rows)
+    grand["output_tokens"] = sum(r["output_tokens"] for r in rows)
+    grand["cost_usd"] = sum(r["cost_usd"] for r in rows)
+    grand["calls"] = sum(r["calls"] for r in rows)
+    return {"path": path, "exists": True, "grand": grand, "rows": rows}
+
+
+def _print_spend(summary: dict) -> None:
+    print(f"spend log: {summary['path']}")
+    if not summary["exists"]:
+        print("  (no entries yet)")
+        return
+    g = summary["grand"]
+    print(f"  total: {g['calls']} calls  "
+          f"{g['input_tokens']} in / {g['output_tokens']} out tokens  "
+          f"${g['cost_usd']:.4f}")
+    print(f"  {'backend':<8} {'model':<28} {'caller':<24} "
+          f"{'calls':>6} {'in':>10} {'out':>10} {'usd':>10}")
+    for r in summary["rows"]:
+        print(f"  {r['backend']:<8} {r['model']:<28} {r['caller']:<24} "
+              f"{r['calls']:>6} {r['input_tokens']:>10} {r['output_tokens']:>10} "
+              f"${r['cost_usd']:>8.4f}")
+
+
+if __name__ == "__main__":
+    import argparse
+    ap = argparse.ArgumentParser(description="NAIL judge utilities")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    s = sub.add_parser("spend", help="summarize the judge spend log")
+    s.add_argument("--log", default=_SPEND_LOG_PATH)
+    s.add_argument("--json", action="store_true", help="emit JSON instead of table")
+    args = ap.parse_args()
+    if args.cmd == "spend":
+        summary = _summarize_spend(args.log)
+        if args.json:
+            print(json.dumps(summary, indent=2))
+        else:
+            _print_spend(summary)

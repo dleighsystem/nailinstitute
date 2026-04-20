@@ -53,3 +53,6 @@ scripts/local_llm/data/exec_ai_captures/
 
 # Judge trace logs (large; selectively committed)
 scripts/local_llm/data/nail_*_judge_trace.jsonl
+
+# Judge API spend ledger (per-machine operational data)
+scripts/local_llm/data/judge_spend.jsonl
