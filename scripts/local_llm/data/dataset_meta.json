@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-04-16T18:28:50.629068+00:00",
+  "total_samples": 110,
+  "guard_samples": 42,
+  "reason_samples": 68,
+  "sources": {
+    "ave_cards": 42,
+    "ave_samples": 57,
+    "experiment_samples": 56,
+    "nail_judge": 0,
+    "synthetic": -3
+  },
+  "ollama_model": "none"
+}

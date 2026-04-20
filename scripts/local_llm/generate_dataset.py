@@ -36,7 +36,7 @@ ATTACK_LIB = WORKSPACE / "diagnostic" / "diagnostic" / "attacks.py"
 NAIL_JUDGE = WORKSPACE / "experiments" / "data" / "nail_judge_finetune_train.jsonl"
 OUTPUT_DIR = WORKSPACE / "scripts" / "local_llm" / "data"
 
-OLLAMA_MODEL = "qwen2.5:32b-instruct"
+OLLAMA_MODEL = "llama3.1:8b-instruct-q8_0"
 
 # ═══════════════════════════════════════════════════════════════════════════
 # SYSTEM PROMPTS FOR EACH TASK
@@ -246,21 +246,23 @@ def load_nail_judge() -> list[dict]:
 
 def ollama_generate(prompt: str, system: str = "", model: str = OLLAMA_MODEL) -> str:
     """Call local Ollama for synthetic data generation."""
-    payload = {
+    import urllib.request
+    payload = json.dumps({
         "model": model,
         "prompt": prompt,
         "system": system,
         "stream": False,
-        "options": {"temperature": 0.7, "num_predict": 1024},
-    }
+        "options": {"temperature": 0.7, "num_predict": 512},
+    }).encode()
     try:
-        result = subprocess.run(
-            ["curl", "-s", "http://localhost:11434/api/generate",
-             "-d", json.dumps(payload)],
-            capture_output=True, text=True, timeout=120,
+        req = urllib.request.Request(
+            "http://localhost:11434/api/generate",
+            data=payload,
+            headers={"Content-Type": "application/json"},
         )
-        response = json.loads(result.stdout)
-        return response.get("response", "")
+        with urllib.request.urlopen(req, timeout=180) as resp:
+            data = json.loads(resp.read().decode())
+            return data.get("response", "")
     except Exception as e:
         print(f"  ⚠ Ollama generation failed: {e}")
         return ""

@@ -75,32 +75,58 @@ def export_to_gguf(model_path: Path, model_name: str, quant: str) -> Path:
     try:
         from unsloth import FastLanguageModel
 
+        # Step 1: Load LoRA adapter and merge to 16-bit
+        print("  Step 1: Loading LoRA adapter...")
         model, tokenizer = FastLanguageModel.from_pretrained(
             model_name=str(model_path),
             max_seq_length=4096,
             dtype=None,
             load_in_4bit=True,
+            device_map={"": 0},  # DGX Spark unified memory
         )
 
-        # Unsloth's save_pretrained_gguf handles the conversion
-        model.save_pretrained_gguf(
-            str(gguf_dir),
+        # Step 2: Save merged 16-bit weights
+        print("  Step 2: Merging LoRA and saving 16-bit weights...")
+        merged_dir = gguf_dir / "merged_16bit"
+        model.save_pretrained_merged(
+            str(merged_dir),
             tokenizer,
-            quantization_method=quant.lower(),
+            save_method="merged_16bit",
         )
+        del model  # Free memory
+        import torch, gc
+        torch.cuda.empty_cache()
+        gc.collect()
 
-        # Find the output GGUF file
-        gguf_files = list(gguf_dir.glob("*.gguf"))
-        if gguf_files:
-            print(f"  ✓ GGUF exported: {gguf_files[0]}")
-            return gguf_files[0]
-        else:
-            print(f"  ✗ No GGUF file found in {gguf_dir}")
+        # Step 3: Convert to GGUF using llama.cpp
+        print(f"  Step 3: Converting to GGUF ({quant})...")
+        gguf_file = gguf_dir / f"nail-{model_name}-{quant}.gguf"
+        convert_script = Path("/tmp/llama.cpp/convert_hf_to_gguf.py")
+        if not convert_script.exists():
+            subprocess.run(["git", "clone", "--depth", "1",
+                          "https://github.com/ggml-org/llama.cpp.git",
+                          "/tmp/llama.cpp"], check=True, capture_output=True)
+
+        cmd = [sys.executable, str(convert_script),
+               str(merged_dir),
+               "--outfile", str(gguf_file),
+               "--outtype", quant]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            print(f"  ✗ GGUF conversion failed: {result.stderr[-500:]}")
             sys.exit(1)
 
-    except ImportError:
-        print("  ⚠ Unsloth not available. Trying llama.cpp convert...")
-        return _fallback_convert(model_path, gguf_dir, quant)
+        print(f"  ✓ GGUF exported: {gguf_file}")
+        return gguf_file
+
+    except Exception as e:
+        print(f"  ✗ Export failed: {e}")
+        # Check if merged files already exist from a previous run
+        existing_gguf = list(gguf_dir.glob("*.gguf"))
+        if existing_gguf:
+            print(f"  Using existing GGUF: {existing_gguf[0]}")
+            return existing_gguf[0]
+        sys.exit(1)
 
 
 def _fallback_convert(model_path: Path, gguf_dir: Path, quant: str) -> Path:

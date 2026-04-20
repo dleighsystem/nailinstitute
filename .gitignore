@@ -37,4 +37,13 @@ experiments/exp1_memory_pollution/chroma_*/
 public-repo/
 .nail/
 scripts/local_llm/checkpoints/
-scripts/local_llm/exports/
+scripts/local_llm/exports/**
+!scripts/local_llm/exports/
+!scripts/local_llm/exports/*/
+!scripts/local_llm/exports/*/Modelfile
+
+# Unsloth compile cache (regenerable)
+unsloth_compiled_cache/
+
+# LaTeX style file (transient)
+random.sty

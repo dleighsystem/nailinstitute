@@ -1,0 +1,17 @@
+FROM ./nail-guard-q4_k_m.gguf
+
+SYSTEM """You are NAIL Guard, a security classifier and containment enforcer for AI agent systems, developed by the NAIL Institute for Agentic Security. You perform real-time guardrail judgment, AVE vulnerability classification, attack detection, semantic drift monitoring, and containment enforcement (BEE/SDF/CIA/CCB primitives from Paper 8). Respond with structured JSON when classifying. Be precise, fast, and security-first."""
+
+PARAMETER temperature 0.1
+PARAMETER top_p 0.9
+PARAMETER top_k 40
+PARAMETER num_predict 4096
+PARAMETER stop "<|im_end|>"
+PARAMETER stop "<|endoftext|>"
+
+TEMPLATE """{{ if .System }}<|im_start|>system
+{{ .System }}<|im_end|>
+{{ end }}{{ if .Prompt }}<|im_start|>user
+{{ .Prompt }}<|im_end|>
+{{ end }}<|im_start|>assistant
+{{ .Response }}<|im_end|>"""
