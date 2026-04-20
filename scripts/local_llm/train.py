@@ -88,7 +88,7 @@ def train_sft(model_name: str, cfg: dict, hardware: dict):
         use_gradient_checkpointing="unsloth",
     )
 
-    # Load dataset
+    # Load dataset — merge base train + any *.synth.jsonl additions
     train_path = DATA_DIR / f"nail_{model_name}_train.jsonl"
     eval_path = DATA_DIR / f"nail_{model_name}_eval.jsonl"
 
@@ -97,9 +97,15 @@ def train_sft(model_name: str, cfg: dict, hardware: dict):
         print("  Run generate_dataset.py first.")
         sys.exit(1)
 
+    train_files = sorted({str(p) for p in DATA_DIR.glob(f"nail_{model_name}_train*.jsonl")
+                          if not p.name.endswith(".bak")})
+    print(f"  SFT train files ({len(train_files)}):")
+    for p in train_files:
+        print(f"    - {Path(p).name}")
+
     dataset = load_dataset("json", data_files={
-        "train": str(train_path),
-        "eval": str(eval_path) if eval_path.exists() else str(train_path),
+        "train": train_files,
+        "eval": str(eval_path) if eval_path.exists() else train_files,
     })
 
     # Format for chat template
@@ -200,14 +206,20 @@ def train_dpo(model_name: str, cfg: dict, hardware: dict):
         load_in_4bit=True,
     )
 
-    # DPO needs preference pairs — load or generate
-    dpo_data_path = DATA_DIR / f"nail_{model_name}_dpo.jsonl"
-    if not dpo_data_path.exists():
-        print(f"⚠ DPO preference data not found: {dpo_data_path}")
+    # DPO needs preference pairs — merge base + any *.judge.jsonl additions
+    dpo_base_path = DATA_DIR / f"nail_{model_name}_dpo.jsonl"
+    if not dpo_base_path.exists():
+        print(f"⚠ DPO preference data not found: {dpo_base_path}")
         print("  Generating basic preference pairs from SFT data...")
         _generate_dpo_pairs(model_name, tokenizer, model)
 
-    dataset = load_dataset("json", data_files=str(dpo_data_path))["train"]
+    dpo_files = sorted({str(p) for p in DATA_DIR.glob(f"nail_{model_name}_dpo*.jsonl")
+                        if not p.name.endswith(".bak")})
+    print(f"  DPO pair files ({len(dpo_files)}):")
+    for p in dpo_files:
+        print(f"    - {Path(p).name}")
+
+    dataset = load_dataset("json", data_files=dpo_files)["train"]
 
     output_dir = OUTPUT_BASE / model_name / "dpo"
     output_dir.mkdir(parents=True, exist_ok=True)
