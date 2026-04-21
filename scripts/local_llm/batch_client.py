@@ -245,8 +245,15 @@ def results(
     batch_id: str,
     *,
     state_dir: Path | None = None,
+    replay: bool = False,
 ) -> Iterator[BatchResult]:
-    """Stream (and spend-log) every result for a completed batch."""
+    """Stream every result for a completed batch.
+
+    By default each result is appended to the shared spend log so
+    `judge.py spend` reflects the true bill. Pass `replay=True` to skip
+    logging – use this when re-parsing an already-paid batch (e.g. after
+    fixing a parser bug) to avoid double-counting the spend.
+    """
     status = poll(batch_id)
     if status.get("processing_status") != "ended":
         raise JudgeError(f"batch {batch_id} not ended: "
@@ -269,10 +276,11 @@ def results(
                 row = json.loads(raw)
             except Exception:
                 continue
-            yield _decode_result(row, model_map, caller)
+            yield _decode_result(row, model_map, caller, log=not replay)
 
 
-def _decode_result(row: dict, model_map: dict, caller: str) -> BatchResult:
+def _decode_result(row: dict, model_map: dict, caller: str,
+                   *, log: bool = True) -> BatchResult:
     custom_id = row.get("custom_id", "")
     res = row.get("result", {}) or {}
     kind = res.get("type")
@@ -283,13 +291,14 @@ def _decode_result(row: dict, model_map: dict, caller: str) -> BatchResult:
             text="", backend="claude-batch", model=model, latency_s=0.0,
             is_batch=True, error=kind or "unknown_error", custom_id=custom_id,
         )
-        _log_spend({
-            "ts": time.time(), "backend": "claude-batch", "model": model,
-            "input_tokens": 0, "output_tokens": 0,
-            "cache_creation_tokens": 0, "cache_read_tokens": 0,
-            "cost_usd": 0.0, "latency_s": 0.0, "is_batch": True,
-            "caller": caller, "error": br.error, "custom_id": custom_id,
-        })
+        if log:
+            _log_spend({
+                "ts": time.time(), "backend": "claude-batch", "model": model,
+                "input_tokens": 0, "output_tokens": 0,
+                "cache_creation_tokens": 0, "cache_read_tokens": 0,
+                "cost_usd": 0.0, "latency_s": 0.0, "is_batch": True,
+                "caller": caller, "error": br.error, "custom_id": custom_id,
+            })
         return br
 
     msg = res.get("message", {}) or {}
@@ -308,7 +317,8 @@ def _decode_result(row: dict, model_map: dict, caller: str) -> BatchResult:
         + cache_read * price["in"] * _CACHE_READ_MULT
     ) * _BATCH_MULT / 1_000_000
 
-    _log_spend({
+    _log_spend_if = _log_spend if log else (lambda _row: None)
+    _log_spend_if({
         "ts": time.time(), "backend": "claude-batch", "model": model,
         "input_tokens": in_tok, "output_tokens": out_tok,
         "cache_creation_tokens": cache_write, "cache_read_tokens": cache_read,

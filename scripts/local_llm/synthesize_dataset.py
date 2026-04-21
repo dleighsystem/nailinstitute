@@ -94,7 +94,8 @@ def guard_prompt(card: dict, n: int) -> tuple[str, str, int, float]:
         "include the AVE-ID in the input.\n\n"
         'Respond JSON: {"samples":[{"input":"...","explanation":"..."}]}'
     )
-    return GEN_SYS, user, 2048, 0.7
+    # ~250 tokens per sample on average; pad 2x. Opus supports up to 32K out.
+    return GEN_SYS, user, max(2048, 600 * n), 0.7
 
 
 def reason_prompt(card: dict, n: int) -> tuple[str, str, int, float]:
@@ -110,15 +111,73 @@ def reason_prompt(card: dict, n: int) -> tuple[str, str, int, float]:
         "     {card['name']}, and references the mechanism + defences above.\n\n"
         'Respond JSON: {"samples":[{"user_request":"...","analyst_reply":"..."}]}'
     )
-    return GEN_SYS, user, 4096, 0.6
+    # Reason replies are ~600 tokens each; pad heavily.
+    return GEN_SYS, user, max(4096, 1200 * n), 0.6
 
 
 # ──────────────────────────────────────────────── response parsers
 
+def salvage_objects(raw: str) -> list[dict]:
+    """Extract every well-formed JSON object from a (possibly truncated) string.
+
+    Uses a stack-based brace scan that respects string literals + escapes.
+    Every time a `{` opens, its position is pushed; when the matching `}`
+    closes it, the substring is fed to `json.loads`. This means we recover
+    INNER objects even if the OUTER container `{"samples":[...` was never
+    closed because the response hit `max_tokens` mid-array.
+    """
+    out: list[dict] = []
+    stack: list[int] = []  # positions of unmatched '{'
+    in_str = False
+    esc = False
+    n = len(raw)
+    for i in range(n):
+        ch = raw[i]
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "{":
+            stack.append(i)
+        elif ch == "}":
+            if not stack:
+                continue
+            start = stack.pop()
+            chunk = raw[start:i + 1]
+            try:
+                obj = json.loads(chunk)
+                if isinstance(obj, dict):
+                    out.append(obj)
+            except Exception:
+                pass
+    return out
+
+
+def _samples_from(raw_text: str, required_keys: tuple[str, ...]) -> list[dict]:
+    """Return sample dicts from raw model text. Tries strict JSON first; on
+    failure falls back to brace-counter salvage. Filters to objects that
+    contain at least one of `required_keys` (so the wrapping {samples:[...]}
+    object is not mistakenly treated as a sample).
+    """
+    data = extract_json(raw_text)
+    if isinstance(data, dict) and isinstance(data.get("samples"), list):
+        good = [s for s in data["samples"] if isinstance(s, dict)]
+        if good:
+            return good
+    # Salvage path - truncated or malformed response.
+    objs = salvage_objects(raw_text)
+    return [o for o in objs if any(k in o for k in required_keys)]
+
+
 def parse_guard(card: dict, raw_text: str, n: int) -> list[dict]:
-    data = extract_json(raw_text) or {}
     out = []
-    for s in (data.get("samples") or [])[:n]:
+    for s in _samples_from(raw_text, ("input",))[:n]:
         inp = (s.get("input") or "").strip()
         exp = (s.get("explanation") or card.get("summary", "")).strip()
         if not inp:
@@ -139,9 +198,8 @@ def parse_guard(card: dict, raw_text: str, n: int) -> list[dict]:
 
 
 def parse_reason(card: dict, raw_text: str, n: int) -> list[dict]:
-    data = extract_json(raw_text) or {}
     out = []
-    for s in (data.get("samples") or [])[:n]:
+    for s in _samples_from(raw_text, ("user_request", "analyst_reply"))[:n]:
         u = (s.get("user_request") or "").strip()
         a = (s.get("analyst_reply") or "").strip()
         if not u or not a:
