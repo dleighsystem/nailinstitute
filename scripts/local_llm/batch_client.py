@@ -194,11 +194,29 @@ def submit(
 
 
 def poll(batch_id: str) -> dict:
+    """GET the batch status. Anthropic returns intermittent 404/5xx under
+    load even for valid batch IDs, so we retry with backoff before raising.
+    """
     url = f"{BATCH_SUBMIT_URL}/{batch_id}"
-    resp = requests.get(url, headers=_headers(), timeout=60)
-    if resp.status_code != 200:
-        raise JudgeError(f"batch poll {resp.status_code}: {resp.text[:400]}")
-    return resp.json()
+    last_err: Exception | None = None
+    for attempt in range(5):
+        try:
+            resp = requests.get(url, headers=_headers(), timeout=60)
+            if resp.status_code == 200:
+                return resp.json()
+            # 404/5xx on a known-good ID is almost always transient. Retry.
+            if resp.status_code in (404, 429, 500, 502, 503, 504):
+                last_err = JudgeError(
+                    f"batch poll {resp.status_code} (attempt {attempt + 1}/5): "
+                    f"{resp.text[:200]}")
+                time.sleep(2 ** attempt)  # 1, 2, 4, 8, 16s
+                continue
+            # Hard error (401, 403, etc) - do not retry.
+            raise JudgeError(f"batch poll {resp.status_code}: {resp.text[:400]}")
+        except requests.RequestException as e:
+            last_err = e
+            time.sleep(2 ** attempt)
+    raise JudgeError(f"batch poll failed after 5 attempts: {last_err}")
 
 
 def wait(
