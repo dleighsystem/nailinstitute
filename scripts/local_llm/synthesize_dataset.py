@@ -188,20 +188,62 @@ def _custom_id(target: str, card: dict) -> str:
     return f"{target}_{card['ave_id']}"
 
 
-def build_batch_requests(cards: list[dict], targets: list[str], per_ave: int,
-                         model: str, cache_system: bool) -> list[dict]:
-    reqs: list[dict] = []
+def existing_coverage(out_paths: dict[str, Path]) -> dict[str, set[str]]:
+    """Scan current synth files and return {target: set(ave_ids)} that
+    already have at least one sample. Used to skip re-synthesis (costs money
+    and duplicates training data) unless --force is passed.
+
+    The scan is authoritative: we look at the assistant message of every
+    existing row and extract the first AVE-XXXX token. That matches what
+    the groundedness check does, so skipped == definitely already present.
+    """
+    import re
+    ave_re = re.compile(r"AVE-\d{4}-\d{4}")
+    out: dict[str, set[str]] = {}
+    for tgt, path in out_paths.items():
+        covered: set[str] = set()
+        if path.exists():
+            with path.open() as f:
+                for line in f:
+                    try:
+                        row = json.loads(line)
+                        asst = row["messages"][-1]["content"]
+                    except Exception:
+                        continue
+                    m = ave_re.search(asst)
+                    if m:
+                        covered.add(m.group(0))
+        out[tgt] = covered
+    return out
+
+
+def filter_new_work(cards: list[dict], targets: list[str],
+                    coverage: dict[str, set[str]],
+                    force: bool) -> list[tuple[dict, str]]:
+    """Return list of (card, target) pairs that still need synthesis.
+    If force=True, return every pair unconditionally.
+    """
+    work: list[tuple[dict, str]] = []
     for card in cards:
         for tgt in targets:
-            if tgt == "guard":
-                sys_p, user_p, max_tok, temp = guard_prompt(card, per_ave)
-            else:
-                sys_p, user_p, max_tok, temp = reason_prompt(card, per_ave)
-            reqs.append(bc.build_request(
-                _custom_id(tgt, card), sys_p, user_p,
-                model=model, max_tokens=max_tok, temperature=temp,
-                cache_system=cache_system, json_mode=True,
-            ))
+            if force or card["ave_id"] not in coverage.get(tgt, set()):
+                work.append((card, tgt))
+    return work
+
+
+def build_batch_requests(work: list[tuple[dict, str]], per_ave: int,
+                         model: str, cache_system: bool) -> list[dict]:
+    reqs: list[dict] = []
+    for card, tgt in work:
+        if tgt == "guard":
+            sys_p, user_p, max_tok, temp = guard_prompt(card, per_ave)
+        else:
+            sys_p, user_p, max_tok, temp = reason_prompt(card, per_ave)
+        reqs.append(bc.build_request(
+            _custom_id(tgt, card), sys_p, user_p,
+            model=model, max_tokens=max_tok, temperature=temp,
+            cache_system=cache_system, json_mode=True,
+        ))
     return reqs
 
 
@@ -255,6 +297,11 @@ def main() -> int:
     ap.add_argument("--model", default="claude-opus-4-7",
                     help="Claude model ID (batch mode only; real-time uses "
                          "JudgeClient defaults with fallback).")
+    ap.add_argument("--force", action="store_true",
+                    help="Re-synthesize even for AVE IDs that already have "
+                         "samples in the target file. Default behavior skips "
+                         "already-covered (card, target) pairs to avoid "
+                         "paying twice and duplicating training data.")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
@@ -291,8 +338,18 @@ def main() -> int:
     # ── batch mode ──
     if args.batch:
         cards_by_ave = {c["ave_id"]: c for c in cards}
-        reqs = build_batch_requests(cards, targets, args.per_ave,
-                                    args.model, args.cache_system)
+        coverage = existing_coverage(out_paths)
+        work = filter_new_work(cards, targets, coverage, args.force)
+        skipped = (len(cards) * len(targets)) - len(work)
+        if skipped and not args.force:
+            print(f"skipped {skipped} already-covered (card, target) pair(s); "
+                  f"pass --force to re-synthesize")
+        if not work:
+            print("nothing to do—every (card, target) pair already has "
+                  "samples. Use --force or delete the synth files first.")
+            return 0
+        reqs = build_batch_requests(work, args.per_ave, args.model,
+                                    args.cache_system)
         print(f"batch: {len(reqs)} requests across {len(cards)} cards x "
               f"{len(targets)} target(s); model={args.model}; "
               f"cache_system={args.cache_system}")
@@ -324,27 +381,35 @@ def main() -> int:
 
     # ── real-time mode (original behavior) ──
     client = JudgeClient()
+    coverage = existing_coverage(out_paths)
+    work = filter_new_work(cards, targets, coverage, args.force)
+    skipped = (len(cards) * len(targets)) - len(work)
     print(f"loaded {len(cards)} AVE cards; backend preference: {client.prefer}"
           f"{'  (cache_system=True)' if args.cache_system else ''}")
+    if skipped and not args.force:
+        print(f"skipped {skipped} already-covered (card, target) pair(s); "
+              f"pass --force to re-synthesize")
+    if not work:
+        print("nothing to do—every (card, target) pair already has samples.")
+        return 0
 
     totals = {"guard": 0, "reason": 0}
-    for i, card in enumerate(cards, 1):
-        for tgt in targets:
-            try:
-                if tgt == "guard":
-                    rows = gen_guard(client, card, args.per_ave,
-                                     cache_system=args.cache_system)
-                else:
-                    rows = gen_reason(client, card, args.per_ave,
-                                      cache_system=args.cache_system)
-            except Exception as e:
-                print(f"  [{card['ave_id']}/{tgt}] FAIL: {e}")
-                continue
-            totals[tgt] += len(rows)
-            if not args.dry_run and rows:
-                append_jsonl(out_paths[tgt], rows)
-            print(f"  [{i}/{len(cards)}] {card['ave_id']:14s} {tgt:6s} +{len(rows):2d}  "
-                  f"(running totals: guard={totals['guard']} reason={totals['reason']})")
+    for i, (card, tgt) in enumerate(work, 1):
+        try:
+            if tgt == "guard":
+                rows = gen_guard(client, card, args.per_ave,
+                                 cache_system=args.cache_system)
+            else:
+                rows = gen_reason(client, card, args.per_ave,
+                                  cache_system=args.cache_system)
+        except Exception as e:
+            print(f"  [{card['ave_id']}/{tgt}] FAIL: {e}")
+            continue
+        totals[tgt] += len(rows)
+        if not args.dry_run and rows:
+            append_jsonl(out_paths[tgt], rows)
+        print(f"  [{i}/{len(work)}] {card['ave_id']:14s} {tgt:6s} +{len(rows):2d}  "
+              f"(running totals: guard={totals['guard']} reason={totals['reason']})")
 
     meta_path = DATA_DIR / "dataset_meta.json"
     meta = {}
