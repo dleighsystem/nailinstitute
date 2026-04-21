@@ -15,8 +15,36 @@ import json
 import os
 import time
 from dataclasses import dataclass
+from pathlib import Path
 
 import requests
+
+
+def _load_dotenv() -> None:
+    """Walk up from this file looking for a .env, then load KEY=VALUE pairs
+    into os.environ without overwriting anything already set. Zero deps."""
+    here = Path(__file__).resolve()
+    for parent in [here.parent, *here.parents]:
+        cand = parent / ".env"
+        if cand.is_file():
+            try:
+                for raw in cand.read_text().splitlines():
+                    line = raw.strip()
+                    if not line or line.startswith("#") or "=" not in line:
+                        continue
+                    if line.lower().startswith("export "):
+                        line = line[7:].lstrip()
+                    k, _, v = line.partition("=")
+                    k = k.strip()
+                    v = v.strip().strip('"').strip("'")
+                    if k and k not in os.environ:
+                        os.environ[k] = v
+            except Exception:
+                pass
+            return
+
+
+_load_dotenv()
 
 ANTHROPIC_URL = "https://api.anthropic.com/v1/messages"
 CLAUDE_PRIMARY = os.getenv("NAIL_JUDGE_CLAUDE_MODEL", "claude-opus-4-7")
