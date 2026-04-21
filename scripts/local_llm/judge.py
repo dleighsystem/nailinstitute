@@ -65,6 +65,23 @@ _CLAUDE_PRICES = {
 }
 _DEFAULT_PRICE = {"in": 15.0, "out": 75.0}  # assume Opus when unknown
 
+# Per Anthropic pricing:
+#   cache write (5-min ephemeral) = 1.25 x input price
+#   cache read                    = 0.10 x input price
+#   batch API                     = 0.50 x both input and output
+# These multipliers compound: batched + cached reads cost 0.05 x input.
+_CACHE_WRITE_MULT = 1.25
+_CACHE_READ_MULT = 0.10
+_BATCH_MULT = 0.50
+
+# Minimum tokens for a cacheable block (Anthropic). Below this the request
+# still works but nothing gets cached — we warn so users can bulk up prefixes.
+_CACHE_MIN_TOKENS = {
+    "opus": 1024,
+    "sonnet": 1024,
+    "haiku": 2048,
+}
+
 _SPEND_LOG_PATH = os.getenv(
     "NAIL_JUDGE_SPEND_LOG",
     str(os.path.join(os.path.dirname(os.path.abspath(__file__)),
@@ -116,6 +133,13 @@ class JudgeResult:
     input_tokens: int = 0
     output_tokens: int = 0
     cost_usd: float = 0.0
+    # Prompt-caching attribution (Anthropic only; 0 for Ollama / non-cached calls)
+    cache_creation_tokens: int = 0
+    cache_read_tokens: int = 0
+    # Batch API attribution (Anthropic Messages Batches at 0.5x price)
+    is_batch: bool = False
+    # Error flag for batch results that came back 'errored'/'expired'/'canceled'
+    error: str | None = None
 
 
 class JudgeError(RuntimeError):
@@ -138,8 +162,16 @@ class JudgeClient:
         max_tokens: int = 1024,
         temperature: float = 0.2,
         json_mode: bool = False,
+        cache_system: bool = False,
     ) -> JudgeResult:
-        """Single-turn chat. Tries Claude first if preferred, else Ollama."""
+        """Single-turn chat. Tries Claude first if preferred, else Ollama.
+
+        cache_system: if True and backend is Claude, mark the system block
+        with cache_control.ephemeral so repeated calls with the same system
+        prompt pay only 0.1x input tokens after the first call. Below the
+        model's minimum cache size (~1024 tokens for Opus/Sonnet) the flag
+        is a no-op — the API simply won't cache a short block.
+        """
         order = (
             ["claude", "ollama"] if self.prefer == "claude" else ["ollama", "claude"]
         )
@@ -150,7 +182,8 @@ class JudgeClient:
             for model in self._models_for(backend):
                 try:
                     return self._call(backend, model, system, user,
-                                      max_tokens, temperature, json_mode)
+                                      max_tokens, temperature, json_mode,
+                                      cache_system)
                 except Exception as e:  # try next model / backend
                     last_err = e
         raise JudgeError(f"all judge backends failed: {last_err}")
@@ -170,24 +203,35 @@ class JudgeClient:
         max_tokens: int,
         temperature: float,
         json_mode: bool,
+        cache_system: bool,
     ) -> JudgeResult:
         if backend == "claude":
             return self._call_claude(model, system, user, max_tokens,
-                                     temperature, json_mode)
+                                     temperature, json_mode, cache_system)
         return self._call_ollama(model, system, user, max_tokens,
                                  temperature, json_mode)
 
-    def _call_claude(self, model, system, user, max_tokens, temperature, json_mode):
+    def _call_claude(self, model, system, user, max_tokens, temperature,
+                     json_mode, cache_system):
         sys_aug = system
         if json_mode:
             sys_aug += (
                 "\n\nIMPORTANT: respond with a single valid JSON object only. "
                 "No prose, no markdown fences."
             )
+        # System must be a content-block array to carry cache_control.
+        if cache_system:
+            system_field: list | str = [{
+                "type": "text",
+                "text": sys_aug,
+                "cache_control": {"type": "ephemeral"},
+            }]
+        else:
+            system_field = sys_aug
         body: dict = {
             "model": model,
             "max_tokens": max_tokens,
-            "system": sys_aug,
+            "system": system_field,
             "messages": [{"role": "user", "content": user}],
         }
         # Opus 4.7 dropped temperature/top_p/top_k; only send sampling params
@@ -211,8 +255,15 @@ class JudgeClient:
                     usage = data.get("usage", {}) or {}
                     in_tok = int(usage.get("input_tokens", 0))
                     out_tok = int(usage.get("output_tokens", 0))
+                    cache_write = int(usage.get("cache_creation_input_tokens", 0) or 0)
+                    cache_read = int(usage.get("cache_read_input_tokens", 0) or 0)
                     price = _price(model)
-                    cost = (in_tok * price["in"] + out_tok * price["out"]) / 1_000_000
+                    cost = (
+                        in_tok * price["in"]
+                        + out_tok * price["out"]
+                        + cache_write * price["in"] * _CACHE_WRITE_MULT
+                        + cache_read * price["in"] * _CACHE_READ_MULT
+                    ) / 1_000_000
                     latency = time.time() - t0
                     _log_spend({
                         "ts": time.time(),
@@ -220,13 +271,18 @@ class JudgeClient:
                         "model": model,
                         "input_tokens": in_tok,
                         "output_tokens": out_tok,
+                        "cache_creation_tokens": cache_write,
+                        "cache_read_tokens": cache_read,
                         "cost_usd": cost,
                         "latency_s": latency,
+                        "is_batch": False,
                         "caller": os.getenv("NAIL_JUDGE_CALLER", "unknown"),
                     })
                     return JudgeResult(text=text, backend="claude", model=model,
                                        latency_s=latency,
                                        input_tokens=in_tok, output_tokens=out_tok,
+                                       cache_creation_tokens=cache_write,
+                                       cache_read_tokens=cache_read,
                                        cost_usd=cost)
                 if r.status_code in (429, 529):  # rate-limited / overloaded
                     time.sleep(2 ** attempt)
@@ -270,8 +326,11 @@ class JudgeClient:
             "model": model,
             "input_tokens": in_tok,
             "output_tokens": out_tok,
+            "cache_creation_tokens": 0,
+            "cache_read_tokens": 0,
             "cost_usd": 0.0,
             "latency_s": latency,
+            "is_batch": False,
             "caller": os.getenv("NAIL_JUDGE_CALLER", "unknown"),
         })
         return JudgeResult(text=text, backend="ollama", model=model,
@@ -310,9 +369,19 @@ def extract_json(text: str) -> dict | None:
 
 
 def _summarize_spend(path: str) -> dict:
-    """Aggregate the spend log into totals per (backend, model, caller)."""
+    """Aggregate the spend log into totals per (backend, model, caller).
+
+    Also computes hypothetical cost *without* caching / batching so users can
+    see how much those tools saved.
+    """
     totals: dict[tuple, dict] = {}
-    grand = {"calls": 0, "input_tokens": 0, "output_tokens": 0, "cost_usd": 0.0}
+    grand = {
+        "calls": 0, "input_tokens": 0, "output_tokens": 0,
+        "cache_creation_tokens": 0, "cache_read_tokens": 0,
+        "batch_calls": 0, "cost_usd": 0.0,
+        "hypothetical_no_cache_no_batch_usd": 0.0,
+        "savings_usd": 0.0,
+    }
     if not os.path.exists(path):
         return {"path": path, "exists": False, "grand": grand, "rows": []}
     with open(path) as fp:
@@ -323,21 +392,45 @@ def _summarize_spend(path: str) -> dict:
                 continue
             key = (r.get("backend", "?"), r.get("model", "?"),
                    r.get("caller", "unknown"))
-            t = totals.setdefault(key, {"calls": 0, "input_tokens": 0,
-                                        "output_tokens": 0, "cost_usd": 0.0})
+            t = totals.setdefault(key, {
+                "calls": 0, "input_tokens": 0, "output_tokens": 0,
+                "cache_creation_tokens": 0, "cache_read_tokens": 0,
+                "batch_calls": 0, "cost_usd": 0.0,
+                "hypothetical_no_cache_no_batch_usd": 0.0,
+            })
             t["calls"] += 1
-            t["input_tokens"] += int(r.get("input_tokens", 0) or 0)
-            t["output_tokens"] += int(r.get("output_tokens", 0) or 0)
+            in_tok = int(r.get("input_tokens", 0) or 0)
+            out_tok = int(r.get("output_tokens", 0) or 0)
+            cw = int(r.get("cache_creation_tokens", 0) or 0)
+            cr = int(r.get("cache_read_tokens", 0) or 0)
+            is_batch = bool(r.get("is_batch", False))
+            t["input_tokens"] += in_tok
+            t["output_tokens"] += out_tok
+            t["cache_creation_tokens"] += cw
+            t["cache_read_tokens"] += cr
+            t["batch_calls"] += int(is_batch)
             t["cost_usd"] += float(r.get("cost_usd", 0.0) or 0.0)
+            # What this call *would* have cost at full, uncached, non-batch prices.
+            # We compute hypothetical for both real-time Claude and batched Claude
+            # so "savings" reflects cache + batch combined.
+            backend = r.get("backend", "")
+            if backend in ("claude", "claude-batch"):
+                price = _price(r.get("model", ""))
+                full = ((in_tok + cw + cr) * price["in"]
+                        + out_tok * price["out"]) / 1_000_000
+                t["hypothetical_no_cache_no_batch_usd"] += full
     rows = [
         {"backend": b, "model": m, "caller": c, **v}
         for (b, m, c), v in sorted(totals.items(),
                                    key=lambda kv: -kv[1]["cost_usd"])
     ]
-    grand["input_tokens"] = sum(r["input_tokens"] for r in rows)
-    grand["output_tokens"] = sum(r["output_tokens"] for r in rows)
-    grand["cost_usd"] = sum(r["cost_usd"] for r in rows)
+    for fld in ("input_tokens", "output_tokens", "cache_creation_tokens",
+                "cache_read_tokens", "batch_calls", "cost_usd",
+                "hypothetical_no_cache_no_batch_usd"):
+        grand[fld] = sum(r[fld] for r in rows)
     grand["calls"] = sum(r["calls"] for r in rows)
+    grand["savings_usd"] = (grand["hypothetical_no_cache_no_batch_usd"]
+                            - grand["cost_usd"])
     return {"path": path, "exists": True, "grand": grand, "rows": rows}
 
 
@@ -348,13 +441,20 @@ def _print_spend(summary: dict) -> None:
         return
     g = summary["grand"]
     print(f"  total: {g['calls']} calls  "
+          f"({g['batch_calls']} batched)  "
           f"{g['input_tokens']} in / {g['output_tokens']} out tokens  "
-          f"${g['cost_usd']:.4f}")
+          f"cache: {g['cache_creation_tokens']} write / "
+          f"{g['cache_read_tokens']} read")
+    print(f"  spent: ${g['cost_usd']:.4f}   "
+          f"saved vs full-price real-time: ${g['savings_usd']:.4f}")
     print(f"  {'backend':<8} {'model':<28} {'caller':<24} "
-          f"{'calls':>6} {'in':>10} {'out':>10} {'usd':>10}")
+          f"{'calls':>6} {'batch':>6} {'in':>10} {'out':>10} "
+          f"{'c_rd':>8} {'usd':>10}")
     for r in summary["rows"]:
         print(f"  {r['backend']:<8} {r['model']:<28} {r['caller']:<24} "
-              f"{r['calls']:>6} {r['input_tokens']:>10} {r['output_tokens']:>10} "
+              f"{r['calls']:>6} {r['batch_calls']:>6} "
+              f"{r['input_tokens']:>10} {r['output_tokens']:>10} "
+              f"{r['cache_read_tokens']:>8} "
               f"${r['cost_usd']:>8.4f}")
 
 
