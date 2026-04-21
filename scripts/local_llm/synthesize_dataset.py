@@ -111,8 +111,9 @@ def reason_prompt(card: dict, n: int) -> tuple[str, str, int, float]:
         "     {card['name']}, and references the mechanism + defences above.\n\n"
         'Respond JSON: {"samples":[{"user_request":"...","analyst_reply":"..."}]}'
     )
-    # Reason replies are ~600 tokens each; pad heavily.
-    return GEN_SYS, user, max(4096, 1200 * n), 0.6
+    # Reason replies are ~600 tokens each; pad heavily but cap at Opus's
+    # per-request output ceiling (16,384 for opus-4-7).
+    return GEN_SYS, user, min(16000, max(4096, 1200 * n)), 0.6
 
 
 # ──────────────────────────────────────────────── response parsers
@@ -246,20 +247,17 @@ def _custom_id(target: str, card: dict) -> str:
     return f"{target}_{card['ave_id']}"
 
 
-def existing_coverage(out_paths: dict[str, Path]) -> dict[str, set[str]]:
-    """Scan current synth files and return {target: set(ave_ids)} that
-    already have at least one sample. Used to skip re-synthesis (costs money
-    and duplicates training data) unless --force is passed.
+def existing_coverage(out_paths: dict[str, Path]) -> dict[str, dict[str, int]]:
+    """Scan current synth files and return {target: {ave_id: count}}.
 
-    The scan is authoritative: we look at the assistant message of every
-    existing row and extract the first AVE-XXXX token. That matches what
-    the groundedness check does, so skipped == definitely already present.
+    Used by both the dedup guard (any count > 0 means “covered”) and the
+    --top-up logic (re-synthesize only AVE IDs whose count is below quota).
     """
     import re
     ave_re = re.compile(r"AVE-\d{4}-\d{4}")
-    out: dict[str, set[str]] = {}
+    out: dict[str, dict[str, int]] = {}
     for tgt, path in out_paths.items():
-        covered: set[str] = set()
+        counts: dict[str, int] = {}
         if path.exists():
             with path.open() as f:
                 for line in f:
@@ -270,33 +268,51 @@ def existing_coverage(out_paths: dict[str, Path]) -> dict[str, set[str]]:
                         continue
                     m = ave_re.search(asst)
                     if m:
-                        covered.add(m.group(0))
-        out[tgt] = covered
+                        counts[m.group(0)] = counts.get(m.group(0), 0) + 1
+        out[tgt] = counts
     return out
 
 
 def filter_new_work(cards: list[dict], targets: list[str],
-                    coverage: dict[str, set[str]],
-                    force: bool) -> list[tuple[dict, str]]:
-    """Return list of (card, target) pairs that still need synthesis.
-    If force=True, return every pair unconditionally.
+                    coverage: dict[str, dict[str, int]],
+                    force: bool,
+                    top_up_to: int = 0) -> list[tuple[dict, str, int]]:
+    """Return list of (card, target, n_to_request) pairs that still need work.
+
+    - force=True: every (card, target) pair, n=top_up_to or default upstream.
+    - top_up_to>0: include any AVE whose existing count < top_up_to;
+      n_to_request = top_up_to - existing_count (so we ask only for the
+      shortfall). Pad by 50% to absorb parse losses, capped at top_up_to.
+    - default: include any AVE not yet present at all (count == 0).
     """
-    work: list[tuple[dict, str]] = []
+    work: list[tuple[dict, str, int]] = []
     for card in cards:
         for tgt in targets:
-            if force or card["ave_id"] not in coverage.get(tgt, set()):
-                work.append((card, tgt))
+            existing = coverage.get(tgt, {}).get(card["ave_id"], 0)
+            if force:
+                n = top_up_to or 0  # caller will substitute its default
+                work.append((card, tgt, n))
+            elif top_up_to > 0:
+                if existing < top_up_to:
+                    shortfall = top_up_to - existing
+                    # ask for 1.5x the shortfall to absorb parse loss
+                    n = min(top_up_to, max(shortfall, int(shortfall * 1.5)))
+                    work.append((card, tgt, n))
+            else:
+                if existing == 0:
+                    work.append((card, tgt, 0))
     return work
 
 
-def build_batch_requests(work: list[tuple[dict, str]], per_ave: int,
+def build_batch_requests(work: list[tuple[dict, str, int]], default_per_ave: int,
                          model: str, cache_system: bool) -> list[dict]:
     reqs: list[dict] = []
-    for card, tgt in work:
+    for card, tgt, n in work:
+        per = n if n > 0 else default_per_ave
         if tgt == "guard":
-            sys_p, user_p, max_tok, temp = guard_prompt(card, per_ave)
+            sys_p, user_p, max_tok, temp = guard_prompt(card, per)
         else:
-            sys_p, user_p, max_tok, temp = reason_prompt(card, per_ave)
+            sys_p, user_p, max_tok, temp = reason_prompt(card, per)
         reqs.append(bc.build_request(
             _custom_id(tgt, card), sys_p, user_p,
             model=model, max_tokens=max_tok, temperature=temp,
@@ -360,6 +376,11 @@ def main() -> int:
                          "samples in the target file. Default behavior skips "
                          "already-covered (card, target) pairs to avoid "
                          "paying twice and duplicating training data.")
+    ap.add_argument("--top-up", type=int, default=0, metavar="N",
+                    help="Re-synthesize ONLY for (card, target) pairs whose "
+                         "current sample count is below N. Asks the teacher "
+                         "for 1.5x the shortfall (capped at N) to absorb "
+                         "parse losses. Mutually informative with --per-ave.")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
@@ -397,20 +418,28 @@ def main() -> int:
     if args.batch:
         cards_by_ave = {c["ave_id"]: c for c in cards}
         coverage = existing_coverage(out_paths)
-        work = filter_new_work(cards, targets, coverage, args.force)
+        work = filter_new_work(cards, targets, coverage, args.force,
+                               top_up_to=args.top_up)
         skipped = (len(cards) * len(targets)) - len(work)
-        if skipped and not args.force:
-            print(f"skipped {skipped} already-covered (card, target) pair(s); "
-                  f"pass --force to re-synthesize")
+        if skipped:
+            mode = "top-up" if args.top_up else "already-covered"
+            print(f"skipped {skipped} {mode} (card, target) pair(s)")
         if not work:
-            print("nothing to do—every (card, target) pair already has "
-                  "samples. Use --force or delete the synth files first.")
+            if args.top_up:
+                print(f"nothing to do—every (card, target) pair already has "
+                      f">= {args.top_up} samples.")
+            else:
+                print("nothing to do—every (card, target) pair already has "
+                      "samples. Use --top-up N, --force, or delete the synth files first.")
             return 0
         reqs = build_batch_requests(work, args.per_ave, args.model,
                                     args.cache_system)
+        # Show the requested-sample distribution
+        n_dist = sorted(set(n if n else args.per_ave for _, _, n in work))
         print(f"batch: {len(reqs)} requests across {len(cards)} cards x "
               f"{len(targets)} target(s); model={args.model}; "
-              f"cache_system={args.cache_system}")
+              f"cache_system={args.cache_system}; "
+              f"per-request samples: {n_dist}")
         if args.dry_run:
             print("  --dry-run: not submitting")
             return 0
@@ -440,25 +469,27 @@ def main() -> int:
     # ── real-time mode (original behavior) ──
     client = JudgeClient()
     coverage = existing_coverage(out_paths)
-    work = filter_new_work(cards, targets, coverage, args.force)
+    work = filter_new_work(cards, targets, coverage, args.force,
+                           top_up_to=args.top_up)
     skipped = (len(cards) * len(targets)) - len(work)
     print(f"loaded {len(cards)} AVE cards; backend preference: {client.prefer}"
           f"{'  (cache_system=True)' if args.cache_system else ''}")
-    if skipped and not args.force:
-        print(f"skipped {skipped} already-covered (card, target) pair(s); "
-              f"pass --force to re-synthesize")
+    if skipped:
+        mode = "top-up" if args.top_up else "already-covered"
+        print(f"skipped {skipped} {mode} (card, target) pair(s)")
     if not work:
-        print("nothing to do—every (card, target) pair already has samples.")
+        print("nothing to do.")
         return 0
 
     totals = {"guard": 0, "reason": 0}
-    for i, (card, tgt) in enumerate(work, 1):
+    for i, (card, tgt, n) in enumerate(work, 1):
+        per = n if n > 0 else args.per_ave
         try:
             if tgt == "guard":
-                rows = gen_guard(client, card, args.per_ave,
+                rows = gen_guard(client, card, per,
                                  cache_system=args.cache_system)
             else:
-                rows = gen_reason(client, card, args.per_ave,
+                rows = gen_reason(client, card, per,
                                   cache_system=args.cache_system)
         except Exception as e:
             print(f"  [{card['ave_id']}/{tgt}] FAIL: {e}")
@@ -466,7 +497,7 @@ def main() -> int:
         totals[tgt] += len(rows)
         if not args.dry_run and rows:
             append_jsonl(out_paths[tgt], rows)
-        print(f"  [{i}/{len(work)}] {card['ave_id']:14s} {tgt:6s} +{len(rows):2d}  "
+        print(f"  [{i}/{len(work)}] {card['ave_id']:14s} {tgt:6s} +{len(rows):2d}/{per}  "
               f"(running totals: guard={totals['guard']} reason={totals['reason']})")
 
     meta_path = DATA_DIR / "dataset_meta.json"

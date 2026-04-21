@@ -258,9 +258,10 @@ def results(
     if status.get("processing_status") != "ended":
         raise JudgeError(f"batch {batch_id} not ended: "
                          f"{status.get('processing_status')}")
-    results_url = status.get("results_url")
-    if not results_url:
-        raise JudgeError(f"batch {batch_id} has no results_url")
+    # Anthropic used to advertise results_url in the status response. Newer
+    # responses omit it; fall back to the documented deterministic path.
+    results_url = (status.get("results_url")
+                   or f"{BATCH_SUBMIT_URL}/{batch_id}/results")
     state = _load_state(state_dir, batch_id)
     model_map: dict = state.get("model_by_custom_id", {})
     caller = state.get("caller", os.getenv("NAIL_JUDGE_CALLER", "unknown"))
