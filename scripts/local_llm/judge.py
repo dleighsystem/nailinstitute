@@ -43,6 +43,23 @@ _SPEND_LOG_PATH = os.getenv(
                      "data", "judge_spend.jsonl")),
 )
 
+# Models that removed temperature / top_p / top_k from the Messages API.
+# Opus 4.7 is the first; assume the same for any future 4.7+ Opus point release.
+_NO_SAMPLING_PARAMS = {"claude-opus-4-7"}
+
+# Default effort hint for models that accept output_config.effort.
+# 'xhigh' is the recommended starting point for coding / agentic Opus 4.7 work.
+_DEFAULT_EFFORT = os.getenv("NAIL_JUDGE_EFFORT", "xhigh")
+
+
+def _accepts_sampling(model: str) -> bool:
+    return not any(model.startswith(m) for m in _NO_SAMPLING_PARAMS)
+
+
+def _accepts_effort(model: str) -> bool:
+    # output_config.effort is an Opus 4.7-era knob
+    return model.startswith("claude-opus-4-7")
+
 
 def _price(model: str) -> dict:
     if model in _CLAUDE_PRICES:
@@ -139,13 +156,18 @@ class JudgeClient:
                 "\n\nIMPORTANT: respond with a single valid JSON object only. "
                 "No prose, no markdown fences."
             )
-        body = {
+        body: dict = {
             "model": model,
             "max_tokens": max_tokens,
-            "temperature": temperature,
             "system": sys_aug,
             "messages": [{"role": "user", "content": user}],
         }
+        # Opus 4.7 dropped temperature/top_p/top_k; only send sampling params
+        # to models that still accept them.
+        if _accepts_sampling(model):
+            body["temperature"] = temperature
+        if _accepts_effort(model):
+            body["output_config"] = {"effort": _DEFAULT_EFFORT}
         headers = {
             "x-api-key": self.api_key,
             "anthropic-version": "2023-06-01",
