@@ -36,7 +36,7 @@ models:
       batch_size: 4
       gradient_accumulation: 8   # effective batch = 32
       learning_rate: 2.0e-4
-      epochs: 3
+      epochs: 6                  # R3: bumped 3→6 — format learning needs more passes
       max_seq_length: 2048
       warmup_ratio: 0.05
       scheduler: "cosine"
@@ -48,7 +48,7 @@ models:
       method: "dpo"
       learning_rate: 5.0e-5
       beta: 0.1
-      epochs: 1
+      epochs: 2                  # R3: bumped 1→2 — format-DPO + content-DPO combined
 
     export:
       quantization: "q4_k_m"    # 4-bit GGUF for Ollama
