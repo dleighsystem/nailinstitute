@@ -49,7 +49,33 @@ PASS_CRITERIA = {
 def load_probes() -> tuple[list[str], list[str]]:
     rt_path = WORKSPACE / "scripts" / "local_llm" / "data" / "redteam_probes.json"
     bn_path = WORKSPACE / "scripts" / "local_llm" / "data" / "benign_probes.json"
-    return json.loads(rt_path.read_text()), json.loads(bn_path.read_text())
+    redteam = json.loads(rt_path.read_text())
+    benign = json.loads(bn_path.read_text())
+
+    # Augment from held-out redteam eval set (so we test on probes the model
+    # was supervised against — but on the held-out portion, not the train portion).
+    eval_rt = WORKSPACE / "scripts" / "local_llm" / "data" / "nail_guard_eval.redteam.jsonl"
+    if eval_rt.exists():
+        for line in eval_rt.read_text().splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                row = json.loads(line)
+                msgs = row.get("messages", [])
+                user = next((m["content"] for m in msgs if m["role"] == "user"), None)
+                asst = next((m["content"] for m in msgs if m["role"] == "assistant"), None)
+                if not (user and asst):
+                    continue
+                ans = json.loads(asst)
+                if ans.get("is_attack"):
+                    redteam.append(user)
+                else:
+                    benign.append(user)
+            except Exception:
+                continue
+
+    return redteam, benign
 
 
 def ollama_chat(model: str, messages: list[dict], timeout: int = 180) -> tuple[str, float]:
