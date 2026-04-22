@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -73,48 +74,102 @@ def export_to_gguf(model_path: Path, model_name: str, quant: str) -> Path:
     print(f"\n  Exporting {model_name} to GGUF ({quant})...")
 
     try:
-        from unsloth import FastLanguageModel
-
-        # Step 1: Load LoRA adapter and merge to 16-bit
-        print("  Step 1: Loading LoRA adapter...")
-        model, tokenizer = FastLanguageModel.from_pretrained(
-            model_name=str(model_path),
-            max_seq_length=4096,
-            dtype=None,
-            load_in_4bit=True,
-            device_map={"": 0},  # DGX Spark unified memory
-        )
-
-        # Step 2: Save merged 16-bit weights
-        print("  Step 2: Merging LoRA and saving 16-bit weights...")
         merged_dir = gguf_dir / "merged_16bit"
-        model.save_pretrained_merged(
-            str(merged_dir),
-            tokenizer,
-            save_method="merged_16bit",
-        )
-        del model  # Free memory
-        import torch, gc
-        torch.cuda.empty_cache()
-        gc.collect()
 
-        # Step 3: Convert to GGUF using llama.cpp
-        print(f"  Step 3: Converting to GGUF ({quant})...")
+        if merged_dir.exists() and any(merged_dir.iterdir()):
+            print("  Step 1-2: merged_16bit already exists — skipping LoRA load/merge.")
+        else:
+            from unsloth import FastLanguageModel
+
+            # Step 1: Load LoRA adapter and merge to 16-bit
+            print("  Step 1: Loading LoRA adapter...")
+            model, tokenizer = FastLanguageModel.from_pretrained(
+                model_name=str(model_path),
+                max_seq_length=4096,
+                dtype=None,
+                load_in_4bit=True,
+                device_map={"": 0},  # DGX Spark unified memory
+            )
+
+            # Step 2: Save merged 16-bit weights
+            print("  Step 2: Merging LoRA and saving 16-bit weights...")
+            model.save_pretrained_merged(
+                str(merged_dir),
+                tokenizer,
+                save_method="merged_16bit",
+            )
+            del model  # Free memory
+            import torch, gc
+            torch.cuda.empty_cache()
+            gc.collect()
+
+        # Step 3: Convert to GGUF using llama.cpp (two-pass: f16 → quantize)
         gguf_file = gguf_dir / f"nail-{model_name}-{quant}.gguf"
+        gguf_f16  = gguf_dir / f"nail-{model_name}-f16.gguf"
         convert_script = Path("/tmp/llama.cpp/convert_hf_to_gguf.py")
         if not convert_script.exists():
             subprocess.run(["git", "clone", "--depth", "1",
                           "https://github.com/ggml-org/llama.cpp.git",
                           "/tmp/llama.cpp"], check=True, capture_output=True)
 
-        cmd = [sys.executable, str(convert_script),
-               str(merged_dir),
-               "--outfile", str(gguf_file),
-               "--outtype", quant]
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        if result.returncode != 0:
-            print(f"  ✗ GGUF conversion failed: {result.stderr[-500:]}")
-            sys.exit(1)
+        # Pass 1: HF → f16 GGUF (convert_hf_to_gguf only accepts base float types)
+        if not gguf_f16.exists():
+            print(f"  Step 3a: Converting HF weights → f16 GGUF...")
+            cmd = [sys.executable, str(convert_script),
+                   str(merged_dir),
+                   "--outfile", str(gguf_f16),
+                   "--outtype", "f16"]
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            if result.returncode != 0:
+                print(f"  ✗ GGUF f16 conversion failed:\n{result.stderr[-800:]}")
+                sys.exit(1)
+            print(f"  ✓ f16 GGUF: {gguf_f16}")
+        else:
+            print(f"  Step 3a: f16 GGUF already exists, skipping conversion.")
+
+        # Pass 2: f16 GGUF → quantized GGUF via llama-quantize
+        # Skip pass 2 if the quant type IS f16 (nothing to do)
+        if quant.lower() in ("f16", "f32", "bf16"):
+            gguf_file = gguf_f16
+            print(f"  Step 3b: quant={quant} — no quantisation needed, using f16 directly.")
+        else:
+            print(f"  Step 3b: Quantising f16 → {quant} via llama-quantize...")
+            # llama-quantize may be at several locations; find it
+            quantize_bin = None
+            for candidate in ["/tmp/llama.cpp/build/bin/llama-quantize",
+                               "/usr/local/bin/llama-quantize",
+                               "llama-quantize"]:
+                try:
+                    r = subprocess.run([candidate, "--help"],
+                                       capture_output=True, timeout=5)
+                    quantize_bin = candidate
+                    break
+                except (FileNotFoundError, subprocess.TimeoutExpired):
+                    continue
+
+            if quantize_bin is None:
+                # Build llama-quantize from the cloned repo
+                print("  Building llama-quantize from /tmp/llama.cpp ...")
+                build_dir = Path("/tmp/llama.cpp/build")
+                build_dir.mkdir(exist_ok=True)
+                subprocess.run(["cmake", "..", "-DCMAKE_BUILD_TYPE=Release",
+                                 "-DLLAMA_BUILD_TESTS=OFF"],
+                                cwd=str(build_dir), check=True, capture_output=True)
+                subprocess.run(["cmake", "--build", ".", "--target", "llama-quantize",
+                                 "-j", str(os.cpu_count() or 4)],
+                                cwd=str(build_dir), check=True, capture_output=True)
+                quantize_bin = str(build_dir / "bin" / "llama-quantize")
+
+            result = subprocess.run(
+                [quantize_bin, str(gguf_f16), str(gguf_file), quant],
+                capture_output=True, text=True
+            )
+            if result.returncode != 0:
+                print(f"  ✗ llama-quantize failed:\n{result.stderr[-800:]}")
+                sys.exit(1)
+            print(f"  ✓ Quantised GGUF: {gguf_file}")
+            # Clean up the intermediate f16 to save disk space
+            gguf_f16.unlink(missing_ok=True)
 
         print(f"  ✓ GGUF exported: {gguf_file}")
         return gguf_file
