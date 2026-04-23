@@ -67,6 +67,30 @@ from .feed import (
     ThreatFeed,
 )
 
+# Signed advisory channel + ave-database hot-reload (M6).
+from .advisory import (
+    Advisory,
+    AdvisoryKind,
+    Severity,
+    Mitigation,
+    AdvisoryError,
+    sign_advisory,
+    parse_bundle,
+    verify_bundle,
+)
+from .advisory_channel import (
+    Channel,
+    Watcher,
+    WatcherState,
+    DuplicateAdvisory,
+    default_channel_dir,
+)
+from .ave_reload import (
+    AveSnapshot,
+    AveReloader,
+    load_snapshot,
+)
+
 # Server (optional — requires pip install nail-threatfeed[server])
 try:
     from .server import FeedServerConfig
@@ -92,4 +116,10 @@ __all__ = [
     "ThreatFeed",
     # Server
     "FeedServerConfig",
+    # Advisory channel (M6)
+    "Advisory", "AdvisoryKind", "Severity", "Mitigation", "AdvisoryError",
+    "sign_advisory", "parse_bundle", "verify_bundle",
+    "Channel", "Watcher", "WatcherState", "DuplicateAdvisory",
+    "default_channel_dir",
+    "AveSnapshot", "AveReloader", "load_snapshot",
 ]

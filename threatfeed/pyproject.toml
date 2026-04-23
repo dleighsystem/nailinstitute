@@ -30,6 +30,7 @@ all = ["nail-threatfeed[dev,server]"]
 
 [project.scripts]
 threatfeed = "threatfeed.cli:main"
+nail-advisory = "threatfeed.advisory_cli:main"
 
 [project.urls]
 Homepage = "https://github.com/nailinstitute/threatfeed"
