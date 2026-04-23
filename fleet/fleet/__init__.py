@@ -17,6 +17,11 @@ from .sink import (
     Sink, NullSink, LocalSink, HttpSink, MultiSink, CapturingSink,
     set_sink, get_sink, emit, safe_emit,
 )
+from .query import Query, NumericStats, Percentiles
+from .alerts import (
+    Alert, AlertEngine, AlertRule,
+    RateRule, RatioRule, PercentileRule, SilenceRule, SeverityRule,
+)
 
 __all__ = [
     "Event", "Severity",
@@ -30,6 +35,9 @@ __all__ = [
     "FleetClient", "FleetClientError",
     "Sink", "NullSink", "LocalSink", "HttpSink", "MultiSink", "CapturingSink",
     "set_sink", "get_sink", "emit", "safe_emit",
+    "Query", "NumericStats", "Percentiles",
+    "Alert", "AlertEngine", "AlertRule",
+    "RateRule", "RatioRule", "PercentileRule", "SilenceRule", "SeverityRule",
 ]
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"

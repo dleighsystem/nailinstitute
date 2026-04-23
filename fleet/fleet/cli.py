@@ -13,6 +13,11 @@ from .heartbeat import Heartbeat
 from .http_client import FleetClient, FleetClientError
 from .http_server import IngestServer
 from .ingest import Ingest
+from .query import Query
+from .alerts import (
+    AlertEngine, RateRule, RatioRule, PercentileRule,
+    SilenceRule, SeverityRule,
+)
 from .retention import Retention
 from .rollup import RollUp
 from .signing import HAS_ARSENAL
@@ -194,6 +199,87 @@ def _cmd_prune(args) -> int:
     return 0
 
 
+def _cmd_query(args) -> int:
+    store = _open_store(args)
+    q = Query(store)
+    if args.op == "rate":
+        out = {"kind": args.kind, "window_s": args.window,
+               "rate_per_s": q.rate(kind=args.kind, window_s=args.window,
+                                    severity=args.severity, agent_id=args.agent)}
+    elif args.op == "count":
+        out = {"kind": args.kind, "window_s": args.window,
+               "count": q.count(kind=args.kind, window_s=args.window,
+                                severity=args.severity, agent_id=args.agent)}
+    elif args.op == "percentiles":
+        if not args.attr:
+            print("--attr required for percentiles", file=sys.stderr); return 2
+        p = q.latency_percentiles(kind=args.kind, attr_key=args.attr)
+        out = p.to_dict()
+    elif args.op == "stats":
+        if not args.attr:
+            print("--attr required for stats", file=sys.stderr); return 2
+        out = q.numeric_stats(kind=args.kind, attr_key=args.attr).to_dict()
+    elif args.op == "top":
+        if not args.attr:
+            print("--attr required for top", file=sys.stderr); return 2
+        out = {"top": q.top_n(kind=args.kind, attr_key=args.attr, n=args.n)}
+    elif args.op == "ratio":
+        out = {"ratio": q.ratio(num_kind=args.kind,
+                                denom_kinds=args.denom or [],
+                                window_s=args.window)}
+    elif args.op == "deny-allow":
+        out = {"deny_allow_ratio": q.deny_allow_ratio(window_s=args.window)}
+    else:   # pragma: no cover
+        print(f"unknown op {args.op!r}", file=sys.stderr); return 2
+    print(json.dumps(out, indent=2, sort_keys=True, default=float))
+    return 0
+
+
+def _build_rules_from_file(path: str):
+    """Load rules from a JSON file. Each entry: {type: ..., ...kwargs}."""
+    raw = json.loads(Path(path).read_text())
+    if not isinstance(raw, list):
+        raise ValueError("rules file must be a JSON list")
+    table = {
+        "rate": RateRule, "ratio": RatioRule, "percentile": PercentileRule,
+        "silence": SilenceRule, "severity": SeverityRule,
+    }
+    rules = []
+    for entry in raw:
+        t = entry.pop("type")
+        cls = table[t]
+        rules.append(cls(**entry))
+    return rules
+
+
+def _cmd_alerts(args) -> int:
+    store = _open_store(args)
+    if args.rules_file:
+        rules = _build_rules_from_file(args.rules_file)
+    else:
+        rules = []
+        if args.deny_rate is not None:
+            rules.append(RateRule(name="deny_spike", kind="arsenal.deny",
+                                  threshold=args.deny_rate, window_s=args.window,
+                                  op=">=", severity="warn"))
+        if args.refusal_ratio is not None:
+            rules.append(RatioRule(
+                name="refusal_rate", num_kind="arsenal.deny",
+                denom_kinds=["arsenal.deny", "arsenal.allow"],
+                threshold=args.refusal_ratio, window_s=args.window,
+                op=">=", severity="warn", min_denominator=5,
+            ))
+        if args.silence_s is not None:
+            rules.append(SilenceRule(name="agent_silence",
+                                     max_silence_s=args.silence_s))
+    eng = AlertEngine(rules)
+    fired = eng.evaluate(store)
+    out = {"ok": True, "n_rules": len(rules), "n_fired": len(fired),
+           "alerts": [a.to_dict() for a in fired]}
+    print(json.dumps(out, indent=2, sort_keys=True, default=float))
+    return 0 if not (args.exit_nonzero_on_fire and fired) else 4
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="nail-fleet",
                                 description="NAIL Fleet telemetry CLI.")
@@ -252,6 +338,35 @@ def build_parser() -> argparse.ArgumentParser:
     pr2.add_argument("--max-rows", type=int, default=None,
                      help="Cap total events at N (oldest dropped first).")
     pr2.set_defaults(func=_cmd_prune)
+
+    pq = sub.add_parser("query", help="Read-side analytics.")
+    pq.add_argument("op", choices=["rate", "count", "percentiles", "stats",
+                                   "top", "ratio", "deny-allow"])
+    pq.add_argument("--kind")
+    pq.add_argument("--attr", help="Attribute key (for percentiles/stats/top).")
+    pq.add_argument("--window", type=float, default=60.0,
+                    help="Trailing window in seconds.")
+    pq.add_argument("--severity")
+    pq.add_argument("--agent")
+    pq.add_argument("--n", type=int, default=10)
+    pq.add_argument("--denom", action="append", default=[],
+                    help="Denominator kind for 'ratio' op (may repeat).")
+    pq.set_defaults(func=_cmd_query)
+
+    pal = sub.add_parser("alerts", help="Run alert rules against the store.")
+    pal.add_argument("--rules-file",
+                     help="Path to JSON file describing rules.")
+    pal.add_argument("--deny-rate", type=float,
+                     help="Fire if arsenal.deny rate ≥ this/sec.")
+    pal.add_argument("--refusal-ratio", type=float,
+                     help="Fire if deny/(deny+allow) ≥ this.")
+    pal.add_argument("--silence-s", type=float,
+                     help="Fire if any agent silent ≥ N seconds.")
+    pal.add_argument("--window", type=float, default=60.0,
+                    help="Window for rate/ratio rules (seconds).")
+    pal.add_argument("--exit-nonzero-on-fire", action="store_true",
+                     help="Exit 4 if any alert fires (for CI / cron).")
+    pal.set_defaults(func=_cmd_alerts)
 
     return p
 
