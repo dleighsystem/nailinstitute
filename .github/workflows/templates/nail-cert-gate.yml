@@ -1,0 +1,94 @@
+name: NAIL Cert Gate
+
+# Drop-in deployment gate. Refuses to deploy any agent that does not have a
+# fresh, signed NAIL certificate at the requested tier or higher.
+#
+# Usage in a downstream repo:
+#
+#   jobs:
+#     deploy:
+#       uses: ./.github/workflows/nail-cert-gate.yml
+#       with:
+#         agent:        my-customer-support
+#         model:        mistral:7b-instruct
+#         tier:         AA
+#         scope:        general
+#         cert_path:    ./certifications/cert_latest.json
+#         max_age_days: 30
+#         require_signature: true
+
+on:
+  workflow_call:
+    inputs:
+      agent:             { required: true,  type: string }
+      model:             { required: true,  type: string }
+      tier:              { required: false, type: string, default: AA }
+      scope:             { required: false, type: string, default: general }
+      cert_path:         { required: true,  type: string }
+      max_age_days:      { required: false, type: number, default: 30 }
+      require_signature: { required: false, type: boolean, default: true }
+
+jobs:
+  cert-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install NAIL deploy tooling
+        run: |
+          pip install --upgrade pip
+          pip install cryptography
+          # nail-deploy + arsenal are vendored under scripts/ + arsenal/.
+
+      - name: Restore arsenal trust anchor
+        # The public key of the issuer that signed the cert MUST be present
+        # in the runner. Store it in an org-level secret as base64(pubkey).
+        env:
+          NAIL_ARSENAL_PUBKEY_HEX: ${{ secrets.NAIL_ARSENAL_PUBKEY_HEX }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.nail/arsenal
+          if [ -z "${NAIL_ARSENAL_PUBKEY_HEX:-}" ] && [ "${{ inputs.require_signature }}" = "true" ]; then
+            echo "::error::secret NAIL_ARSENAL_PUBKEY_HEX is required when require_signature=true"
+            exit 4
+          fi
+          if [ -n "${NAIL_ARSENAL_PUBKEY_HEX:-}" ]; then
+            python -c "
+            import os, hashlib, pathlib
+            d = pathlib.Path.home() / '.nail' / 'arsenal'
+            d.mkdir(parents=True, exist_ok=True)
+            pub = bytes.fromhex(os.environ['NAIL_ARSENAL_PUBKEY_HEX'])
+            (d / 'nail-arsenal-1.pub').write_bytes(pub)
+            (d / 'nail-arsenal-1.kid').write_text(hashlib.sha256(pub).hexdigest()[:8] + '\n')
+            print('trust anchor restored, kid=', hashlib.sha256(pub).hexdigest()[:8])
+            "
+          fi
+
+      - name: Run NAIL deploy gate
+        id: gate
+        run: |
+          set -e
+          ARGS=(
+            push
+            --agent  "${{ inputs.agent }}"
+            --cert   "${{ inputs.cert_path }}"
+            --tier   "${{ inputs.tier }}"
+            --scope  "${{ inputs.scope }}"
+            --model  "${{ inputs.model }}"
+            --max-age-days "${{ inputs.max_age_days }}"
+          )
+          if [ "${{ inputs.require_signature }}" = "true" ]; then
+            ARGS+=(--require-signature)
+          fi
+          python scripts/nail_deploy.py "${ARGS[@]}"
+
+      - name: Annotate failure
+        if: failure()
+        run: |
+          echo "::error title=NAIL cert gate blocked deploy::Agent '${{ inputs.agent }}' did not pass the cert gate at tier ${{ inputs.tier }}. Re-certify with scripts/run_local_certification.py and reissue."
