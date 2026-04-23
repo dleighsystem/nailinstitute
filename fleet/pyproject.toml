@@ -1,6 +1,6 @@
 [project]
 name = "nail-fleet"
-version = "0.1.0"
+version = "0.2.0"
 description = "NAIL Fleet — telemetry roll-up across deployed agents."
 authors = [{name = "NAIL Institute"}]
 requires-python = ">=3.10"

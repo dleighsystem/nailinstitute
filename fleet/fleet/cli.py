@@ -10,8 +10,12 @@ from pathlib import Path
 
 from .event import Event
 from .heartbeat import Heartbeat
+from .http_client import FleetClient, FleetClientError
+from .http_server import IngestServer
 from .ingest import Ingest
+from .retention import Retention
 from .rollup import RollUp
+from .signing import HAS_ARSENAL
 from .store import Store
 
 
@@ -111,6 +115,85 @@ def _cmd_beat(args) -> int:
     return 0
 
 
+def _load_trusted_keys(args):
+    if not args.trusted_keys:
+        return ()
+    if not HAS_ARSENAL:
+        print("ERROR: --trusted-keys requires the arsenal package",
+              file=sys.stderr)
+        sys.exit(2)
+    from arsenal.keys import load_keypair  # type: ignore
+    keys = []
+    for spec in args.trusted_keys:
+        # spec = "name" (under default dir) or "/abs/path/name" or "dir:name"
+        if ":" in spec:
+            d, name = spec.split(":", 1)
+            keys.append(load_keypair(name=name, directory=Path(d)))
+        elif "/" in spec:
+            p = Path(spec)
+            keys.append(load_keypair(name=p.name, directory=p.parent))
+        else:
+            keys.append(load_keypair(name=spec))
+    return tuple(keys)
+
+
+def _cmd_serve(args) -> int:
+    store = _open_store(args)
+    trusted = _load_trusted_keys(args)
+    srv = IngestServer(store, host=args.host, port=args.port,
+                       trusted_keys=trusted)
+    print(json.dumps({"ok": True, "url": srv.url,
+                      "signed_only": bool(trusted),
+                      "db": args.db}))
+    sys.stdout.flush()
+    try:
+        srv.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        srv.stop()
+    return 0
+
+
+def _cmd_push(args) -> int:
+    signing_key = None
+    if args.sign_with:
+        if not HAS_ARSENAL:
+            print("ERROR: --sign-with requires the arsenal package",
+                  file=sys.stderr)
+            return 2
+        from arsenal.keys import load_keypair  # type: ignore
+        spec = args.sign_with
+        if ":" in spec:
+            d, name = spec.split(":", 1)
+            signing_key = load_keypair(name=name, directory=Path(d),
+                                       require_private=True)
+        else:
+            signing_key = load_keypair(name=spec, require_private=True)
+
+    client = FleetClient(args.url, signing_key=signing_key,
+                         timeout_s=args.timeout)
+    if args.event:
+        ev = Event.from_json(args.event)
+    else:
+        ev = Event.from_json(sys.stdin.read())
+    try:
+        out = client.push(ev)
+    except FleetClientError as e:
+        print(json.dumps({"ok": False, "error": str(e)}), file=sys.stderr)
+        return 3
+    print(json.dumps(out))
+    return 0
+
+
+def _cmd_prune(args) -> int:
+    store = _open_store(args)
+    r = Retention(store, ttl_s=args.ttl, max_rows=args.max_rows)
+    rep = r.apply()
+    print(json.dumps({"ok": True, **rep.to_dict()}))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="nail-fleet",
                                 description="NAIL Fleet telemetry CLI.")
@@ -146,6 +229,29 @@ def build_parser() -> argparse.ArgumentParser:
     pb.add_argument("agent_id")
     pb.add_argument("--meta", help="JSON dict of agent metadata.")
     pb.set_defaults(func=_cmd_beat)
+
+    ps = sub.add_parser("serve", help="Run the HTTP ingest server.")
+    ps.add_argument("--host", default="127.0.0.1")
+    ps.add_argument("--port", type=int, default=8787)
+    ps.add_argument("--trusted-keys", action="append", default=[],
+                    metavar="NAME_OR_DIR:NAME",
+                    help="arsenal key spec; may repeat. Enables signed-only ingest.")
+    ps.set_defaults(func=_cmd_serve)
+
+    pp = sub.add_parser("push", help="Push an event to a fleet HTTP endpoint.")
+    pp.add_argument("--url", required=True, help="Base URL, e.g. http://host:8787")
+    pp.add_argument("--event", help="Event JSON; otherwise stdin.")
+    pp.add_argument("--sign-with", metavar="NAME_OR_DIR:NAME",
+                    help="arsenal key spec to sign with.")
+    pp.add_argument("--timeout", type=float, default=5.0)
+    pp.set_defaults(func=_cmd_push)
+
+    pr2 = sub.add_parser("prune", help="Apply retention policy.")
+    pr2.add_argument("--ttl", type=float, default=None,
+                     help="Drop events older than this many seconds.")
+    pr2.add_argument("--max-rows", type=int, default=None,
+                     help="Cap total events at N (oldest dropped first).")
+    pr2.set_defaults(func=_cmd_prune)
 
     return p
 
