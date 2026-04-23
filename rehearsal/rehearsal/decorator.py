@@ -22,6 +22,7 @@ from functools import wraps
 from .recorder import Recorder, ToolCall
 from .sandbox import Sandbox
 from .verdict import RehearsalDenied, RehearsalHeld, Verdict
+from ._telemetry import default_agent_id, telemetry_emit
 
 
 # Per-call optional world override (e.g. set by the agent loop).
@@ -64,6 +65,21 @@ def requires_rehearsal(tool: str, *, sandbox: Sandbox,
                 verdict=receipt.verdict,
                 duration_ms=receipt.duration_ms,
             ))
+
+            outcome = receipt.verdict.outcome.value
+            telemetry_emit(
+                "rehearsal.verdict",
+                agent_id=default_agent_id("rehearsal"),
+                severity={"allow": "info", "hold": "warn",
+                          "deny": "error"}.get(outcome, "info"),
+                attrs={
+                    "tool": tool,
+                    "verdict": outcome,
+                    "reason": receipt.verdict.reason[:200] if receipt.verdict.reason else "",
+                    "duration_ms": receipt.duration_ms,
+                    "confirmed": bool(confirm and receipt.verdict.held),
+                },
+            )
 
             if receipt.verdict.denied:
                 raise RehearsalDenied(tool, receipt.verdict)

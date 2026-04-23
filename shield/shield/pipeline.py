@@ -92,7 +92,7 @@ def process(
             source=source, canonical_sha256=canon.sha256,
         )
 
-    return ShieldedInput(
+    out = ShieldedInput(
         text=wrapped,
         source=source,
         span_id=span_id,
@@ -105,4 +105,30 @@ def process(
         is_injection=is_inj,
         injection_reason=inj_reason,
         original_length=canon.original_length,
+    )
+    _emit_shielded(out)
+    return out
+
+
+# ── telemetry ────────────────────────────────────────────────────────
+from ._telemetry import default_agent_id, telemetry_emit  # noqa: E402
+
+
+def _emit_shielded(s: "ShieldedInput") -> None:
+    n_secrets = sum(s.secret_counts.values()) if s.secret_counts else 0
+    is_inj = bool(s.is_injection)
+    severity = "warn" if (is_inj or n_secrets > 0) else "info"
+    telemetry_emit(
+        "shield.process",
+        agent_id=default_agent_id("shield"),
+        severity=severity,
+        attrs={
+            "source": s.source,
+            "span_id": s.span_id,
+            "n_secrets": n_secrets,
+            "is_injection": is_inj,
+            "injection_score": s.injection_score,
+            "n_canonical_changes": len(s.canonical_changes),
+            "original_length": s.original_length,
+        },
     )

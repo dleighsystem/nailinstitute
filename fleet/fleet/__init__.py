@@ -13,6 +13,10 @@ from .retention import Retention, PruneReport
 from .signing import sign_event, verify_envelope, HAS_ARSENAL
 from .http_server import IngestServer
 from .http_client import FleetClient, FleetClientError
+from .sink import (
+    Sink, NullSink, LocalSink, HttpSink, MultiSink, CapturingSink,
+    set_sink, get_sink, emit, safe_emit,
+)
 
 __all__ = [
     "Event", "Severity",
@@ -24,6 +28,8 @@ __all__ = [
     "sign_event", "verify_envelope", "HAS_ARSENAL",
     "IngestServer",
     "FleetClient", "FleetClientError",
+    "Sink", "NullSink", "LocalSink", "HttpSink", "MultiSink", "CapturingSink",
+    "set_sink", "get_sink", "emit", "safe_emit",
 ]
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"

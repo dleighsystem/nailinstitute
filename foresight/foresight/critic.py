@@ -15,6 +15,7 @@ from __future__ import annotations
 import re
 from typing import Protocol, runtime_checkable
 
+from ._telemetry import default_agent_id, telemetry_emit
 from .critique import Critique, Risk, RiskSeverity
 from .plan import Plan
 
@@ -137,12 +138,14 @@ class HeuristicCritic:
                 mitigation="Defer until budget refresh or split across days.",
             ))
 
-        return Critique(
+        c = Critique(
             risks=risks,
             summary=(f"{len(risks)} risk(s) found by heuristic critic"
                      if risks else "no heuristic risks identified"),
             model="heuristic",
         )
+        _emit_critique(c, plan)
+        return c
 
 
 # ── mock ─────────────────────────────────────────────────────────────
@@ -156,3 +159,22 @@ class MockCritic:
                  world: dict | None = None) -> Critique:
         self.calls.append((plan, dict(world or {})))
         return self._critique
+
+
+# ── shared telemetry emit ────────────────────────────────────────────
+def _emit_critique(c: Critique, plan: Plan) -> None:
+    v = c.verdict()
+    telemetry_emit(
+        "foresight.verdict",
+        agent_id=default_agent_id("foresight"),
+        severity="warn" if v.value != "allow" else "info",
+        attrs={
+            "verdict": v.value,
+            "risk": round(c.risk, 3),
+            "max_severity": c.max_severity.value,
+            "n_risks": len(c.risks),
+            "n_steps": len(plan.steps),
+            "goal": plan.goal[:200],
+            "model": c.model,
+        },
+    )

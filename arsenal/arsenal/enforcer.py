@@ -195,9 +195,13 @@ def requires_token(tool: str, *, store: InMemoryUsageStore | None = None
     def decorator(fn: Callable) -> Callable:
         @wraps(fn)
         def wrapper(*args, **kwargs):
-            tok = _select_token(tool)
-            _check_conditions(tok, kwargs)
-            _check_limits(tok, use_store, kwargs)
+            try:
+                tok = _select_token(tool)
+                _check_conditions(tok, kwargs)
+                _check_limits(tok, use_store, kwargs)
+            except Exception as e:
+                _emit_deny(tool, e)
+                raise
 
             # Strip our internal-marker kwarg before calling the tool.
             hold = kwargs.pop("__nail_hold__", False)
@@ -211,6 +215,7 @@ def requires_token(tool: str, *, store: InMemoryUsageStore | None = None
                     gbp=float(kwargs.get("amount_gbp") or 0),
                     amount=float(kwargs.get("amount") or 0),
                 )
+                _emit_allow(tool, tok, kwargs)
                 if hold:
                     return {"__nail_hold__": True, "result": result, "tool": tool}
                 return result
@@ -218,3 +223,33 @@ def requires_token(tool: str, *, store: InMemoryUsageStore | None = None
         wrapper.__nail_arsenal_tool__ = tool  # type: ignore[attr-defined]
         return wrapper
     return decorator
+
+
+# ── telemetry ─────────────────────────────────────────────────────────────────
+from ._telemetry import default_agent_id, telemetry_emit  # noqa: E402
+
+
+def _emit_deny(tool: str, err: Exception) -> None:
+    telemetry_emit(
+        "arsenal.deny",
+        agent_id=default_agent_id("arsenal"),
+        severity="error",
+        attrs={
+            "tool": tool,
+            "reason_class": type(err).__name__,
+            "reason": str(err)[:200],
+        },
+    )
+
+
+def _emit_allow(tool: str, tok, kwargs: dict) -> None:
+    telemetry_emit(
+        "arsenal.allow",
+        agent_id=default_agent_id("arsenal"),
+        severity="info",
+        attrs={
+            "tool": tool,
+            "token_jti": getattr(tok, "jti", ""),
+            "amount_gbp": float(kwargs.get("amount_gbp") or 0),
+        },
+    )

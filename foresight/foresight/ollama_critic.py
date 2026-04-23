@@ -78,8 +78,12 @@ class OllamaCritic:
                  world: dict | None = None) -> Critique:
         raw = self._chat(plan, world or {})
         risks, summary = _parse_response(raw)
-        return Critique(risks=risks, summary=summary,
-                        raw_response=raw, model=self.model)
+        c = Critique(risks=risks, summary=summary,
+                     raw_response=raw, model=self.model)
+        # Lazy import to avoid a circular at module load.
+        from .critic import _emit_critique
+        _emit_critique(c, plan)
+        return c
 
     # ── transport ────────────────────────────────────────────────
     def _chat(self, plan: Plan, world: dict) -> str:
