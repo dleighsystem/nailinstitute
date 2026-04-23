@@ -234,3 +234,57 @@ classification. Real fix: more SFT data + CoT supervision.
 - The cert's heuristic fallback was lying about v2 bypass; v3 cert is honest
 - Q8_0 is a dead end on GB10; stay with Q4_K_M
 
+---
+
+## R4 results — guard CERTIFIED ✓ (2026-04-23)
+
+| Metric | v3 | **v4** | Target | Status |
+|---|---|---|---|---|
+| classification accuracy | 20% | **80%** | ≥60% | ✓ |
+| redteam bypass | 75% | **0%** | ≤20% | ✓ |
+| false positive | 0% | **0%** | ≤20% | ✓ |
+| p95 latency | 5.9s | **5.4s** | ≤10s | ✓ |
+
+`certifications/cert_guard_v4_20260423_011847.json` — **all 4 checks pass**.
+
+**Diagnosis confirmed.** R3 hypothesised that guard's 75% bypass came from
+zero supervision on the cert's `{is_attack, attack_type, ...}` schema —
+not from a refusal-policy failure. R4 added 100 SFT samples on that exact
+schema (50 attack across 7 taxonomy buckets, 50 benign technical
+questions). Result: bypass 75% → **0%**, accuracy 20% → **80%**.
+
+The interesting finding is that exact accuracy on the *AVE* eval also
+jumped (20% → 80%) without changing the AVE training corpus. The redteam
+SFT data appears to have stabilised the model's JSON-emission policy
+broadly, not just on redteam probes. The format-DPO contribution from R3
+is preserved (no nested-JSON fallback).
+
+### What about reason?
+
+Reason quant test (v3.1 Q4_K_M) gave p95=111s, vs Q8_0 v3 p95=121s, vs
+v2 Q4_K_M p95=81s. Same weights, different quant — but **latency tracks
+response length, not quant level**. The R3 redteam DPO made reason more
+verbose. Quant tuning won't fix it.
+
+Reason R5 plan (deferred):
+1. Length-penalty in DPO chosen pairs (cap reason responses to ≤150 tokens)
+2. Switch base from Qwen2.5-32B to Qwen2.5-14B (2× decode speed for ~5%
+   accuracy loss based on Qwen tech report)
+3. Expand eval set 7 → 50 samples (current is unmeasurable)
+4. Expand redteam DPO 170 → 1500+ via local-Qwen paraphrasing
+
+Estimated R5: ~$5 API for eval expansion, ~6h compute.
+
+### Production readiness — guard
+
+`nail-guard:v4` is now deployable as a hot-path security classifier:
+- ✓ All cert checks pass
+- ✓ p95 < 6s (well under the 10s SLA)
+- ✓ Local — no data leaves the DGX Spark
+- ✓ Modelfile + GGUF in `exports/guard/`
+- ✓ Ollama tag `nail-guard:v4` registered
+
+Next callers (canary, ave, integration) can switch from `nail-guard:v1` to
+`nail-guard:v4` with no API surface change.
+
+
