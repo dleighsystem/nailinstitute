@@ -1,0 +1,24 @@
+[project]
+name = "nail-foresight"
+version = "0.1.0"
+description = "NAIL Foresight — pre-flight planner. Critiques an agent's planned tool sequence with nail-reason before any of it executes."
+authors = [{name = "NAIL Institute"}]
+requires-python = ">=3.10"
+license = {text = "Proprietary"}
+readme = "README.md"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+http = ["httpx>=0.24"]
+
+[project.scripts]
+nail-foresight = "foresight.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["foresight*"]
+exclude = ["tests*"]
