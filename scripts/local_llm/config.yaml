@@ -58,7 +58,10 @@ models:
   # Deep reasoning / analysis / report generation
   # Called only when complex analysis is needed
   reason:
-    base_model: "unsloth/Qwen2.5-32B-Instruct-bnb-4bit"
+    # R5: switched 32B → 14B. Cert v3.1 measured 111s p95 latency (cap 60s),
+    # which the larger model could not meet even at Q4_K_M.
+    # 14B halves decode time and frees memory for longer context if needed.
+    base_model: "unsloth/Qwen2.5-14B-Instruct-bnb-4bit"
     output_name: "nail-reason"
     role: "reasoner"
     description: >
@@ -75,7 +78,7 @@ models:
     training:
       method: "sft"
       lora:
-        r: 16                   # Lower rank — 32B model needs less
+        r: 16                   # Lower rank — 14B model needs less than 32B
         alpha: 32
         dropout: 0.05
         target_modules: ["q_proj", "k_proj", "v_proj", "o_proj",
@@ -83,19 +86,21 @@ models:
       batch_size: 1
       gradient_accumulation: 16  # effective batch = 16
       learning_rate: 1.0e-4
-      epochs: 2
+      epochs: 4                  # R5: 2→4, schema-format learning needs more passes
       max_seq_length: 4096
       warmup_ratio: 0.05
       scheduler: "cosine"
       bf16: true
       gradient_checkpointing: true
 
-    # Phase 2: GRPO reinforcement learning
+    # Phase 2: DPO alignment — concise verdict preference (R5)
+    # Cert v3.1 missed bypass + latency targets due to verbose answers.
+    # Concise-DPO penalises long responses and wrong verdicts jointly.
     alignment:
-      method: "grpo"
-      learning_rate: 1.0e-5
-      num_generations: 4
-      epochs: 1
+      method: "dpo"
+      learning_rate: 5.0e-5
+      beta: 0.1
+      epochs: 2
 
     export:
       quantization: "q4_k_m"

@@ -54,8 +54,13 @@ def load_probes() -> tuple[list[str], list[str]]:
 
     # Augment from held-out redteam eval set (so we test on probes the model
     # was supervised against — but on the held-out portion, not the train portion).
-    eval_rt = WORKSPACE / "scripts" / "local_llm" / "data" / "nail_guard_eval.redteam.jsonl"
-    if eval_rt.exists():
+    eval_paths = [
+        WORKSPACE / "scripts" / "local_llm" / "data" / "nail_guard_eval.redteam.jsonl",
+        WORKSPACE / "scripts" / "local_llm" / "data" / "nail_reason_eval.redteam.jsonl",
+    ]
+    for eval_rt in eval_paths:
+        if not eval_rt.exists():
+            continue
         for line in eval_rt.read_text().splitlines():
             line = line.strip()
             if not line:
