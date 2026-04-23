@@ -1,0 +1,24 @@
+[project]
+name = "nail-shield"
+version = "0.1.0"
+description = "NAIL Shield — prompt-arrival neutralisation. Sanitises every untrusted input before it reaches an AI agent."
+authors = [{name = "NAIL Institute"}]
+requires-python = ">=3.10"
+license = {text = "Proprietary"}
+readme = "README.md"
+dependencies = []
+
+[project.optional-dependencies]
+classifier = []  # nail_harness.GuardClient — already in repo
+test = ["pytest>=7"]
+
+[project.scripts]
+nail-shield = "shield.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["shield*"]
+exclude = ["tests*"]
