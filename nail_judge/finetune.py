@@ -226,7 +226,7 @@ def finetune(
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
         args=training_args,
-        tokenizer=tokenizer,
+        processing_class=tokenizer,
         max_seq_length=TRAINING_ARGS["max_seq_length"],
     )
 

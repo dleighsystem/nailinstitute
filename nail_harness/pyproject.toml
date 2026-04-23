@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nail-harness"
+version = "0.2.0"
+description = "NAIL Agentic Defence Framework — middleware protection for autonomous AI agents"
+readme = "README.md"
+license = {text = "Proprietary — Neuravant AI Limited"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Neuravant AI Limited", email = "engineering@neuravant.ai"},
+]
+keywords = ["ai-safety", "agent-security", "guardrails", "llm", "middleware"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Security",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "pyyaml>=6.0",
+    "requests>=2.28",
+]
+
+[project.optional-dependencies]
+ollama = ["requests>=2.28"]
+full = [
+    "requests>=2.28",
+    "numpy>=1.24",
+    "chromadb>=0.4",
+]
+
+[project.urls]
+Homepage = "https://neuravant.ai"
+Repository = "https://github.com/dleighsystem/NAIL"
+Documentation = "https://neuravant.ai/docs"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.hatch.build.targets.wheel.sources]
+"." = "nail_harness"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "*.py",
+    "harness.yaml",
+    "README.md",
+    "pyproject.toml",
+]

@@ -1,0 +1,73 @@
+# ═══════════════════════════════════════════════════════════════════
+# NAIL Harness — Default Configuration
+# ═══════════════════════════════════════════════════════════════════
+# Copy this file to your project root and customise.
+#
+# Documentation: https://neuravant.ai/docs/harness
+# ═══════════════════════════════════════════════════════════════════
+
+harness:
+  # ── Session TTL ────────────────────────────────────────────────
+  # Prevents Temporal Dysmorphia and state-decay.
+  # Sessions are destroyed after ttl_seconds regardless of agent state.
+  session:
+    ttl_seconds: 120
+    max_context_tokens: 8192
+
+  # ── Token / Cost Budget ────────────────────────────────────────
+  # Prevents Ouroboros loops and runaway costs.
+  budget:
+    max_tokens: 50000
+    max_cost_usd: 5.00
+    max_tool_calls: 100
+
+  # ── Egress Policy ──────────────────────────────────────────────
+  # Network-level allowlisting. Blocks private IPs, cloud metadata,
+  # and any domain not on the list.
+  egress:
+    allowed_domains:
+      # Add your allowed external APIs here:
+      # - "api.openai.com"
+      # - "*.googleapis.com"
+      # - "api.stripe.com"
+    block_private: true
+    block_metadata: true
+
+  # ── Semantic Firewall ──────────────────────────────────────────
+  # Pattern-based forbidden action detection.
+  # Default patterns block DROP TABLE, DELETE /users/all, shell injection, etc.
+  firewall:
+    additional_patterns: []
+    similarity_threshold: 0.85
+
+  # ── NAIL Guard (Dual-Agent Supervisor) ─────────────────────────
+  # Calls nail-guard:v4 (CERTIFIED 2026-04-23) to classify every tool action.
+  # Set model to "" to disable.
+  guard:
+    model: "nail-guard:v4"
+    ollama_host: "http://localhost:11434"
+    block_threshold: 3        # Severity 3+ = blocked
+    timeout_seconds: 10
+    fallback_on_error: "allow" # "allow" or "block" when Guard is unavailable
+
+  # ── Safety Gate ────────────────────────────────────────────────
+  # Tool-level blocking and rate limiting.
+  safety_gate:
+    blocked_tools:
+      - "system_shell"
+      - "raw_sql"
+    max_calls_per_minute: 30
+
+  # ── Identity Drift ────────────────────────────────────────────
+  identity:
+    drift_threshold: 0.15
+
+  # ── Structural Logic ──────────────────────────────────────────
+  logic:
+    max_self_citation_ratio: 0.1
+
+  # ── Audit Trail ────────────────────────────────────────────────
+  # Cryptographically attested action logs.
+  audit:
+    log_path: "./audit/tool_audit.json"
+    event_log_path: "./audit/events.json"

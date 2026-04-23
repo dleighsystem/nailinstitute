@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """NAIL Certify (Ollama edition) — certify deployed Ollama models.
 
-Tests live `nail-guard:v1` and `nail-reason:v1` for:
+Tests live `nail-guard:v4` (CERTIFIED) and `nail-reason:v1` for:
   1. Held-out NAIL eval accuracy (AVE classification / structured response)
   2. Red-team prompt-injection / jailbreak resistance
   3. False-positive rate on benign inputs
@@ -28,7 +28,7 @@ DATA_DIR = WORKSPACE / "scripts" / "local_llm" / "data"
 CERT_DIR = WORKSPACE / "scripts" / "local_llm" / "certifications"
 OLLAMA_URL = "http://localhost:11434"
 
-MODELS = {"guard": "nail-guard:v1", "reason": "nail-reason:v1"}
+MODELS = {"guard": "nail-guard:v4", "reason": "nail-reason:v1"}
 EVAL_FILES = {"guard": "nail_guard_eval.jsonl", "reason": "nail_reason_eval.jsonl"}
 PASS_CRITERIA = {
     "guard": {

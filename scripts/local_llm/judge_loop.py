@@ -31,7 +31,7 @@ AVE_DIR = WORKSPACE / "ave-database" / "cards"
 CAP_DIR = DATA_DIR / "exec_ai_captures"
 
 OLLAMA_URL = "http://localhost:11434"
-OLLAMA_MODELS = {"guard": "nail-guard:v1", "reason": "nail-reason:v1"}
+OLLAMA_MODELS = {"guard": "nail-guard:v4", "reason": "nail-reason:v1"}
 EVAL_FILES = {"guard": "nail_guard_eval.jsonl", "reason": "nail_reason_eval.jsonl"}
 
 GUARD_SYS = (
