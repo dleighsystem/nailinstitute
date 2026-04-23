@@ -1,0 +1,23 @@
+[project]
+name = "nail-rehearsal"
+version = "0.1.0"
+description = "NAIL Rehearsal — sandbox dry-run before tool commit. Replays planned tool calls against a shadow environment, scores side-effects, gates the real call on a verdict."
+authors = [{name = "NAIL Institute"}]
+requires-python = ">=3.10"
+license = {text = "Proprietary"}
+readme = "README.md"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+nail-rehearsal = "rehearsal.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["rehearsal*"]
+exclude = ["tests*"]
