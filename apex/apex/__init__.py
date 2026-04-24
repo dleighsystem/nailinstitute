@@ -16,6 +16,7 @@ from .router import (
 )
 from .system1 import System1
 from .system2 import System2, TTCResult, extract
+from .harness import HarnessConfig, HarnessRun, run_harness
 
 # Server is optional (needs fastapi). Import lazily so installs without
 # the [server] extra still work.
@@ -36,5 +37,6 @@ __all__ = [
     "SYSTEM_1", "SYSTEM_2",
     "System1", "System2", "TTCResult", "extract",
     "build_app", "serve", "DEFAULT_MODEL_NAME", "DEFAULT_PORT",
+    "HarnessConfig", "HarnessRun", "run_harness",
 ]
-__version__ = "0.2.0"
+__version__ = "0.3.0"

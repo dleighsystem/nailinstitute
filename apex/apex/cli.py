@@ -79,6 +79,40 @@ def _cmd_serve(args) -> int:
     return 0
 
 
+def _cmd_bench(args) -> int:
+    """Run an external benchmark against ApexBrain."""
+    from .harness import HarnessConfig, run_harness
+    import shlex
+    cmd = shlex.split(args.cmd) if isinstance(args.cmd, str) else list(args.cmd)
+    extra_env = {}
+    for kv in (args.env or []):
+        if "=" in kv:
+            k, v = kv.split("=", 1)
+            extra_env[k] = v
+    cfg = HarnessConfig(
+        cmd=cmd, cwd=args.cwd,
+        timeout_s=args.timeout, port=args.port,
+        model_name=args.model_name,
+        results_json=args.results_json,
+        stdout_regex=args.regex,
+        boot_wait_s=args.boot_wait,
+        extra_env=extra_env,
+    )
+    brain = _build_brain(args)
+    print(f"nail-apex bench: {' '.join(cmd)} "
+          f"(apex on port {args.port or 'auto'}, model='{args.model_name}')",
+          file=sys.stderr)
+    run = run_harness(cfg, brain=brain)
+    if args.json:
+        print(json.dumps(run.to_dict(), indent=2, sort_keys=True))
+    else:
+        print(f"[bench] {run.passed}/{run.total} passed "
+              f"({run.pass_rate*100:.1f}%) in {run.duration_s:.1f}s")
+        if run.parse_error:
+            print(f"[bench] parse error: {run.parse_error}", file=sys.stderr)
+    return 0 if run.succeeded else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="nail-apex",
                                 description="NAIL Apex cognitive front-end CLI.")
@@ -120,6 +154,25 @@ def build_parser() -> argparse.ArgumentParser:
                     help="The 'model' name reported on /api/tags. Match "
                          "what your downstream client expects.")
     ps.set_defaults(func=_cmd_serve)
+
+    pb = sub.add_parser("bench",
+                        help="Run an external benchmark against ApexBrain.")
+    pb.add_argument("--cmd", required=True,
+                    help="Shell command to run (e.g. 'python3 run_bench.py').")
+    pb.add_argument("--cwd", default=None)
+    pb.add_argument("--port", type=int, default=None,
+                    help="Apex port (default: auto-pick free port).")
+    pb.add_argument("--model-name", default="apex-matrix-swarm")
+    pb.add_argument("--results-json", default=None,
+                    help="Path the bench writes; parsed for pass/fail.")
+    pb.add_argument("--regex", default=None,
+                    help="Stdout regex with two int groups (passed, total).")
+    pb.add_argument("--timeout", type=float, default=600.0)
+    pb.add_argument("--boot-wait", type=float, default=2.0)
+    pb.add_argument("--env", action="append", default=[],
+                    help="Extra env vars KEY=VALUE (repeatable).")
+    pb.add_argument("--json", action="store_true")
+    pb.set_defaults(func=_cmd_bench)
 
     return p
 

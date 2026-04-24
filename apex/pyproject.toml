@@ -1,7 +1,7 @@
 [project]
 name = "nail-apex"
-version = "0.2.0"
-description = "NAIL Apex — Kahneman dual-system cognitive front-end (System 1 fast / System 2 deliberate) wired into the NAIL safety surface (shield, foresight, fleet). Includes Ollama-compatible HTTP facade."
+version = "0.3.0"
+description = "NAIL Apex — Kahneman dual-system cognitive front-end (System 1 fast / System 2 deliberate) wired into the NAIL safety surface (shield, foresight, fleet). Includes Ollama-compatible HTTP facade and external capability harness."
 authors = [{name = "NAIL Institute"}]
 requires-python = ">=3.10"
 license = {text = "Proprietary"}
