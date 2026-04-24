@@ -63,6 +63,22 @@ def _cmd_route(args) -> int:
     return 0
 
 
+def _cmd_serve(args) -> int:
+    """Run the Ollama-compatible facade."""
+    try:
+        from .server import serve
+    except RuntimeError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 3
+    brain = _build_brain(args)
+    print(f"nail-apex serve: http://{args.host}:{args.port} "
+          f"(model='{args.model_name}', router={args.router})",
+          file=sys.stderr)
+    serve(host=args.host, port=args.port,
+          brain=brain, model_name=args.model_name)
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="nail-apex",
                                 description="NAIL Apex cognitive front-end CLI.")
@@ -93,6 +109,17 @@ def build_parser() -> argparse.ArgumentParser:
     pr = sub.add_parser("route", help="Show only the routing verdict.")
     pr.add_argument("query", nargs="?")
     pr.set_defaults(func=_cmd_route)
+
+    ps = sub.add_parser("serve", help="Run the Ollama-compatible HTTP facade.")
+    ps.add_argument("--host", default=os.environ.get("APEX_HOST", "0.0.0.0"))
+    ps.add_argument("--port", type=int,
+                    default=int(os.environ.get("APEX_PORT", "11435")))
+    ps.add_argument("--model-name",
+                    default=os.environ.get("APEX_MODEL_NAME",
+                                           "apex-matrix-swarm"),
+                    help="The 'model' name reported on /api/tags. Match "
+                         "what your downstream client expects.")
+    ps.set_defaults(func=_cmd_serve)
 
     return p
 

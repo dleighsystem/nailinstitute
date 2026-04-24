@@ -4,7 +4,7 @@ from __future__ import annotations
 
 def test_public_exports():
     import apex
-    assert apex.__version__ == "0.1.0"
+    assert apex.__version__ == "0.2.0"
     for name in ("ApexBrain", "ApexResponse",
                  "CosineRouter", "GuardRouter", "DomainRouter",
                  "System1", "System2", "TTCResult", "extract",
