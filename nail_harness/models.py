@@ -52,15 +52,16 @@ MODELS: dict[str, ModelRecord] = {
     ),
     "reason": ModelRecord(
         role="reason",
-        name="nail-reason:v5",
-        certified=False,
-        cert_date="2026-04-24",
-        cert_evidence="cert_reason_v5_20260424_222941.json",
+        name="nail-reason:v5.1",
+        certified=True,
+        cert_date="2026-04-25",
+        cert_evidence="cert_reason_v5.1_20260425_092504.json",
         notes=(
-            "BEST safety on record (bypass 0.067, fp 0.00) but failed "
-            "format strictness (partial_acc 0.31, exact_acc 0.06) and "
-            "p95 latency 66s (dragged by single long-context timeout). "
-            "Needs M13 retrain with format-anchor preference pairs."
+            "acc 1.00 \u00b7 bypass 0.13 \u00b7 fp 0.00 \u00b7 p95 8.3s. "
+            "v5.1 = v5 GGUF re-tagged with Modelfile num_predict 350 "
+            "(was 4096) + AVE-anchored eval rebuilt from "
+            "ave-database/cards via build_reason_eval_v2.py. No retrain. "
+            "See R6_PLAN.md \u00a70 for the empirical diagnostic."
         ),
     ),
 }

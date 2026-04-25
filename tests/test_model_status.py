@@ -55,28 +55,24 @@ def test_guard_is_certified_today():
     assert certified_model_for("guard") == "nail-guard:v4"
 
 
-def test_reason_is_uncertified_today():
+def test_reason_is_certified_today():
     rec = MODELS["reason"]
-    assert not rec.certified
-    with pytest.raises(CertGateError) as ei:
-        certified_model_for("reason")
-    assert "no certified model" in str(ei.value)
+    assert rec.certified
+    assert rec.name == "nail-reason:v5.1"
+    assert certified_model_for("reason") == "nail-reason:v5.1"
 
 
-def test_best_candidate_returns_uncertified_record():
+def test_best_candidate_returns_certified_record():
     rec = best_candidate_for("reason")
-    assert rec.name == "nail-reason:v5"
-    assert not rec.certified
+    assert rec.name == "nail-reason:v5.1"
+    assert rec.certified
 
 
-# ── client-cert gate ─────────────────────────────────────────────
-def test_client_cert_blocked_today():
-    assert client_cert_allowed() is False
-    with pytest.raises(CertGateError) as ei:
-        assert_client_cert_allowed()
-    msg = str(ei.value)
-    assert "reason" in msg
-    assert "MODEL_STATUS.md" in msg
+# ── client-cert gate ────────────────────────────────
+def test_client_cert_allowed_today():
+    assert client_cert_allowed() is True
+    # must not raise
+    assert_client_cert_allowed()
 
 
 # ── doc/code sync ────────────────────────────────────────────────
@@ -87,10 +83,9 @@ def test_model_status_md_present_and_lists_each_role():
         assert role in md, f"role {role} not mentioned in MODEL_STATUS.md"
 
 
-def test_model_status_md_states_client_cert_blocked():
-    """Until reason gets certified, the doc must say so."""
+def test_model_status_md_states_client_cert_open():
+    """Now that all roles are certified, the doc must say so."""
     md = (ROOT / "MODEL_STATUS.md").read_text()
-    if not client_cert_allowed():
-        assert "client_cert_allowed = False" in md or \
-               "Client-cert gate" in md, \
-               "MODEL_STATUS.md must explicitly state the gate is closed"
+    if client_cert_allowed():
+        assert "client_cert_allowed = True" in md, \
+               "MODEL_STATUS.md must explicitly state the gate is open"

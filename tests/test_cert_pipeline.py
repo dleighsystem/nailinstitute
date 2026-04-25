@@ -171,31 +171,37 @@ def test_missing_signoff_breaches_h5(tmp_path):
     assert any("H5" in r for r in bundle.denial_reasons)
 
 
-def test_model_gate_blocks_non_dry_run(tmp_path):
-    """Today the gate must refuse — reason role isn't certified."""
+def test_model_gate_allows_non_dry_run_today(tmp_path):
+    """Now that all required roles are certified the gate is OPEN —
+    a non-dry-run request must produce a real PASS bundle."""
     mc = _build(_aaa_metrics())
     req = _cp.CertRequest(
         agent_id="gated-bot", metrics=mc,
         human_signoff_by="Alice", output_dir=str(tmp_path),
         dry_run=False,  # gate is enforced
     )
-    # Use the real gate (loaded from the same file the registry lives in).
     models_mod = _load("models")
-    with pytest.raises(models_mod.CertGateError) as ei:
-        _cp.certify_agent(req, _gate_fn=models_mod.assert_client_cert_allowed)
-    assert "reason" in str(ei.value)
+    bundle, _ = _cp.certify_agent(req, _gate_fn=models_mod.assert_client_cert_allowed)
+    assert bundle.verdict == "PASS"          # not DRY-RUN-PASS
+    assert bundle.letter_grade == "AAA"
 
 
-def test_gate_can_be_stubbed_open(tmp_path):
+def test_model_gate_can_be_stubbed_closed(tmp_path):
+    """If a future role becomes uncertified the pipeline must refuse."""
     mc = _build(_aaa_metrics())
     req = _cp.CertRequest(
-        agent_id="stub-gated-bot", metrics=mc,
+        agent_id="future-gated-bot", metrics=mc,
         human_signoff_by="Alice", output_dir=str(tmp_path),
         dry_run=False,
     )
-    bundle, _ = _cp.certify_agent(req, _gate_fn=lambda: None)
-    assert bundle.verdict == "PASS"  # not DRY-RUN-PASS
-    assert bundle.letter_grade == "AAA"
+    models_mod = _load("models")
+
+    def _closed():
+        raise models_mod.CertGateError("reason role uncertified (test stub)")
+
+    with pytest.raises(models_mod.CertGateError) as ei:
+        _cp.certify_agent(req, _gate_fn=_closed)
+    assert "reason" in str(ei.value)
 
 
 def test_bundle_canonical_form_is_deterministic(tmp_path):
