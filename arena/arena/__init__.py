@@ -70,6 +70,7 @@ from .llm_backend import (
     MockBackend,
     auto_backend,
 )
+from .cert_shim import run_for_cert
 
 __all__ = [
     # Red team
@@ -100,4 +101,6 @@ __all__ = [
     "NIMBackend",
     "MockBackend",
     "auto_backend",
+    # Cert-pipeline shim
+    "run_for_cert",
 ]

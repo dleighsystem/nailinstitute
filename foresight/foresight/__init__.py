@@ -14,6 +14,7 @@ from .critique import Risk, Critique, Verdict, RiskSeverity
 from .critic import Critic, HeuristicCritic, MockCritic
 from .ollama_critic import OllamaCritic, OllamaError
 from .symbolic_critic import SymbolicCritic
+from .cert_shim import run_for_cert
 
 __all__ = [
     "Plan", "Step",
@@ -21,6 +22,7 @@ __all__ = [
     "Critic", "HeuristicCritic", "MockCritic", "OllamaCritic",
     "SymbolicCritic",
     "OllamaError",
+    "run_for_cert",
 ]
 
 __version__ = "0.2.0"
