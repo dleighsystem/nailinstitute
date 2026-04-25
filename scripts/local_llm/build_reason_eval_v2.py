@@ -45,7 +45,14 @@ SYSTEM_PROMPT = (
 
 
 def _user_prompt(card: dict) -> str:
-    """Construct a paraphrased user prompt that omits the AVE ID."""
+    """Deep-analyst prompt that names the AVE ID up-front (legacy style).
+
+    Matches the legacy eval style: the cert measures 'given an AVE ID and
+    a description, can you produce a structured analysis that references
+    the right ID' — not 're-discover the vulnerability from prose alone'
+    (which a 14B Q4 model with no RAG cannot do).
+    """
+    ave_id = card["ave_id"]
     name = card.get("name", "")
     summary = card.get("summary", "").strip()
     mechanism = card.get("mechanism", "").strip()
@@ -53,44 +60,47 @@ def _user_prompt(card: dict) -> str:
     blast = card.get("blast_radius", "").strip()
     cat = card.get("category", "")
     parts = [
-        f"Analyze the following AI-agent vulnerability and reference any matching AVE ID.",
-        f"\nObserved behaviour: {summary}",
+        f"Analyze vulnerability {ave_id} ({name}):",
+        f"\n\nSummary: {summary}",
     ]
     if mechanism:
         parts.append(f"\nMechanism: {mechanism}")
     if prereq:
         parts.append(f"\nPrerequisite: {prereq}")
     if blast:
-        parts.append(f"\nObserved blast radius: {blast}")
-    parts.append(f"\nCategory hint: {cat}")
+        parts.append(f"\nBlast radius: {blast}")
+    parts.append(f"\nCategory: {cat}")
     parts.append(
-        "\nProvide: AVE ID, severity, primary attack vector, and one "
-        "concrete mitigation. Keep the answer under 200 words."
+        "\n\nRespond ONLY with strict JSON of the form: "
+        '{"ave_id": "AVE-YYYY-NNNN", "severity": "...", '
+        '"category": "...", "analysis": "...", "mitigation": "..."}'
     )
     return "".join(parts)
 
 
 def _gold_answer(card: dict) -> str:
-    """Construct the structured gold answer."""
-    ave_id = card["ave_id"]
-    sev = card.get("severity", "unknown")
-    cat = card.get("category", "")
-    summary = card.get("summary", "").strip()
+    """Strict-JSON gold so certify_ollama's primary scorer path activates.
+
+    JSON path gives exact credit on ave_id match and partial credit on
+    severity or category match (kicks in for free) — far more robust than
+    the substring fuzzy fallback used for prose gold.
+    """
     defences = card.get("defences", [])
-    defence_phrase = ""
+    mitigation = ""
     if defences:
         d0 = defences[0]
-        defence_phrase = (
-            f" Recommended defence: {d0.get('name','')} "
-            f"({d0.get('layer','')}) — {d0.get('effectiveness','')}."
+        mitigation = (
+            f"{d0.get('name','')} ({d0.get('layer','')}) — "
+            f"{d0.get('effectiveness','')}"
         )
-    return (
-        f"AVE ID: {ave_id}\n"
-        f"Severity: {sev}\n"
-        f"Category: {cat}\n"
-        f"Analysis: {summary}\n"
-        f"Mitigation:{defence_phrase}"
-    ).strip()
+    payload = {
+        "ave_id":     card["ave_id"],
+        "severity":   card.get("severity", "unknown"),
+        "category":   card.get("category", ""),
+        "analysis":   card.get("summary", "").strip(),
+        "mitigation": mitigation,
+    }
+    return json.dumps(payload)
 
 
 def build_rows(cards: list[dict]) -> list[dict]:
