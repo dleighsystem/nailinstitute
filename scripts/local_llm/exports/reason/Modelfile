@@ -1,6 +1,6 @@
 # NAIL reason — Auto-generated Modelfile
-# Generated: 2026-04-22T22:04:31.275450+00:00
-# Base: unsloth/Qwen2.5-32B-Instruct-bnb-4bit
+# Generated: 2026-04-24T01:22:47.386215+00:00
+# Base: unsloth/Qwen2.5-14B-Instruct-bnb-4bit
 # Pipeline: SFT → GRPO → GGUF
 
 FROM /home/dleighsystems/Desktop/NAIL institute/scripts/local_llm/exports/reason/nail-reason-Q4_K_M.gguf
@@ -10,7 +10,7 @@ SYSTEM """You are NAIL Reason, a deep security analyst for AI agent systems, dev
 PARAMETER temperature 0.1
 PARAMETER top_p 0.9
 PARAMETER top_k 40
-PARAMETER num_predict 4096
+PARAMETER num_predict 350
 PARAMETER stop "<|im_end|>"
 PARAMETER stop "<|endoftext|>"
 
