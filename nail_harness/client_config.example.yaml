@@ -1,0 +1,30 @@
+# Example NAIL client cert config.
+# Copy to client_config.yaml, fill in, then:
+#
+#   python -m nail_harness.cli_certify --config client_config.yaml
+#
+# Any flag passed on the CLI overrides the matching key here.
+
+# ── identity ────────────────────────────────────────────────────────
+agent_id:     "acme-support-bot-prod-v3"   # stable, URL-safe; goes on cert
+vendor:       "Acme Inc."                  # bookkeeping (not on cert today)
+contact:      "ai-ops@acme.example"        # bookkeeping
+
+# ── inputs ──────────────────────────────────────────────────────────
+metrics_json: "runs/2026-04-27/metrics.json"
+thresholds:   null      # null = use installed nail_harness/thresholds.json
+
+# ── output ──────────────────────────────────────────────────────────
+output_dir:   "certifications/acme/"
+
+# ── signoff (REQUIRED for non-dry-run, per H5) ──────────────────────
+signoff_by:   "Alice Smith (Acme, AI Lead)"
+
+# ── mode ────────────────────────────────────────────────────────────
+dry_run:      false     # set true for rehearsals; produces DRY-RUN-PASS
+
+# ── notes (free text, not consumed by the pipeline) ─────────────────
+notes: |
+  First production cert for Acme support bot v3.
+  Probe window: 2026-04-27 14:00-15:00 UTC.
+  Side-effecting tools: NOT exercised (read-only run).

@@ -259,3 +259,62 @@ def test_cli_missing_metrics_file():
         "--signoff-by", "A", "--dry-run",
     ])
     assert rc == 2
+
+
+# ── CLI: --config support (intake-form-driven engagements) ─────
+def test_cli_config_json_drives_full_run(tmp_path):
+    metrics_path = tmp_path / "metrics.json"
+    metrics_path.write_text(json.dumps(_aaa_metrics()))
+    cfg_path = tmp_path / "client_config.json"
+    cfg_path.write_text(json.dumps({
+        "agent_id":     "acme-from-config",
+        "metrics_json": str(metrics_path),
+        "signoff_by":   "Alice (Acme)",
+        "output_dir":   str(tmp_path / "out"),
+        "dry_run":      True,
+    }))
+    rc = _cli.main(["--config", str(cfg_path)])
+    assert rc == 0
+    bundles = list((tmp_path / "out" / "dry_run").glob(
+        "cert_acme-from-config_*.json"))
+    assert len(bundles) == 1
+    body = json.loads(bundles[0].read_text())
+    assert body["agent_id"] == "acme-from-config"
+    assert body["human_signoff_by"] == "Alice (Acme)"
+
+
+def test_cli_flags_override_config(tmp_path):
+    metrics_path = tmp_path / "metrics.json"
+    metrics_path.write_text(json.dumps(_aaa_metrics()))
+    cfg_path = tmp_path / "client_config.json"
+    cfg_path.write_text(json.dumps({
+        "agent_id":     "cfg-default",
+        "metrics_json": str(metrics_path),
+        "signoff_by":   "Config Person",
+        "output_dir":   str(tmp_path / "out"),
+        "dry_run":      True,
+    }))
+    rc = _cli.main([
+        "--config", str(cfg_path),
+        "--agent-id", "flag-override",
+        "--signoff-by", "Flag Person",
+    ])
+    assert rc == 0
+    bundles = list((tmp_path / "out" / "dry_run").glob(
+        "cert_flag-override_*.json"))
+    assert len(bundles) == 1
+    body = json.loads(bundles[0].read_text())
+    assert body["agent_id"] == "flag-override"
+    assert body["human_signoff_by"] == "Flag Person"
+
+
+def test_cli_config_missing_required_field_errors(tmp_path):
+    cfg_path = tmp_path / "client_config.json"
+    cfg_path.write_text(json.dumps({"signoff_by": "A", "dry_run": True}))
+    rc = _cli.main(["--config", str(cfg_path)])
+    assert rc == 2  # missing agent_id and metrics_json
+
+
+def test_cli_config_not_found():
+    rc = _cli.main(["--config", "/no/such/config.json"])
+    assert rc == 2

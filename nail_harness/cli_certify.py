@@ -1,6 +1,6 @@
 """``nail certify-agent`` — CLI for the M15 cert pipeline.
 
-Usage:
+Usage (flag-driven):
 
     python -m nail_harness.cli_certify \\
         --agent-id acme-customer-bot-v3 \\
@@ -8,6 +8,28 @@ Usage:
         [--signoff-by "Alice Smith"] \\
         [--dry-run] \\
         [--output-dir certifications/]
+
+Usage (config-driven — preferred for client engagements):
+
+    python -m nail_harness.cli_certify --config client_config.yaml
+
+The config file (YAML or JSON) carries everything the intake form
+captures, so a real engagement isn't a wall of --evidence flags. Schema::
+
+    # client_config.yaml
+    agent_id:     "acme-support-bot-prod-v3"
+    metrics_json: "/runs/2026-04-27/metrics.json"
+    signoff_by:   "Alice Smith (Acme)"
+    output_dir:   "certifications/acme/"
+    dry_run:      false
+    thresholds:   null            # null = use installed default
+    # optional bookkeeping (preserved into bundle metadata via metrics.json):
+    vendor:       "Acme Inc."
+    contact:      "ai-ops@acme.example"
+    notes:        "First production cert"
+
+Any flag passed on the command line overrides the same key in the config
+file, so you can keep one config and override --dry-run for rehearsals.
 
 The metrics JSON maps axis → metric_key → {value, source, raw_evidence}
 plus a top-level ``hard_floors`` dict, e.g.::
@@ -69,14 +91,48 @@ def _build_metric_collection(payload: dict, thresholds: dict) -> MetricCollectio
     return mc
 
 
+def _load_config(path: str | None) -> dict:
+    """Load a YAML or JSON client config. Returns {} when path is None."""
+    if not path:
+        return {}
+    p = Path(path)
+    if not p.exists():
+        raise FileNotFoundError(f"config not found: {p}")
+    text = p.read_text(encoding="utf-8")
+    suffix = p.suffix.lower()
+    if suffix in (".yaml", ".yml"):
+        try:
+            import yaml  # type: ignore
+        except ImportError as e:  # pragma: no cover
+            raise RuntimeError(
+                "PyYAML required to read YAML configs; "
+                "use a .json config or `pip install pyyaml`."
+            ) from e
+        data = yaml.safe_load(text) or {}
+    else:
+        data = json.loads(text)
+    if not isinstance(data, dict):
+        raise ValueError(f"config must be a mapping, got {type(data).__name__}")
+    return data
+
+
+_CONFIG_KEYS = (
+    "agent_id", "metrics_json", "signoff_by",
+    "output_dir", "dry_run", "thresholds",
+)
+
+
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(
         prog="nail-certify-agent",
         description="Run NAIL agent certification pipeline (M15).",
     )
-    p.add_argument("--agent-id", required=True,
+    p.add_argument("--config", default=None,
+                   help="Path to a client_config.yaml or .json. Flag values "
+                        "below override matching keys in the config.")
+    p.add_argument("--agent-id", default=None,
                    help="Stable identifier for the agent under test.")
-    p.add_argument("--metrics-json", required=True,
+    p.add_argument("--metrics-json", default=None,
                    help="Path to a metrics JSON file (see docstring).")
     p.add_argument("--signoff-by", default=None,
                    help="Human operator name. REQUIRED for non-dry-run "
@@ -86,28 +142,57 @@ def main(argv: list[str] | None = None) -> int:
                         "Default: <repo>/certifications/")
     p.add_argument("--dry-run", action="store_true",
                    help="Skip the model-gate; verdict prefixed DRY-RUN-.")
-    p.add_argument("--thresholds",
-                   default=None,
+    p.add_argument("--thresholds", default=None,
                    help="Override path to thresholds.json.")
     args = p.parse_args(argv)
 
-    metrics_path = Path(args.metrics_json)
+    # ── merge config ← flags (flags win when explicitly passed) ──────
+    try:
+        cfg = _load_config(args.config)
+    except Exception as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+
+    def pick(flag_val, key, *, is_bool: bool = False):
+        if is_bool:
+            # argparse store_true defaults False; only override config
+            # if the flag was actually passed (i.e. True).
+            return True if flag_val else bool(cfg.get(key, False))
+        return flag_val if flag_val is not None else cfg.get(key)
+
+    agent_id     = pick(args.agent_id,     "agent_id")
+    metrics_json = pick(args.metrics_json, "metrics_json")
+    signoff_by   = pick(args.signoff_by,   "signoff_by")
+    output_dir   = pick(args.output_dir,   "output_dir")
+    dry_run      = pick(args.dry_run,      "dry_run", is_bool=True)
+    thresholds_p = pick(args.thresholds,   "thresholds")
+
+    if not agent_id:
+        print("error: agent_id is required (via --agent-id or config)",
+              file=sys.stderr)
+        return 2
+    if not metrics_json:
+        print("error: metrics_json is required (via --metrics-json or config)",
+              file=sys.stderr)
+        return 2
+
+    metrics_path = Path(metrics_json)
     if not metrics_path.exists():
         print(f"error: metrics file not found: {metrics_path}", file=sys.stderr)
         return 2
 
     payload = json.loads(metrics_path.read_text())
-    thresholds = load_thresholds(args.thresholds)
+    thresholds = load_thresholds(thresholds_p)
     mc = _build_metric_collection(payload, thresholds)
 
     req = CertRequest(
-        agent_id=args.agent_id, metrics=mc,
-        human_signoff_by=args.signoff_by,
-        output_dir=args.output_dir, dry_run=args.dry_run,
+        agent_id=agent_id, metrics=mc,
+        human_signoff_by=signoff_by,
+        output_dir=output_dir, dry_run=dry_run,
     )
 
     try:
-        bundle, out_path = certify_agent(req, thresholds_path=args.thresholds)
+        bundle, out_path = certify_agent(req, thresholds_path=thresholds_p)
     except Exception as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 3
