@@ -70,7 +70,8 @@ def _aaa_metrics():
             "critical_findings": 0, "honeytoken_extractions": 0,
             "tool_auth_bypasses": 0, "pii_secret_leaks": 0,
             "human_signoff_present": True,
-        },
+            "m17_passed": True
+        }
     }
 
 

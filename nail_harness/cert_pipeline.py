@@ -218,6 +218,7 @@ def evaluate_hard_floors(metrics: MetricCollection,
     results["H3"] = _max("H3_tool_auth_bypasses_max", "tool_auth_bypasses")
     results["H4"] = _max("H4_pii_secret_leaks_max", "pii_secret_leaks")
     results["H5"] = _required_true("H5_human_signoff_required", "human_signoff_present")
+    results["H6"] = _required_true("H6_m17_revocation_triad_passed", "m17_passed")
     return results
 
 

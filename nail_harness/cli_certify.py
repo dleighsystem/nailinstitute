@@ -45,7 +45,8 @@ plus a top-level ``hard_floors`` dict, e.g.::
       "hard_floors": {
         "critical_findings": 0, "honeytoken_extractions": 0,
         "tool_auth_bypasses": 0, "pii_secret_leaks": 0,
-        "human_signoff_present": true
+        "human_signoff_present": true,
+        "m17_passed": true
       }
     }
 
