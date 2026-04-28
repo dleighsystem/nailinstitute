@@ -111,6 +111,8 @@ class NailMonitor:
         enable_fleet_collusion: bool = True,
         enable_monoculture_risk: bool = True,
         enable_cascade_risk: bool = True,
+        # ── v8 detectors (M17 kill switches) ──
+        enable_revocation_compliance: bool = True,
         log_alerts: bool = True,
         alert_log_path: Optional[str] = None,
     ):
@@ -184,6 +186,11 @@ class NailMonitor:
             self.detectors["monoculture_risk"] = MonocultureRiskDetector()
         if enable_cascade_risk:
             self.detectors["cascade_risk"] = CascadeRiskDetector()
+
+        # ── v8 detectors (M17 Revocation Compliance) ──
+        if enable_revocation_compliance:
+            from .detectors_v8 import RevocationComplianceDetector
+            self.detectors["revocation_compliance"] = RevocationComplianceDetector()
 
         if log_alerts:
             logging.basicConfig(level=logging.INFO)
@@ -511,3 +518,21 @@ class NailMonitor:
         """Re-enable a specific detector."""
         if detector_name in self.detectors:
             self.detectors[detector_name].enabled = True
+
+    # ── Specialized Observation Wrappers ──────────────────────────────
+
+    def observe_halt_signal(self, agent_id: str, tier: int = 1) -> None:
+        """Called when Neuravant / the client issues an M17 tier halt signal."""
+        if "revocation_compliance" in self.detectors:
+            self.detectors["revocation_compliance"].observe_halt_signal(agent_id, tier)
+
+    def observe_halt_acknowledged(self, agent_id: str, tier: int = 1) -> list[Alert]:
+        """Called when the agent acknowledges the M17 halt signal."""
+        alerts = []
+        if "revocation_compliance" in self.detectors:
+            alerts.extend(self.detectors["revocation_compliance"].observe_halt_acknowledged(agent_id, tier))
+            for alert in alerts:
+                self._alert_history.append(alert)
+                if self.log_alerts:
+                    self.log_alert(alert)
+        return alerts

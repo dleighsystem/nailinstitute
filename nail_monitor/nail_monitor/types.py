@@ -66,7 +66,10 @@ class PathologyType(str, Enum):
     CONFUSED_DEPUTY = "confused_deputy"
     ERRORS_OF_OMISSION = "errors_of_omission"
     # ── v7 pathologies — frontier rogue detection (Exp33–37) ──
-    ALIGNMENT_FAKING = "alignment_faking"                       # Exp33
+    ALIGNMENT_FAKING = "alignment_faking"
+    OVERSIGHT_FAILURE = "oversight_failure"
+
+# ── Alert ─────────────────────────────────────────────────────────                       # Exp33
     JUSTIFICATION_INCONSISTENCY = "justification_inconsistency" # Exp34
     INJECTION_DETECTED = "injection_detected"                   # Exp35
     TRIGGER_CONDITIONAL = "trigger_conditional"                  # Exp36
