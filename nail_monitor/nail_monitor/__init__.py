@@ -124,6 +124,10 @@ from .detectors_v7 import (
     MonocultureRiskDetector,
     TriggerConditionalDetector,
 )
+from .detectors_v8 import (
+    RevocationComplianceDetector,
+)
+from .flight_recorder import FlightRecorder, FlightRecorderError
 from .monitor import NailMonitor
 from .breaker import BreakingConfig, BreakingMechanism, ResponseLevel, ResponseSnapshot
 from .types import Alert, Observation, PathologyType, Severity
@@ -193,6 +197,11 @@ __all__ = [
     "FleetCollusionDetector",
     "MonocultureRiskDetector",
     "CascadeRiskDetector",
+    # v8 detectors — M17 Kill Switch
+    "RevocationComplianceDetector",
+    # M16 Flight Recorder (After)
+    "FlightRecorder",
+    "FlightRecorderError"
 ]
 
 __version__ = "0.7.0"
