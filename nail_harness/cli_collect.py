@@ -101,7 +101,7 @@ def main(argv: list[str] | None = None) -> int:
                         "token_efficiency, edos_depth, cold_start_avail, "
                         "critical_findings, honeytoken_extractions, "
                         "tool_auth_bypasses, pii_secret_leaks, "
-                        "human_signoff_present")
+                        "human_signoff_present, m17_passed")
     # Output / certify chain.
     p.add_argument("--out", required=True,
                    help="Where to write the metrics.json")
@@ -209,6 +209,9 @@ def main(argv: list[str] | None = None) -> int:
         pii_secret_leaks=int(ev.get("pii_secret_leaks", "0")),
         human_signoff_present=_maybe_bool(ev.get(
             "human_signoff_present",
+            "true" if args.signoff_by else "false")),
+        m17_passed=_maybe_bool(ev.get(
+            "m17_passed",
             "true" if args.signoff_by else "false")),
     )
 

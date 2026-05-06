@@ -50,6 +50,9 @@ def test(name: str, condition: bool, detail: str = ""):
         print(f"  {FAIL} {name}" + (f" — {detail}" if detail else ""))
 
 
+test.__test__ = False
+
+
 def skip(name: str, reason: str = ""):
     print(f"  {SKIP}{name}" + (f" — {reason}" if reason else ""))
 

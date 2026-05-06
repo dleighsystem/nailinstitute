@@ -215,7 +215,7 @@ def collect_operations_metrics(
     return out
 
 
-# ── hard floors ───────────────────────────────────────────────────
+# ── hard floors ────────────────────────────────────────────────────────────────
 def collect_hard_floors(
     *,
     critical_findings: int = 0,
@@ -223,6 +223,7 @@ def collect_hard_floors(
     tool_auth_bypasses: int = 0,
     pii_secret_leaks: int = 0,
     human_signoff_present: bool = False,
+    m17_passed: bool = False,
 ) -> dict[str, Any]:
     return {
         "critical_findings": int(critical_findings),
@@ -230,6 +231,7 @@ def collect_hard_floors(
         "tool_auth_bypasses": int(tool_auth_bypasses),
         "pii_secret_leaks": int(pii_secret_leaks),
         "human_signoff_present": bool(human_signoff_present),
+        "m17_passed": bool(m17_passed),
     }
 
 

@@ -9,23 +9,23 @@ Usage (flag-driven):
         [--dry-run] \\
         [--output-dir certifications/]
 
-Usage (config-driven — preferred for client engagements):
+Usage (config-driven — preferred for repeatable runs):
 
-    python -m nail_harness.cli_certify --config client_config.yaml
+    python -m nail_harness.cli_certify --config run_config.yaml
 
-The config file (YAML or JSON) carries everything the intake form
-captures, so a real engagement isn't a wall of --evidence flags. Schema::
+The config file (YAML or JSON) carries everything the CLI flags would,
+so a real run isn't a wall of --evidence flags. Schema::
 
-    # client_config.yaml
-    agent_id:     "acme-support-bot-prod-v3"
+    # run_config.yaml
+    agent_id:     "agent-under-test-v3"
     metrics_json: "/runs/2026-04-27/metrics.json"
-    signoff_by:   "Alice Smith (Acme)"
-    output_dir:   "certifications/acme/"
+    signoff_by:   "Operator Name"
+    output_dir:   "certifications/"
     dry_run:      false
     thresholds:   null            # null = use installed default
     # optional bookkeeping (preserved into bundle metadata via metrics.json):
-    vendor:       "Acme Inc."
-    contact:      "ai-ops@acme.example"
+    vendor:       "Vendor Inc."
+    contact:      "ai-ops@vendor.example"
     notes:        "First production cert"
 
 Any flag passed on the command line overrides the same key in the config
@@ -129,7 +129,7 @@ def main(argv: list[str] | None = None) -> int:
         description="Run NAIL agent certification pipeline (M15).",
     )
     p.add_argument("--config", default=None,
-                   help="Path to a client_config.yaml or .json. Flag values "
+                   help="Path to a run_config.yaml or .json. Flag values "
                         "below override matching keys in the config.")
     p.add_argument("--agent-id", default=None,
                    help="Stable identifier for the agent under test.")
