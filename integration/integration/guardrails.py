@@ -251,6 +251,56 @@ class BaseGuard:
         }
 
 
+# ═══════════════════════════════════════════════════════════════════════════
+# CONFIDENCE HELPERS
+# ═══════════════════════════════════════════════════════════════════════════
+
+def _extract_confidence(content: str, is_unsafe: bool) -> float:
+    """
+    Derive a confidence score from a model's text output.
+
+    Precedence:
+    1. Explicit percentage in the response (``"95%"``).
+    2. Explicit decimal after ``"confidence:"`` (``"confidence: 0.91"``).
+    3. Certainty-language keywords (``"clearly"``, ``"likely"``, …).
+    4. Reasonable defaults that differ between safe and unsafe verdicts.
+
+    The returned value is always in ``[0.0, 1.0]``.
+    """
+    # 1. Explicit percentage
+    pct = re.search(r"(\d{1,3}(?:\.\d+)?)\s*%", content)
+    if pct:
+        return min(1.0, max(0.0, float(pct.group(1)) / 100.0))
+
+    # 2. Explicit decimal after "confidence"
+    dec = re.search(r"confidence[:\s]+(\d+\.\d+)", content, re.I)
+    if dec:
+        v = float(dec.group(1))
+        return min(1.0, max(0.0, v if v <= 1.0 else v / 100.0))
+
+    # 3. Certainty-language heuristic
+    cl = content.lower()
+    if any(w in cl for w in ("clearly", "definitely", "certainly", "obviously", "explicitly")):
+        return 0.94 if is_unsafe else 0.92
+    if any(w in cl for w in ("likely", "appears", "seems", "probably")):
+        return 0.80
+    if any(w in cl for w in ("possibly", "might", "may", "could be", "uncertain")):
+        return 0.65
+
+    # 4. Defaults — higher for blocked (more decisive) than safe (conservative)
+    return 0.87 if is_unsafe else 0.82
+
+
+def _mock_blocked_confidence(n_matches: int) -> float:
+    """Confidence for a mock BLOCKED verdict based on how many patterns fired."""
+    # More pattern matches → stronger signal; cap at 0.97
+    return min(0.97, 0.78 + 0.06 * n_matches)
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# INDIVIDUAL GUARDS
+# ═══════════════════════════════════════════════════════════════════════════
+
 class JailbreakDetectGuard(BaseGuard):
     """
     NemoGuard Jailbreak Detect — binary jailbreak classifier.
@@ -420,21 +470,22 @@ class ContentSafetyReasoningGuard(BaseGuard):
 
     def _evaluate_mock(self, text: str, **kwargs: Any) -> GuardResult:
         """Pattern-based mock with simulated reasoning."""
-        for pattern in self._UNSAFE_PATTERNS:
-            if pattern.search(text):
-                return GuardResult(
-                    guard=self.name,
-                    verdict=Verdict.BLOCKED,
-                    category=ContentCategory.POLICY_VIOLATION,
-                    confidence=0.88,
-                    reasoning=f"Policy violation detected: content matches unsafe pattern ({pattern.pattern[:50]})",
-                    model=self.model.value,
-                )
+        matched = [p for p in self._UNSAFE_PATTERNS if p.search(text)]
+        if matched:
+            first = matched[0]
+            return GuardResult(
+                guard=self.name,
+                verdict=Verdict.BLOCKED,
+                category=ContentCategory.POLICY_VIOLATION,
+                confidence=_mock_blocked_confidence(len(matched)),
+                reasoning=f"Policy violation detected: content matches unsafe pattern ({first.pattern[:50]})",
+                model=self.model.value,
+            )
         return GuardResult(
             guard=self.name,
             verdict=Verdict.SAFE,
             category=ContentCategory.SAFE,
-            confidence=0.85,
+            confidence=0.82,
             reasoning="Content is within policy bounds after reasoning analysis",
             model=self.model.value,
         )
@@ -467,7 +518,7 @@ class ContentSafetyReasoningGuard(BaseGuard):
                 guard=self.name,
                 verdict=Verdict.BLOCKED if is_unsafe else Verdict.SAFE,
                 category=ContentCategory.POLICY_VIOLATION if is_unsafe else ContentCategory.SAFE,
-                confidence=0.88,
+                confidence=_extract_confidence(content, is_unsafe),
                 reasoning=content,
                 model=self.model.value,
                 raw=result,
@@ -511,7 +562,7 @@ class ContentSafetyReasoningGuard(BaseGuard):
                 guard=self.name,
                 verdict=Verdict.BLOCKED if is_unsafe else Verdict.SAFE,
                 category=ContentCategory.POLICY_VIOLATION if is_unsafe else ContentCategory.SAFE,
-                confidence=0.88,
+                confidence=_extract_confidence(content, is_unsafe),
                 reasoning=content,
                 model=self.model.value,
                 raw=result,
@@ -550,21 +601,21 @@ class ContentSafety8BGuard(BaseGuard):
         )
 
     def _evaluate_mock(self, text: str, **kwargs: Any) -> GuardResult:
-        for pattern in self._MOCK_HARMFUL_PATTERNS:
-            if pattern.search(text):
-                return GuardResult(
-                    guard=self.name,
-                    verdict=Verdict.BLOCKED,
-                    category=ContentCategory.HARMFUL_CONTENT,
-                    confidence=0.92,
-                    reasoning=f"Harmful content detected in text",
-                    model=self.model.value,
-                )
+        matched = [p for p in self._MOCK_HARMFUL_PATTERNS if p.search(text)]
+        if matched:
+            return GuardResult(
+                guard=self.name,
+                verdict=Verdict.BLOCKED,
+                category=ContentCategory.HARMFUL_CONTENT,
+                confidence=_mock_blocked_confidence(len(matched)),
+                reasoning="Harmful content detected in text",
+                model=self.model.value,
+            )
         return GuardResult(
             guard=self.name,
             verdict=Verdict.SAFE,
             category=ContentCategory.SAFE,
-            confidence=0.88,
+            confidence=0.85,
             reasoning="Content passes safety moderation",
             model=self.model.value,
         )
