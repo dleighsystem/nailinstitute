@@ -292,7 +292,7 @@ this is a *new* pathology, not a relabelling of Memory Laundering.
 | Phase | Deliverable | Gate |
 |---|---|---|
 | P1 ✅ | AVE-2026-0037 card + registry/enrich/AVSS + 8 tests | **DONE** — `pytest ave/tests` 204 passed |
-| P2 | `DefinitionalDriftDetector` + deterministic structural extractor + unit tests | scan() correct on fixtures |
+| P2 ✅ | `DefinitionalDriftDetector` + deterministic structural extractor + 27 tests | **DONE** — `pytest shield/tests` 74 passed |
 | P3 | exp39 (4 arms), JSON receipts | orthogonality proven → card → `PROVEN` |
 | P4 | CONSISTENCY dimension + weight rebalance + attack scenarios | composite still sums to 1.0; rating tests green |
 | P5 | PolicyDraft attestation line + chain anchoring | end-to-end pipeline emits attestation |

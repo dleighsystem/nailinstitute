@@ -16,6 +16,16 @@ from .canonicaliser import canonicalise, CanonicalisedSpan
 from .provenance import wrap_untrusted, UNTRUSTED_OPEN_RE, UNTRUSTED_CLOSE_RE
 from .secret_scrub import scrub, rehydrate
 from .chain import HashChain, append_to_default_chain
+from .taint_vault import TaintVault, TaintEntry, TrustLevel, LaunderingReport
+from .definitional_drift import (
+    DefinitionalDriftDetector,
+    DefinitionFingerprint,
+    DefinitionExtraction,
+    DriftFinding,
+    structural_extractor,
+    jaccard_divergence,
+    cosine_divergence,
+)
 
 __all__ = [
     "process",
@@ -29,6 +39,17 @@ __all__ = [
     "rehydrate",
     "HashChain",
     "append_to_default_chain",
+    "TaintVault",
+    "TaintEntry",
+    "TrustLevel",
+    "LaunderingReport",
+    "DefinitionalDriftDetector",
+    "DefinitionFingerprint",
+    "DefinitionExtraction",
+    "DriftFinding",
+    "structural_extractor",
+    "jaccard_divergence",
+    "cosine_divergence",
 ]
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
