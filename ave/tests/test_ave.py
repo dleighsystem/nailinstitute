@@ -277,7 +277,7 @@ class TestSemanticFragmentation:
         card = lookup("AVE-2026-0037")
         assert card.category == Category.STRUCTURAL
         assert card.severity == Severity.HIGH
-        assert card.status == Status.IN_PROGRESS
+        assert card.status == Status.PROVEN
 
     def test_is_a_multi_agent_pathology(self):
         """Fragmentation is intrinsically inter-agent — must require multi-agent."""
@@ -311,11 +311,15 @@ class TestSemanticFragmentation:
         results = search(keyword="definitional drift")
         assert any(c.ave_id == "AVE-2026-0037" for c in results)
 
-    def test_in_progress_has_no_evidence_yet(self):
-        """IN_PROGRESS by design — evidence lands with exp39 (P3), not P1."""
+    def test_proven_with_exp39_evidence(self):
+        """Promoted to PROVEN by exp39 (P3): orthogonality + silent-fragmentation."""
         card = lookup("AVE-2026-0037")
-        assert card.status == Status.IN_PROGRESS
-        assert card.evidence == ()
+        assert card.status == Status.PROVEN
+        assert card.evidence, "PROVEN card must carry evidence"
+        assert all(e.experiment_id == "exp39" for e in card.evidence)
+        metrics = {e.key_metric for e in card.evidence}
+        assert "orthogonality_score" in metrics
+        assert "silent_fragmentation_rate" in metrics
 
     def test_collider(self):
         card = lookup("AVE-2025-0020")
