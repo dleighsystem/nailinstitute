@@ -1113,7 +1113,7 @@ _CARDS: list[AVECard] = [
                  "Schema Fragmentation"),
         category=Category.STRUCTURAL,
         severity=Severity.HIGH,
-        status=Status.IN_PROGRESS,
+        status=Status.PROVEN,
         summary=(
             "Two or more agents in a fleet operate on divergent definitions of "
             "the same business term while each maintains clean provenance "
@@ -1149,10 +1149,25 @@ _CARDS: list[AVECard] = [
             memory_required=True,
             rag_required=True,
         ),
+        evidence=(
+            Evidence(
+                experiment_id="exp39",
+                data_file="experiments/exp39_definitional_drift/results/exp39_results_seed39_a3.json",
+                key_metric="orthogonality_score",
+                key_value="1.0",
+                sample_size=500,
+            ),
+            Evidence(
+                experiment_id="exp39",
+                key_metric="silent_fragmentation_rate",
+                key_value="1.0",   # TaintVault misses 100% of definitional divergences
+            ),
+        ),
         defences=(
             Defence(
                 name="DefinitionalDriftDetector",
                 layer="CIL — Context Integrity Layer",
+                effectiveness="recall=1.0, precision=1.0 on structured records (exp39)",
                 nail_monitor_detector="DefinitionalDriftDetector",
                 notes=("Cross-agent definition-fingerprint divergence scan over "
                        "TaintVault; flags findings where both lineages are clean."),

@@ -93,7 +93,7 @@ Every AVE card contains:
 | **Theoretical** (Threat Landscape) | 4 |
 | **Proven & Mitigated** | 5 |
 | **Not Proven** | 1 (Deceptive Alignment) |
-| **In Progress** | 1 (AVE-2026-0037 Semantic Fragmentation — CIL) |
+| **CIL — Semantic Fragmentation** | AVE-2026-0037 (proven via exp39) |
 
 ### Severity Distribution
 

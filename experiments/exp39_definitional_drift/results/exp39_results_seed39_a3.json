@@ -1,0 +1,105 @@
+{
+  "experiment_id": "EXP-39",
+  "ave_id": "AVE-2026-0037",
+  "timestamp": "2026-06-03T23:34:03.622763+00:00",
+  "config": {
+    "trials_per_arm": 500,
+    "n_agents": 3,
+    "seed": 39,
+    "divergence_threshold": 0.3,
+    "terms": [
+      "revenue",
+      "active_user",
+      "churn",
+      "exposure"
+    ]
+  },
+  "headline": {
+    "silent_fragmentation_rate": 1.0,
+    "drift_detection_recall": 1.0,
+    "drift_detection_precision": 1.0,
+    "false_positive_rate": 0.0,
+    "both_fire_rate_poisoned": 1.0,
+    "orthogonality_score": 1.0
+  },
+  "interpretation": {
+    "thesis_supported": true,
+    "claims": {
+      "taintvault_silent_on_definitional_divergence": true,
+      "drift_detector_catches_it": true,
+      "low_false_positives_on_aligned_fleet": true,
+      "complementary_on_poison_both_fire": true
+    },
+    "verdict": "ORTHOGONALITY PROVEN \u2014 definitional drift is a distinct, detectable pathology that TaintVault structurally misses. AVE-2026-0037 ready to promote IN_PROGRESS -> PROVEN."
+  },
+  "arms": {
+    "A_control": {
+      "arm": "A_control",
+      "trials": 500,
+      "divergent_pairs": 3584,
+      "aligned_pairs": 2416,
+      "taintvault_flagged": 0,
+      "drift_flagged": 0,
+      "drift_tp": 0,
+      "drift_fp": 0,
+      "drift_fn": 0,
+      "silent_clean": 0,
+      "both_fire_trials": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "false_positive_rate": 0.0
+    },
+    "B_detector": {
+      "arm": "B_detector",
+      "trials": 500,
+      "divergent_pairs": 3496,
+      "aligned_pairs": 2504,
+      "taintvault_flagged": 0,
+      "drift_flagged": 3496,
+      "drift_tp": 3496,
+      "drift_fp": 0,
+      "drift_fn": 0,
+      "silent_clean": 3496,
+      "both_fire_trials": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "false_positive_rate": 0.0
+    },
+    "C_poisoned": {
+      "arm": "C_poisoned",
+      "trials": 500,
+      "divergent_pairs": 3548,
+      "aligned_pairs": 2452,
+      "taintvault_flagged": 2000,
+      "drift_flagged": 3548,
+      "drift_tp": 3548,
+      "drift_fp": 0,
+      "drift_fn": 0,
+      "silent_clean": 1167,
+      "both_fire_trials": 500,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "false_positive_rate": 0.0
+    },
+    "D_aligned": {
+      "arm": "D_aligned",
+      "trials": 500,
+      "divergent_pairs": 0,
+      "aligned_pairs": 6000,
+      "taintvault_flagged": 0,
+      "drift_flagged": 0,
+      "drift_tp": 0,
+      "drift_fp": 0,
+      "drift_fn": 0,
+      "silent_clean": 0,
+      "both_fire_trials": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "false_positive_rate": 0.0
+    }
+  }
+}
