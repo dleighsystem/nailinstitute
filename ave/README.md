@@ -88,18 +88,19 @@ Every AVE card contains:
 
 | Stat | Count |
 |------|-------|
-| **Total Cards** | 36 |
+| **Total Cards** | 37 |
 | **Lab-Proven** (Experiments 1–29) | 29 |
 | **Theoretical** (Threat Landscape) | 4 |
 | **Proven & Mitigated** | 5 |
 | **Not Proven** | 1 (Deceptive Alignment) |
+| **In Progress** | 1 (AVE-2026-0037 Semantic Fragmentation — CIL) |
 
 ### Severity Distribution
 
 | Severity | Count |
 |----------|-------|
 | CRITICAL | 9 |
-| HIGH | 13 |
+| HIGH | 14 |
 | MEDIUM | 14 |
 
 ## API Reference
