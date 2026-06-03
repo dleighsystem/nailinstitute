@@ -289,6 +289,18 @@ _AVSS_VECTORS: dict[str, AVSSVector] = {
         temporal=TemporalExploitability.FUNCTIONAL,
         agentic=AgenticExploitability.LOW,
     ),
+    "AVE-2026-0037": AVSSVector(                    # Semantic Fragmentation
+        attack_vector=AttackVector.ADJACENT,       # within the fleet / shared data
+        attack_complexity=AttackComplexity.HIGH,   # silent, no single bad actor
+        privileges_required=PrivilegesRequired.NONE,
+        user_interaction=UserInteraction.NONE,
+        scope_change=ScopeChange.CHANGED,          # one agent's defn taints fleet answers
+        confidentiality=Impact.NONE,
+        integrity=Impact.HIGH,                     # corrupts aggregated outputs
+        availability=Impact.NONE,
+        temporal=TemporalExploitability.FUNCTIONAL,
+        agentic=AgenticExploitability.HIGH,        # intrinsically multi-agent
+    ),
 
     # ─── Injection ───────────────────────────────────────────────────
     "AVE-2025-0019": AVSSVector(                    # Pydantic Schema Exploitation
@@ -499,8 +511,11 @@ _AVSS_VECTORS: dict[str, AVSSVector] = {
 # ═══════════════════════════════════════════════════════════════════════════
 
 _RELATED_AVES: dict[str, tuple[str, ...]] = {
+    # Context-integrity cluster — definitional vs. trust failures (orthogonal)
+    "AVE-2026-0037": ("AVE-2025-0001",),
+
     # Memory cluster
-    "AVE-2025-0001": ("AVE-2025-0009", "AVE-2025-0022", "AVE-2025-0034", "AVE-2025-0029", "AVE-2025-0020"),
+    "AVE-2025-0001": ("AVE-2025-0009", "AVE-2025-0022", "AVE-2025-0034", "AVE-2025-0029", "AVE-2025-0020", "AVE-2026-0037"),
     "AVE-2025-0009": ("AVE-2025-0001", "AVE-2025-0022", "AVE-2025-0034", "AVE-2025-0020"),
     "AVE-2025-0022": ("AVE-2025-0001", "AVE-2025-0009"),
     "AVE-2025-0034": ("AVE-2025-0001", "AVE-2025-0009"),

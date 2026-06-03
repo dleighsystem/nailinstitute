@@ -264,6 +264,59 @@ class TestLookup:
         assert card is not None
         assert "80%" in card.evidence[0].key_value
 
+
+class TestSemanticFragmentation:
+    """AVE-2026-0037 — Context Integrity Layer pathology (CIL P1)."""
+
+    def test_card_exists(self):
+        card = lookup("AVE-2026-0037")
+        assert card is not None
+        assert card.name == "Semantic Fragmentation"
+
+    def test_classification(self):
+        card = lookup("AVE-2026-0037")
+        assert card.category == Category.STRUCTURAL
+        assert card.severity == Severity.HIGH
+        assert card.status == Status.IN_PROGRESS
+
+    def test_is_a_multi_agent_pathology(self):
+        """Fragmentation is intrinsically inter-agent — must require multi-agent."""
+        card = lookup("AVE-2026-0037")
+        assert card.environment.multi_agent is True
+
+    def test_defended_by_definitional_drift_detector(self):
+        card = lookup("AVE-2026-0037")
+        assert card.defences, "Semantic Fragmentation must name its CIL defence"
+        assert any(
+            d.nail_monitor_detector == "DefinitionalDriftDetector"
+            for d in card.defences
+        )
+
+    def test_orthogonal_to_memory_laundering(self):
+        """Distinct from the memory-poisoning family — different root cause."""
+        card = lookup("AVE-2026-0037")
+        assert card.category != Category.MEMORY
+
+    def test_cross_references_memory_laundering_after_enrich(self):
+        """enrich populates the cross-link to AVE-2025-0001 (Sleeper/Memory)."""
+        import copy
+        from ave.enrich import enrich_card
+        # Deep-copy so we don't mutate the shared registry instance and pollute
+        # other tests that assert raw cards have empty related_aves.
+        card = copy.deepcopy(lookup("AVE-2026-0037"))
+        enrich_card(card)
+        assert "AVE-2025-0001" in card.related_aves
+
+    def test_found_via_search_aliases(self):
+        results = search(keyword="definitional drift")
+        assert any(c.ave_id == "AVE-2026-0037" for c in results)
+
+    def test_in_progress_has_no_evidence_yet(self):
+        """IN_PROGRESS by design — evidence lands with exp39 (P3), not P1."""
+        card = lookup("AVE-2026-0037")
+        assert card.status == Status.IN_PROGRESS
+        assert card.evidence == ()
+
     def test_collider(self):
         card = lookup("AVE-2025-0020")
         assert card is not None

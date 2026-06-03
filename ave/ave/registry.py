@@ -1105,6 +1105,63 @@ _CARDS: list[AVECard] = [
         date_discovered="2025-03",
     ),
 
+    # ─── AVE-2026-0037: Semantic Fragmentation ───────────────────────
+    AVECard(
+        ave_id="AVE-2026-0037",
+        name="Semantic Fragmentation",
+        aliases=("Definitional Drift", "Cross-Agent Term Divergence",
+                 "Schema Fragmentation"),
+        category=Category.STRUCTURAL,
+        severity=Severity.HIGH,
+        status=Status.IN_PROGRESS,
+        summary=(
+            "Two or more agents in a fleet operate on divergent definitions of "
+            "the same business term while each maintains clean provenance "
+            "lineage. No agent is poisoned; the fleet is simply incoherent. "
+            "Downstream consumers receive confident, mutually contradictory "
+            "answers derived from the same underlying data."
+        ),
+        mechanism=(
+            "Each agent resolves an ambiguous term ('revenue', 'active user', "
+            "'churn') against a locally-scoped definition drawn from its system "
+            "prompt, a RAG chunk, or a tool schema. Because the definitions "
+            "differ but each provenance chain is individually valid, the "
+            "TaintVault min-trust lineage check passes for every fact. The "
+            "contradiction is inter-agent and invisible to any single-agent "
+            "integrity check. Orthogonal to Memory Laundering: that is a trust "
+            "failure over a valid definition; this is a definition failure over "
+            "valid trust."
+        ),
+        blast_radius=(
+            "Financial reporting, risk aggregation, and compliance "
+            "attestations. In an insurance context: two underwriting agents "
+            "price the same exposure differently because they disagree on a "
+            "definition, not on the data."
+        ),
+        prerequisite=(
+            "Multi-agent deployment; shared or overlapping data sources; at "
+            "least one term with no enforced canonical definition."
+        ),
+        environment=EnvironmentVector(
+            frameworks=("LangGraph", "CrewAI", "AutoGen"),
+            models_tested=("nemotron:70b", "mistral:7b"),
+            multi_agent=True,
+            memory_required=True,
+            rag_required=True,
+        ),
+        defences=(
+            Defence(
+                name="DefinitionalDriftDetector",
+                layer="CIL — Context Integrity Layer",
+                nail_monitor_detector="DefinitionalDriftDetector",
+                notes=("Cross-agent definition-fingerprint divergence scan over "
+                       "TaintVault; flags findings where both lineages are clean."),
+            ),
+        ),
+        date_discovered="2026-06",
+        cwe_mapping="CWE-436 (Interpretation Conflict)",
+    ),
+
 ]
 
 
