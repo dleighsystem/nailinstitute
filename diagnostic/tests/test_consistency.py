@@ -14,10 +14,15 @@ from diagnostic import (
     DIMENSION_WEIGHTS,
     RiskDimension,
 )
+from diagnostic.attacks import AttackCategory as _AC
 from diagnostic.attacks import AttackScenario, get_scenario
-from diagnostic.consistency import DefinitionalDriftExecutor, parse_fleet
+from diagnostic.consistency import (
+    DefinitionalDriftExecutor,
+    build_attestation,
+    parse_fleet,
+)
 from diagnostic.pipeline import DiagnosticPipeline, ProbeInfo
-from diagnostic.scoring import AttackVerdict
+from diagnostic.scoring import AttackResult, AttackVerdict, ScoreCard
 
 
 # ── Dimension wiring ──────────────────────────────────────────────────────────
@@ -141,3 +146,90 @@ def test_consistency_failures_become_draft_cards():
     cons_drafts = [d for d in result.draft_cards
                    if d.dimension == RiskDimension.CONSISTENCY.value]
     assert cons_drafts, "divergent CONSISTENCY scenarios should draft AVE cards"
+
+
+# ── P5: Context Integrity attestation ─────────────────────────────────────────
+
+def _card_with_consistency(*, run: int, failed: int, raw: float, critical: int = 0) -> ScoreCard:
+    """Build a finalised ScoreCard whose CONSISTENCY dimension has known stats."""
+    card = ScoreCard()
+    s = AttackScenario(
+        scenario_id="c", name="c", category=_AC.DEFINITIONAL_DRIFT,
+        description="c", prompts=("a::revenue::gross",),
+        severity_if_fail="critical" if critical else "high",
+    )
+    # `failed` failing results + (run-failed) passing, scores averaging ~raw.
+    for i in range(failed):
+        card.add(AttackResult(scenario=s, verdict=AttackVerdict.FAIL, score=0.0,
+                              is_critical=(i < critical)))
+    for _ in range(run - failed):
+        card.add(AttackResult(scenario=s, verdict=AttackVerdict.PASS, score=1.0))
+    card.finalise()
+    return card
+
+
+def test_attestation_none_when_consistency_not_run():
+    card = ScoreCard()
+    card.finalise()
+    assert build_attestation(card) is None
+
+
+def test_attestation_coherent_fleet():
+    card = _card_with_consistency(run=6, failed=0, raw=1.0)
+    att = build_attestation(card)
+    assert att is not None
+    assert att.coherent is True
+    assert att.unresolved_conflicts == 0
+    assert att.consistency_band == "AAA"
+    assert att.decline_eligible is False
+    assert att.chain_id.startswith("c-")
+
+
+def test_attestation_incoherent_fleet_decline_eligible():
+    card = _card_with_consistency(run=6, failed=6, raw=0.0, critical=1)
+    att = build_attestation(card)
+    assert att.coherent is False
+    assert att.unresolved_conflicts == 6
+    assert att.critical_conflicts == 1
+    assert att.decline_eligible is True
+    assert "UNRESOLVED" in att.line()
+
+
+def test_attestation_content_hash_is_deterministic():
+    from datetime import datetime, timezone
+    fixed = datetime(2026, 6, 4, tzinfo=timezone.utc)
+    a = build_attestation(_card_with_consistency(run=6, failed=2, raw=0.66), now=fixed)
+    b = build_attestation(_card_with_consistency(run=6, failed=2, raw=0.66), now=fixed)
+    assert a.canonical_sha256 == b.canonical_sha256
+    assert a.chain_id == b.chain_id
+
+
+def test_attestation_anchored_into_hash_chain(tmp_path):
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "shield"))
+    from shield.chain import HashChain
+
+    chain = HashChain(tmp_path / "cil_chain.jsonl")
+    att = build_attestation(_card_with_consistency(run=6, failed=3, raw=0.5), chain=chain)
+    assert att.chain_id == chain.head            # anchor is the chain entry hash
+    ok, n = chain.verify()
+    assert ok and n == 1
+
+
+def test_pipeline_attest_flag_attaches_attestation():
+    pipe = DiagnosticPipeline(executor=DefinitionalDriftExecutor(), attest=True)
+    result = pipe.run(model_id="fleet")
+    ci = result.policy.context_integrity
+    assert ci is not None
+    assert "attestation_line" in ci
+    assert ci["scenarios_evaluated"] >= 6
+    # divergent library → unresolved + a CIL remediation item
+    assert ci["unresolved_conflicts"] >= 1
+    assert any("AVE-2026-0037" in r for r in result.policy.remediation_items)
+
+
+def test_pipeline_no_attest_by_default():
+    pipe = DiagnosticPipeline(executor=DefinitionalDriftExecutor())
+    result = pipe.run()
+    assert result.policy.context_integrity is None

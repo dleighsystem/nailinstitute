@@ -34,14 +34,19 @@ on it — importing this module is what opts in.
 """
 from __future__ import annotations
 
+import hashlib
+import json
 import time
+from dataclasses import dataclass, asdict
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Any, Callable, Optional
 
 from .attacks import AttackScenario
 from .dimensions import CATEGORY_TO_DIMENSION, RiskDimension
 from .pipeline import ProbeInfo, _default_executor
-from .scoring import AttackResult, AttackVerdict
+from .rating import composite_to_rating
+from .scoring import AttackResult, AttackVerdict, ScoreCard
 
 
 def _ensure_shield_on_path() -> None:
@@ -158,3 +163,107 @@ class DefinitionalDriftExecutor:
             detail=f"{len(findings)} drift finding(s); {len(silent)} silent. {lead}",
             is_critical=is_critical,
         )
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# CONTEXT INTEGRITY ATTESTATION (CIL P5)
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# The underwriting-grade output: a tamper-evident statement that an agent fleet
+# is — or is not — definitionally consistent. This is what Snowflake structurally
+# cannot sell (they are the data layer being attested). Derived from the CONSISTENCY
+# dimension of a finalised ScoreCard and anchored into a sha256 hash chain.
+
+
+@dataclass(frozen=True)
+class ContextIntegrityAttestation:
+    """A chain-anchored statement of cross-agent definitional consistency."""
+    attested_at: str               # ISO-8601 UTC
+    scenarios_evaluated: int       # CONSISTENCY attacks run
+    unresolved_conflicts: int      # CONSISTENCY scenarios that FAILED (silent drift)
+    critical_conflicts: int        # CONSISTENCY critical failures
+    consistency_raw_score: float   # dimension raw score (0–1, 1 = fully coherent)
+    consistency_band: str          # A / AA / AAA / FAIL via the rating ladder
+    coherent: bool                 # unresolved_conflicts == 0
+    decline_eligible: bool         # critical silent divergence → eligible for decline
+    canonical_sha256: str          # content hash (deterministic given content)
+    chain_id: str                  # anchor: chain entry_hash, or c-<hash> if unchained
+
+    def line(self) -> str:
+        """One-line attestation suitable for a PolicyDraft / report."""
+        date = self.attested_at[:10]
+        verdict = "COHERENT" if self.coherent else f"{self.unresolved_conflicts} UNRESOLVED"
+        flag = " — DECLINE-ELIGIBLE" if self.decline_eligible else ""
+        return (
+            f"Context Integrity: {verdict} across {self.scenarios_evaluated} fleet "
+            f"scenario(s) (CONSISTENCY raw {self.consistency_raw_score:.2f} / band "
+            f"{self.consistency_band}). Attested {date}, anchored {self.chain_id[:18]}…{flag}"
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        d = asdict(self)
+        d["attestation_line"] = self.line()
+        return d
+
+
+def build_attestation(
+    card: ScoreCard,
+    *,
+    chain: Any | None = None,
+    now: Optional[datetime] = None,
+) -> Optional[ContextIntegrityAttestation]:
+    """Build a Context Integrity attestation from a finalised ScoreCard.
+
+    Returns None if the CONSISTENCY dimension was not evaluated (no scenarios
+    run), so the attestation only appears when the fleet was actually tested.
+
+    Parameters
+    ----------
+    chain : shield.HashChain | None
+        If provided, the attestation's content hash is appended to this chain
+        and ``chain_id`` becomes the chain entry hash (tamper-evident lineage).
+        If None, ``chain_id`` is a content-addressed ``c-<sha>`` (still
+        tamper-evident, just not chained).
+    now : datetime | None
+        Override for the attestation timestamp (testing/determinism).
+    """
+    cons = card.dimension_scores.get(RiskDimension.CONSISTENCY)
+    if cons is None or cons.attacks_run == 0:
+        return None
+
+    ts = (now or datetime.now(timezone.utc)).isoformat()
+    raw = round(cons.raw_score, 4)
+    band = composite_to_rating(cons.raw_score).value
+    unresolved = cons.attacks_failed
+    criticals = cons.critical_failures
+
+    # Deterministic content hash over the stable attestation fields.
+    content = {
+        "attested_at": ts,
+        "scenarios_evaluated": cons.attacks_run,
+        "unresolved_conflicts": unresolved,
+        "critical_conflicts": criticals,
+        "consistency_raw_score": raw,
+        "consistency_band": band,
+    }
+    canonical = json.dumps(content, sort_keys=True, separators=(",", ":"))
+    canonical_sha256 = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+    if chain is not None:
+        entry = chain.append(source="cil:context-integrity", canonical_sha256=canonical_sha256)
+        chain_id = entry.entry_hash
+    else:
+        chain_id = "c-" + canonical_sha256[:16]
+
+    return ContextIntegrityAttestation(
+        attested_at=ts,
+        scenarios_evaluated=cons.attacks_run,
+        unresolved_conflicts=unresolved,
+        critical_conflicts=criticals,
+        consistency_raw_score=raw,
+        consistency_band=band,
+        coherent=(unresolved == 0),
+        decline_eligible=(criticals > 0),
+        canonical_sha256=canonical_sha256,
+        chain_id=chain_id,
+    )
