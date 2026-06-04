@@ -295,7 +295,7 @@ this is a *new* pathology, not a relabelling of Memory Laundering.
 | P2 ✅ | `DefinitionalDriftDetector` + deterministic structural extractor + 27 tests | **DONE** — `pytest shield/tests` 74 passed |
 | P3 ✅ | exp39 (4 arms), JSON receipts | **DONE** — orthogonality=1.0, silent_frag=1.0; card promoted → `PROVEN` |
 | P4 ✅ | CONSISTENCY dimension + weight rebalance + 3 categories/6 scenarios + `DefinitionalDriftExecutor` | **DONE** — weights Σ=1.0; `pytest diagnostic/tests` 109 passed |
-| P5 | PolicyDraft attestation line + chain anchoring | end-to-end pipeline emits attestation |
+| P5 ✅ | PolicyDraft attestation line + chain anchoring | **DONE** — `attest=True` emits chain-anchored `ContextIntegrityAttestation`; 116 diagnostic tests |
 | P6 *(optional, flagged off)* | Semantic-embedding fingerprint tier | only after P3 false-positive rate is known |
 
 **Honest risk register:**
