@@ -25,6 +25,9 @@ from .definitional_drift import (
     structural_extractor,
     jaccard_divergence,
     cosine_divergence,
+    make_hybrid_divergence,
+    default_embed_fn,
+    EmbedFn,
 )
 
 __all__ = [
@@ -50,6 +53,9 @@ __all__ = [
     "structural_extractor",
     "jaccard_divergence",
     "cosine_divergence",
+    "make_hybrid_divergence",
+    "default_embed_fn",
+    "EmbedFn",
 ]
 
 __version__ = "0.2.0"

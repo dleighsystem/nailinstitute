@@ -14,11 +14,29 @@ from shield.definitional_drift import (
     DefinitionFingerprint,
     cosine_divergence,
     jaccard_divergence,
+    make_hybrid_divergence,
+    default_embed_fn,
     structural_extractor,
     tokenise_definition,
     normalise_term,
     CLEAN_TRUST_FLOOR,
 )
+
+
+# ── P6 semantic tier: deterministic fake embedding ────────────────────────────
+
+def _fake_embed(text):
+    """Concept-axis embedding: synonyms collapse to the same vector.
+
+    Axes: (user-concept, login-concept, transaction-concept). Lets tests show
+    the semantic tier resolving 'users' vs 'accounts' that the structural tier
+    cannot.
+    """
+    t = text.lower()
+    user = 1.0 if ("user" in t or "account" in t) else 0.0
+    login = 1.0 if ("login" in t or "logged" in t) else 0.0
+    txn = 1.0 if ("transaction" in t or "purchase" in t) else 0.0
+    return (user, login, txn)
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -278,3 +296,93 @@ def test_detector_uses_injected_divergence_fn():
     assert calls["n"] == 1            # the injected fn was invoked on the cross-agent pair
     assert len(findings) == 1         # ...and its verdict drove the finding
     assert findings[0].divergence == 1.0
+
+
+# ── P6: semantic / embedding tier (flag-gated) ────────────────────────────────
+
+def test_semantic_requires_embed_fn():
+    vault = TaintVault()
+    with pytest.raises(ValueError):
+        DefinitionalDriftDetector(vault, semantic=True)
+
+
+def test_default_is_structural_backward_compatible():
+    """Without semantic=True the detector ignores embeddings entirely."""
+    vault = TaintVault()
+    _store_def(vault, "A", "revenue", "gross minus refunds")
+    det = DefinitionalDriftDetector(vault)
+    assert det.semantic is False
+    assert det.fingerprints()[0].embedding is None
+
+
+def test_structural_false_positives_on_synonyms():
+    """Baseline: the structural tier flags synonymous phrasings (the P6 gap)."""
+    vault = TaintVault()
+    _store_def(vault, "A", "active_user", "users with login")
+    _store_def(vault, "B", "active_user", "accounts that logged in")
+    findings = DefinitionalDriftDetector(vault).scan()
+    assert len(findings) == 1   # different operand nouns -> false positive
+
+
+def test_semantic_tier_resolves_synonyms():
+    """The embedding tier recognises the synonyms as equivalent — no false flag."""
+    vault = TaintVault()
+    _store_def(vault, "A", "active_user", "users with login")
+    _store_def(vault, "B", "active_user", "accounts that logged in")
+    findings = DefinitionalDriftDetector(vault, semantic=True, embed_fn=_fake_embed).scan()
+    assert findings == []
+
+
+def test_semantic_tier_still_catches_real_divergence():
+    vault = TaintVault()
+    _store_def(vault, "A", "active_user", "users with login")
+    _store_def(vault, "B", "active_user", "users with transaction")
+    findings = DefinitionalDriftDetector(vault, semantic=True, embed_fn=_fake_embed).scan()
+    assert len(findings) == 1
+    assert findings[0].both_lineage_clean is True
+
+
+def test_fingerprints_carry_embeddings_when_semantic():
+    vault = TaintVault()
+    _store_def(vault, "A", "revenue", "gross minus refunds")
+    fps = DefinitionalDriftDetector(vault, semantic=True, embed_fn=_fake_embed).fingerprints()
+    assert fps[0].embedding is not None
+    assert isinstance(fps[0].embedding, tuple)
+
+
+def test_hybrid_divergence_blends_when_embeddings_present():
+    a = DefinitionFingerprint("t", "a", "f1", "d1", frozenset({"x"}), 0.9, embedding=(1.0, 0.0))
+    b = DefinitionFingerprint("t", "b", "f2", "d2", frozenset({"y"}), 0.9, embedding=(0.0, 1.0))
+    hybrid = make_hybrid_divergence(structural_weight=0.5)
+    # jaccard({x},{y}) = 1.0 ; cosine(orthogonal) = 1.0 ; blend = 1.0
+    assert hybrid(a, b) == pytest.approx(1.0)
+    # identical embeddings pull the blend down below pure jaccard
+    b2 = DefinitionFingerprint("t", "b", "f3", "d3", frozenset({"y"}), 0.9, embedding=(1.0, 0.0))
+    assert hybrid(a, b2) == pytest.approx(0.5)   # 0.5*1.0(jaccard) + 0.5*0.0(cosine)
+
+
+def test_hybrid_falls_back_to_jaccard_without_embeddings():
+    a = DefinitionFingerprint("t", "a", "f1", "d1", frozenset({"x"}), 0.9)   # no embedding
+    b = DefinitionFingerprint("t", "b", "f2", "d2", frozenset({"x", "y"}), 0.9)
+    hybrid = make_hybrid_divergence()
+    assert hybrid(a, b) == pytest.approx(jaccard_divergence(a, b))
+
+
+def test_detector_accepts_hybrid_divergence_fn():
+    vault = TaintVault()
+    _store_def(vault, "A", "active_user", "users with login")
+    _store_def(vault, "B", "active_user", "accounts that logged in")
+    det = DefinitionalDriftDetector(
+        vault, semantic=True, embed_fn=_fake_embed,
+        divergence_fn=make_hybrid_divergence(structural_weight=0.5),
+    )
+    assert isinstance(det.scan(), list)   # runs without error
+
+
+def test_default_embed_fn_without_library_raises():
+    """If sentence-transformers is absent, default_embed_fn fails loudly."""
+    import importlib.util
+    if importlib.util.find_spec("sentence_transformers") is not None:
+        pytest.skip("sentence-transformers is installed in this environment")
+    with pytest.raises(RuntimeError):
+        default_embed_fn()

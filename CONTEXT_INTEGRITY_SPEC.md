@@ -296,7 +296,7 @@ this is a *new* pathology, not a relabelling of Memory Laundering.
 | P3 ✅ | exp39 (4 arms), JSON receipts | **DONE** — orthogonality=1.0, silent_frag=1.0; card promoted → `PROVEN` |
 | P4 ✅ | CONSISTENCY dimension + weight rebalance + 3 categories/6 scenarios + `DefinitionalDriftExecutor` | **DONE** — weights Σ=1.0; `pytest diagnostic/tests` 109 passed |
 | P5 ✅ | PolicyDraft attestation line + chain anchoring | **DONE** — `attest=True` emits chain-anchored `ContextIntegrityAttestation`; 116 diagnostic tests |
-| P6 *(optional, flagged off)* | Semantic-embedding fingerprint tier | only after P3 false-positive rate is known |
+| P6 ✅ *(flagged off by default)* | Semantic-embedding fingerprint tier | **DONE** — `semantic=True, embed_fn=…`; resolves synonyms the structural tier mis-flags; `pytest shield/tests` 84 passed |
 
 **Honest risk register:**
 - **Definition extraction is the soft underbelly.** If the extractor is an LLM,

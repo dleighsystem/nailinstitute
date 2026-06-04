@@ -64,9 +64,13 @@ import math
 import re
 from dataclasses import dataclass, field
 from itertools import combinations
-from typing import Callable, Iterable, Optional
+from typing import Callable, Iterable, Optional, Sequence
 
 from .taint_vault import TaintEntry, TaintVault, TrustLevel
+
+# An embedding provider: definition text -> dense vector. Injected by the caller
+# (P6 semantic tier). Kept as a plain callable so the core stays dependency-free.
+EmbedFn = Callable[[str], Sequence[float]]
 
 
 # ── Tunables ──────────────────────────────────────────────────────────────────
@@ -262,6 +266,56 @@ def cosine_divergence(a: DefinitionFingerprint, b: DefinitionFingerprint) -> flo
     return max(0.0, min(1.0, 1.0 - cos))
 
 
+def make_hybrid_divergence(structural_weight: float = 0.5) -> Callable[
+    [DefinitionFingerprint, DefinitionFingerprint], float
+]:
+    """Build a divergence fn blending structural (Jaccard) and semantic (cosine).
+
+    ``divergence = w·jaccard + (1-w)·cosine`` when both fingerprints carry
+    embeddings; falls back to pure Jaccard when either embedding is missing, so
+    it degrades gracefully rather than raising. ``structural_weight`` in [0, 1].
+
+    Use this when you want the structural tier to catch crisp formula
+    differences AND the semantic tier to catch prose divergence the tokeniser
+    misses (e.g. "users with a login" vs "accounts that logged in").
+    """
+    w = max(0.0, min(1.0, structural_weight))
+
+    def _hybrid(a: DefinitionFingerprint, b: DefinitionFingerprint) -> float:
+        j = jaccard_divergence(a, b)
+        if a.embedding is None or b.embedding is None:
+            return j
+        c = cosine_divergence(a, b)
+        return round(w * j + (1.0 - w) * c, 6)
+
+    return _hybrid
+
+
+def default_embed_fn(model_name: Optional[str] = None) -> EmbedFn:
+    """Return an :data:`EmbedFn` backed by sentence-transformers (lazy import).
+
+    sentence-transformers is **not** a dependency of this package; this helper
+    only works where it is installed (e.g. the DGX experiment environment). It
+    raises a clear error otherwise — callers who want a different backend should
+    pass their own ``embed_fn`` instead. This keeps the semantic tier strictly
+    opt-in (CIL spec P6).
+    """
+    try:
+        from sentence_transformers import SentenceTransformer  # type: ignore
+    except ImportError as exc:  # pragma: no cover - environment-dependent
+        raise RuntimeError(
+            "default_embed_fn requires sentence-transformers. Install it, or pass "
+            "a custom embed_fn to DefinitionalDriftDetector(semantic=True, embed_fn=...)."
+        ) from exc
+
+    model = SentenceTransformer(model_name or "all-MiniLM-L6-v2")
+
+    def _embed(text: str) -> Sequence[float]:
+        return tuple(float(x) for x in model.encode(text))
+
+    return _embed
+
+
 # ── Detector ──────────────────────────────────────────────────────────────────
 
 class DefinitionalDriftDetector:
@@ -277,10 +331,18 @@ class DefinitionalDriftDetector:
         deterministic :func:`structural_extractor`.
     divergence_threshold : float
         Findings are emitted when divergence strictly exceeds this value.
-    divergence_fn : Callable[[DefinitionFingerprint, DefinitionFingerprint], float]
-        How to score divergence between two fingerprints. Defaults to
-        :func:`jaccard_divergence` (structural). Swap for
-        :func:`cosine_divergence` when embeddings are available.
+    divergence_fn : Callable[[DefinitionFingerprint, DefinitionFingerprint], float] | None
+        How to score divergence between two fingerprints. If None (default), it
+        resolves to :func:`jaccard_divergence` (structural), or to
+        :func:`cosine_divergence` when ``semantic=True``. Pass an explicit fn
+        (e.g. :func:`make_hybrid_divergence`) to override.
+    embed_fn : EmbedFn | None
+        Embedding provider (definition text -> vector). Required when
+        ``semantic=True``; ignored otherwise. The package never imports an
+        embedding library itself — inject one (see :func:`default_embed_fn`).
+    semantic : bool
+        Opt-in to the embedding tier (CIL spec P6). Off by default, so the
+        detector stays deterministic and dependency-free unless asked.
     """
 
     def __init__(
@@ -289,12 +351,23 @@ class DefinitionalDriftDetector:
         *,
         extractor: Callable[[TaintEntry], list[DefinitionExtraction]] = structural_extractor,
         divergence_threshold: float = DEFAULT_DIVERGENCE_THRESHOLD,
-        divergence_fn: Callable[[DefinitionFingerprint, DefinitionFingerprint], float] = jaccard_divergence,
+        divergence_fn: Optional[Callable[[DefinitionFingerprint, DefinitionFingerprint], float]] = None,
+        embed_fn: Optional[EmbedFn] = None,
+        semantic: bool = False,
     ):
+        if semantic and embed_fn is None:
+            raise ValueError("semantic=True requires an embed_fn")
         self.vault = vault
         self.extractor = extractor
         self.divergence_threshold = float(divergence_threshold)
-        self.divergence_fn = divergence_fn
+        self.semantic = semantic
+        self.embed_fn = embed_fn
+        if divergence_fn is not None:
+            self.divergence_fn = divergence_fn
+        elif semantic:
+            self.divergence_fn = cosine_divergence
+        else:
+            self.divergence_fn = jaccard_divergence
 
     # ── Public API ────────────────────────────────────────────────────
 
@@ -305,6 +378,11 @@ class DefinitionalDriftDetector:
             agent_id = str(entry.metadata.get("agent_id", _UNKNOWN_AGENT))
             trust = self.vault.effective_trust(entry.fact_id)
             for ext in self.extractor(entry):
+                embedding = None
+                if self.semantic and self.embed_fn is not None:
+                    # Embed the definition text (operand-rich raw expr, or the
+                    # term itself if no expression was extracted).
+                    embedding = tuple(float(x) for x in self.embed_fn(ext.raw or ext.term))
                 out.append(DefinitionFingerprint(
                     term=ext.term,
                     agent_id=agent_id,
@@ -313,6 +391,7 @@ class DefinitionalDriftDetector:
                     tokens=ext.tokens,
                     effective_trust=trust,
                     raw=ext.raw,
+                    embedding=embedding,
                 ))
         return out
 
