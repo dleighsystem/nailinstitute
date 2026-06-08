@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-04-11T00:00:00Z",
-  "total_cards": 42,
+  "generated_at": "2026-06-08T12:38:32Z",
+  "total_cards": 44,
   "cards": [
     {
       "ave_id": "AVE-2025-0001",
@@ -296,6 +296,20 @@
       "category": "structural",
       "severity": "high",
       "status": "theoretical"
+    },
+    {
+      "ave_id": "AVE-2026-0043",
+      "name": "Ungoverned Persona",
+      "category": "structural",
+      "severity": "high",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2026-0044",
+      "name": "Upstream Model Update Cascade",
+      "category": "structural",
+      "severity": "high",
+      "status": "proven"
     }
   ]
 }

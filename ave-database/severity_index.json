@@ -175,6 +175,18 @@
       "name": "Checkpoint Injection Chain",
       "category": "structural",
       "status": "theoretical"
+    },
+    {
+      "ave_id": "AVE-2026-0043",
+      "name": "Ungoverned Persona",
+      "category": "structural",
+      "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2026-0044",
+      "name": "Upstream Model Update Cascade",
+      "category": "structural",
+      "status": "proven"
     }
   ],
   "medium": [
