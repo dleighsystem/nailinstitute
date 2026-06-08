@@ -57,6 +57,14 @@
       "notes": "Re-run the bind-time acceptance/adversarial suite on a cadence and on provider-update signals; a drop below the bound threshold flags an upstream cascade before downstream loss."
     },
     {
+      "name": "Upstream Model-Version Watcher",
+      "layer": "diagnostic",
+      "effectiveness": "detective",
+      "rmap_module": "",
+      "nail_monitor_detector": "model_version_watcher",
+      "notes": "Implemented: nail.monitoring.model_watcher.ModelVersionWatcher polls each provider's model-metadata endpoint (google/openai/anthropic), fingerprints the in-use models, and on a version change fires the affected agent cohort to /api/internal/cohort-incident automatically. Read-only, key-light, never false-fires on first observation, transient error, or empty cohort."
+    },
+    {
       "name": "Cohort Escalation + Per-Tenant Kill-Switch",
       "layer": "response",
       "effectiveness": "mitigating",
