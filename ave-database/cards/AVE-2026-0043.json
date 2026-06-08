@@ -1,0 +1,64 @@
+{
+  "ave_id": "AVE-2026-0043",
+  "name": "Ungoverned Persona",
+  "aliases": [
+    "Guardrail-Absent Agent",
+    "Naked System Prompt",
+    "Capability-Only Agent"
+  ],
+  "category": "structural",
+  "severity": "high",
+  "status": "proven",
+  "summary": "Production AI agents are authored with rich capability/persona instructions but ZERO explicit governance guardrails in their system prompts \u2014 no prompt-injection resistance, no harmful-output refusal, no authority limits on consequential actions, no PII/oversight rules. The agent is competent and benign by intent yet uniformly exploitable, and uninsurable without remediation. Observed fleet-wide, not per-agent.",
+  "mechanism": "Agent builders compose a system prompt from a role persona + task framework but omit a security/governance layer. Because the omission is systemic (a shared prompt-authoring habit, often a base template), EVERY agent in the fleet inherits the same gap. A single injection/jailbreak/extraction technique therefore generalises across the whole fleet \u2014 there is no per-agent defence to bypass because none exists.",
+  "blast_radius": "Fleet-wide. One working adversarial input class compromises every agent built from the same ungoverned template. In a regulated/insured context every such agent is Conditional-or-below and cannot be bound without system-prompt remediation.",
+  "prerequisite": "Agent whose system prompt contains capability instructions but no explicit safety/governance controls.",
+  "environment": {
+    "frameworks": [
+      "langgraph",
+      "gemini",
+      "custom"
+    ],
+    "models_tested": [
+      "gemini-2.5-flash"
+    ],
+    "multi_agent": true,
+    "tools_required": false,
+    "memory_required": false,
+    "rag_required": false,
+    "min_context_window": null
+  },
+  "evidence": [
+    {
+      "experiment_id": "fleet-audit-efai-2026-06",
+      "data_file": "fleet_audit_results.json",
+      "key_metric": "insurable_rate_A_plus",
+      "key_value": "0/11",
+      "p_value": null,
+      "sample_size": 11,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "NAIL Governance Audit (Agent Health Grader)",
+      "layer": "diagnostic",
+      "effectiveness": "detective",
+      "rmap_module": "",
+      "nail_monitor_detector": "governance_rubric",
+      "notes": "Static system-prompt governance score across 6 dimensions; flags absence of controls as HIGH risk and rates the agent (AAA..F)."
+    }
+  ],
+  "date_discovered": "2026-06",
+  "date_published": "2026-06-08",
+  "cwe_mapping": "CWE-693 (Protection Mechanism Failure)",
+  "mitre_mapping": "",
+  "references": [],
+  "avss_score": null,
+  "poc": null,
+  "timeline": null,
+  "related_aves": [
+    "AVE-2025-0001"
+  ],
+  "contributor": "d.leigh"
+}
