@@ -1,0 +1,80 @@
+{
+  "ave_id": "AVE-2026-0044",
+  "name": "Upstream Model Update Cascade",
+  "aliases": [
+    "Silent Model Swap",
+    "Provider Version Drift",
+    "Foundation Update Blast"
+  ],
+  "category": "structural",
+  "severity": "high",
+  "status": "proven",
+  "summary": "A provider-side foundation-model update (a new minor version, a silent alias re-point such as 'gemini-2.5-flash' or 'gpt-4o', or a default-routing change) alters output distribution, schema adherence, refusal behaviour or latency without any change to the customer's code or prompt. Every agent pinned to the moving target degrades simultaneously. Because many tenants share the same upstream model, a single update is a correlated, fleet-wide failure event that defeats per-agent isolation and concentrates insured loss into one moment.",
+  "mechanism": "Agents are deployed against a model identifier that is not immutably pinned (an alias, a 'latest' channel, or a minor version the provider hot-swaps). The provider ships an update: instruction-following, JSON/tool-schema adherence, refusal thresholds, or token economics shift. Validation that passed at bind time no longer holds at runtime, yet no deploy occurred on the customer side so no CI gate fired. The same model backs many customers, so the degradation is correlated across the whole book rather than independent per agent.",
+  "blast_radius": "Correlated and fleet-wide. One upstream change can break N dependent agents across N tenants at the same instant: broken output schemas feeding downstream automation, dropped guardrails (a previously-refused jailbreak now complies), or runaway cost/latency. For an insurer this is accumulation risk — independent-risk pricing assumptions fail because losses arrive together. Demands cohort-level detection and a cohort-level response (mass notification + per-tenant kill-switch), not per-agent handling.",
+  "prerequisite": "Agent bound to a non-immutable upstream model reference (alias / minor-version / default route) with no runtime re-validation against a frozen acceptance suite.",
+  "environment": {
+    "frameworks": [
+      "any"
+    ],
+    "models_tested": [
+      "gemini-2.5-flash",
+      "gpt-4o",
+      "claude-3-5-sonnet"
+    ],
+    "multi_agent": true,
+    "tools_required": false,
+    "memory_required": false,
+    "rag_required": false,
+    "min_context_window": null
+  },
+  "evidence": [
+    {
+      "experiment_id": "neuravant-cohort-fanout-2026-06",
+      "data_file": "nail/monitoring/test_notify.py::test_escalate_cohort_integration",
+      "key_metric": "cohort_webhook_delivery_rate",
+      "key_value": "50/50",
+      "p_value": null,
+      "sample_size": 50,
+      "cross_model": true
+    }
+  ],
+  "defences": [
+    {
+      "name": "Immutable Model Pinning",
+      "layer": "design",
+      "effectiveness": "preventive",
+      "rmap_module": "",
+      "nail_monitor_detector": "",
+      "notes": "Bind agents to fully-qualified immutable model versions (dated snapshots), never to aliases or 'latest'. Treat any provider version change as a deploy that must pass the frozen acceptance gate before promotion."
+    },
+    {
+      "name": "Continuous Acceptance Re-Validation",
+      "layer": "diagnostic",
+      "effectiveness": "detective",
+      "rmap_module": "",
+      "nail_monitor_detector": "continuous_reaudit",
+      "notes": "Re-run the bind-time acceptance/adversarial suite on a cadence and on provider-update signals; a drop below the bound threshold flags an upstream cascade before downstream loss."
+    },
+    {
+      "name": "Cohort Escalation + Per-Tenant Kill-Switch",
+      "layer": "response",
+      "effectiveness": "mitigating",
+      "rmap_module": "",
+      "nail_monitor_detector": "alert_engine.escalate_cohort",
+      "notes": "On a correlated break, fan out signed/idempotent webhooks to every affected tenant (each fires its own kill-switch to revoke agent keys/endpoints and cap liability) plus one Knock workflow trigger to notify all client orgs' people; PagerDuty fires once internally. See nail.monitoring.notify.WebhookFanout."
+    }
+  ],
+  "date_discovered": "2026-06",
+  "date_published": "2026-06-08",
+  "cwe_mapping": "CWE-1395 (Dependency on Vulnerable Third-Party Component), CWE-664 (Improper Control of a Resource Through its Lifetime)",
+  "mitre_mapping": "",
+  "references": [],
+  "avss_score": null,
+  "poc": null,
+  "timeline": null,
+  "related_aves": [
+    "AVE-2026-0043"
+  ],
+  "contributor": "d.leigh"
+}

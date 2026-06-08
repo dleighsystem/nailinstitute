@@ -48,7 +48,7 @@ python -m ave submit --interactive  # Generate a draft card
 
 ## 📊 Database Summary
 
-### 36 Documented Vulnerabilities
+### 44 Documented Vulnerabilities
 
 | AVE-ID | Severity | Name | Category | Status |
 |--------|----------|------|----------|--------|
@@ -88,29 +88,37 @@ python -m ave submit --interactive  # Generate a draft card
 | [AVE-2025-0034](./cards/AVE-2025-0034.md) | 🔴 critical | Federated Poisoning in Multi-Tenant Systems | `memory` | `theoretical` |
 | [AVE-2025-0035](./cards/AVE-2025-0035.md) | 🟡 medium | Attention Smoothing | `resource` | `proven` |
 | [AVE-2025-0036](./cards/AVE-2025-0036.md) | 🟡 medium | Errors of Omission | `alignment` | `proven` |
+| [AVE-2025-0037](./cards/AVE-2025-0037.md) | 🔴 critical | Serialization Confused Deputy | `injection` | `proven` |
+| [AVE-2025-0038](./cards/AVE-2025-0038.md) | 🔴 critical | Fail-Open Sandbox Degradation | `structural` | `proven` |
+| [AVE-2025-0039](./cards/AVE-2025-0039.md) | 🟠 high | Approval Display Divergence | `delegation` | `proven` |
+| [AVE-2025-0040](./cards/AVE-2025-0040.md) | 🟠 high | Environment Inheritance Leak | `credential` | `proven` |
+| [AVE-2025-0041](./cards/AVE-2025-0041.md) | 🔴 critical | State Persistence Deserialization | `memory` | `proven` |
+| [AVE-2025-0042](./cards/AVE-2025-0042.md) | 🟠 high | Checkpoint Injection Chain | `structural` | `theoretical` |
+| [AVE-2026-0043](./cards/AVE-2026-0043.md) | 🟠 high | Ungoverned Persona | `structural` | `proven` |
+| [AVE-2026-0044](./cards/AVE-2026-0044.md) | 🟠 high | Upstream Model Update Cascade | `structural` | `proven` |
 
 ### Statistics
 
 | Severity | Count | |
 |----------|------:|-|
-| 🔴 CRITICAL | 11 | ████████████ |
-| 🟠 HIGH | 12 | █████████████ |
-| 🟡 MEDIUM | 13 | ██████████████ |
+| 🔴 CRITICAL | 14 | ██████████████ |
+| 🟠 HIGH | 17 | █████████████████ |
+| 🟡 MEDIUM | 13 | █████████████ |
 
 | Category | Count |
 |----------|------:|
+| `structural` | 10 |
 | `alignment` | 7 |
-| `structural` | 6 |
-| `memory` | 4 |
+| `memory` | 5 |
+| `injection` | 4 |
 | `drift` | 3 |
 | `social` | 3 |
 | `tool` | 3 |
-| `injection` | 3 |
 | `resource` | 2 |
 | `temporal` | 2 |
+| `delegation` | 2 |
+| `credential` | 2 |
 | `consensus` | 1 |
-| `delegation` | 1 |
-| `credential` | 1 |
 
 ---
 
