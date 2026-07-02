@@ -1,11 +1,11 @@
 # 🏆 AVE Database — Hall of Fame
 
 [![Contributors](https://img.shields.io/badge/Contributors-6-blue)](./CONTRIBUTING.md)
-[![Cards](https://img.shields.io/badge/AVE_Cards-42-green)](./ave-database/)
+[![Cards](https://img.shields.io/badge/AVE_Cards-44-green)](./ave-database/)
 
 > **Recognising the security researchers who make agentic AI safer.**
 >
-> *Auto-generated on 2026-04-11 15:59 UTC from AVE Database card data.*
+> *Auto-generated on 2026-07-02 18:13 UTC from AVE Database card data.*
 
 ---
 
@@ -27,7 +27,7 @@
 |-----:|------|-------------|---:|------:|-------:|-------:|
 | #1 | 🏗️ architect | **dleigh** | 5,400⚡ | 10 | ☠️🎯💀🗺️🔥 +13 (18) | 3mo |
 | #2 | 🏗️ architect | **s.nakamura** | 5,050⚡ | 8 | 💀🗺️🔥⚡🖐️ +7 (12) | 2mo |
-| #3 | 🏗️ architect | **d.leigh** | 4,150⚡ | 6 | 💀⚔️🎓🔥⚡ +10 (15) | 2mo |
+| #3 | 🏗️ architect | **d.leigh** | 5,050⚡ | 8 | 💀⚔️🎓🔥⚡ +10 (15) | 2mo |
 | #4 | 🛡️ sentinel | **priya.r** | 3,550⚡ | 7 | 🗺️🔥🏰⚡🖐️ +8 (13) | 3mo |
 | #5 | 🛡️ sentinel | **m.torres** | 3,175⚡ | 6 | 🗺️🔥🏰⚡🖐️ +9 (14) | 3mo |
 | #6 | 🛡️ sentinel | **j.okafor** | 1,760⚡ | 5 | 🗺️🏰🖐️🕸️💡 +5 (10) | 3mo |
@@ -62,13 +62,13 @@
 
 ### 🏗️ d.leigh
 
-**Tier:** ARCHITECT · **XP:** 4,150⚡ · **Cards:** 6 · **Rank:** #3
+**Tier:** ARCHITECT · **XP:** 5,050⚡ · **Cards:** 8 · **Rank:** #3
 
 **Badges:** 💀 Critical Hunter ⚔️ Mitigation Master 🎓 Polymath 🔥 Trailblazer ⚡ Compound Threat 🖐️ Five Alive 🔴 Critical Finder 🐀 Lab Rat 🧪 Proof Positive 🕸️ Web Weaver 💡 Novel Discovery 🩸 First Blood 📊 Show Your Work 🛡️ Shield Bearer 🔗 Connector
 
-**Cards:** `AVE-2025-0037`, `AVE-2025-0038`, `AVE-2025-0039`, `AVE-2025-0040`, `AVE-2025-0041`, `AVE-2025-0042`
+**Cards:** `AVE-2025-0037`, `AVE-2025-0038`, `AVE-2025-0039`, `AVE-2025-0040`, `AVE-2025-0041`, `AVE-2025-0042`, `AVE-2026-0043`, `AVE-2026-0044`
 
-**Progress to FELLOW:** `[██████████░░░░░░░░░░]` 52% (3,850 XP needed)
+**Progress to FELLOW:** `[████████████░░░░░░░░]` 63% (2,950 XP needed)
 
 ---
 
