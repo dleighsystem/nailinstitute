@@ -56,6 +56,11 @@ Detectors (v6 — Exp21–26 Detectives):
     - ConfusedDeputyDetector: Tool description integrity violation
     - OmissionDetector: Failure to act on critical situations
 
+Detectors (v9 — Control-plane agent pathologies):
+    - ToolManifestIntegrityDetector: MCP/tool metadata poisoning and drift
+    - MemoryWriteFirewallDetector: Risky long-term memory writes
+    - GoalDriftMonitorDetector: Trajectory drift from authorised goal
+
 Usage:
     >>> from nail_monitor import NailMonitor
     >>> monitor = NailMonitor()
@@ -127,8 +132,18 @@ from .detectors_v7 import (
 from .detectors_v8 import (
     RevocationComplianceDetector,
 )
+from .detectors_v9 import (
+    GoalDriftMonitorDetector,
+    MemoryWriteFirewallDetector,
+    ToolManifestIntegrityDetector,
+)
 from .flight_recorder import FlightRecorder, FlightRecorderError
 from .monitor import NailMonitor
+from .registry import (
+    AgentPathologyRegistry,
+    DEFAULT_PATHOLOGY_REGISTRY,
+    PathologyDefinition,
+)
 from .breaker import BreakingConfig, BreakingMechanism, ResponseLevel, ResponseSnapshot
 from .types import Alert, Observation, PathologyType, Severity
 
@@ -199,9 +214,16 @@ __all__ = [
     "CascadeRiskDetector",
     # v8 detectors — M17 Kill Switch
     "RevocationComplianceDetector",
+    # v9 detectors — control-plane pathologies
+    "ToolManifestIntegrityDetector",
+    "MemoryWriteFirewallDetector",
+    "GoalDriftMonitorDetector",
+    "AgentPathologyRegistry",
+    "PathologyDefinition",
+    "DEFAULT_PATHOLOGY_REGISTRY",
     # M16 Flight Recorder (After)
     "FlightRecorder",
     "FlightRecorderError"
 ]
 
-__version__ = "0.7.0"
+__version__ = "0.9.0"

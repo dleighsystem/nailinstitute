@@ -48,6 +48,11 @@ from .detectors_v7 import (
     MonocultureRiskDetector,
     TriggerConditionalDetector,
 )
+from .detectors_v9 import (
+    GoalDriftMonitorDetector,
+    MemoryWriteFirewallDetector,
+    ToolManifestIntegrityDetector,
+)
 from .types import Alert, Observation, Severity
 
 logger = logging.getLogger("nail_monitor")
@@ -113,6 +118,10 @@ class NailMonitor:
         enable_cascade_risk: bool = True,
         # ── v8 detectors (M17 kill switches) ──
         enable_revocation_compliance: bool = True,
+        # ── v9 detectors (control-plane agent pathologies) ──
+        enable_tool_manifest_integrity: bool = True,
+        enable_memory_write_firewall: bool = True,
+        enable_goal_drift_monitor: bool = True,
         log_alerts: bool = True,
         alert_log_path: Optional[str] = None,
     ):
@@ -192,6 +201,14 @@ class NailMonitor:
             from .detectors_v8 import RevocationComplianceDetector
             self.detectors["revocation_compliance"] = RevocationComplianceDetector()
 
+        # ── v9 detectors (control-plane agent pathologies) ──
+        if enable_tool_manifest_integrity:
+            self.detectors["tool_manifest_integrity"] = ToolManifestIntegrityDetector()
+        if enable_memory_write_firewall:
+            self.detectors["memory_write_firewall"] = MemoryWriteFirewallDetector()
+        if enable_goal_drift_monitor:
+            self.detectors["goal_drift_monitor"] = GoalDriftMonitorDetector()
+
         if log_alerts:
             logging.basicConfig(level=logging.INFO)
             logger.info(
@@ -235,6 +252,10 @@ class NailMonitor:
                 - agent_action_code: int for FleetCollusionDetector
                 - model_backend, had_error: for MonocultureRiskDetector
                 - had_error, error_source_agent: for CascadeRiskDetector
+                v9 (control-plane pathology detection):
+                - tool_manifest/tool_manifests for ToolManifestIntegrityDetector
+                - memory_writes with source/trust/fact_type for MemoryWriteFirewallDetector
+                - task_goal/plan_steps/tool_calls/action for GoalDriftMonitorDetector
         
         Returns list of Alerts (may be empty if no pathologies detected).
         """
@@ -292,6 +313,18 @@ class NailMonitor:
             "cascade_risk",
         )
         for key in v7_keys:
+            if key in self.detectors:
+                alert = self.detectors[key].observe(obs)
+                if alert:
+                    alerts.append(alert)
+
+        # ── v9 detectors (control-plane agent pathologies) ──
+        v9_keys = (
+            "tool_manifest_integrity",
+            "memory_write_firewall",
+            "goal_drift_monitor",
+        )
+        for key in v9_keys:
             if key in self.detectors:
                 alert = self.detectors[key].observe(obs)
                 if alert:
@@ -420,6 +453,72 @@ class NailMonitor:
         if "upgrade_regression" in self.detectors:
             det: UpgradeRegressionDetector = self.detectors["upgrade_regression"]
             det.set_baseline(state_sizes)
+
+    # ── v9 specialized observe methods ─────────────────────────────────
+
+    def observe_tool_manifest(
+        self,
+        agent_name: str,
+        manifest: dict,
+        *,
+        round_num: int = 0,
+    ) -> list[Alert]:
+        """Record one tool/MCP manifest snapshot for integrity monitoring."""
+        return self.observe(
+            agent_name=agent_name,
+            output="",
+            round_num=round_num,
+            metadata={"tool_manifest": manifest},
+        )
+
+    def observe_memory_write(
+        self,
+        agent_name: str,
+        write: dict,
+        *,
+        round_num: int = 0,
+    ) -> list[Alert]:
+        """Record one proposed long-term memory write for firewall monitoring."""
+        return self.observe(
+            agent_name=agent_name,
+            output=str(write.get("value") or write.get("content") or ""),
+            round_num=round_num,
+            metadata={"memory_writes": [write]},
+        )
+
+    def observe_goal_state(
+        self,
+        agent_name: str,
+        *,
+        task_goal: str,
+        session_id: str = "",
+        output: str = "",
+        plan_steps: list[str] | None = None,
+        tool_calls: list[dict] | None = None,
+        action: str = "",
+        allowed_tools: list[str] | None = None,
+        sensitive_action: bool = False,
+        goal_alignment_score: float | None = None,
+        round_num: int = 0,
+    ) -> list[Alert]:
+        """Record the current trajectory state for goal-drift monitoring."""
+        metadata = {
+            "task_goal": task_goal,
+            "session_id": session_id,
+            "plan_steps": plan_steps or [],
+            "tool_calls": tool_calls or [],
+            "action": action,
+            "allowed_tools": allowed_tools or [],
+            "sensitive_action": sensitive_action,
+        }
+        if goal_alignment_score is not None:
+            metadata["goal_alignment_score"] = goal_alignment_score
+        return self.observe(
+            agent_name=agent_name,
+            output=output,
+            round_num=round_num,
+            metadata=metadata,
+        )
 
     # ── Alert Management ───────────────────────────────────────────────
 

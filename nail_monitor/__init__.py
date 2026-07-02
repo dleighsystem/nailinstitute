@@ -30,3 +30,34 @@ USAGE:
 INSTALL:
   pip install -e nail_monitor/
 """
+
+from __future__ import annotations
+
+import importlib
+import sys
+
+from .nail_monitor import *  # noqa: F401,F403
+from .nail_monitor import __version__ as __version__
+
+_SUBMODULES = (
+    "breaker",
+    "detectors",
+    "detectors_v2",
+    "detectors_v3",
+    "detectors_v4",
+    "detectors_v5",
+    "detectors_v6",
+    "detectors_v7",
+    "detectors_v8",
+    "detectors_v9",
+    "flight_recorder",
+    "monitor",
+    "registry",
+    "types",
+)
+
+for _name in _SUBMODULES:
+    sys.modules.setdefault(
+        f"{__name__}.{_name}",
+        importlib.import_module(f"{__name__}.nail_monitor.{_name}"),
+    )
