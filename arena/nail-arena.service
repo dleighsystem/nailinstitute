@@ -1,0 +1,28 @@
+[Unit]
+Description=NAIL Arena — Continuous Red/Blue Adversarial Evolution
+After=network.target ollama.service
+Wants=ollama.service
+
+[Service]
+Type=simple
+User=nail
+WorkingDirectory=/opt/nail
+ExecStart=/opt/nail/.venv/bin/python arena/arena_supervisor.py \
+    --checkpoint-dir /data/arena/checkpoints
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=nail-arena
+
+# Resource limits — leave headroom for other services
+MemoryMax=8G
+CPUQuota=200%
+
+# Env
+Environment="PYTHONPATH=/opt/nail"
+Environment="OLLAMA_HOST=http://localhost:11434"
+Environment="NAIL_PRIMARY_MODEL=nemotron:70b"
+
+[Install]
+WantedBy=multi-user.target
