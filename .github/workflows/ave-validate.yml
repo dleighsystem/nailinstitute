@@ -86,6 +86,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          pip install pytest
           pip install -e rmap/ -e ave/ -e canary/ -e arena/ -e ctf/ \
                       -e diagnostic/ -e horizon/ -e integration/ -e threatfeed/
 
