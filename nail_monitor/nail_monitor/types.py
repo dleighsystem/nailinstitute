@@ -79,6 +79,10 @@ class PathologyType(str, Enum):
     AUTONOMOUS_OFFENSIVE = "autonomous_offensive"               # frontier
     SELF_PRESERVATION = "self_preservation"                     # frontier
     TRAINING_MANIPULATION = "training_manipulation"             # frontier
+    # ── v9 pathologies — control-plane agent pathologies ──
+    TOOL_MANIFEST_POISONING = "tool_manifest_poisoning"
+    MEMORY_WRITE_POISONING = "memory_write_poisoning"
+    GOAL_DRIFT = "goal_drift"
 
 
 @dataclass
@@ -92,6 +96,19 @@ class Alert:
     threshold: float
     timestamp: datetime = field(default_factory=datetime.now)
     metadata: dict = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        """Return a JSON-serializable alert payload."""
+        return {
+            "detector": self.detector,
+            "pathology": self.pathology.value if isinstance(self.pathology, PathologyType) else str(self.pathology),
+            "severity": self.severity.value if isinstance(self.severity, Severity) else str(self.severity),
+            "message": self.message,
+            "metric_value": self.metric_value,
+            "threshold": self.threshold,
+            "timestamp": self.timestamp.isoformat(),
+            "metadata": self.metadata,
+        }
 
     def __str__(self):
         icon = {"info": "ℹ️", "warning": "⚠️", "critical": "🚨"}[self.severity.value]

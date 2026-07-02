@@ -438,4 +438,4 @@ class TestNailMonitorV6Integration:
 
     def test_version_bump(self):
         import nail_monitor
-        assert nail_monitor.__version__ in ["0.6.0", "0.7.0"]
+        assert nail_monitor.__version__ in ["0.6.0", "0.7.0", "0.9.0"]
