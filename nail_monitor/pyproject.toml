@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=68.0", "wheel"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "nail-monitor"
@@ -31,3 +31,7 @@ full = ["matplotlib", "seaborn", "rich"]
 [project.urls]
 Homepage = "https://github.com/dleighsystem/nailinstitute"
 Repository = "https://github.com/dleighsystem/nailinstitute"
+
+[tool.setuptools.packages.find]
+include = ["nail_monitor*"]
+exclude = ["tests*"]

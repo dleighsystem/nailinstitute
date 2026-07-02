@@ -45,6 +45,10 @@ jobs:
             -e arsenal/
 
       - name: Verify imports
+        # Keep the repo root off sys.path: bare package dirs (canary/, ave/, ...)
+        # share their name with the installed package and would shadow it here.
+        env:
+          PYTHONSAFEPATH: "1"
         run: |
           python -c "
           import sys
