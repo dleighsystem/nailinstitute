@@ -21,12 +21,15 @@ classifiers = [
 
 dependencies = [
     "numpy>=1.24",
-    "sentence-transformers>=2.2",
 ]
 
 [project.optional-dependencies]
 dev = ["pytest", "pytest-cov"]
 full = ["matplotlib", "seaborn", "rich"]
+# Embedding-based detectors (EmbeddingDrift) are opt-in: sentence-transformers
+# pulls torch + CUDA wheels (multi-GB), so it is NOT a core dependency. Install
+# `nail-monitor[embeddings]` only where you run the embedding path.
+embeddings = ["sentence-transformers>=2.2"]
 
 [project.urls]
 Homepage = "https://github.com/dleighsystem/nailinstitute"

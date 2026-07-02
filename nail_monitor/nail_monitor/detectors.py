@@ -76,7 +76,13 @@ class InbreedingDetector(BaseDetector):
     @property
     def embedder(self):
         if self._embedder is None:
-            from sentence_transformers import SentenceTransformer
+            try:
+                from sentence_transformers import SentenceTransformer
+            except ImportError as exc:  # opt-in dependency, see pyproject [embeddings]
+                raise ImportError(
+                    "EmbeddingDrift needs sentence-transformers, which is an optional "
+                    "extra. Install it with: pip install 'nail-monitor[embeddings]'"
+                ) from exc
             self._embedder = SentenceTransformer("all-MiniLM-L6-v2")
         return self._embedder
 
