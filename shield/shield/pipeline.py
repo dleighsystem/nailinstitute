@@ -57,6 +57,8 @@ def process(
     source: str,
     classify: bool = False,
     classifier_model: str = "nail-guard:v4",
+    classifier_backend: str = "ollama",
+    guard_client=None,
     chain: bool = True,
 ) -> ShieldedInput:
     """Full shield pipeline.
@@ -64,8 +66,18 @@ def process(
     1. Canonicalise (NFKC, strip invisibles/bidi/controls, quote breakouts).
     2. Scrub secrets (reversible tokens).
     3. Wrap in `<UNTRUSTED src=... id=...>` envelope.
-    4. (optional) Classify for injection via `nail-guard:v4`.
+    4. (optional) Classify for injection via nail-guard:v4.
     5. (default-on) Append sha256 to AVE-compatible hash chain.
+
+    Parameters
+    ----------
+    classify : bool
+        Enable injection classification (default off — Shield runs without Ollama).
+    classifier_backend : "ollama" | "guard"
+        "ollama" uses nail-guard:v4 directly.
+        "guard" uses nail_harness.GuardClient for BEE/SDF/CIA/CCB verdicts.
+    guard_client : GuardClient | None
+        Pre-instantiated GuardClient (only used when classifier_backend="guard").
     """
     canon = canonicalise(text)
     scrubbed = scrub(canon.text)
@@ -81,7 +93,12 @@ def process(
     inj_reason = ""
     if classify:
         from .classifier import score_input
-        s = score_input(scrubbed.text, model=classifier_model)
+        s = score_input(
+            scrubbed.text,
+            model=classifier_model,
+            backend=classifier_backend,
+            guard_client=guard_client,
+        )
         inj_score = s.confidence
         is_inj = s.is_attack
         inj_reason = s.reason
