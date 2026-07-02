@@ -15,3 +15,17 @@ press/
 ebook/
 *.log
 .DS_Store
+# Large data / model artefacts — not needed at build time (source is volume-mounted)
+training_data/
+unsloth_compiled_cache/
+harness-reference/
+remote-kernel/
+notebooks/
+*.pt
+*.bin
+*.safetensors
+*.gguf
+*.ckpt
+# Node artefacts
+node_modules/
+.next/
