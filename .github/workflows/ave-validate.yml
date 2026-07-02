@@ -31,13 +31,12 @@ jobs:
         run: |
           python -m ave validate ave-database/cards/
 
-      - name: Check index is up to date
-        run: |
-          python -m ave export --format index --output /tmp/index.json ave-database/cards/
-          if ! diff -q ave-database/index.json /tmp/index.json > /dev/null 2>&1; then
-            echo "::error::ave-database/index.json is out of date. Run: python -m ave export --format index"
-            exit 1
-          fi
+      - name: Check indexes are in sync with cards
+        # Derives index.json / severity_index.json from ave-database/cards/ (the
+        # source of truth) and compares, ignoring the generated_at timestamp. The
+        # old step shelled out to `ave export`, which reads the in-code registry
+        # (a different, smaller card set) and byte-diffed a timestamped file.
+        run: python ave-database/rebuild_index.py --check
 
       - name: Verify JSON/Markdown pairs
         run: |
