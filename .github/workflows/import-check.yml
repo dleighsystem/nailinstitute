@@ -27,17 +27,22 @@ jobs:
       - name: Install all packages
         run: |
           pip install --upgrade pip
-          # Install each sub-package in editable mode
-          pip install -e ave/
-          pip install -e arena/
-          pip install -e nail_monitor/
-          pip install -e horizon/
-          pip install -e canary/
-          pip install -e ctf/
-          pip install -e diagnostic/
-          pip install -e integration/
-          pip install -e rmap/
-          pip install -e threatfeed/
+          pip install \
+            -e rmap/ \
+            -e ave/ \
+            -e canary/ \
+            -e arena/ \
+            -e ctf/ \
+            -e diagnostic/ \
+            -e horizon/ \
+            -e integration/ \
+            -e threatfeed/ \
+            -e nail_monitor/ \
+            -e fleet/ \
+            -e shield/ \
+            -e nail_harness/ \
+            -e nail_security/ \
+            -e arsenal/
 
       - name: Verify imports
         run: |
@@ -45,30 +50,56 @@ jobs:
           import sys
           failed = []
 
-          packages = [
-              ('ave', ['AVECard', 'Category', 'Severity', 'compute_avss', 'lookup', 'all_cards']),
-              ('nail_arena', ['Arena']),
-              ('nail_monitor', ['PathologyMonitor']),
-              ('nail_horizon', ['HorizonScanner']),
-              ('nail_canary', ['CanaryDeployment']),
-              ('nail_ctf', ['CTFEngine']),
-              ('nail_diagnostic', None),
-              ('nail_integration', None),
-              ('rmap', ['RegulatoryMapper']),
-              ('nail_threatfeed', None),
+          packages = {
+              'rmap': [],
+              'ave': [],
+              'canary': [],
+              'arena': [],
+              'ctf': [],
+              'diagnostic': [],
+              'horizon': [],
+              'integration': [],
+              'threatfeed': [],
+              'nail_monitor': ['NailMonitor', 'DEFAULT_PATHOLOGY_REGISTRY'],
+              'fleet': [],
+              'shield': [],
+              'nail_security': ['NailSecurity', 'ThreatLevel'],
+          }
+
+          submodules = [
+              'rmap.graph',
+              'ave.schema',
+              'canary.trapwire',
+              'arena.arena',
+              'ctf.tournament',
+              'diagnostic.pipeline',
+              'horizon.campaign',
+              'integration.pipeline',
+              'threatfeed.feed',
+              'nail_monitor.detectors_v9',
+              'fleet.ingest',
+              'shield.pipeline',
+              'nail_security.security',
           ]
 
-          for pkg_name, expected_attrs in packages:
+          for pkg_name, expected_attrs in packages.items():
               try:
                   mod = __import__(pkg_name)
-                  if expected_attrs:
-                      for attr in expected_attrs:
-                          if not hasattr(mod, attr):
-                              failed.append(f'{pkg_name}.{attr} — attribute missing')
+                  for attr in expected_attrs:
+                      if not hasattr(mod, attr):
+                          failed.append(f'{pkg_name}.{attr} — attribute missing')
                   print(f'  ✅ {pkg_name}')
               except Exception as e:
                   failed.append(f'{pkg_name} — {e}')
                   print(f'  ❌ {pkg_name}: {e}')
+
+          for module_name in submodules:
+              try:
+                  __import__(module_name)
+                  print(f'  ✅ {module_name}')
+              except Exception as e:
+                  failed.append(f'{module_name} — {e}')
+                  print(f'  ❌ {module_name}: {e}')
 
           if failed:
               print(f'\n::error::{len(failed)} import failures:')
@@ -76,29 +107,7 @@ jobs:
                   print(f'  ::error::{f}')
               sys.exit(1)
           else:
-              print(f'\nAll {len(packages)} packages import cleanly ✅')
-          "
-
-      - name: Verify __all__ exports exist
-        run: |
-          python -c "
-          import sys
-          missing = []
-          packages = ['ave', 'nail_arena', 'nail_monitor', 'nail_horizon',
-                      'nail_canary', 'nail_ctf', 'rmap', 'nail_threatfeed']
-          for pkg_name in packages:
-              try:
-                  mod = __import__(pkg_name)
-                  if not hasattr(mod, '__all__'):
-                      missing.append(pkg_name)
-                      print(f'  ⚠️  {pkg_name} — missing __all__')
-                  else:
-                      print(f'  ✅ {pkg_name} — __all__ has {len(mod.__all__)} exports')
-              except Exception as e:
-                  print(f'  ❌ {pkg_name}: {e}')
-
-          if missing:
-              print(f'\n::warning::{len(missing)} packages missing __all__: {missing}')
+              print(f'\nAll imports passed ✅')
           "
 
   test-packages:
@@ -120,6 +129,11 @@ jobs:
           - integration
           - rmap
           - threatfeed
+          - nail_monitor
+          - fleet
+          - shield
+          - nail_security
+          - scripts
 
     steps:
       - uses: actions/checkout@v4
@@ -129,17 +143,31 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install package
+      - name: Install packages
         run: |
           pip install --upgrade pip
-          pip install -e ${{ matrix.package }}/
+          pip install \
+            -e rmap/ \
+            -e ave/ \
+            -e canary/ \
+            -e arena/ \
+            -e ctf/ \
+            -e diagnostic/ \
+            -e horizon/ \
+            -e integration/ \
+            -e threatfeed/ \
+            -e nail_monitor/ \
+            -e fleet/ \
+            -e shield/ \
+            -e nail_harness/ \
+            -e nail_security/ \
+            -e arsenal/
           pip install pytest pytest-asyncio
 
       - name: Run tests
         run: |
           cd ${{ matrix.package }}
-          pytest tests/ -v --tb=short || true
-        continue-on-error: true
+          pytest tests/ -v --tb=short
 
   docs-code-sync:
     name: Check documentation/code alignment
@@ -153,7 +181,7 @@ jobs:
           errors=0
 
           # Every package mentioned in README should have a pyproject.toml
-          for pkg in ave arena nail_monitor horizon canary ctf diagnostic integration rmap threatfeed; do
+          for pkg in ave arena nail_monitor horizon canary ctf diagnostic integration rmap threatfeed fleet shield nail_harness nail_security; do
             if [ ! -f "$pkg/pyproject.toml" ]; then
               echo "::error::Package $pkg referenced but missing pyproject.toml"
               errors=$((errors + 1))
