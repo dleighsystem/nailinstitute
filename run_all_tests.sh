@@ -12,6 +12,25 @@ BASE="$(cd "$(dirname "$0")" && pwd)"
 TOTAL=0
 FAILED=0
 
+LOCAL_PACKAGE_PATHS=(
+    "$BASE"
+    "$BASE/rmap"
+    "$BASE/ave"
+    "$BASE/canary"
+    "$BASE/arena"
+    "$BASE/ctf"
+    "$BASE/diagnostic"
+    "$BASE/horizon"
+    "$BASE/integration"
+    "$BASE/threatfeed"
+    "$BASE/nail_monitor"
+    "$BASE/fleet"
+    "$BASE/shield"
+    "$BASE/nail_harness"
+)
+LOCAL_PYTHONPATH="$(IFS=:; echo "${LOCAL_PACKAGE_PATHS[*]}")"
+export PYTHONPATH="${LOCAL_PYTHONPATH}${PYTHONPATH:+:$PYTHONPATH}"
+
 run_suite() {
     local pkg=$1
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -41,6 +60,11 @@ run_suite "diagnostic"
 run_suite "horizon"
 run_suite "integration"
 run_suite "threatfeed"
+run_suite "nail_monitor"
+run_suite "fleet"
+run_suite "shield"
+run_suite "nail_security"
+run_suite "scripts"
 
 echo "═══════════════════════════════════════════════════════════════"
 if [ $FAILED -eq 0 ]; then
