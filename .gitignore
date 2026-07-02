@@ -26,6 +26,12 @@ Thumbs.db
 # Experiment logs (large, regenerable)
 experiments/logs/
 
+# Arena runtime state (per-machine; checkpoint.json churns every battle run)
+arena/logs/
+
+# Per-user Claude Code settings (settings.json is shareable; .local is not)
+.claude/settings.local.json
+
 # ChromaDB databases (regenerable)
 experiments/chroma_*/
 experiments/exp1_memory_pollution/chroma_*/
