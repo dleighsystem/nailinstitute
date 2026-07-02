@@ -21,6 +21,7 @@ unsloth_compiled_cache/
 harness-reference/
 remote-kernel/
 notebooks/
+scripts/local_llm/
 *.pt
 *.bin
 *.safetensors
