@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "nail-harness"
@@ -42,16 +42,11 @@ Homepage = "https://neuravant.ai"
 Repository = "https://github.com/dleighsystem/NAIL"
 Documentation = "https://neuravant.ai/docs"
 
-[tool.hatch.build.targets.wheel]
-packages = ["."]
+# Flat layout: the project root directory *is* the nail_harness package (it holds
+# __init__.py and the modules directly). Map the package name onto "." so setuptools'
+# PEP 660 editable finder can expose `import nail_harness` without a src/ move.
+[tool.setuptools]
+packages = ["nail_harness"]
 
-[tool.hatch.build.targets.wheel.sources]
-"." = "nail_harness"
-
-[tool.hatch.build.targets.sdist]
-include = [
-    "*.py",
-    "harness.yaml",
-    "README.md",
-    "pyproject.toml",
-]
+[tool.setuptools.package-dir]
+nail_harness = "."

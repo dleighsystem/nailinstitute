@@ -14,6 +14,11 @@ test = ["pytest>=7"]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools.packages.find]
-include = ["nail_security*"]
-exclude = ["tests*"]
+# Flat layout: the project root directory *is* the nail_security package (it holds
+# __init__.py and the modules directly). Map the package name onto "." so setuptools'
+# PEP 660 editable finder can expose `import nail_security` without a src/ move.
+[tool.setuptools]
+packages = ["nail_security"]
+
+[tool.setuptools.package-dir]
+nail_security = "."
