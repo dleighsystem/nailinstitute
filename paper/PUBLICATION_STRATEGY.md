@@ -119,6 +119,12 @@
 - **PDF**: ✅ Generated (150KB)
 - **Extended journal version**: JAIR or ACM Computing Surveys (6-12 month timeline)
 
+### Paper 9: Compute/Cognition Entanglement and Somatic Starvation in Autonomous AI Agents
+**Primary Target: NeurIPS 2026** (Track: "Main Conference" or "Evaluations & Datasets")
+- **Why**: Explores the direct entanglement between hardware physics (silicon constraints) and semantic agent failure modes (cognitive integrity). Includes validation of the Somatic Hypervisor.
+- **Deadline**: Abstract May 4 / Full Paper May 6, 2026 AoE
+- **Backup**: IEEE SaTML 2027 / USENIX Security '27 Cycle 1
+
 ---
 
 ## ⚡ FOUR-WEEK SPRINT PLAN
@@ -298,6 +304,7 @@ This creates a discovery funnel: industry practitioners find the blog via search
 | Paper 6 (Taxonomy TR) | Multiple partial overlaps | Only comprehensive 13-pathology taxonomy |
 | Paper 7 (Framework CVEs) | No direct competitor yet | First systematic CVE analysis of agentic frameworks |
 | Paper 8 (Rogue Containment) | Partial overlaps (guardrail papers) | First unified seven-layer containment architecture |
+| Paper 9 (Somatic Starvation) | None (Traditional hardware models) | First physical-semantic entanglement & hypervisor proof |
 
 ---
 
