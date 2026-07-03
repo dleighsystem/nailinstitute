@@ -394,6 +394,46 @@ def create_app(
         )
         return JSONResponse(result)
 
+    @app.post("/v1/audit/tool-retrieval")
+    async def audit_tool_retrieval(request: Request):
+        """Audit a lazy/selective tool-loading snapshot for retrieval manipulation.
+
+        Body: {"agent": "<name>", "loaded_tools": [...],
+               "authorized_tools": [...]?, "required_tools": [...]?}
+
+        Runs ToolRetrievalIntegrityDetector (AVE-2026-0045) via the fleet. A
+        starvation/surfacing detection is auto-captured as a Canary incident and
+        flows into the AVE draft flywheel (see /admin/draft-cards).
+        """
+        body = await request.json()
+        agent_name = body.get("agent") or body.get("agent_name") or ""
+        if agent_name not in deployment.targets:
+            raise HTTPException(404, f"Agent '{agent_name}' not found")
+        if "loaded_tools" not in body:
+            raise HTTPException(400, "loaded_tools is required")
+
+        source_ip = request.client.host if request.client else "0.0.0.0"
+        result = deployment.fleet.process_tool_retrieval(
+            agent_name,
+            loaded_tools=body.get("loaded_tools"),
+            authorized_tools=body.get("authorized_tools"),
+            required_tools=body.get("required_tools"),
+            metadata={"source_ip": source_ip, "channel": "tool_retrieval_audit"},
+        )
+        if result is None:
+            raise HTTPException(501, "Tool-retrieval auditing unavailable (nail-monitor not installed)")
+
+        return JSONResponse({
+            "agent": agent_name,
+            "ave_id": "AVE-2026-0045",
+            "triggered": result.triggered,
+            "reason": result.metadata.get("reason"),
+            "signals": [s.value for s in result.signals],
+            "matched_rules": result.matched_rules,
+            "confidence": result.confidence,
+            "incidents_total": deployment.fleet.incident_log.count().get("total", 0),
+        })
+
     # ── Agent listing ───────────────────────────────────────────────
     @app.get("/agents")
     async def list_agents():
