@@ -77,14 +77,29 @@ class _Handler(BaseHTTPRequestHandler):
         log.debug("%s - %s", self.address_string(), fmt % args)
 
     # ── routing ────────────────────────────────────────────────
+    def _tenant(self) -> str | None:
+        """Server-authoritative tenant id from the X-NAIL-Org header (set by the
+        authenticating reverse proxy). Overrides any org in the request body."""
+        value = self.headers.get("X-NAIL-Org")
+        return value if value else None
+
     def do_GET(self):  # noqa: N802
-        if self.path == "/healthz":
+        from urllib.parse import urlparse, parse_qs
+        parsed = urlparse(self.path)
+        path = parsed.path
+        # A tenant may be pinned by header (proxy) or narrowed by ?org= query.
+        org = self._tenant() or (parse_qs(parsed.query).get("org", [None])[0])
+
+        if path == "/healthz":
             return self._json(HTTPStatus.OK, {"ok": True})
-        if self.path == "/v1/overview":
-            return self._json(HTTPStatus.OK, self._rollup.overview())
-        if self.path == "/v1/agents":
+        if path == "/v1/overview":
+            return self._json(HTTPStatus.OK, self._rollup.overview(org=org))
+        if path == "/v1/agents":
             return self._json(HTTPStatus.OK,
-                              {"agents": self._ingest.store.list_agents()})
+                              {"agents": self._ingest.store.list_agents(org=org)})
+        if path == "/v1/orgs":
+            return self._json(HTTPStatus.OK,
+                              {"orgs": self._ingest.store.list_orgs()})
         return self._json(HTTPStatus.NOT_FOUND, {"ok": False, "error": "not found"})
 
     def do_POST(self):  # noqa: N802
@@ -114,6 +129,9 @@ class _Handler(BaseHTTPRequestHandler):
         except Exception as e:
             return self._json(HTTPStatus.BAD_REQUEST,
                               {"ok": False, "error": f"reject: {e}"})
+        tenant = self._tenant()
+        if tenant:
+            ev.org = tenant  # proxy-asserted tenant wins over the body
         self._ingest.record(ev)
         return self._json(HTTPStatus.ACCEPTED,
                           {"ok": True, "event_id": ev.event_id})
@@ -122,6 +140,7 @@ class _Handler(BaseHTTPRequestHandler):
         if not isinstance(payload, list):
             return self._json(HTTPStatus.BAD_REQUEST,
                               {"ok": False, "error": "expected JSON array"})
+        tenant = self._tenant()
         accepted = 0
         rejected: list[dict] = []
         for i, item in enumerate(payload):
@@ -130,6 +149,8 @@ class _Handler(BaseHTTPRequestHandler):
             except Exception as e:
                 rejected.append({"index": i, "error": str(e)})
                 continue
+            if tenant:
+                ev.org = tenant
             self._ingest.record(ev)
             accepted += 1
         return self._json(HTTPStatus.ACCEPTED,
