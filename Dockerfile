@@ -33,6 +33,7 @@ COPY fleet/pyproject.toml fleet/pyproject.toml
 COPY shield/pyproject.toml shield/pyproject.toml
 COPY nail_harness/pyproject.toml nail_harness/pyproject.toml
 COPY nail_security/pyproject.toml nail_security/pyproject.toml
+COPY compliance/pyproject.toml compliance/pyproject.toml
 COPY arsenal/pyproject.toml arsenal/pyproject.toml
 COPY threatfeed/pyproject.toml threatfeed/pyproject.toml
 
@@ -54,6 +55,7 @@ RUN pip install --no-cache-dir \
     -e shield \
     -e nail_harness \
     -e nail_security \
+    -e compliance \
     -e arsenal \
     -e threatfeed
 # Test runner (the default CMD runs the suite; kept out of the package deps)
