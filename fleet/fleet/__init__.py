@@ -22,6 +22,7 @@ from .alerts import (
     Alert, AlertEngine, AlertRule,
     RateRule, RatioRule, PercentileRule, SilenceRule, SeverityRule,
 )
+from .detect import FleetPathologyScanner, PathologyFinding
 
 __all__ = [
     "Event", "Severity",
@@ -38,6 +39,7 @@ __all__ = [
     "Query", "NumericStats", "Percentiles",
     "Alert", "AlertEngine", "AlertRule",
     "RateRule", "RatioRule", "PercentileRule", "SilenceRule", "SeverityRule",
+    "FleetPathologyScanner", "PathologyFinding",
 ]
 
 __version__ = "0.4.0"
