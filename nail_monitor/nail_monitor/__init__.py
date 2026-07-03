@@ -136,6 +136,7 @@ from .detectors_v9 import (
     GoalDriftMonitorDetector,
     MemoryWriteFirewallDetector,
     ToolManifestIntegrityDetector,
+    ToolRetrievalIntegrityDetector,
 )
 from .flight_recorder import FlightRecorder, FlightRecorderError
 from .monitor import NailMonitor
@@ -218,6 +219,7 @@ __all__ = [
     "ToolManifestIntegrityDetector",
     "MemoryWriteFirewallDetector",
     "GoalDriftMonitorDetector",
+    "ToolRetrievalIntegrityDetector",
     "AgentPathologyRegistry",
     "PathologyDefinition",
     "DEFAULT_PATHOLOGY_REGISTRY",

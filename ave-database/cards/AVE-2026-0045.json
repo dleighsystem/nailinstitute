@@ -1,0 +1,66 @@
+{
+  "ave_id": "AVE-2026-0045",
+  "name": "Tool-Retrieval Manipulation",
+  "aliases": [
+    "Lazy Tool Loading Attack",
+    "Tool Retrieval Starvation",
+    "Selective Tool Surfacing"
+  ],
+  "category": "tool",
+  "severity": "high",
+  "status": "in_progress",
+  "summary": "Agents that cut context cost by retrieving only the tools relevant to the current task (lazy / selective tool loading) expose a new surface: the retrieved subset itself. An attacker who shapes the query or surrounding context can steer retrieval so a required safety/approval tool is never loaded (starvation) or an unauthorised, often high-risk, tool is surfaced into the working set (surfacing). No tool is poisoned and every loaded tool has clean metadata, so a full-manifest integrity scan stays silent — it can only inspect tools that were actually loaded.",
+  "mechanism": "Instead of placing every tool schema in the system prompt, the agent selects a subset per turn, typically via semantic retrieval over a tool registry. That selection step is (a) attacker-influenceable through the same untrusted context the agent already ingests (RAG chunks, tool output, user text), and (b) unmonitored by controls that assume the full manifest is present. Two failure modes result. Starvation: the retriever ranks a required guard/approval/validation tool below the cut-off, so the agent proceeds without the control and cannot fall back to a tool it never loaded. Surfacing: adversarial context nudges the retriever to load a high-risk-scope tool (shell, filesystem, network, secrets) the task never authorised. Because the manifest of each loaded tool is individually clean, manifest-integrity and signature checks pass.",
+  "blast_radius": "Silent bypass of tool-level safety controls. A starved approval tool means privileged actions execute without the gate that was designed to stop them; a surfaced high-risk tool grants capability outside the task's least-privilege envelope. In a multi-agent fleet the retrieval is semantic, so agents load divergent tool-sets for the same task, producing an inconsistent and unattestable capability surface (the tool-layer analogue of Semantic Fragmentation). Impact scales with autonomy: the more the fleet trusts retrieval to bound capability, the more a manipulated retrieval widens or narrows that bound unseen.",
+  "prerequisite": "An agent using lazy / selective (retrieved) tool loading rather than a fixed full manifest, with tool availability bounded by the retrieved subset and untrusted content able to influence the retrieval query or ranking. No canonical per-task required-tool set enforced.",
+  "environment": {
+    "frameworks": [
+      "any"
+    ],
+    "models_tested": [],
+    "multi_agent": false,
+    "tools_required": true,
+    "memory_required": false,
+    "rag_required": true,
+    "min_context_window": null
+  },
+  "evidence": [],
+  "defences": [
+    {
+      "name": "Tool Retrieval Integrity Monitor",
+      "layer": "diagnostic",
+      "effectiveness": "detective",
+      "rmap_module": "",
+      "nail_monitor_detector": "ToolRetrievalIntegrityDetector",
+      "notes": "Implemented: nail_monitor.detectors_v9.ToolRetrievalIntegrityDetector compares the per-turn loaded subset against a per-task required-tool set (fail-closed on starvation) and an authorised least-privilege registry (alert on surfacing; CRITICAL when the surfaced tool carries a high-risk scope: shell/filesystem/network/database/email/secrets/payments). Deterministic and metadata-driven; silent when no policy is configured so it does not false-fire."
+    },
+    {
+      "name": "Required-Tool Fail-Closed Policy",
+      "layer": "design",
+      "effectiveness": "preventive",
+      "rmap_module": "",
+      "nail_monitor_detector": "",
+      "notes": "Declare the safety/approval/validation tools each task type MUST have and refuse to act when any is absent from the retrieved subset, instead of trusting the retriever to have included them."
+    },
+    {
+      "name": "Least-Privilege Retrieval Allowlist",
+      "layer": "design",
+      "effectiveness": "mitigating",
+      "rmap_module": "",
+      "nail_monitor_detector": "",
+      "notes": "Bound the retrievable set to a task-scoped authorised allowlist and gate high-risk-scope tools behind explicit authorisation, so retrieval cannot surface capability outside the task envelope."
+    }
+  ],
+  "date_discovered": "2026-07",
+  "date_published": "2026-07-03",
+  "cwe_mapping": "CWE-693 (Protection Mechanism Failure), CWE-284 (Improper Access Control)",
+  "mitre_mapping": "",
+  "references": [],
+  "avss_score": null,
+  "poc": null,
+  "timeline": null,
+  "related_aves": [
+    "AVE-2026-0037"
+  ],
+  "contributor": "d.leigh"
+}

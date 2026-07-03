@@ -7,6 +7,7 @@ from nail_monitor.detectors_v9 import (
     GoalDriftMonitorDetector,
     MemoryWriteFirewallDetector,
     ToolManifestIntegrityDetector,
+    ToolRetrievalIntegrityDetector,
 )
 from nail_monitor.types import Observation
 
@@ -25,6 +26,10 @@ def test_registry_contains_v9_pathologies():
     assert tool_entry.detector == "ToolManifestIntegrityDetector"
     assert memory_entry.default_severity == Severity.CRITICAL
     assert any(item.pathology == PathologyType.GOAL_DRIFT for item in trajectory_entries)
+
+    retrieval_entry = registry.get(PathologyType.TOOL_RETRIEVAL_MANIPULATION)
+    assert retrieval_entry.detector == "ToolRetrievalIntegrityDetector"
+    assert retrieval_entry.default_severity == Severity.CRITICAL
 
 
 class TestToolManifestIntegrityDetector:
@@ -78,6 +83,79 @@ class TestToolManifestIntegrityDetector:
         assert alert is not None
         assert alert.severity == Severity.WARNING
         assert alert.metadata["reason"] == "unsigned_high_risk_tool"
+
+
+class TestToolRetrievalIntegrityDetector:
+    def test_critical_on_required_tool_starvation(self):
+        det = ToolRetrievalIntegrityDetector()
+
+        alert = det.observe(make_obs(
+            loaded_tools=["crm_search", "email_send"],
+            authorized_tools=["crm_search", "email_send", "approval_gate"],
+            required_tools=["approval_gate"],
+        ))
+
+        assert alert is not None
+        assert alert.severity == Severity.CRITICAL
+        assert alert.pathology == PathologyType.TOOL_RETRIEVAL_MANIPULATION
+        assert alert.metadata["reason"] == "required_tool_starved"
+        assert "approval_gate" in alert.metadata["missing_tools"]
+
+    def test_critical_on_unauthorized_high_risk_tool_surfaced(self):
+        det = ToolRetrievalIntegrityDetector()
+
+        alert = det.observe(make_obs(
+            loaded_tools=[
+                {"name": "crm_search", "scopes": ["crm"]},
+                {"name": "shell_exec", "scopes": ["shell"]},
+            ],
+            authorized_tools=[{"name": "crm_search", "scopes": ["crm"]}],
+        ))
+
+        assert alert is not None
+        assert alert.severity == Severity.CRITICAL
+        assert alert.metadata["reason"] == "unauthorized_tool_surfaced"
+        assert "shell_exec" in alert.metadata["unauthorized_tools"]
+        assert "shell" in alert.metadata["high_risk_scopes"]
+
+    def test_warning_on_unauthorized_low_risk_tool_surfaced(self):
+        det = ToolRetrievalIntegrityDetector()
+
+        alert = det.observe(make_obs(
+            loaded_tools=[{"name": "weather", "scopes": ["read"]}],
+            authorized_tools=[{"name": "crm_search", "scopes": ["crm"]}],
+        ))
+
+        assert alert is not None
+        assert alert.severity == Severity.WARNING
+        assert alert.metadata["reason"] == "unauthorized_tool_surfaced"
+
+    def test_clean_when_required_present_and_within_authorized(self):
+        det = ToolRetrievalIntegrityDetector()
+
+        assert det.observe(make_obs(
+            loaded_tools=["crm_search", "approval_gate"],
+            authorized_tools=["crm_search", "approval_gate", "email_send"],
+            required_tools=["approval_gate"],
+        )) is None
+
+    def test_silent_without_configured_policy(self):
+        det = ToolRetrievalIntegrityDetector()
+
+        # No authorised set and no required set => no policy => no false positive,
+        # even when a high-risk tool is in the loaded subset.
+        assert det.observe(make_obs(loaded_tools=["anything", "shell_exec"])) is None
+
+    def test_policy_from_constructor(self):
+        det = ToolRetrievalIntegrityDetector(
+            authorized_tools=["crm_search"],
+            required_tools=["approval_gate"],
+        )
+
+        alert = det.observe(make_obs(loaded_tools=["crm_search"]))
+
+        assert alert is not None
+        assert alert.metadata["reason"] == "required_tool_starved"
 
 
 class TestMemoryWriteFirewallDetector:
@@ -217,6 +295,7 @@ def test_nail_monitor_exposes_v9_detectors_and_wrappers():
         "tool_manifest_integrity",
         "memory_write_firewall",
         "goal_drift_monitor",
+        "tool_retrieval_integrity",
     }
 
     alerts = monitor.observe_memory_write(

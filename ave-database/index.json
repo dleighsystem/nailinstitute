@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-06-08T12:38:32Z",
-  "total_cards": 44,
+  "generated_at": "2026-07-03T08:11:42Z",
+  "total_cards": 45,
   "cards": [
     {
       "ave_id": "AVE-2025-0001",
@@ -310,6 +310,13 @@
       "category": "structural",
       "severity": "high",
       "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2026-0045",
+      "name": "Tool-Retrieval Manipulation",
+      "category": "tool",
+      "severity": "high",
+      "status": "in_progress"
     }
   ]
 }

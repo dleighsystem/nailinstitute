@@ -250,6 +250,153 @@ class ToolManifestIntegrityDetector(BaseDetector):
         self._baseline_scopes = {}
 
 
+# ── Tool retrieval integrity (lazy / selective tool loading) ─────────────────
+
+def _as_tool_list(raw: Any) -> list[Any]:
+    """Normalise a loaded/authorised/required tool spec into a flat list."""
+    if raw is None:
+        return []
+    if isinstance(raw, dict):
+        items: list[Any] = []
+        for name, spec in raw.items():
+            if isinstance(spec, dict):
+                manifest = dict(spec)
+                manifest.setdefault("name", str(name))
+                items.append(manifest)
+            else:
+                items.append({"name": str(name)})
+        return items
+    if isinstance(raw, (str, bytes)):
+        return [raw]
+    if isinstance(raw, Iterable):
+        return list(raw)
+    return [raw]
+
+
+def _tool_name(item: Any) -> str:
+    """Stable, server-agnostic tool identity (last path segment, lowercased)."""
+    if isinstance(item, dict):
+        name = _first_present(item, ("name", "tool_name", "id"), "")
+    else:
+        name = item
+    name = str(name).strip().lower()
+    if "/" in name:
+        name = name.rsplit("/", 1)[-1]
+    return name
+
+
+def _scopes_of(item: Any) -> set[str]:
+    if not isinstance(item, dict):
+        return set()
+    raw = _first_present(item, ("scopes", "permissions", "capabilities"), [])
+    if isinstance(raw, str):
+        raw = re.split(r"[,;\s]+", raw)
+    if not isinstance(raw, Iterable) or isinstance(raw, (str, bytes)):
+        return set()
+    return {str(x).strip().lower() for x in raw if str(x).strip()}
+
+
+class ToolRetrievalIntegrityDetector(BaseDetector):
+    """Detect manipulation of lazy / selective (retrieved) tool loading.
+
+    Modern agents cut context cost by retrieving only the tools relevant to the
+    current task instead of loading the full manifest. That subset is an attack
+    surface a full-manifest scan cannot see:
+
+      * starvation — a required safety/approval/validation tool is not retrieved,
+        so the agent proceeds without it (no poisoned tool, an *absent* one);
+      * surfacing — a tool the task never authorised (often high-risk scope) is
+        pulled into the loaded subset.
+
+    Metadata keys (per observation):
+      * loaded_tools     — the tool subset actually loaded this turn (ids or
+                           manifest dicts). Presence of this key activates the
+                           detector; without it the detector stays silent.
+      * authorized_tools — the least-privilege set the agent/task may load (ids
+                           or manifests; supplies scope info). May instead be
+                           fixed once at construction.
+      * required_tools   — ids that MUST be loaded for this task (safety/approval).
+
+    With neither authorized_tools nor required_tools configured the detector is
+    silent by design (no policy => no false positives).
+    """
+
+    HIGH_RISK_SCOPES = {"network", "filesystem", "shell", "database", "email", "secrets", "payments"}
+
+    def __init__(
+        self,
+        *,
+        authorized_tools: Any = None,
+        required_tools: Any = None,
+        enabled: bool = True,
+    ) -> None:
+        super().__init__(
+            name="ToolRetrievalIntegrityDetector",
+            pathology=PathologyType.TOOL_RETRIEVAL_MANIPULATION,
+            enabled=enabled,
+        )
+        self._default_authorized = self._index(authorized_tools)
+        self._default_required = {_tool_name(t) for t in _as_tool_list(required_tools)}
+
+    @staticmethod
+    def _index(raw: Any) -> dict[str, set[str]]:
+        """Map tool name -> scope set for a loaded/authorised spec."""
+        return {_tool_name(entry): _scopes_of(entry) for entry in _as_tool_list(raw)}
+
+    def check(self) -> Optional[Alert]:
+        obs = self.observations[-1]
+        meta = obs.metadata
+        if "loaded_tools" not in meta:
+            return None
+
+        loaded = self._index(meta.get("loaded_tools"))
+        authorized = self._index(meta.get("authorized_tools")) or self._default_authorized
+        required = {_tool_name(t) for t in _as_tool_list(meta.get("required_tools"))} or self._default_required
+
+        # 1) Starvation — a required tool was not retrieved into the loaded subset.
+        missing = sorted(required - set(loaded))
+        if missing:
+            return Alert(
+                detector=self.name,
+                pathology=self.pathology,
+                severity=Severity.CRITICAL,
+                message=f"Required tool(s) not retrieved for task: {missing}",
+                metric_value=float(len(missing)),
+                threshold=0.0,
+                metadata={
+                    "reason": "required_tool_starved",
+                    "missing_tools": missing,
+                    "loaded_tools": sorted(loaded),
+                },
+            )
+
+        # 2) Surfacing — a loaded tool is outside the authorised least-privilege set.
+        if authorized:
+            unauthorized = sorted(set(loaded) - set(authorized))
+            if unauthorized:
+                risky = sorted({
+                    scope
+                    for tool in unauthorized
+                    for scope in loaded.get(tool, set())
+                    if scope in self.HIGH_RISK_SCOPES
+                })
+                severity = Severity.CRITICAL if risky else Severity.WARNING
+                return Alert(
+                    detector=self.name,
+                    pathology=self.pathology,
+                    severity=severity,
+                    message=f"Unauthorised tool(s) surfaced by retrieval: {unauthorized}",
+                    metric_value=float(len(unauthorized)),
+                    threshold=0.0,
+                    metadata={
+                        "reason": "unauthorized_tool_surfaced",
+                        "unauthorized_tools": unauthorized,
+                        "high_risk_scopes": risky,
+                    },
+                )
+        return None
+
+
 class MemoryWriteFirewallDetector(BaseDetector):
     """Detect risky long-term memory writes before trust can be laundered.
 

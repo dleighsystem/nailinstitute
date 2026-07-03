@@ -149,6 +149,32 @@ DEFAULT_PATHOLOGY_REGISTRY = AgentPathologyRegistry(
             default_severity=Severity.WARNING,
             references=("agentic-misalignment", "trajectory-monitoring"),
         ),
+        PathologyDefinition(
+            pathology=PathologyType.TOOL_RETRIEVAL_MANIPULATION,
+            name="Tool Retrieval Manipulation",
+            category="control_plane",
+            detector="ToolRetrievalIntegrityDetector",
+            description=(
+                "Lazy/selective tool loading is steered so a required safety tool is "
+                "never retrieved (starvation) or an unauthorised, often high-risk, tool "
+                "is surfaced into the loaded subset — a failure a full-manifest scan "
+                "cannot see because it only inspects tools that were loaded."
+            ),
+            signals=(
+                "required/approval tool absent from the loaded subset",
+                "loaded tool outside the authorised least-privilege set",
+                "high-risk scope (shell/network/secrets/...) surfaced outside task scope",
+                "retrieved tool-set diverges from the task baseline",
+            ),
+            remedies=(
+                "declare required tools per task and fail closed when absent",
+                "allowlist retrievable tools to a least-privilege authorised set",
+                "gate high-risk-scope tools behind explicit authorisation",
+                "attest the loaded subset per turn against the authorised registry",
+            ),
+            default_severity=Severity.CRITICAL,
+            references=("AVE-2026-0045", "mcp-tool-retrieval", "least-privilege-tools"),
+        ),
     ]
 )
 

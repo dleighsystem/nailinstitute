@@ -52,6 +52,7 @@ from .detectors_v9 import (
     GoalDriftMonitorDetector,
     MemoryWriteFirewallDetector,
     ToolManifestIntegrityDetector,
+    ToolRetrievalIntegrityDetector,
 )
 from .types import Alert, Observation, Severity
 
@@ -122,6 +123,7 @@ class NailMonitor:
         enable_tool_manifest_integrity: bool = True,
         enable_memory_write_firewall: bool = True,
         enable_goal_drift_monitor: bool = True,
+        enable_tool_retrieval_integrity: bool = True,
         log_alerts: bool = True,
         alert_log_path: Optional[str] = None,
     ):
@@ -208,6 +210,8 @@ class NailMonitor:
             self.detectors["memory_write_firewall"] = MemoryWriteFirewallDetector()
         if enable_goal_drift_monitor:
             self.detectors["goal_drift_monitor"] = GoalDriftMonitorDetector()
+        if enable_tool_retrieval_integrity:
+            self.detectors["tool_retrieval_integrity"] = ToolRetrievalIntegrityDetector()
 
         if log_alerts:
             logging.basicConfig(level=logging.INFO)
@@ -469,6 +473,33 @@ class NailMonitor:
             output="",
             round_num=round_num,
             metadata={"tool_manifest": manifest},
+        )
+
+    def observe_tool_retrieval(
+        self,
+        agent_name: str,
+        *,
+        loaded_tools,
+        authorized_tools=None,
+        required_tools=None,
+        round_num: int = 0,
+    ) -> list[Alert]:
+        """Record one lazy/selective tool-loading snapshot for retrieval-integrity monitoring.
+
+        ``loaded_tools`` is the subset actually retrieved this turn; optional
+        ``authorized_tools`` (least-privilege set) and ``required_tools``
+        (safety/approval tools) drive the surfacing and starvation checks.
+        """
+        metadata: dict = {"loaded_tools": loaded_tools}
+        if authorized_tools is not None:
+            metadata["authorized_tools"] = authorized_tools
+        if required_tools is not None:
+            metadata["required_tools"] = required_tools
+        return self.observe(
+            agent_name=agent_name,
+            output="",
+            round_num=round_num,
+            metadata=metadata,
         )
 
     def observe_memory_write(
