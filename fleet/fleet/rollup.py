@@ -40,6 +40,13 @@ class RollUp:
             c[ev.severity] += 1
         return dict(c)
 
+    def by_org(self, **filters: Any) -> dict[str, int]:
+        """Event counts grouped by organisation (multi-tenant fleet view)."""
+        c: Counter[str] = Counter()
+        for ev in self.store.query_events(**filters):
+            c[ev.org] += 1
+        return dict(c)
+
     # ── derived ────────────────────────────────────────────────
     def top_tools(self, *, kind: str = "arsenal.deny",
                   attr_key: str = "tool",

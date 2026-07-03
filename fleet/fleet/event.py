@@ -36,6 +36,7 @@ class Event:
     ts: float = 0.0
     attrs: dict[str, Any] = field(default_factory=dict)
     event_id: str = ""
+    org: str = ""   # tenant / organisation id — "" is the default (single-tenant) bucket
 
     def __post_init__(self) -> None:
         if not self.ts:
@@ -53,6 +54,7 @@ class Event:
         return {
             "event_id": self.event_id,
             "agent_id": self.agent_id,
+            "org": self.org,
             "kind": self.kind,
             "severity": self.severity,
             "ts": self.ts,
@@ -71,6 +73,7 @@ class Event:
             ts=float(d.get("ts") or 0.0),
             attrs=dict(d.get("attrs") or {}),
             event_id=str(d.get("event_id", "")),
+            org=str(d.get("org", "")),
         )
 
     @classmethod

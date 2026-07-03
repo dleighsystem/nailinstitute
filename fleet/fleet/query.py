@@ -86,14 +86,15 @@ class Query:
              window_s: float = 60.0,
              now: float | None = None,
              severity: str | None = None,
-             agent_id: str | None = None) -> float:
+             agent_id: str | None = None,
+             org: str | None = None) -> float:
         """Events per second over the trailing `window_s` window."""
         if window_s <= 0:
             raise ValueError("window_s must be > 0")
         ref = time.time() if now is None else now
         since = ref - window_s
         evs = self.store.query_events(
-            kind=kind, severity=severity, agent_id=agent_id,
+            kind=kind, severity=severity, agent_id=agent_id, org=org,
             since=since, until=ref,
         )
         return len(evs) / window_s
@@ -102,12 +103,13 @@ class Query:
               window_s: float | None = None,
               now: float | None = None,
               severity: str | None = None,
-              agent_id: str | None = None) -> int:
+              agent_id: str | None = None,
+              org: str | None = None) -> int:
         ref = time.time() if now is None else now
         since = (ref - window_s) if window_s else None
         until = ref if window_s else None
         return len(self.store.query_events(
-            kind=kind, severity=severity, agent_id=agent_id,
+            kind=kind, severity=severity, agent_id=agent_id, org=org,
             since=since, until=until,
         ))
 

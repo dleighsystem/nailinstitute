@@ -16,7 +16,7 @@ class Ingest:
 
     def record(self, event: Event) -> Event:
         self.store.insert_event(event)
-        self.store.upsert_agent(event.agent_id, event.ts)
+        self.store.upsert_agent(event.agent_id, event.ts, org=event.org)
         return event
 
     def record_many(self, events: Iterable[Event]) -> int:
