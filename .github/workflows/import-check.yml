@@ -42,7 +42,8 @@ jobs:
             -e shield/ \
             -e nail_harness/ \
             -e nail_security/ \
-            -e arsenal/
+            -e arsenal/ \
+            -e compliance/
 
       - name: Verify imports
         # Keep the repo root off sys.path: bare package dirs (canary/, ave/, ...)
@@ -68,6 +69,7 @@ jobs:
               'fleet': [],
               'shield': [],
               'nail_security': ['NailSecurity', 'ThreatLevel'],
+              'compliance': ['DEFAULT_REGISTRY', 'evaluate'],
           }
 
           submodules = [
@@ -84,6 +86,7 @@ jobs:
               'fleet.ingest',
               'shield.pipeline',
               'nail_security.security',
+              'compliance.registry',
           ]
 
           for pkg_name, expected_attrs in packages.items():
@@ -138,6 +141,7 @@ jobs:
           - shield
           - nail_security
           - nail_harness
+          - compliance
           - scripts
 
     steps:
@@ -166,7 +170,8 @@ jobs:
             -e shield/ \
             -e nail_harness/ \
             -e nail_security/ \
-            -e arsenal/
+            -e arsenal/ \
+            -e compliance/
           pip install pytest pytest-asyncio
 
       - name: Run tests
@@ -186,7 +191,7 @@ jobs:
           errors=0
 
           # Every package mentioned in README should have a pyproject.toml
-          for pkg in ave arena nail_monitor horizon canary ctf diagnostic integration rmap threatfeed fleet shield nail_harness nail_security; do
+          for pkg in ave arena nail_monitor horizon canary ctf diagnostic integration rmap threatfeed fleet shield nail_harness nail_security compliance; do
             if [ ! -f "$pkg/pyproject.toml" ]; then
               echo "::error::Package $pkg referenced but missing pyproject.toml"
               errors=$((errors + 1))

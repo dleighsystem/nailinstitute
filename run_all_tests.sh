@@ -27,6 +27,7 @@ LOCAL_PACKAGE_PATHS=(
     "$BASE/fleet"
     "$BASE/shield"
     "$BASE/nail_harness"
+    "$BASE/compliance"
 )
 LOCAL_PYTHONPATH="$(IFS=:; echo "${LOCAL_PACKAGE_PATHS[*]}")"
 export PYTHONPATH="${LOCAL_PYTHONPATH}${PYTHONPATH:+:$PYTHONPATH}"
@@ -65,6 +66,7 @@ run_suite "fleet"
 run_suite "shield"
 run_suite "nail_security"
 run_suite "nail_harness"
+run_suite "compliance"
 run_suite "scripts"
 
 echo "═══════════════════════════════════════════════════════════════"
