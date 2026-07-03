@@ -513,6 +513,62 @@ class TestFleet:
         )
         assert len(fleet.incident_log) >= 1
 
+    def test_process_tool_retrieval_starvation_captures_incident(self):
+        fleet = Fleet.standard()
+        fleet.deploy()
+        before = len(fleet.incident_log)
+        result = fleet.process_tool_retrieval(
+            "support-bot-7",
+            loaded_tools=["crm_search"],
+            authorized_tools=["crm_search", "approval_gate"],
+            required_tools=["approval_gate"],
+        )
+        assert result is not None and result.triggered
+        assert ThreatSignal.TOOL_ABUSE in result.signals
+        assert result.metadata["reason"] == "required_tool_starved"
+        assert result.metadata["ave_id"] == "AVE-2026-0045"
+        assert len(fleet.incident_log) == before + 1
+
+    def test_process_tool_retrieval_surfacing_high_risk(self):
+        fleet = Fleet.standard()
+        fleet.deploy()
+        result = fleet.process_tool_retrieval(
+            "support-bot-7",
+            loaded_tools=[
+                {"name": "crm_search", "scopes": ["crm"]},
+                {"name": "shell_exec", "scopes": ["shell"]},
+            ],
+            authorized_tools=[{"name": "crm_search", "scopes": ["crm"]}],
+        )
+        assert result is not None and result.triggered
+        assert result.metadata["reason"] == "unauthorized_tool_surfaced"
+        assert "shell" in result.metadata["high_risk_scopes"]
+
+    def test_process_tool_retrieval_aligned_no_incident(self):
+        fleet = Fleet.standard()
+        fleet.deploy()
+        before = len(fleet.incident_log)
+        result = fleet.process_tool_retrieval(
+            "support-bot-7",
+            loaded_tools=["crm_search", "approval_gate"],
+            authorized_tools=["crm_search", "approval_gate"],
+            required_tools=["approval_gate"],
+        )
+        assert result is not None and not result.triggered
+        assert len(fleet.incident_log) == before
+
+    def test_tool_retrieval_incident_feeds_ave_flywheel(self):
+        fleet = Fleet.standard()
+        fleet.deploy()
+        fleet.process_tool_retrieval(
+            "support-bot-7",
+            loaded_tools=["crm_search"],
+            required_tools=["approval_gate"],
+        )
+        incident = fleet.incident_log.all_incidents()[-1]
+        assert incident.suggested_ave_category == "tool"
+        assert len(fleet.incident_log.draft_ave_cards()) >= 1
+
     def test_process_response_lure_leak(self):
         fleet = Fleet.minimal()
         fleet.deploy()
