@@ -23,6 +23,7 @@ Usage:
 """
 from __future__ import annotations
 
+import json
 import time
 from dataclasses import dataclass, field, asdict
 from typing import Any, Iterable, Protocol, runtime_checkable
@@ -363,3 +364,38 @@ class OrgPathologyAlerter:
                     threshold=threshold, severity=self.severity, killed=killed,
                 ))
         return alerts
+
+
+class WebhookKillSwitch:
+    """A ready-made ``kill_switch`` that POSTs a breach to a cohort-incident endpoint.
+
+    Wire into ``OrgPathologyAlerter(kill_switch=WebhookKillSwitch(url))``. On a
+    breach it POSTs ``{org, pathology, count, ts}`` as JSON; a non-2xx or transport
+    error raises, so the alert records ``killed=False``. This is the in-repo binding
+    to an external cohort escalation / key-revocation endpoint (e.g. Neuravant
+    ``/api/internal/cohort-incident``). ``poster`` is injectable for testing.
+    """
+
+    def __init__(self, url: str, *, timeout_s: float = 5.0,
+                 headers: dict[str, str] | None = None, poster=None) -> None:
+        self.url = url
+        self.timeout_s = timeout_s
+        self.headers = dict(headers or {})
+        self._poster = poster  # (url, data: bytes, headers: dict, timeout: float) -> int status
+
+    def __call__(self, org: str, pathology: str, count: int) -> None:
+        payload = json.dumps(
+            {"org": org, "pathology": pathology, "count": count, "ts": time.time()},
+            separators=(",", ":"),
+        ).encode("utf-8")
+        headers = {"Content-Type": "application/json", **self.headers}
+        if self._poster is not None:
+            status = self._poster(self.url, payload, headers, self.timeout_s)
+        else:
+            import urllib.request
+            req = urllib.request.Request(self.url, data=payload, method="POST",
+                                         headers=headers)
+            with urllib.request.urlopen(req, timeout=self.timeout_s) as resp:
+                status = resp.status
+        if not (200 <= int(status) < 300):
+            raise RuntimeError(f"kill-switch webhook returned HTTP {status}")

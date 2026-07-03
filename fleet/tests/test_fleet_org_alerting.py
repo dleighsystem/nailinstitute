@@ -1,6 +1,8 @@
 """Per-organisation pathology alerting + kill-switch."""
 
-from fleet.alerts import OrgPathologyAlerter
+import json
+
+from fleet.alerts import OrgPathologyAlerter, WebhookKillSwitch
 from fleet.event import Event
 from fleet.ingest import Ingest
 from fleet.store import Store
@@ -65,3 +67,40 @@ def test_no_alerts_on_benign_fleet():
     store = Store()
     Ingest(store).record(Event(agent_id="a", org="acme", kind="heartbeat", attrs={}))
     assert OrgPathologyAlerter(store, default_threshold=1).evaluate() == []
+
+
+def test_webhook_kill_switch_posts_breach():
+    sent = []
+
+    def poster(url, data, headers, timeout):
+        sent.append((url, json.loads(data.decode()), headers))
+        return 200
+
+    ks = WebhookKillSwitch("https://esc.example/cohort-incident", poster=poster)
+    ks("acme", "tool_retrieval_manipulation", 3)
+
+    url, body, headers = sent[0]
+    assert url == "https://esc.example/cohort-incident"
+    assert body["org"] == "acme" and body["pathology"] == "tool_retrieval_manipulation"
+    assert body["count"] == 3
+    assert headers["Content-Type"] == "application/json"
+
+
+def test_webhook_kill_switch_wires_into_alerter():
+    sent = []
+    ks = WebhookKillSwitch(
+        "https://esc.example/hook",
+        poster=lambda url, data, headers, timeout: (sent.append(json.loads(data.decode())), 200)[1],
+    )
+    alerts = OrgPathologyAlerter(_seeded(), default_threshold=1, kill_switch=ks).evaluate()
+    assert all(a.killed for a in alerts)
+    assert {s["org"] for s in sent} == {"acme", "globex"}
+
+
+def test_webhook_non_2xx_marks_alert_not_killed():
+    ks = WebhookKillSwitch(
+        "https://esc.example/hook",
+        poster=lambda url, data, headers, timeout: 503,
+    )
+    alerts = OrgPathologyAlerter(_seeded(), default_threshold=1, kill_switch=ks).evaluate()
+    assert alerts and all(a.killed is False for a in alerts)   # escalation down, alert still raised
