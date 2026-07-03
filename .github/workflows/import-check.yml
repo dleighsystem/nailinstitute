@@ -137,6 +137,7 @@ jobs:
           - fleet
           - shield
           - nail_security
+          - nail_harness
           - scripts
 
     steps:

@@ -64,6 +64,7 @@ run_suite "nail_monitor"
 run_suite "fleet"
 run_suite "shield"
 run_suite "nail_security"
+run_suite "nail_harness"
 run_suite "scripts"
 
 echo "═══════════════════════════════════════════════════════════════"
