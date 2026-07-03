@@ -20,7 +20,7 @@ from typing import Any, Optional
 
 from .lure import Lure
 from .agent import CanaryAgent, AgentPersona
-from .trapwire import TrapWire, TripResult
+from .trapwire import TrapWire, TripResult, ThreatSignal
 from .incident import IncidentLog, Incident, Severity
 
 
@@ -230,6 +230,68 @@ class Fleet:
         if result.triggered and self.auto_capture:
             self.incident_log.capture(agent, result, severity=Severity.CRITICAL)
 
+        return result
+
+    def process_tool_retrieval(
+        self,
+        agent_name: str,
+        *,
+        loaded_tools: Any,
+        authorized_tools: Any = None,
+        required_tools: Any = None,
+        metadata: dict[str, Any] | None = None,
+    ) -> Optional[TripResult]:
+        """Audit one lazy/selective tool-loading snapshot for retrieval manipulation.
+
+        Runs nail_monitor's ToolRetrievalIntegrityDetector (AVE-2026-0045) over the
+        retrieved tool subset. On a starvation/surfacing detection it auto-captures a
+        Canary incident, which feeds the AVE draft flywheel via ``draft_ave_cards()``
+        — turning a live tool-retrieval failure into a candidate pathology card.
+
+        nail_monitor is an optional dependency: if it is not installed this returns
+        ``None`` and the fleet degrades gracefully.
+        """
+        agent = self.get_agent(agent_name)
+        if agent is None:
+            raise ValueError(f"No agent named {agent_name!r} in fleet")
+
+        try:
+            from nail_monitor.detectors_v9 import ToolRetrievalIntegrityDetector
+            from nail_monitor.types import Observation
+            from nail_monitor.types import Severity as MonitorSeverity
+        except ImportError:
+            return None
+
+        detector = ToolRetrievalIntegrityDetector(
+            authorized_tools=authorized_tools,
+            required_tools=required_tools,
+        )
+        alert = detector.observe(
+            Observation(agent_name=agent_name, output="", metadata={"loaded_tools": loaded_tools})
+        )
+
+        if alert is None:
+            return TripResult(triggered=False, metadata=dict(metadata or {}))
+
+        severity = (
+            Severity.CRITICAL if alert.severity == MonitorSeverity.CRITICAL else Severity.MEDIUM
+        )
+        result = TripResult(
+            triggered=True,
+            signals=[ThreatSignal.TOOL_ABUSE],
+            matched_rules=[alert.message],
+            confidence=1.0 if severity == Severity.CRITICAL else 0.6,
+            raw_text=alert.message,
+            metadata={
+                **(metadata or {}),
+                **alert.metadata,
+                "detector": alert.detector,
+                "pathology": alert.pathology.value,
+                "ave_id": "AVE-2026-0045",
+            },
+        )
+        if self.auto_capture:
+            self.incident_log.capture(agent, result, severity=severity)
         return result
 
     # ── Reporting ───────────────────────────────────────────────────
