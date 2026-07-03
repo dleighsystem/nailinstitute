@@ -49,6 +49,7 @@ CATEGORY_TO_DIMENSION: dict[AttackCategory, RiskDimension] = {
     AttackCategory.INDIRECT_INJECTION:     RiskDimension.HARDENING,
     AttackCategory.JAILBREAK:              RiskDimension.HARDENING,
     AttackCategory.TOOL_POISONING:         RiskDimension.HARDENING,
+    AttackCategory.TOOL_RETRIEVAL_MANIPULATION: RiskDimension.HARDENING,
     # Operations
     AttackCategory.TOKEN_EMBEZZLEMENT:     RiskDimension.OPERATIONS,
     AttackCategory.RECURSIVE_EDOS:         RiskDimension.OPERATIONS,

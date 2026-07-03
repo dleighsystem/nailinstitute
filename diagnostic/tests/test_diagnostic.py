@@ -87,8 +87,8 @@ class TestAttackLibrary:
 
 
 class TestAttackCategory:
-    def test_24_categories(self):
-        assert len(AttackCategory) == 24
+    def test_25_categories(self):
+        assert len(AttackCategory) == 25
 
     def test_values_are_snake_case(self):
         for c in AttackCategory:
@@ -99,6 +99,12 @@ class TestAttackCategory:
         """Every category must map to a dimension."""
         for c in AttackCategory:
             assert c in CATEGORY_TO_DIMENSION, f"{c} not in mapping"
+
+    def test_tool_retrieval_manipulation_prices_into_hardening(self):
+        """AVE-2026-0045 prices under HARDENING with scenarios in the library."""
+        assert CATEGORY_TO_DIMENSION[AttackCategory.TOOL_RETRIEVAL_MANIPULATION] == RiskDimension.HARDENING
+        scenarios = [s for s in ATTACK_LIBRARY if s.category == AttackCategory.TOOL_RETRIEVAL_MANIPULATION]
+        assert {s.scenario_id for s in scenarios} == {"ATK-H05", "ATK-H06"}
 
 
 # ═══════════════════════════════════════════════════════════════════
