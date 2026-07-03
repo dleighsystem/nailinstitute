@@ -15,6 +15,7 @@ Design philosophy (from Anthropic's "Building Effective Agents"):
 from __future__ import annotations
 
 import json
+import re
 import time
 import uuid
 from dataclasses import dataclass, field
@@ -53,6 +54,39 @@ class Tool:
         return f"**{self.name}**: {self.description}{params_desc}"
 
 
+_TOOL_STOPWORDS = {
+    "the", "and", "for", "with", "you", "your", "use", "using", "please",
+    "can", "get", "this", "that", "from", "into", "any", "all", "how", "what",
+}
+
+
+def _tool_tokens(text: str) -> set[str]:
+    return {
+        w for w in re.findall(r"[a-z0-9_]+", (text or "").lower())
+        if len(w) > 2 and w not in _TOOL_STOPWORDS
+    }
+
+
+def lexical_tool_retriever(prompt: str, tools: list["Tool"], *, max_tools: int = 0) -> list["Tool"]:
+    """Deterministic, dependency-free tool retriever.
+
+    Scores each tool by lexical overlap between the prompt and the tool's
+    name + description, returns the positively-scored tools (highest first,
+    then by name for stability), capped at ``max_tools`` when > 0. No embedding
+    model required, so the default lazy-loading path stays offline and
+    reproducible; inject ``AgentOptions.tool_retriever`` for a semantic tier.
+    """
+    prompt_tokens = _tool_tokens(prompt)
+    scored: list[tuple[int, "Tool"]] = []
+    for tool in tools:
+        overlap = prompt_tokens & _tool_tokens(tool.name.replace("_", " ") + " " + tool.description)
+        if overlap:
+            scored.append((len(overlap), tool))
+    scored.sort(key=lambda pair: (-pair[0], pair[1].name))
+    selected = [tool for _, tool in scored]
+    return selected[:max_tools] if max_tools > 0 else selected
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 # Agent Options (equivalent to ClaudeAgentOptions)
 # ═══════════════════════════════════════════════════════════════════════════
@@ -79,6 +113,16 @@ class AgentOptions:
     max_turns: int = 20
     temperature: float = 0.1
     max_tokens: int = 4096
+
+    # Selective (lazy) tool loading — cuts the per-turn tool-manifest token tax.
+    # "all" (default) preserves current behaviour: every tool is described in the
+    # system prompt each turn. "retrieval" loads only the tools relevant to the
+    # turn's prompt, plus always_load_tools. Safe by design: always_load_tools are
+    # never starved and only registered tools can be surfaced (cf. AVE-2026-0045).
+    tool_selection: str = "all"                 # "all" | "retrieval"
+    max_tools: int = 0                          # cap on retrieved tools (0 = uncapped)
+    always_load_tools: tuple[str, ...] = ()     # tool names always loaded (e.g. safety tools)
+    tool_retriever: Optional[Callable] = None   # (prompt, tools) -> list[Tool]; default lexical
 
     # Hook callbacks
     pre_tool_use: Optional[Callable] = None   # (tool_name, tool_input) -> bool (allow?)
@@ -151,10 +195,46 @@ class NailAgentClient:
 
         # Build tool registry
         self._tool_registry: dict[str, Tool] = {t.name: t for t in options.tools}
+        # Names of tools loaded into the most recent turn's prompt (for auditing
+        # the selection, e.g. via nail_monitor.ToolRetrievalIntegrityDetector).
+        self.last_loaded_tools: list[str] = []
 
-    def _build_system_prompt(self) -> str:
-        """Assemble full system prompt from components."""
+    def _select_tools(self, prompt: str) -> list[Tool]:
+        """Choose which tools to describe in the system prompt for this turn.
+
+        Default ("all") returns the whole registry — unchanged behaviour. In
+        "retrieval" mode (or when max_tools is set) it returns always_load_tools
+        plus the retriever's picks, so mandatory safety tools are never starved
+        and only registered tools can ever be surfaced.
+        """
+        all_tools = list(self._tool_registry.values())
+        if self.options.tool_selection != "retrieval" and self.options.max_tools <= 0:
+            return all_tools
+
+        always_names = set(self.options.always_load_tools)
+        always = [t for t in all_tools if t.name in always_names]
+        candidates = [t for t in all_tools if t.name not in always_names]
+        retriever = self.options.tool_retriever or (
+            lambda p, tools: lexical_tool_retriever(p, tools, max_tools=self.options.max_tools)
+        )
+        selected = list(retriever(prompt, candidates))
+
+        merged: list[Tool] = []
+        seen: set[str] = set()
+        for tool in [*always, *selected]:
+            if tool.name not in seen:
+                seen.add(tool.name)
+                merged.append(tool)
+        return merged
+
+    def _build_system_prompt(self, tools: Optional[list[Tool]] = None) -> str:
+        """Assemble full system prompt from components.
+
+        ``tools`` is the subset to describe this turn; None loads the full
+        registry (backwards compatible for direct callers).
+        """
         parts = []
+        active_tools = list(self._tool_registry.values()) if tools is None else tools
 
         # Agent definition (from .nail/agents/*.md)
         if self._agent_def:
@@ -169,12 +249,12 @@ class NailAgentClient:
             parts.append(f"\n<nail_context>\n{self._context}\n</nail_context>")
 
         # Tool descriptions
-        if self._tool_registry:
+        if active_tools:
             tool_section = "\n<available_tools>\n"
             tool_section += "You have the following tools available. To use a tool, "
             tool_section += "respond with a JSON object inside <tool_use> tags:\n"
             tool_section += '<tool_use>{"tool": "tool_name", "input": {...}}</tool_use>\n\n'
-            for tool in self._tool_registry.values():
+            for tool in active_tools:
                 tool_section += tool.to_prompt_description() + "\n"
             tool_section += "\nWhen you have a final answer, respond normally without tool_use tags.\n"
             tool_section += "</available_tools>\n"
@@ -247,7 +327,9 @@ class NailAgentClient:
         Returns:
             The final AgentTurn with the model's answer
         """
-        system_prompt = self._build_system_prompt()
+        loaded_tools = self._select_tools(prompt)
+        self.last_loaded_tools = [t.name for t in loaded_tools]
+        system_prompt = self._build_system_prompt(loaded_tools)
         self.history.append({"role": "user", "content": prompt})
 
         if verbose:
@@ -344,6 +426,8 @@ class NailAgentClient:
             "total_elapsed_s": round(self.total_elapsed, 1),
             "tools_used": [t.tool_name for t in self.turns if t.tool_name],
             "tools_blocked": sum(1 for t in self.turns if t.blocked),
+            "tools_registered": len(self._tool_registry),
+            "tools_loaded_last": len(self.last_loaded_tools),
         }
 
     def reset(self):
@@ -353,3 +437,4 @@ class NailAgentClient:
         self.session_id = str(uuid.uuid4())[:8]
         self.total_tokens = 0
         self.total_elapsed = 0.0
+        self.last_loaded_tools = []

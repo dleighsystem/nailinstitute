@@ -23,7 +23,7 @@ Components:
 __version__ = "0.2.0"
 
 from .util import ollama_call, extract_json, extract_xml
-from .agent_client import NailAgentClient, AgentOptions
+from .agent_client import NailAgentClient, AgentOptions, Tool, lexical_tool_retriever
 from .memory import MemoryManager
 from .circuit_breaker import TTLEnforcer, TokenCircuitBreaker, StateRollback
 from .firewall import EgressPolicy, SemanticFirewall, ActionGate
@@ -39,6 +39,8 @@ __all__ = [
     "extract_xml",
     "NailAgentClient",
     "AgentOptions",
+    "Tool",
+    "lexical_tool_retriever",
     "MemoryManager",
     # Circuit breakers (Tier 2)
     "TTLEnforcer",
