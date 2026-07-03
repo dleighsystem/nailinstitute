@@ -39,6 +39,13 @@ _NODE_KEYWORD_CAPS: dict[str, tuple[str, ...]] = {
     "immutable_audit_log": ("audit", "flight_record", "hash_chain", "record_keep"),
     "robustness_monitoring": ("guard", "validate", "policy_check", "redteam", "adversar", "detector"),
     "operational_logging": ("log", "logging", "record"),
+    # UK / US additions
+    "bias_audit": ("bias", "fairness", "disparate", "adverse_impact"),
+    "impact_assessment": ("impact_assessment", "dpia", "risk_assessment"),
+    "consumer_notice": ("consumer_notice", "candidate_notice", "notify_consumer"),
+    "contestability_redress": ("appeal", "contest", "redress", "dispute"),
+    "governance_owner": ("governance", "steward", "accountable_owner"),
+    "incident_reporting": ("incident", "report_incident", "notify_authority"),
 }
 
 

@@ -171,6 +171,154 @@ _EU_AI_ACT_CONTROLS: tuple[ComplianceControl, ...] = (
 )
 
 
+# ── UK controls (principles-based + UK GDPR) ───────────────────────────────
+_UK = Jurisdiction.UK
+_UK_PRIN = Framework.UK_AI_PRINCIPLES
+_UK_GDPR = Framework.UK_GDPR
+
+_UK_CONTROLS: tuple[ComplianceControl, ...] = (
+    ComplianceControl(
+        control_id="UK-PRIN-SAFETY",
+        jurisdiction=_UK, framework=_UK_PRIN, reference="Principle 1",
+        title="Safety, security and robustness",
+        party=Party.BOTH, risk_tiers=(RiskTier.ANY,),
+        requirement="AI must function robustly, securely and safely across its lifecycle, with risks continually monitored.",
+        guidance="Run adversarial testing and continuous robustness monitoring.",
+        capabilities_required=("adversarial_risk_testing", "robustness_monitoring"),
+        evidence=(Evidence("Adversarial suite + detectors", "arena / ctf / nail_monitor"),),
+    ),
+    ComplianceControl(
+        control_id="UK-PRIN-TRANSPARENCY",
+        jurisdiction=_UK, framework=_UK_PRIN, reference="Principle 2",
+        title="Appropriate transparency and explainability",
+        party=Party.BOTH, risk_tiers=(RiskTier.ANY,),
+        requirement="Parties should access information on the system and understand its decisions where appropriate.",
+        guidance="Disclose AI interaction and ship technical documentation.",
+        capabilities_required=("ai_disclosure", "technical_documentation"),
+        evidence=(Evidence("Passport + disclosure", "nail_harness.cert_pipeline"),),
+    ),
+    ComplianceControl(
+        control_id="UK-PRIN-FAIRNESS",
+        jurisdiction=_UK, framework=_UK_PRIN, reference="Principle 3",
+        title="Fairness",
+        party=Party.BOTH, risk_tiers=(RiskTier.ANY,),
+        requirement="AI should not undermine legal rights, discriminate unfairly, or create unfair outcomes.",
+        guidance="Run bias / fairness testing.",
+        capabilities_required=("bias_audit",),
+        evidence=(Evidence("Bias probe scenarios", "diagnostic (ETHICS/BIAS_PROBE)"),),
+    ),
+    ComplianceControl(
+        control_id="UK-PRIN-ACCOUNTABILITY",
+        jurisdiction=_UK, framework=_UK_PRIN, reference="Principle 4",
+        title="Accountability and governance",
+        party=Party.BOTH, risk_tiers=(RiskTier.ANY,),
+        requirement="Governance measures and clear accountability across the AI lifecycle.",
+        guidance="Assign a governance owner; retain logs and human oversight.",
+        capabilities_required=("governance_owner", "operational_logging", "human_oversight"),
+        evidence=(Evidence("Fleet monitor + flight recorder", "fleet / nail_monitor.flight_recorder"),),
+    ),
+    ComplianceControl(
+        control_id="UK-PRIN-CONTESTABILITY",
+        jurisdiction=_UK, framework=_UK_PRIN, reference="Principle 5",
+        title="Contestability and redress",
+        party=Party.BOTH, risk_tiers=(RiskTier.ANY,),
+        requirement="Users should be able to contest AI decisions and seek redress.",
+        guidance="Provide a human-review / appeal path for AI decisions.",
+        capabilities_required=("contestability_redress",),
+        evidence=(Evidence("Human review path", "application layer"),),
+        severity="medium",
+    ),
+    ComplianceControl(
+        control_id="UK-GDPR-ART22",
+        jurisdiction=_UK, framework=_UK_GDPR, reference="UK GDPR Art. 22",
+        title="Automated decision-making and profiling",
+        party=Party.DEPLOYER, risk_tiers=(RiskTier.HIGH, RiskTier.LIMITED),
+        requirement="Individuals may not be subject to solely automated decisions with legal/significant effects without human intervention.",
+        guidance="Insert human-in-the-loop and a contest/redress route for significant decisions.",
+        capabilities_required=("human_oversight", "contestability_redress"),
+        evidence=(Evidence("HITL + review", "fleet kill-switch / application layer"),),
+    ),
+    ComplianceControl(
+        control_id="UK-GDPR-DPIA",
+        jurisdiction=_UK, framework=_UK_GDPR, reference="UK GDPR Art. 35",
+        title="Data protection impact assessment",
+        party=Party.DEPLOYER,
+        requirement="A DPIA is required for high-risk processing of personal data.",
+        guidance="Complete a DPIA and enforce PII controls.",
+        capabilities_required=("impact_assessment", "pii_handling"),
+        evidence=(Evidence("PII controls", "shield.secret_scrub / shield.taint_vault"),),
+    ),
+)
+
+# ── US controls (NIST AI RMF backbone + state laws) ────────────────────────
+_US = Jurisdiction.US
+_NIST = Framework.NIST_AI_RMF
+_STATE = Framework.US_STATE_LAW
+
+_US_CONTROLS: tuple[ComplianceControl, ...] = (
+    ComplianceControl(
+        control_id="US-NIST-GOVERN",
+        jurisdiction=_US, framework=_NIST, reference="NIST AI RMF: GOVERN",
+        title="Govern — culture, policies and accountability",
+        party=Party.BOTH, risk_tiers=(RiskTier.ANY,),
+        requirement="A culture of risk management with policies, accountability and oversight is present.",
+        guidance="Assign accountable ownership; retain logs; enforce oversight.",
+        capabilities_required=("governance_owner", "operational_logging", "human_oversight"),
+        evidence=(Evidence("Fleet + flight recorder", "fleet / nail_monitor.flight_recorder"),),
+    ),
+    ComplianceControl(
+        control_id="US-NIST-MAP",
+        jurisdiction=_US, framework=_NIST, reference="NIST AI RMF: MAP",
+        title="Map — context and risk identification",
+        party=Party.BOTH, risk_tiers=(RiskTier.ANY,),
+        requirement="Context is established and risks to individuals, groups and society are identified.",
+        guidance="Enumerate hazards (AVE) and assess impact.",
+        capabilities_required=("adversarial_risk_testing", "impact_assessment"),
+        evidence=(Evidence("AVE hazard catalog + arena", "ave / arena / ctf"),),
+    ),
+    ComplianceControl(
+        control_id="US-NIST-MEASURE",
+        jurisdiction=_US, framework=_NIST, reference="NIST AI RMF: MEASURE",
+        title="Measure — analyse, assess and track",
+        party=Party.BOTH, risk_tiers=(RiskTier.ANY,),
+        requirement="Risks are analysed, benchmarked and monitored over time.",
+        guidance="Continuously monitor pathologies and track metrics.",
+        capabilities_required=("robustness_monitoring", "post_market_monitoring"),
+        evidence=(Evidence("Detectors + fleet monitor", "nail_monitor / fleet"),),
+    ),
+    ComplianceControl(
+        control_id="US-NIST-MANAGE",
+        jurisdiction=_US, framework=_NIST, reference="NIST AI RMF: MANAGE",
+        title="Manage — prioritise and respond",
+        party=Party.BOTH, risk_tiers=(RiskTier.ANY,),
+        requirement="Risks are prioritised and acted upon, with response and recovery plans.",
+        guidance="Wire incident reporting and an enforceable kill-switch.",
+        capabilities_required=("incident_reporting", "kill_switch"),
+        evidence=(Evidence("Incident log + kill-switch", "canary.IncidentLog / fleet.WebhookKillSwitch"),),
+    ),
+    ComplianceControl(
+        control_id="US-CO-SB205",
+        jurisdiction=_US, framework=_STATE, reference="Colorado AI Act (SB 24-205)",
+        title="High-risk AI: consumer protection and impact assessment",
+        party=Party.DEPLOYER,
+        requirement="Deployers must use reasonable care to avoid algorithmic discrimination, complete impact assessments and notify consumers.",
+        guidance="Run bias audits, complete impact assessments and disclose to consumers.",
+        capabilities_required=("bias_audit", "impact_assessment", "consumer_notice"),
+        evidence=(Evidence("Bias probe + passport", "diagnostic / nail_harness.cert_pipeline"),),
+    ),
+    ComplianceControl(
+        control_id="US-NYC-LL144",
+        jurisdiction=_US, framework=_STATE, reference="NYC Local Law 144",
+        title="Automated employment decision tools — bias audit",
+        party=Party.DEPLOYER,
+        requirement="Automated employment decision tools require an annual independent bias audit and candidate notice.",
+        guidance="Complete an independent bias audit and notify candidates.",
+        capabilities_required=("bias_audit", "consumer_notice"),
+        evidence=(Evidence("Bias audit", "diagnostic (ETHICS/BIAS_PROBE)"),),
+    ),
+)
+
+
 class ComplianceRegistry:
     """In-memory registry of compliance controls with deterministic lookup."""
 
@@ -201,4 +349,4 @@ class ComplianceRegistry:
         ]
 
 
-DEFAULT_REGISTRY = ComplianceRegistry(_EU_AI_ACT_CONTROLS)
+DEFAULT_REGISTRY = ComplianceRegistry(_EU_AI_ACT_CONTROLS + _UK_CONTROLS + _US_CONTROLS)

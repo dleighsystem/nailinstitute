@@ -15,7 +15,8 @@ from compliance import (
 def test_registry_has_eu_ai_act_controls():
     ids = {c.control_id for c in DEFAULT_REGISTRY.all()}
     assert {"EU-AIA-ART9", "EU-AIA-ART12", "EU-AIA-ART14", "EU-AIA-ART72"} <= ids
-    assert all(c.jurisdiction == Jurisdiction.EU for c in DEFAULT_REGISTRY.all())
+    eu = DEFAULT_REGISTRY.by_jurisdiction(Jurisdiction.EU)
+    assert eu and all(c.jurisdiction == Jurisdiction.EU for c in eu)
 
 
 def test_control_serialisation_round_trips_fields():
