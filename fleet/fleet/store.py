@@ -46,8 +46,10 @@ CREATE TABLE IF NOT EXISTS agents (
 
 
 class Store:
-    def __init__(self, path: str | Path = ":memory:") -> None:
+    def __init__(self, path: str | Path = ":memory:", *,
+                 busy_timeout_ms: int = 5000) -> None:
         self.path = str(path)
+        self.busy_timeout_ms = int(busy_timeout_ms)
         self._lock = threading.RLock()
         # For ``:memory:`` we MUST keep one connection alive — otherwise
         # every call gets a fresh, empty database.
@@ -55,10 +57,20 @@ class Store:
         if self.path == ":memory:":
             self._shared = sqlite3.connect(":memory:",
                                            check_same_thread=False)
+            self._configure(self._shared)
         with self._connect() as conn:
             conn.executescript(_SCHEMA)
             self._migrate(conn)
             conn.commit()
+
+    def _configure(self, conn: sqlite3.Connection) -> None:
+        """Per-connection pragmas. WAL (file DBs) gives concurrent readers with a
+        single writer and crash-safe durability; busy_timeout makes contending
+        writers wait rather than raise 'database is locked'."""
+        conn.execute(f"PRAGMA busy_timeout = {self.busy_timeout_ms}")
+        if self.path != ":memory:":
+            conn.execute("PRAGMA journal_mode = WAL")
+            conn.execute("PRAGMA synchronous = NORMAL")
 
     @staticmethod
     def _migrate(conn: sqlite3.Connection) -> None:
@@ -74,15 +86,22 @@ class Store:
     # ── connection plumbing ─────────────────────────────────────
     @contextmanager
     def _connect(self) -> Iterator[sqlite3.Connection]:
-        with self._lock:
-            if self._shared is not None:
+        if self._shared is not None:
+            # A single in-memory connection is shared across threads, so its
+            # access must be serialised by the process lock.
+            with self._lock:
                 yield self._shared
-            else:
-                conn = sqlite3.connect(self.path)
-                try:
-                    yield conn
-                finally:
-                    conn.close()
+        else:
+            # File-backed: each caller gets its own connection. SQLite (WAL +
+            # busy_timeout) serialises concurrent writers at the database level,
+            # so no process-wide lock is needed — this is what lets many agents
+            # ingest at once instead of queueing behind one mutex.
+            conn = sqlite3.connect(self.path)
+            self._configure(conn)
+            try:
+                yield conn
+            finally:
+                conn.close()
 
     def close(self) -> None:
         with self._lock:
