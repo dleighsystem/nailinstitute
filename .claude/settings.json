@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -nE \"deploy_cloud_run|build_image|setup_gcp|case |main\\\\\\(\\\\\\)|\\\\\"\\\\$1\\\\\"|\\\\$\\\\{1\" deploy.sh)",
+      "Bash(xargs cat)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
+    ]
+  }
+}
