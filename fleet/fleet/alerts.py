@@ -282,3 +282,84 @@ class AlertEngine:
             if a is not None:
                 out.append(a)
         return out
+
+
+# ── Per-organisation pathology alerting + kill-switch ──────────────
+@dataclass
+class OrgPathologyAlert:
+    """A tenant crossed a pathology threshold (optionally with a kill-switch fired)."""
+
+    org: str
+    pathology: str
+    count: int
+    threshold: int
+    severity: str = "critical"
+    killed: bool = False
+    ts: float = 0.0
+
+    def __post_init__(self) -> None:
+        if not self.ts:
+            self.ts = time.time()
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+class OrgPathologyAlerter:
+    """Fire per-organisation alerts — and an optional kill-switch — when a tenant's
+    pathology findings cross a threshold.
+
+    Bridges :class:`~fleet.detect.FleetPathologyScanner` to a response action. The
+    ``kill_switch`` callback ``(org, pathology, count) -> None`` is injected, so
+    the actual cohort escalation / key revocation is wired externally and this
+    stays repo-local and testable. nail_monitor is optional/lazy (via the scanner).
+
+    Parameters
+    ----------
+    thresholds:
+        ``{pathology: min_count}`` overrides; anything else uses ``default_threshold``.
+    """
+
+    def __init__(
+        self,
+        store: Store,
+        *,
+        thresholds: dict[str, int] | None = None,
+        default_threshold: int = 1,
+        severity: str = "critical",
+        kill_switch=None,
+        scanner_factory=None,
+    ) -> None:
+        self.store = store
+        self.thresholds = dict(thresholds or {})
+        self.default_threshold = int(default_threshold)
+        self.severity = severity
+        self.kill_switch = kill_switch
+        self._scanner_factory = scanner_factory
+
+    def _scanner(self):
+        if self._scanner_factory is not None:
+            return self._scanner_factory(self.store)
+        from .detect import FleetPathologyScanner  # lazy: optional nail_monitor
+        return FleetPathologyScanner(self.store)
+
+    def evaluate(self, *, org: str | None = None) -> list[OrgPathologyAlert]:
+        summary = self._scanner().summary(org=org)
+        alerts: list[OrgPathologyAlert] = []
+        for tenant, counts in sorted(summary.items()):
+            for pathology, count in sorted(counts.items()):
+                threshold = self.thresholds.get(pathology, self.default_threshold)
+                if count < threshold:
+                    continue
+                killed = False
+                if self.kill_switch is not None:
+                    try:
+                        self.kill_switch(tenant, pathology, count)
+                        killed = True
+                    except Exception:  # a failed kill-switch must not swallow the alert
+                        killed = False
+                alerts.append(OrgPathologyAlert(
+                    org=tenant, pathology=pathology, count=count,
+                    threshold=threshold, severity=self.severity, killed=killed,
+                ))
+        return alerts

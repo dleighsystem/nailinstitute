@@ -21,6 +21,7 @@ from .query import Query, NumericStats, Percentiles
 from .alerts import (
     Alert, AlertEngine, AlertRule,
     RateRule, RatioRule, PercentileRule, SilenceRule, SeverityRule,
+    OrgPathologyAlert, OrgPathologyAlerter,
 )
 from .detect import FleetPathologyScanner, PathologyFinding
 
@@ -39,6 +40,7 @@ __all__ = [
     "Query", "NumericStats", "Percentiles",
     "Alert", "AlertEngine", "AlertRule",
     "RateRule", "RatioRule", "PercentileRule", "SilenceRule", "SeverityRule",
+    "OrgPathologyAlert", "OrgPathologyAlerter",
     "FleetPathologyScanner", "PathologyFinding",
 ]
 
