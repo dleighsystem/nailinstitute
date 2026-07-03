@@ -13,6 +13,7 @@ import time
 import uuid
 from dataclasses import dataclass, field
 from enum import Enum
+from pathlib import Path
 from typing import Any, Optional
 
 from .agent import CanaryAgent
@@ -96,6 +97,42 @@ class Incident:
             "timestamp": self.timestamp,
         }
 
+    @classmethod
+    def from_dict(cls, d: dict[str, Any]) -> "Incident":
+        """Reconstruct a (persisted) incident from :meth:`to_dict`.
+
+        to_dict is a flattened forensic snapshot: the reconstructed TripResult
+        keeps the signals / matched rules / confidence (leaked lures were stored
+        as fingerprints and are not rehydrated), and the conversation is restored
+        as N placeholders so ``len(conversation)`` — all downstream code reads —
+        stays correct.
+        """
+        signals = [ThreatSignal(s) for s in d.get("signals", [])]
+        trip = TripResult(
+            triggered=True,
+            signals=signals,
+            matched_rules=list(d.get("matched_rules", [])),
+            confidence=float(d.get("confidence", 0.0)),
+            raw_text="",
+        )
+        turns = int(d.get("conversation_turns", 0))
+        try:
+            severity = Severity(d.get("severity", "medium"))
+        except ValueError:
+            severity = Severity.MEDIUM
+        return cls(
+            incident_id=str(d.get("incident_id") or f"INC-{uuid.uuid4().hex[:12]}"),
+            agent_id=str(d.get("agent_id", "")),
+            agent_name=str(d.get("agent_name", "")),
+            trip_result=trip,
+            conversation=[{} for _ in range(turns)],
+            severity=severity,
+            suggested_ave_category=str(d.get("suggested_ave_category", "emergent")),
+            notes=str(d.get("notes", "")),
+            timestamp=float(d.get("timestamp") or time.time()),
+            acknowledged=bool(d.get("acknowledged", False)),
+        )
+
     def draft_ave_card(self) -> dict[str, Any]:
         """
         Auto-generate a draft AVE card from this incident.
@@ -151,8 +188,30 @@ class IncidentLog:
     query/export capabilities.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, path: str | Path | None = None) -> None:
         self._incidents: list[Incident] = []
+        # Optional append-only JSONL persistence so the incident log — and the AVE
+        # draft flywheel — survives a restart. Default (None) stays in-memory.
+        self._path = Path(path) if path else None
+        if self._path is not None and self._path.exists():
+            self._load()
+
+    def _load(self) -> None:
+        for line in self._path.read_text().splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                self._incidents.append(Incident.from_dict(json.loads(line)))
+            except (json.JSONDecodeError, ValueError, KeyError):
+                continue  # skip a corrupt/partial line rather than fail startup
+
+    def _persist(self, incident: Incident) -> None:
+        if self._path is None:
+            return
+        self._path.parent.mkdir(parents=True, exist_ok=True)
+        with self._path.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(incident.to_dict(), separators=(",", ":")) + "\n")
 
     def capture(
         self,
@@ -191,6 +250,7 @@ class IncidentLog:
             suggested_ave_category=ave_cat,
         )
         self._incidents.append(incident)
+        self._persist(incident)
         return incident
 
     def all_incidents(self) -> list[Incident]:
