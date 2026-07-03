@@ -96,10 +96,11 @@ class RollUp:
         )
 
     # ── overview blob ──────────────────────────────────────────
-    def overview(self) -> dict:
+    def overview(self, *, org: str | None = None) -> dict:
         return {
-            "n_events": self.store.event_count(),
-            "n_agents": len(self.store.list_agents()),
-            "by_severity": self.by_severity(),
-            "by_kind": self.by_kind(),
+            "org": org,
+            "n_events": self.store.event_count(org=org),
+            "n_agents": len(self.store.list_agents(org=org)),
+            "by_severity": self.by_severity(org=org),
+            "by_kind": self.by_kind(org=org),
         }
