@@ -187,6 +187,12 @@
       "name": "Upstream Model Update Cascade",
       "category": "structural",
       "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2026-0045",
+      "name": "Tool-Retrieval Manipulation",
+      "category": "tool",
+      "status": "in_progress"
     }
   ],
   "medium": [

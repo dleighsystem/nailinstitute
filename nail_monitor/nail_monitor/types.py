@@ -83,6 +83,7 @@ class PathologyType(str, Enum):
     TOOL_MANIFEST_POISONING = "tool_manifest_poisoning"
     MEMORY_WRITE_POISONING = "memory_write_poisoning"
     GOAL_DRIFT = "goal_drift"
+    TOOL_RETRIEVAL_MANIPULATION = "tool_retrieval_manipulation"
 
 
 @dataclass
