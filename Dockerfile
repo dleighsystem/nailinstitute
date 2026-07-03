@@ -56,10 +56,16 @@ RUN pip install --no-cache-dir \
     -e nail_security \
     -e arsenal \
     -e threatfeed
+# Test runner (the default CMD runs the suite; kept out of the package deps)
+RUN pip install --no-cache-dir pytest pytest-asyncio
 
-# ── Health check endpoint ─────────────────────────────────────────────────
+# ── Health check ──────────────────────────────────────────────────────────
+# PYTHONSAFEPATH keeps the repo root (WORKDIR /app) off sys.path so the bare
+# integration/ dir can't shadow the installed package as an empty namespace;
+# importing a real submodule proves the package actually loads.
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
-    CMD python -c "import integration; print('ok')"
+    CMD PYTHONSAFEPATH=1 python -c "import integration.pipeline"
 
-# Default: run the test suite (override with your own command)
-CMD ["python", "-m", "pytest", "--tb=short", "-q"]
+# Default: run the full regression suite (per-package, avoids namespace
+# collisions). Override with your own command for a service deployment.
+CMD ["bash", "run_all_tests.sh"]
