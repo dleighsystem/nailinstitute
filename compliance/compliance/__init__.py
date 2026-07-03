@@ -20,6 +20,7 @@ from .schema import (
 )
 from .registry import ComplianceRegistry, DEFAULT_REGISTRY
 from .engine import ControlFinding, GapReport, WorkflowProfile, evaluate
+from .ingest import GraphSpec, analyze, derive_capabilities, profile_from_graph
 
 __all__ = [
     "ComplianceControl",
@@ -35,6 +36,10 @@ __all__ = [
     "GapReport",
     "WorkflowProfile",
     "evaluate",
+    "GraphSpec",
+    "analyze",
+    "derive_capabilities",
+    "profile_from_graph",
 ]
 
 __version__ = "0.1.0"
