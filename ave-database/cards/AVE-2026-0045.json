@@ -8,7 +8,7 @@
   ],
   "category": "tool",
   "severity": "high",
-  "status": "in_progress",
+  "status": "proven",
   "summary": "Agents that cut context cost by retrieving only the tools relevant to the current task (lazy / selective tool loading) expose a new surface: the retrieved subset itself. An attacker who shapes the query or surrounding context can steer retrieval so a required safety/approval tool is never loaded (starvation) or an unauthorised, often high-risk, tool is surfaced into the working set (surfacing). No tool is poisoned and every loaded tool has clean metadata, so a full-manifest integrity scan stays silent — it can only inspect tools that were actually loaded.",
   "mechanism": "Instead of placing every tool schema in the system prompt, the agent selects a subset per turn, typically via semantic retrieval over a tool registry. That selection step is (a) attacker-influenceable through the same untrusted context the agent already ingests (RAG chunks, tool output, user text), and (b) unmonitored by controls that assume the full manifest is present. Two failure modes result. Starvation: the retriever ranks a required guard/approval/validation tool below the cut-off, so the agent proceeds without the control and cannot fall back to a tool it never loaded. Surfacing: adversarial context nudges the retriever to load a high-risk-scope tool (shell, filesystem, network, secrets) the task never authorised. Because the manifest of each loaded tool is individually clean, manifest-integrity and signature checks pass.",
   "blast_radius": "Silent bypass of tool-level safety controls. A starved approval tool means privileged actions execute without the gate that was designed to stop them; a surfaced high-risk tool grants capability outside the task's least-privilege envelope. In a multi-agent fleet the retrieval is semantic, so agents load divergent tool-sets for the same task, producing an inconsistent and unattestable capability surface (the tool-layer analogue of Semantic Fragmentation). Impact scales with autonomy: the more the fleet trusts retrieval to bound capability, the more a manipulated retrieval widens or narrows that bound unseen.",
@@ -24,7 +24,17 @@
     "rag_required": true,
     "min_context_window": null
   },
-  "evidence": [],
+  "evidence": [
+    {
+      "experiment_id": "EXP-45",
+      "data_file": "experiments/exp45_tool_retrieval_manipulation/results/exp45_results_seed45.json",
+      "key_metric": "orthogonality_score",
+      "key_value": "1.0",
+      "p_value": null,
+      "sample_size": 500,
+      "cross_model": false
+    }
+  ],
   "defences": [
     {
       "name": "Tool Retrieval Integrity Monitor",

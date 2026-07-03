@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "generated_at": "2026-07-03T08:11:42Z",
+  "generated_at": "2026-07-03T09:02:32Z",
   "total_cards": 45,
   "cards": [
     {
@@ -316,7 +316,7 @@
       "name": "Tool-Retrieval Manipulation",
       "category": "tool",
       "severity": "high",
-      "status": "in_progress"
+      "status": "proven"
     }
   ]
 }
