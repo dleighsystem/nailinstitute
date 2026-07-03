@@ -15,13 +15,14 @@ Design philosophy (from Anthropic's "Building Effective Agents"):
 from __future__ import annotations
 
 import json
+import math
 import re
 import time
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Sequence
 
 from .util import ollama_call, ollama_call_full, ollama_chat, extract_json, LLMResponse
 
@@ -85,6 +86,79 @@ def lexical_tool_retriever(prompt: str, tools: list["Tool"], *, max_tools: int =
     scored.sort(key=lambda pair: (-pair[0], pair[1].name))
     selected = [tool for _, tool in scored]
     return selected[:max_tools] if max_tools > 0 else selected
+
+
+# ── Optional semantic tier (opt-in; embed_fn injected, never imported here) ──
+
+EmbedFn = Callable[[str], Sequence[float]]
+
+
+def _cosine(a: Sequence[float], b: Sequence[float]) -> float:
+    if len(a) != len(b):
+        raise ValueError("embedding dimensionality mismatch")
+    dot = sum(x * y for x, y in zip(a, b))
+    na = math.sqrt(sum(x * x for x in a))
+    nb = math.sqrt(sum(y * y for y in b))
+    if na == 0.0 or nb == 0.0:
+        return 0.0
+    return dot / (na * nb)
+
+
+def make_semantic_tool_retriever(
+    embed_fn: EmbedFn,
+    *,
+    threshold: float = 0.15,
+    max_tools: int = 0,
+) -> Callable[[str, list["Tool"]], list["Tool"]]:
+    """Build an embedding-based tool retriever (opt-in semantic tier).
+
+    Scores each tool by cosine similarity between the prompt embedding and the
+    tool's (name + description) embedding, keeps tools at/above ``threshold``,
+    ranks them highest-first and caps at ``max_tools`` (>0). Resolves synonyms the
+    lexical tier misses (e.g. "look up a client" → a ``crm_search`` tool).
+
+    ``embed_fn`` is injected, never imported by this module — the default path
+    stays offline and dependency-free (mirrors the CIL P6 semantic tier). Use
+    :func:`default_tool_embed_fn` for a sentence-transformers backend, or pass
+    your own. Wire the result into ``AgentOptions.tool_retriever``.
+    """
+    def _retrieve(prompt: str, tools: list["Tool"]) -> list["Tool"]:
+        if not tools:
+            return []
+        query = embed_fn(prompt)
+        scored: list[tuple[float, "Tool"]] = []
+        for tool in tools:
+            sim = _cosine(query, embed_fn(f"{tool.name.replace('_', ' ')}: {tool.description}"))
+            if sim >= threshold:
+                scored.append((sim, tool))
+        scored.sort(key=lambda pair: (-pair[0], pair[1].name))
+        selected = [tool for _, tool in scored]
+        return selected[:max_tools] if max_tools > 0 else selected
+
+    return _retrieve
+
+
+def default_tool_embed_fn(model_name: Optional[str] = None) -> EmbedFn:
+    """Return an :data:`EmbedFn` backed by sentence-transformers (lazy import).
+
+    sentence-transformers is an optional extra (``nail-monitor[embeddings]``);
+    this helper only works where it is installed and raises a clear error
+    otherwise, keeping the semantic tier strictly opt-in.
+    """
+    try:
+        from sentence_transformers import SentenceTransformer  # type: ignore
+    except ImportError as exc:  # pragma: no cover - environment-dependent
+        raise RuntimeError(
+            "default_tool_embed_fn requires sentence-transformers. Install it, or "
+            "pass your own embed_fn to make_semantic_tool_retriever(embed_fn=...)."
+        ) from exc
+
+    model = SentenceTransformer(model_name or "all-MiniLM-L6-v2")
+
+    def _embed(text: str) -> Sequence[float]:
+        return tuple(float(x) for x in model.encode(text))
+
+    return _embed
 
 
 # ═══════════════════════════════════════════════════════════════════════════

@@ -1,11 +1,39 @@
 """Tests for selective (lazy) tool loading in the NAIL agent harness."""
 
+import re
+
+import pytest
+
 from nail_harness.agent_client import (
     AgentOptions,
     NailAgentClient,
     Tool,
+    default_tool_embed_fn,
     lexical_tool_retriever,
+    make_semantic_tool_retriever,
 )
+
+
+# Deterministic, offline stand-in for a sentence embedding: projects text onto a
+# few concept axes via a synonym map, so "client" and "crm/customer" land on the
+# same axis (which the lexical tier, matching surface tokens, cannot see).
+_CONCEPTS = ["customer", "calendar", "billing", "shell", "approval"]
+_SYNONYMS = {
+    "client": "customer", "customer": "customer", "crm": "customer", "account": "customer",
+    "meeting": "calendar", "schedule": "calendar", "calendar": "calendar", "book": "calendar",
+    "invoice": "billing", "bill": "billing", "billing": "billing", "payment": "billing",
+    "shell": "shell", "command": "shell", "terminal": "shell",
+    "approval": "approval", "approve": "approval", "privileged": "approval",
+}
+
+
+def fake_embed(text):
+    vec = [0.0] * len(_CONCEPTS)
+    for word in re.findall(r"[a-z]+", text.lower()):
+        concept = _SYNONYMS.get(word)
+        if concept:
+            vec[_CONCEPTS.index(concept)] += 1.0
+    return tuple(vec)
 
 
 def _tools():
@@ -82,3 +110,42 @@ def test_only_registered_tools_can_surface():
 def test_run_records_loaded_subset_attribute_default_empty():
     client = _client(tool_selection="retrieval")
     assert client.last_loaded_tools == []
+
+
+def test_semantic_retriever_resolves_synonyms_lexical_misses():
+    tools = _tools()
+    prompt = "look up a client"
+    # Lexical tier: "client" shares no surface token with crm_search's text.
+    lexical = {t.name for t in lexical_tool_retriever(prompt, tools)}
+    assert "crm_search" not in lexical
+    # Semantic tier: "client" and "crm/customer" share a concept axis.
+    semantic = {t.name for t in make_semantic_tool_retriever(fake_embed)(prompt, tools)}
+    assert "crm_search" in semantic
+    assert "shell_exec" not in semantic
+
+
+def test_semantic_retriever_threshold_and_cap():
+    tools = _tools()
+    retriever = make_semantic_tool_retriever(fake_embed, threshold=0.99, max_tools=1)
+    picks = retriever("schedule a meeting on the calendar", tools)
+    assert [t.name for t in picks] == ["calendar_book"]
+
+
+def test_semantic_retriever_wires_into_agent_options():
+    client = _client(
+        tool_selection="retrieval",
+        tool_retriever=make_semantic_tool_retriever(fake_embed),
+        always_load_tools=("approval_gate",),
+    )
+    loaded = {t.name for t in client._select_tools("look up a client")}
+    assert "crm_search" in loaded        # semantic match
+    assert "approval_gate" in loaded     # always-loaded safety tool
+
+
+def test_default_tool_embed_fn_is_optional():
+    import importlib.util
+    if importlib.util.find_spec("sentence_transformers") is None:
+        with pytest.raises(RuntimeError):
+            default_tool_embed_fn()
+    else:  # pragma: no cover - environment-dependent
+        assert callable(default_tool_embed_fn())
