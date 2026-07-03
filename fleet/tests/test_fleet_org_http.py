@@ -63,3 +63,22 @@ def test_get_routes_are_org_scoped(server):
     orgs = {o["org"]: o for o in FleetClient(srv.url).orgs()["orgs"]}
     assert orgs["acme"]["agents"] == 1
     assert orgs["globex"]["agents"] == 1
+
+
+def test_pathologies_route_is_org_scoped(server):
+    srv, store = server
+    # acme agent ships a lazy tool-loading snapshot that starves the safety tool
+    FleetClient(srv.url, org="acme", default_agent_id="a1").emit(
+        "tool.retrieval",
+        attrs={"loaded_tools": ["crm_search"], "required_tools": ["approval_gate"]})
+    # globex agent is benign
+    FleetClient(srv.url, org="globex", default_agent_id="b1").emit("heartbeat", attrs={})
+
+    acme = FleetClient(srv.url, org="acme").pathologies()
+    reasons = {f["metadata"].get("reason") for f in acme["findings"]}
+    assert "required_tool_starved" in reasons
+    assert acme["summary"]["acme"].get("tool_retrieval_manipulation", 0) >= 1
+    assert all(f["org"] == "acme" for f in acme["findings"])   # tenant-isolated
+
+    globex = FleetClient(srv.url, org="globex").pathologies()
+    assert globex["findings"] == []
