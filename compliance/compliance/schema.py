@@ -30,6 +30,7 @@ class Framework(str, Enum):
     UK_GDPR = "uk_gdpr"
     UK_AI_PRINCIPLES = "uk_ai_principles"
     NIST_AI_RMF = "nist_ai_rmf"
+    US_STATE_LAW = "us_state_law"
 
 
 class Party(str, Enum):
