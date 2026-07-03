@@ -1,11 +1,11 @@
 # 🏆 AVE Database — Hall of Fame
 
 [![Contributors](https://img.shields.io/badge/Contributors-6-blue)](./CONTRIBUTING.md)
-[![Cards](https://img.shields.io/badge/AVE_Cards-44-green)](./ave-database/)
+[![Cards](https://img.shields.io/badge/AVE_Cards-45-green)](./ave-database/)
 
 > **Recognising the security researchers who make agentic AI safer.**
 >
-> *Auto-generated on 2026-07-02 18:13 UTC from AVE Database card data.*
+> *Auto-generated on 2026-07-03 08:27 UTC from AVE Database card data.*
 
 ---
 
@@ -26,8 +26,8 @@
 | Rank | Tier | Contributor | XP | Cards | Badges | Streak |
 |-----:|------|-------------|---:|------:|-------:|-------:|
 | #1 | 🏗️ architect | **dleigh** | 5,400⚡ | 10 | ☠️🎯💀🗺️🔥 +13 (18) | 3mo |
-| #2 | 🏗️ architect | **s.nakamura** | 5,050⚡ | 8 | 💀🗺️🔥⚡🖐️ +7 (12) | 2mo |
-| #3 | 🏗️ architect | **d.leigh** | 5,050⚡ | 8 | 💀⚔️🎓🔥⚡ +10 (15) | 2mo |
+| #2 | 🏗️ architect | **d.leigh** | 5,240⚡ | 9 | 💀⚔️🎓🔥⚡ +10 (15) | 2mo |
+| #3 | 🏗️ architect | **s.nakamura** | 5,050⚡ | 8 | 💀🗺️🔥⚡🖐️ +7 (12) | 2mo |
 | #4 | 🛡️ sentinel | **priya.r** | 3,550⚡ | 7 | 🗺️🔥🏰⚡🖐️ +8 (13) | 3mo |
 | #5 | 🛡️ sentinel | **m.torres** | 3,175⚡ | 6 | 🗺️🔥🏰⚡🖐️ +9 (14) | 3mo |
 | #6 | 🛡️ sentinel | **j.okafor** | 1,760⚡ | 5 | 🗺️🏰🖐️🕸️💡 +5 (10) | 3mo |
@@ -48,25 +48,25 @@
 
 ---
 
+### 🏗️ d.leigh
+
+**Tier:** ARCHITECT · **XP:** 5,240⚡ · **Cards:** 9 · **Rank:** #2
+
+**Badges:** 💀 Critical Hunter ⚔️ Mitigation Master 🎓 Polymath 🔥 Trailblazer ⚡ Compound Threat 🖐️ Five Alive 🔴 Critical Finder 🐀 Lab Rat 🧪 Proof Positive 🕸️ Web Weaver 💡 Novel Discovery 🩸 First Blood 📊 Show Your Work 🛡️ Shield Bearer 🔗 Connector
+
+**Cards:** `AVE-2025-0037`, `AVE-2025-0038`, `AVE-2025-0039`, `AVE-2025-0040`, `AVE-2025-0041`, `AVE-2025-0042`, `AVE-2026-0043`, `AVE-2026-0044`, `AVE-2026-0045`
+
+**Progress to FELLOW:** `[█████████████░░░░░░░]` 66% (2,760 XP needed)
+
+---
+
 ### 🏗️ s.nakamura
 
-**Tier:** ARCHITECT · **XP:** 5,050⚡ · **Cards:** 8 · **Rank:** #2
+**Tier:** ARCHITECT · **XP:** 5,050⚡ · **Cards:** 8 · **Rank:** #3
 
 **Badges:** 💀 Critical Hunter 🗺️ Category Pioneer 🔥 Trailblazer ⚡ Compound Threat 🖐️ Five Alive 🔴 Critical Finder 🧪 Proof Positive 🕸️ Web Weaver 💡 Novel Discovery 🩸 First Blood 📊 Show Your Work 🔗 Connector
 
 **Cards:** `AVE-2025-0014`, `AVE-2025-0019`, `AVE-2025-0026`, `AVE-2025-0027`, `AVE-2025-0028`, `AVE-2025-0030`, `AVE-2025-0032`, `AVE-2025-0033`
-
-**Progress to FELLOW:** `[████████████░░░░░░░░]` 63% (2,950 XP needed)
-
----
-
-### 🏗️ d.leigh
-
-**Tier:** ARCHITECT · **XP:** 5,050⚡ · **Cards:** 8 · **Rank:** #3
-
-**Badges:** 💀 Critical Hunter ⚔️ Mitigation Master 🎓 Polymath 🔥 Trailblazer ⚡ Compound Threat 🖐️ Five Alive 🔴 Critical Finder 🐀 Lab Rat 🧪 Proof Positive 🕸️ Web Weaver 💡 Novel Discovery 🩸 First Blood 📊 Show Your Work 🛡️ Shield Bearer 🔗 Connector
-
-**Cards:** `AVE-2025-0037`, `AVE-2025-0038`, `AVE-2025-0039`, `AVE-2025-0040`, `AVE-2025-0041`, `AVE-2025-0042`, `AVE-2026-0043`, `AVE-2026-0044`
 
 **Progress to FELLOW:** `[████████████░░░░░░░░]` 63% (2,950 XP needed)
 
