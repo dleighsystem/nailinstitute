@@ -100,6 +100,19 @@ class _Handler(BaseHTTPRequestHandler):
         if path == "/v1/orgs":
             return self._json(HTTPStatus.OK,
                               {"orgs": self._ingest.store.list_orgs()})
+        if path == "/v1/pathologies":
+            from .detect import FleetPathologyScanner
+            scanner = FleetPathologyScanner(self._ingest.store)
+            try:
+                findings = scanner.scan(org=org)
+                summary = scanner.summary(org=org)
+            except RuntimeError as e:  # nail_monitor not installed
+                return self._json(HTTPStatus.NOT_IMPLEMENTED,
+                                  {"ok": False, "error": str(e)})
+            return self._json(HTTPStatus.OK, {
+                "findings": [f.to_dict() for f in findings],
+                "summary": summary,
+            })
         return self._json(HTTPStatus.NOT_FOUND, {"ok": False, "error": "not found"})
 
     def do_POST(self):  # noqa: N802

@@ -71,6 +71,10 @@ class FleetClient:
     def orgs(self) -> dict:
         return self._get("/v1/orgs")
 
+    def pathologies(self, *, org: Optional[str] = None) -> dict:
+        """Live detector findings + per-org summary (requires nail-monitor on the server)."""
+        return self._get("/v1/pathologies", org=org)
+
     # ── helpers ───────────────────────────────────────────────
     def _wrap(self, event: Event):
         if self.signing_key is not None:
