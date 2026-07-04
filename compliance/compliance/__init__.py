@@ -22,6 +22,12 @@ from .registry import ComplianceRegistry, DEFAULT_REGISTRY
 from .engine import ControlFinding, GapReport, WorkflowProfile, evaluate
 from .ingest import GraphSpec, analyze, derive_capabilities, profile_from_graph
 from .report import ComplianceAttestation, attest, render_markdown
+from .monitor import (
+    ComplianceDrift,
+    ComplianceMonitor,
+    DriftResult,
+    capabilities_from_events,
+)
 
 __all__ = [
     "ComplianceControl",
@@ -44,6 +50,10 @@ __all__ = [
     "ComplianceAttestation",
     "attest",
     "render_markdown",
+    "ComplianceMonitor",
+    "ComplianceDrift",
+    "DriftResult",
+    "capabilities_from_events",
 ]
 
 __version__ = "0.1.0"
