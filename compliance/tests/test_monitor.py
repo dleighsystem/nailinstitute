@@ -77,3 +77,17 @@ def test_drift_result_serialises():
     d = result.to_dict()
     assert d["org"] == "acme" and d["has_drift"] is True
     assert d["report"]["profile"] == "agent"
+
+
+def test_baselines_round_trip_through_json():
+    import json
+
+    mon = ComplianceMonitor()
+    mon.set_baseline("acme", _profile(_DEPLOYER_CAPS))
+    snapshot = json.loads(json.dumps(mon.export_baselines()))
+
+    restored = ComplianceMonitor()
+    restored.import_baselines(snapshot)
+    result = restored.check("acme", _profile(_DEPLOYER_CAPS - {"post_market_monitoring"}))
+    assert any(d.kind == "regression" and d.control_id == "EU-AIA-ART26"
+               for d in result.drifts)

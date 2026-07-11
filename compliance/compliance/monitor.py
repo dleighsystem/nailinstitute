@@ -105,6 +105,18 @@ class ComplianceMonitor:
         self._baseline[org] = {f.control.control_id: f.status.value for f in report.findings}
         return report
 
+    def export_baselines(self) -> dict[str, dict[str, str]]:
+        """JSON-ready ``{org: {control_id: status}}`` snapshot, for persistence.
+
+        Baselines are otherwise in-memory only; a cron/CLI or multi-process
+        deployment must round-trip them through ``import_baselines``.
+        """
+        return {org: dict(statuses) for org, statuses in self._baseline.items()}
+
+    def import_baselines(self, baselines: dict[str, dict[str, str]]) -> None:
+        """Restore baselines previously produced by :meth:`export_baselines`."""
+        self._baseline = {org: dict(statuses) for org, statuses in baselines.items()}
+
     def check(self, org: str, profile: WorkflowProfile) -> DriftResult:
         """Re-evaluate a profile and report drift from the org's baseline."""
         report = evaluate(profile, self.registry)

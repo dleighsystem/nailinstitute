@@ -75,6 +75,11 @@ class FleetClient:
         """Live detector findings + per-org summary (requires nail-monitor on the server)."""
         return self._get("/v1/pathologies", org=org)
 
+    def compliance(self, *, org: Optional[str] = None) -> dict:
+        """Per-org compliance gap report, plus drift when the server runs a
+        watcher (requires nail-compliance on the server)."""
+        return self._get("/v1/compliance", org=org)
+
     # ── helpers ───────────────────────────────────────────────
     def _wrap(self, event: Event):
         if self.signing_key is not None:

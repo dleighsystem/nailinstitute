@@ -280,6 +280,44 @@ def _cmd_alerts(args) -> int:
     return 0 if not (args.exit_nonzero_on_fire and fired) else 4
 
 
+def _cmd_compliance(args) -> int:
+    from .alerts import WebhookKillSwitch
+    from .compliance import FleetComplianceWatcher, OrgComplianceSpec
+
+    store = _open_store(args)
+    watcher = FleetComplianceWatcher(
+        store,
+        kill_switch=WebhookKillSwitch(args.kill_url) if args.kill_url else None,
+        default_spec=OrgComplianceSpec(
+            party=args.party,
+            risk_tier=args.risk_tier,
+            jurisdictions=tuple(args.jurisdictions.split(",")),
+            declared_capabilities=frozenset(args.declare or ()),
+        ),
+    )
+    bpath = Path(args.baseline_file) if args.baseline_file else None
+    if bpath is not None and bpath.exists() and not args.baseline:
+        watcher.monitor().import_baselines(json.loads(bpath.read_text()))
+
+    orgs = [args.org] if args.org else [o["org"] for o in store.list_orgs()]
+    out: dict[str, dict] = {}
+    drifted = False
+    if args.baseline:
+        for org in orgs:
+            out[org] = {"baseline": watcher.baseline(org).to_dict()}
+        if bpath is not None:
+            bpath.parent.mkdir(parents=True, exist_ok=True)
+            bpath.write_text(json.dumps(watcher.monitor().export_baselines(),
+                                        indent=2, sort_keys=True))
+    else:
+        for org in orgs:
+            res = watcher.check(org)
+            drifted = drifted or bool(res.regressions)
+            out[org] = res.to_dict()
+    print(json.dumps({"ok": True, "orgs": out}, indent=2, sort_keys=True))
+    return 4 if (args.exit_nonzero_on_drift and drifted) else 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="nail-fleet",
                                 description="NAIL Fleet telemetry CLI.")
@@ -367,6 +405,30 @@ def build_parser() -> argparse.ArgumentParser:
     pal.add_argument("--exit-nonzero-on-fire", action="store_true",
                      help="Exit 4 if any alert fires (for CI / cron).")
     pal.set_defaults(func=_cmd_alerts)
+
+    pc = sub.add_parser(
+        "compliance",
+        help="Compliance drift over stored telemetry (requires nail-compliance).")
+    pc.add_argument("--org", help="Single org; default = every org in the store.")
+    pc.add_argument("--baseline", action="store_true",
+                    help="Certify current posture as the drift baseline "
+                         "(writes --baseline-file if given).")
+    pc.add_argument("--baseline-file",
+                    help="JSON file to persist/load baselines across runs.")
+    pc.add_argument("--kill-url",
+                    help="Cohort-incident webhook; escalating drift POSTs here.")
+    pc.add_argument("--party", default="deployer",
+                    choices=["provider", "deployer", "both"])
+    pc.add_argument("--risk-tier", default="high",
+                    choices=["unacceptable", "high", "limited", "minimal",
+                             "gpai", "any"])
+    pc.add_argument("--jurisdictions", default="eu,uk,us",
+                    help="Comma-separated (default eu,uk,us).")
+    pc.add_argument("--declare", action="append", metavar="CAPABILITY",
+                    help="Declared capability telemetry can't show; may repeat.")
+    pc.add_argument("--exit-nonzero-on-drift", action="store_true",
+                    help="Exit 4 on regression/new violation (for CI / cron).")
+    pc.set_defaults(func=_cmd_compliance)
 
     return p
 

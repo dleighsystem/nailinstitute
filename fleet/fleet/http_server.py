@@ -7,6 +7,8 @@ Endpoints:
     GET  /healthz             — liveness
     GET  /v1/overview         — RollUp.overview
     GET  /v1/agents           — list agents
+    GET  /v1/compliance       — per-org gap report (+ drift, if a
+                                compliance_watcher is configured)
 
 The Server is single-threaded by default (use ``threading=True`` for a
 ThreadingHTTPServer). It is intended for trusted internal networks; any
@@ -53,6 +55,7 @@ class _Handler(BaseHTTPRequestHandler):
     _rollup: RollUp = None  # type: ignore[assignment]
     _trusted_keys: Sequence = ()
     _max_body_bytes: int = 1_048_576  # 1 MiB
+    _compliance_watcher = None  # optional fleet.compliance.FleetComplianceWatcher
 
     # ── helpers ─────────────────────────────────────────────────
     def _json(self, status: int, body: dict) -> None:
@@ -113,6 +116,34 @@ class _Handler(BaseHTTPRequestHandler):
                 "findings": [f.to_dict() for f in findings],
                 "summary": summary,
             })
+        if path == "/v1/compliance":
+            # With a server-configured watcher this is the live drift signal:
+            # each poll re-checks baselines and escalating drift fires its
+            # kill-switch. Without one, it degrades to a stateless gap report.
+            watcher = self._compliance_watcher
+            stateless = watcher is None
+            if stateless:
+                from .compliance import FleetComplianceWatcher
+                watcher = FleetComplianceWatcher(self._ingest.store)
+            store = self._ingest.store
+            orgs = [org] if org else [o["org"] for o in store.list_orgs()]
+            out: dict[str, dict] = {}
+            try:
+                for o in orgs:
+                    if stateless:
+                        out[o] = {"report": watcher.report(o).to_dict(),
+                                  "drift": None}
+                    else:
+                        res = watcher.check(o)
+                        out[o] = {
+                            "report": res.report.to_dict(),
+                            "drift": {"has_drift": res.has_drift,
+                                      "drifts": [d.to_dict() for d in res.drifts]},
+                        }
+            except RuntimeError as e:  # nail-compliance not installed
+                return self._json(HTTPStatus.NOT_IMPLEMENTED,
+                                  {"ok": False, "error": str(e)})
+            return self._json(HTTPStatus.OK, {"orgs": out})
         return self._json(HTTPStatus.NOT_FOUND, {"ok": False, "error": "not found"})
 
     def do_POST(self):  # noqa: N802
@@ -185,7 +216,8 @@ class IngestServer:
                  port: int = 0,
                  trusted_keys: Iterable = (),
                  threading: bool = True,
-                 max_body_bytes: int = 1_048_576) -> None:
+                 max_body_bytes: int = 1_048_576,
+                 compliance_watcher=None) -> None:
         self.store = store
         self.ingest = Ingest(store)
         self.rollup = RollUp(store)
@@ -200,12 +232,14 @@ class IngestServer:
         rollup = self.rollup
         keys = self.trusted_keys
         cap = max_body_bytes
+        watcher = compliance_watcher
 
         class Handler(_Handler):
             _ingest = ingest
             _rollup = rollup
             _trusted_keys = keys
             _max_body_bytes = cap
+            _compliance_watcher = watcher
 
         cls = ThreadingHTTPServer if threading else HTTPServer
         self._httpd = cls((host, port), Handler)

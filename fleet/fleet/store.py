@@ -191,6 +191,17 @@ class Store:
             for r in rows
         ]
 
+    def list_kinds(self, *, org: str | None = None) -> list[str]:
+        """Distinct event kinds present in the store (optionally org-scoped)."""
+        sql = "SELECT DISTINCT kind FROM events"
+        params: list[Any] = []
+        if org is not None:
+            sql += " WHERE org = ?"; params.append(org)
+        sql += " ORDER BY kind"
+        with self._connect() as conn:
+            rows = conn.execute(sql, params).fetchall()
+        return [r[0] for r in rows]
+
     def list_orgs(self) -> list[dict]:
         """Per-organisation rollup: agent + event counts (multi-tenant fleet view)."""
         with self._connect() as conn:
