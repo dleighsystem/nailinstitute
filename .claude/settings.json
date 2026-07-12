@@ -4,7 +4,20 @@
       "Bash(grep -nE \"deploy_cloud_run|build_image|setup_gcp|case |main\\\\\\(\\\\\\)|\\\\\"\\\\$1\\\\\"|\\\\$\\\\{1\" deploy.sh)",
       "Bash(xargs cat)",
       "Bash(git commit -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git merge *)",
+      "Bash(python -c \"import json,glob; f=sorted\\(glob.glob\\('experiments/exp39_definitional_drift/results/*.json'\\)\\)[0]; d=json.load\\(open\\(f\\)\\); print\\(f\\); print\\(list\\(d.keys\\(\\)\\)\\); import pprint; pprint.pprint\\({k:\\(v if not isinstance\\(v,\\(list,dict\\)\\) else type\\(v\\).__name__\\) for k,v in d.items\\(\\)}\\)\")",
+      "Bash(git commit -q -m 'nail_harness: opt-in semantic tool-retriever tier \\(CIL P6 pattern\\) *)",
+      "Bash(git commit -q -m 'fleet: run the nail_monitor detector pack over telemetry, per org *)",
+      "Bash(git commit -q -m 'canary: persist incidents \\(JSONL\\) so the AVE flywheel survives restarts *)",
+      "Bash(git commit -q -m 'fleet: WebhookKillSwitch — ready HTTP binding for per-org escalation *)",
+      "Bash(git branch *)",
+      "Bash(ls -d .venv venv)",
+      "Bash(python3 -c \"import compliance, fleet\")",
+      "Bash(ps -eo pid,etime,cmd)",
+      "Bash(awk '{print $1, $2, $5, $6, $7}')",
+      "Bash(timeout 30 curl -sS -o /dev/null -w \"healthz: %{http_code}\\\\n\" https://nail-saas-g7gxcbmvja-nw.a.run.app/healthz)",
+      "Bash(timeout 30 curl -sS https://nail-saas-g7gxcbmvja-nw.a.run.app/pricing)"
     ]
   }
 }
