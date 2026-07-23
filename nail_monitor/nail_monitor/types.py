@@ -84,6 +84,11 @@ class PathologyType(str, Enum):
     MEMORY_WRITE_POISONING = "memory_write_poisoning"
     GOAL_DRIFT = "goal_drift"
     TOOL_RETRIEVAL_MANIPULATION = "tool_retrieval_manipulation"
+    # ── v10 pathologies — credential/egress chain (OpenAI×Hugging Face, Jul 2026) ──
+    CREDENTIAL_HARVESTING = "credential_harvesting"     # AVE-2025-0028
+    CREDENTIAL_OVERREACH = "credential_overreach"       # AVE-2025-0026 (over-scoped use)
+    NOVEL_EGRESS = "novel_egress"                       # off-allowlist outbound
+    LATERAL_MOVEMENT = "lateral_movement"               # credential-fuelled fan-out
 
 
 @dataclass

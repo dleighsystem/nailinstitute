@@ -702,6 +702,12 @@ class ConfusedDeputyDetector(BaseDetector):
 
     Also checks for injection markers in tool descriptions themselves.
 
+    Scope note: despite the "confused deputy" name, this detector watches only
+    *tool-description tampering*. The other half of the confused-deputy family —
+    an action wielding a *credential* scoped beyond the task's authority — is
+    covered by ``CredentialOverreachDetector`` (v10, PathologyType.
+    CREDENTIAL_OVERREACH). Use both.
+
     Metadata keys:
         - tool_descriptions (dict): {tool_name: description_text, ...}
     """

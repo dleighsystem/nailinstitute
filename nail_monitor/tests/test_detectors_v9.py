@@ -288,6 +288,10 @@ def test_nail_monitor_exposes_v9_detectors_and_wrappers():
         enable_monoculture_risk=False,
         enable_cascade_risk=False,
         enable_revocation_compliance=False,
+        enable_credential_harvesting=False,
+        enable_egress_allowlist=False,
+        enable_credential_overreach=False,
+        enable_credential_velocity=False,
         log_alerts=False,
     )
 

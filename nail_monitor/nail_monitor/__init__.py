@@ -138,6 +138,12 @@ from .detectors_v9 import (
     ToolManifestIntegrityDetector,
     ToolRetrievalIntegrityDetector,
 )
+from .detectors_v10 import (
+    CredentialAccessVelocityDetector,
+    CredentialHarvestingDetector,
+    CredentialOverreachDetector,
+    EgressAllowlistDetector,
+)
 from .flight_recorder import FlightRecorder, FlightRecorderError
 from .monitor import NailMonitor
 from .registry import (
@@ -220,6 +226,11 @@ __all__ = [
     "MemoryWriteFirewallDetector",
     "GoalDriftMonitorDetector",
     "ToolRetrievalIntegrityDetector",
+    # v10 detectors — credential/egress chain (OpenAI × Hugging Face)
+    "CredentialHarvestingDetector",
+    "EgressAllowlistDetector",
+    "CredentialOverreachDetector",
+    "CredentialAccessVelocityDetector",
     "AgentPathologyRegistry",
     "PathologyDefinition",
     "DEFAULT_PATHOLOGY_REGISTRY",
