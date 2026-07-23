@@ -59,8 +59,11 @@ class FleetPathologyScanner:
     detector_factory:
         Optional ``() -> list`` returning a fresh detector pack per agent. Defaults
         to the v9 control-plane detectors (tool-manifest, tool-retrieval,
-        memory-write, goal-drift). A factory is used (not a shared list) because
-        detectors are stateful and must not bleed state across agents.
+        memory-write, goal-drift) plus the v10 credential/egress chain
+        (harvesting, egress-allowlist, credential-overreach, access-velocity). A
+        factory is used (not a shared list) because detectors are stateful and
+        must not bleed state across agents; pass a custom factory to supply
+        per-org egress allowlists / authorized scopes.
     """
 
     def __init__(
@@ -80,11 +83,25 @@ class FleetPathologyScanner:
             ToolManifestIntegrityDetector,
             ToolRetrievalIntegrityDetector,
         )
+        from nail_monitor.detectors_v10 import (  # credential/egress chain
+            CredentialAccessVelocityDetector,
+            CredentialHarvestingDetector,
+            CredentialOverreachDetector,
+            EgressAllowlistDetector,
+        )
         return [
             ToolManifestIntegrityDetector(),
             ToolRetrievalIntegrityDetector(),
             MemoryWriteFirewallDetector(),
             GoalDriftMonitorDetector(),
+            # v10 credential/egress chain (OpenAI × Hugging Face). The egress and
+            # overreach detectors stay silent until per-org policy (allowed_hosts /
+            # authorized_scopes) is supplied via a custom detector_factory, so they
+            # add no false positives to the default fleet scan.
+            CredentialHarvestingDetector(),
+            EgressAllowlistDetector(),
+            CredentialOverreachDetector(),
+            CredentialAccessVelocityDetector(),
         ]
 
     def scan(
