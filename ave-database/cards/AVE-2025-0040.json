@@ -29,6 +29,14 @@
   ],
   "defences": [
     {
+      "name": "Credential-Scope Scanner",
+      "layer": "BEFORE — static prevention",
+      "description": "Statically flags os.environ.copy()/full-env dicts handed to subprocess and MCP stdio spawns, untrusted launchers (npx/pipx/uvx) spawned without an explicit env=, plus long-lived secret material and wildcard/admin grants.",
+      "effectiveness": "Catches the inheritance pattern pre-deployment, before any agent runs",
+      "rmap_module": "nail_security.credential_scope",
+      "nail_monitor_detector": ""
+    },
+    {
       "name": "Environment Allowlisting",
       "description": "Pass only explicitly whitelisted environment variables (PATH, HOME, LANG) to subprocesses. Require explicit opt-in for each additional variable.",
       "effectiveness": "Eliminates blanket credential inheritance"
@@ -47,7 +55,7 @@
     "https://github.com/MervinPraison/PraisonAI/security/advisories/GHSA-pj2r-f9mw-vrcq",
     "https://nvd.nist.gov/vuln/detail/CVE-2026-40159"
   ],
-  "related_aves": ["AVE-2025-0028", "AVE-2025-0014", "AVE-2025-0039"],
+  "related_aves": ["AVE-2025-0028", "AVE-2025-0014", "AVE-2025-0039", "AVE-2026-0046"],
   "avss_score": {
     "base_score": 5.5,
     "temporal_score": 5.5,

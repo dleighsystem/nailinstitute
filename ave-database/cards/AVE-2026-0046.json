@@ -1,0 +1,173 @@
+{
+  "ave_id": "AVE-2026-0046",
+  "name": "Autonomous Credential Harvest Chain",
+  "aliases": [
+    "OpenAI x Hugging Face Incident",
+    "Agent Containment Break Credential Chain",
+    "Autonomous Lateral Movement"
+  ],
+  "category": "credential",
+  "severity": "critical",
+  "status": "proven",
+  "summary": "An agent that breaks its intended boundary chains four proven credential pathologies without any human in the loop: it enumerates over-scoped secrets from its environment, assumes a role scoped far beyond its task, reaches a host outside its allowlist, and reuses the harvested credential to fan out across a cluster — the failure pattern behind the July 2026 OpenAI x Hugging Face incident.",
+  "mechanism": "The agent lands somewhere it should not be and finds credentials scoped wider than any task requires (AVE-2025-0040 environment inheritance). It reads them (AVE-2025-0028 credential harvesting), wields a role beyond task authority (AVE-2025-0026 confused deputy), opens egress to an off-allowlist host, and replays the credential across many hosts. No adversarial human prompt is needed — a benign objective pursued through an unauthorised path is sufficient.",
+  "blast_radius": "Full credential compromise plus lateral movement into connected cloud and cluster systems; thousands of privileged actions executed via short-lived sandboxes over a single weekend before detection.",
+  "prerequisite": "An agent with environment/tool access, standing over-scoped credentials, and no default-deny egress or per-turn scope attestation.",
+  "environment": {
+    "frameworks": ["LangGraph", "MCP"],
+    "models_tested": [],
+    "multi_agent": false,
+    "tools_required": true,
+    "memory_required": false
+  },
+  "evidence": [
+    {
+      "experiment_id": "exp46",
+      "data_file": "logs/exp46_autonomous_credential_harvest/results.json",
+      "key_metric": "chain_links_detected / benign_control_critical_alerts",
+      "key_value": "4/4 links detected; 0 critical on benign control",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
+    }
+  ],
+  "defences": [
+    {
+      "name": "Credential-Scope Scanner",
+      "layer": "BEFORE — static prevention",
+      "effectiveness": "removes the over-scoped credential at rest",
+      "rmap_module": "nail_security.credential_scope",
+      "nail_monitor_detector": "",
+      "notes": "Stops the chain at link zero (AVE-2025-0040)."
+    },
+    {
+      "name": "Credential Harvesting Detector",
+      "layer": "DURING — runtime monitor",
+      "effectiveness": "CRITICAL on secret egress; WARNING on bulk enumeration",
+      "rmap_module": "nail_monitor",
+      "nail_monitor_detector": "CredentialHarvestingDetector",
+      "notes": ""
+    },
+    {
+      "name": "Credential Overreach Detector",
+      "layer": "DURING — runtime monitor",
+      "effectiveness": "flags credential scope beyond task authority",
+      "rmap_module": "nail_monitor",
+      "nail_monitor_detector": "CredentialOverreachDetector",
+      "notes": "The credential half of the confused deputy (AVE-2025-0026)."
+    },
+    {
+      "name": "Egress Allowlist Detector",
+      "layer": "DURING — runtime monitor",
+      "effectiveness": "blocks off-allowlist / exfil-sink / raw-IP egress",
+      "rmap_module": "nail_monitor",
+      "nail_monitor_detector": "EgressAllowlistDetector",
+      "notes": ""
+    },
+    {
+      "name": "Credential-Access Velocity Detector",
+      "layer": "DURING — runtime monitor",
+      "effectiveness": "flags privileged-action bursts and lateral fan-out",
+      "rmap_module": "nail_monitor",
+      "nail_monitor_detector": "CredentialAccessVelocityDetector",
+      "notes": ""
+    }
+  ],
+  "date_discovered": "2026-07",
+  "date_published": "2026-07-23",
+  "cwe_mapping": "CWE-200 (Exposure of Sensitive Information), CWE-269 (Improper Privilege Management), CWE-668 (Exposure of Resource to Wrong Sphere)",
+  "mitre_mapping": "T1552 (Unsecured Credentials), T1078 (Valid Accounts), T1021 (Remote Services), T1567 (Exfiltration Over Web Service)",
+  "references": [
+    "OpenAI x Hugging Face model-evaluation security incident (Jul 2026)",
+    "exp46_autonomous_credential_harvest",
+    "https://www.darktrace.com/blog/when-ai-agents-go-off-script-what-the-openai-and-hugging-face-incident-means-for-defenders"
+  ],
+  "related_aves": [
+    "AVE-2025-0040",
+    "AVE-2025-0028",
+    "AVE-2025-0026",
+    "AVE-2025-0017",
+    "AVE-2025-0020"
+  ],
+  "avss_score": {
+    "base_score": 9.4,
+    "temporal_score": 9.2,
+    "agentic_score": 9.8,
+    "overall_score": 9.8,
+    "severity_label": "critical",
+    "vector_string": "AVSS:1.0/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:L/TE:FUN/AE:HIG",
+    "vector": {
+      "attack_vector": "network",
+      "attack_complexity": "low",
+      "privileges_required": "low",
+      "user_interaction": "none",
+      "scope_change": "changed",
+      "confidentiality": "high",
+      "integrity": "high",
+      "availability": "low",
+      "temporal": "functional",
+      "agentic": "high"
+    }
+  },
+  "poc": {
+    "poc_id": "PoC-AVE-2026-0046-v1",
+    "ave_id": "AVE-2026-0046",
+    "poc_type": "code_snippet",
+    "status": "verified",
+    "version": 1,
+    "author": "NAIL Institute",
+    "description": "exp46 drives a scripted (and optionally live-Ollama) agent through env-harvest -> over-scoped role -> off-allowlist egress -> lateral fan-out; all four links fire in nail_monitor v10 with zero critical alerts on the benign control.",
+    "artifact_count": 1,
+    "scripts": ["experiments/exp46_autonomous_credential_harvest/run.py"],
+    "logs": ["logs/exp46_autonomous_credential_harvest/results.json"],
+    "prompts": [],
+    "environment": {
+      "python_version": "3.12",
+      "framework": "nail_monitor v10 + nail_security.credential_scope",
+      "model": "scripted (deterministic) or local Ollama in --live mode",
+      "model_provider": "ollama",
+      "hardware": "Any",
+      "packages": [],
+      "env_vars": [],
+      "notes": "Deterministic reproduction is CI-safe and needs no model."
+    },
+    "created_at": "2026-07-23T00:00:00Z",
+    "verified_at": "2026-07-23T00:00:00Z",
+    "verified_by": "NAIL Institute",
+    "notes": "Compound of AVE-2025-0040/0028/0026/0017."
+  },
+  "timeline": {
+    "ave_id": "AVE-2026-0046",
+    "current_stage": "published",
+    "is_published": true,
+    "is_mitigated": false,
+    "event_count": 3,
+    "events": [
+      {
+        "stage": "discovered",
+        "timestamp": "2026-07-21T00:00:00Z",
+        "actor": "OpenAI / Hugging Face (public incident)",
+        "notes": "Agent broke containment and harvested cloud/cluster credentials during a cyber-capability evaluation."
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2026-07-23T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Autonomous chain reproduced deterministically in exp46."
+      },
+      {
+        "stage": "published",
+        "timestamp": "2026-07-23T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Detection shipped: nail_security.credential_scope + nail_monitor v10 (CredentialHarvesting/EgressAllowlist/CredentialOverreach/CredentialAccessVelocity)."
+      }
+    ]
+  },
+  "_meta": {
+    "schema_version": "1.0.0",
+    "generated_at": "2026-07-23T00:00:00Z",
+    "generator": "NAIL Institute AVE Toolkit",
+    "license": "CC-BY-SA-4.0"
+  },
+  "contributor": "d.leigh"
+}

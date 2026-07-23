@@ -49,6 +49,12 @@ from .gateway_exposure import (
     report_to_markdown,
     scan_source_tree,
 )
+from .credential_scope import (
+    CredentialFinding,
+    CredentialScanReport,
+)
+from .credential_scope import report_to_markdown as credential_report_to_markdown
+from .credential_scope import scan_source_tree as scan_credential_scope
 from .security import NailSecurity, ProtectResult, AssessResult, ThreatLevel
 
 __all__ = [
@@ -62,5 +68,9 @@ __all__ = [
     "FindingSeverity",
     "report_to_markdown",
     "scan_source_tree",
+    "CredentialFinding",
+    "CredentialScanReport",
+    "credential_report_to_markdown",
+    "scan_credential_scope",
 ]
 __version__ = "1.0.0"

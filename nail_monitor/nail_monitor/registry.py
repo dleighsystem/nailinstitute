@@ -175,6 +175,101 @@ DEFAULT_PATHOLOGY_REGISTRY = AgentPathologyRegistry(
             default_severity=Severity.CRITICAL,
             references=("AVE-2026-0045", "mcp-tool-retrieval", "least-privilege-tools"),
         ),
+        PathologyDefinition(
+            pathology=PathologyType.CREDENTIAL_HARVESTING,
+            name="Credential Harvesting",
+            category="credential",
+            detector="CredentialHarvestingDetector",
+            description=(
+                "The agent reads secrets from its environment and moves them onto an "
+                "outbound surface — a tool argument, a network body, or the final "
+                "answer — or enumerates many secrets in a single turn. The runtime "
+                "signature of the OpenAI × Hugging Face credential exfiltration."
+            ),
+            signals=(
+                "a previously-read secret reappears on an outbound surface",
+                "raw secret material (AWS/HF/OpenAI/GitHub key, private key) in output/egress",
+                "bulk enumeration of distinct secrets in one turn",
+            ),
+            remedies=(
+                "issue short-lived, narrowly-scoped tokens at runtime",
+                "redact secret-shaped values from tool args and output",
+                "run tool/MCP subprocesses under an identity with no standing secrets",
+                "alert and revoke on secret egress",
+            ),
+            default_severity=Severity.CRITICAL,
+            references=("AVE-2025-0028", "AVE-2025-0040", "openai-hugging-face-2026"),
+        ),
+        PathologyDefinition(
+            pathology=PathologyType.CREDENTIAL_OVERREACH,
+            name="Credential Overreach (Confused Deputy)",
+            category="credential",
+            detector="CredentialOverreachDetector",
+            description=(
+                "An action wields a credential whose scope exceeds what the task "
+                "authorised — the classic confused deputy. Distinct from tool-"
+                "description tampering; this watches the credential scope itself."
+            ),
+            signals=(
+                "credential scope set exceeds the authorised least-privilege set",
+                "wildcard/admin scope present while the task is narrow",
+                "current action requires a scope outside task authorisation",
+            ),
+            remedies=(
+                "scope credentials to the task's exact actions and resources",
+                "replace standing admin grants with just-in-time session roles",
+                "gate high-risk-scope actions behind explicit authorisation",
+            ),
+            default_severity=Severity.CRITICAL,
+            references=("AVE-2025-0026", "AVE-2025-0028", "least-privilege"),
+        ),
+        PathologyDefinition(
+            pathology=PathologyType.NOVEL_EGRESS,
+            name="Novel Egress",
+            category="network",
+            detector="EgressAllowlistDetector",
+            description=(
+                "The agent opens an outbound connection to a host outside its "
+                "authorised allowlist — 'obtained internet access it shouldn't have'. "
+                "Aggravated when the destination is a raw IP, a known exfil sink, or "
+                "the request carries secret material."
+            ),
+            signals=(
+                "destination host absent from the egress allowlist",
+                "outbound to a raw IP or known exfil/callback sink",
+                "off-allowlist request body carries secret-shaped data",
+            ),
+            remedies=(
+                "enforce a default-deny egress allowlist per agent/task",
+                "block raw-IP and known callback-sink destinations",
+                "require approval to add an egress destination",
+            ),
+            default_severity=Severity.CRITICAL,
+            references=("egress-allowlisting", "openai-hugging-face-2026"),
+        ),
+        PathologyDefinition(
+            pathology=PathologyType.LATERAL_MOVEMENT,
+            name="Lateral Movement",
+            category="network",
+            detector="CredentialAccessVelocityDetector",
+            description=(
+                "Credential-fuelled lateral movement: a burst of privileged actions "
+                "or a fan-out across many distinct hosts/resources — the 'thousands "
+                "of actions over a weekend' signature of harvested-credential reuse."
+            ),
+            signals=(
+                "privileged-action count over threshold in a short window",
+                "distinct-resource fan-out over threshold",
+                "credential reuse across many hosts",
+            ),
+            remedies=(
+                "rate-limit privileged actions per agent/session",
+                "scope credentials so they cannot be replayed across hosts",
+                "kill-switch on velocity/fan-out breach",
+            ),
+            default_severity=Severity.CRITICAL,
+            references=("lateral-movement", "openai-hugging-face-2026"),
+        ),
     ]
 )
 

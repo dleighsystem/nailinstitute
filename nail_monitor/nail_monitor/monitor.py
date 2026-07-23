@@ -54,6 +54,12 @@ from .detectors_v9 import (
     ToolManifestIntegrityDetector,
     ToolRetrievalIntegrityDetector,
 )
+from .detectors_v10 import (
+    CredentialAccessVelocityDetector,
+    CredentialHarvestingDetector,
+    CredentialOverreachDetector,
+    EgressAllowlistDetector,
+)
 from .types import Alert, Observation, Severity
 
 logger = logging.getLogger("nail_monitor")
@@ -124,6 +130,13 @@ class NailMonitor:
         enable_memory_write_firewall: bool = True,
         enable_goal_drift_monitor: bool = True,
         enable_tool_retrieval_integrity: bool = True,
+        # ── v10 detectors (credential/egress chain — OpenAI × Hugging Face) ──
+        enable_credential_harvesting: bool = True,
+        enable_egress_allowlist: bool = True,
+        enable_credential_overreach: bool = True,
+        enable_credential_velocity: bool = True,
+        allowed_hosts: Optional[list] = None,
+        authorized_scopes: Optional[list] = None,
         log_alerts: bool = True,
         alert_log_path: Optional[str] = None,
     ):
@@ -213,6 +226,18 @@ class NailMonitor:
         if enable_tool_retrieval_integrity:
             self.detectors["tool_retrieval_integrity"] = ToolRetrievalIntegrityDetector()
 
+        # ── v10 detectors (credential/egress chain — OpenAI × Hugging Face) ──
+        if enable_credential_harvesting:
+            self.detectors["credential_harvesting"] = CredentialHarvestingDetector()
+        if enable_egress_allowlist:
+            self.detectors["egress_allowlist"] = EgressAllowlistDetector(allowed_hosts=allowed_hosts)
+        if enable_credential_overreach:
+            self.detectors["credential_overreach"] = CredentialOverreachDetector(
+                authorized_scopes=authorized_scopes
+            )
+        if enable_credential_velocity:
+            self.detectors["credential_velocity"] = CredentialAccessVelocityDetector()
+
         if log_alerts:
             logging.basicConfig(level=logging.INFO)
             logger.info(
@@ -260,7 +285,12 @@ class NailMonitor:
                 - tool_manifest/tool_manifests for ToolManifestIntegrityDetector
                 - memory_writes with source/trust/fact_type for MemoryWriteFirewallDetector
                 - task_goal/plan_steps/tool_calls/action for GoalDriftMonitorDetector
-        
+                v10 (credential/egress chain — OpenAI × Hugging Face):
+                - secret_reads (dict/list), tool_calls, egress for CredentialHarvestingDetector
+                - egress/network_calls + allowed_hosts for EgressAllowlistDetector
+                - credential_scopes + authorized_scopes/action_scope for CredentialOverreachDetector
+                - sensitive_action/credential_access + resource/host for CredentialAccessVelocityDetector
+
         Returns list of Alerts (may be empty if no pathologies detected).
         """
         obs = Observation(
@@ -329,6 +359,19 @@ class NailMonitor:
             "goal_drift_monitor",
         )
         for key in v9_keys:
+            if key in self.detectors:
+                alert = self.detectors[key].observe(obs)
+                if alert:
+                    alerts.append(alert)
+
+        # ── v10 detectors (credential/egress chain) ──
+        v10_keys = (
+            "credential_harvesting",
+            "egress_allowlist",
+            "credential_overreach",
+            "credential_velocity",
+        )
+        for key in v10_keys:
             if key in self.detectors:
                 alert = self.detectors[key].observe(obs)
                 if alert:

@@ -34,17 +34,64 @@
       "p_value": null,
       "sample_size": null,
       "cross_model": false
+    },
+    {
+      "experiment_id": "exp46",
+      "data_file": "logs/exp46_autonomous_credential_harvest/results.json",
+      "key_metric": "autonomous_chain_detected",
+      "key_value": "4/4 links; 0 critical on benign control",
+      "p_value": null,
+      "sample_size": null,
+      "cross_model": false
     }
   ],
-  "defences": [],
+  "defences": [
+    {
+      "name": "Credential-Scope Scanner",
+      "layer": "BEFORE — static prevention",
+      "effectiveness": "flags over-scoped/harvestable secrets pre-deployment",
+      "rmap_module": "nail_security.credential_scope",
+      "nail_monitor_detector": "",
+      "notes": "Detects os.environ.copy() into subprocess/MCP spawns, long-lived secret material, and wildcard/admin grants (AVE-2025-0040 root cause)."
+    },
+    {
+      "name": "Credential Harvesting Detector",
+      "layer": "DURING — runtime monitor",
+      "effectiveness": "CRITICAL on secret egress; WARNING on bulk enumeration",
+      "rmap_module": "nail_monitor",
+      "nail_monitor_detector": "CredentialHarvestingDetector",
+      "notes": "Fires when a read secret reappears on an outbound surface, or raw secret material leaves."
+    },
+    {
+      "name": "Egress Allowlist Detector",
+      "layer": "DURING — runtime monitor",
+      "effectiveness": "blocks off-allowlist / exfil-sink egress",
+      "rmap_module": "nail_monitor",
+      "nail_monitor_detector": "EgressAllowlistDetector",
+      "notes": "Catches 'obtained internet access it shouldn't have'."
+    },
+    {
+      "name": "Credential-Access Velocity Detector",
+      "layer": "DURING — runtime monitor",
+      "effectiveness": "flags lateral fan-out / privileged-action bursts",
+      "rmap_module": "nail_monitor",
+      "nail_monitor_detector": "CredentialAccessVelocityDetector",
+      "notes": "The 'thousands of actions over a weekend' signature."
+    }
+  ],
   "date_discovered": "2025-03",
   "date_published": "",
   "cwe_mapping": "CWE-200 (Exposure of Sensitive Information to an Unauthorized Actor)",
-  "mitre_mapping": "",
-  "references": [],
+  "mitre_mapping": "T1552 (Unsecured Credentials), T1078 (Valid Accounts)",
+  "references": [
+    "OpenAI × Hugging Face model-evaluation security incident (Jul 2026)",
+    "exp46_autonomous_credential_harvest — autonomous variant reproduction"
+  ],
   "related_aves": [
     "AVE-2025-0026",
-    "AVE-2025-0017"
+    "AVE-2025-0017",
+    "AVE-2025-0040",
+    "AVE-2026-0046"
   ],
   "avss_score": {
     "base_score": 9.3,
@@ -107,7 +154,7 @@
     "current_stage": "published",
     "is_published": true,
     "is_mitigated": false,
-    "event_count": 4,
+    "event_count": 5,
     "events": [
       {
         "stage": "discovered",
@@ -132,6 +179,12 @@
         "timestamp": "2025-04-20T00:00:00Z",
         "actor": "NAIL Institute",
         "notes": "Published to AVE Database v1.0"
+      },
+      {
+        "stage": "confirmed",
+        "timestamp": "2026-07-23T00:00:00Z",
+        "actor": "NAIL Institute",
+        "notes": "Autonomous variant (env-harvest \u2192 over-scoped role \u2192 off-allowlist egress \u2192 lateral fan-out) reproduced in exp46 after the OpenAI \u00d7 Hugging Face incident; detection shipped across nail_security.credential_scope + nail_monitor v10 (CredentialHarvesting/EgressAllowlist/CredentialOverreach/CredentialAccessVelocity)."
       }
     ]
   },

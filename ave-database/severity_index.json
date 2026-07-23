@@ -83,6 +83,12 @@
       "name": "State Persistence Deserialization",
       "category": "memory",
       "status": "proven"
+    },
+    {
+      "ave_id": "AVE-2026-0046",
+      "name": "Autonomous Credential Harvest Chain",
+      "category": "credential",
+      "status": "proven"
     }
   ],
   "high": [
