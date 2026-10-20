@@ -1,0 +1,9 @@
+{
+  "integrity": "PASS",
+  "same_decision_content_distinct_attempts": true,
+  "attempts": [
+    {"action_id": "synthetic-denied-attempt", "decision_binding": "PASS", "approval_policy": "VIOLATION", "tenant_resource_policy": "NO_VIOLATION", "enforcement": "DENIED", "reported_outcome": null},
+    {"action_id": "synthetic-approved-attempt", "decision_binding": "PASS", "approval_policy": "NO_VIOLATION", "tenant_resource_policy": "NO_VIOLATION", "enforcement": "INTENT_RECORDED", "reported_outcome": "http:200"}
+  ],
+  "negative_controls": {"changed_payload": "FAIL", "dropped_tail": "FAIL", "wrong_key": "FAIL", "swapped_attempt": "FAIL"}
+}

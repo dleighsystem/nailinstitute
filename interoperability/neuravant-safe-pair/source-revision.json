@@ -1,0 +1,12 @@
+{
+  "checker_rule": "neuravant-synthetic-pair/v1",
+  "checker_sha256": {
+    "check.py": "7863ed5c1f6db512a4643a8b469887c77dc9232ac5cae3fc24f3414450e86c29",
+    "integrity.py": "f1dd14a8f9711bb9332fae9cdeb48525c60acf7e48ed3bf586902f022aafaf92"
+  },
+  "galc_candidate_head": "b5c12f358fc281fc4beec1528a8db4d125edd879",
+  "private_source_included": false,
+  "public_key": "851ca0351765411eac7e1772cd35b228fed50a91309b14634ec9302c95fe157c",
+  "upstream_generation_commit": "dfd57b3661a1e36a50fb084cf6175de27ab20186",
+  "upstream_runtime_git_blob": "94adf4c11818d91c2619ded2fd4568a63944742d"
+}

@@ -1,0 +1,44 @@
+{
+  "anchoring": "NOT_EVALUATED",
+  "attempts": [
+    {
+      "action_id": "synthetic-denied-attempt",
+      "approval_policy": "VIOLATION",
+      "decision_binding": "PASS",
+      "enforcement": "DENIED",
+      "record_refs": {
+        "decision": "43ad8e5a9b35a8ce473c1831310ff66439fcea742f773c1389b07db2e3de9807",
+        "denied": "b4f1e7c51b6980a05aa9927be0fe46cc47c2bbdf96bd082536ac005cf86058bb",
+        "scope": "6f174cf28b34f0f51340c0919a502f854fb1bf7049d9d3c49a36817e7b224de6"
+      },
+      "reported_outcome": null,
+      "tenant_resource_policy": "NO_VIOLATION"
+    },
+    {
+      "action_id": "synthetic-approved-attempt",
+      "approval_policy": "NO_VIOLATION",
+      "decision_binding": "PASS",
+      "enforcement": "INTENT_RECORDED",
+      "record_refs": {
+        "decision": "8e3e2992b9e96fb148c330a080ead7cccf7d2daaa58315edd9b2c1b998978319",
+        "grant": "9018f2125aba5560b11a23e09ecdc8f00549c42c4fdaa5c65f42bdd5469af530",
+        "intent": "129a433f34b54c0a1da49811d93d913551baf8ec6923527a2e8c91881335f6be",
+        "outcome": "f1a2406a8c57a2c9b51cc166a0deab0ecd974874fc5ee9a51db65b0ca1055ba1",
+        "scope": "9a9ecce30a7715d4f6f7675910450482d3c50f473685fca442504b8aa712d449"
+      },
+      "reported_outcome": "http:200",
+      "tenant_resource_policy": "NO_VIOLATION"
+    }
+  ],
+  "authority_identity": "NOT_EVALUATED",
+  "custody": "NOT_EVALUATED",
+  "external_effect": "NOT_EVALUATED",
+  "galc_conformance": "NOT_EVALUATED",
+  "integrity": "PASS",
+  "rule_revision": "neuravant-synthetic-pair/v1",
+  "same_decision_content_distinct_attempts": true,
+  "source_sha256": {
+    "check.py": "7863ed5c1f6db512a4643a8b469887c77dc9232ac5cae3fc24f3414450e86c29",
+    "integrity.py": "f1dd14a8f9711bb9332fae9cdeb48525c60acf7e48ed3bf586902f022aafaf92"
+  }
+}
