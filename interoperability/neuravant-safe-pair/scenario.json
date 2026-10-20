@@ -1,0 +1,10 @@
+{
+  "kind": "synthetic-runtime-api-example",
+  "tenant_id": "synthetic-tenant",
+  "agent_id": "synthetic-agent",
+  "upstream": "synthetic",
+  "tool": "lookup",
+  "arguments": {"tenant_id": "synthetic-tenant", "resource_id": "synthetic-resource"},
+  "attempts": ["synthetic-denied-attempt", "synthetic-approved-attempt"],
+  "policy": {"approval_required": true, "scope_comparison": "exact tenant_id and resource_id equality"}
+}
